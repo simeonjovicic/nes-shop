@@ -1,78 +1,34 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-const BRANDS = [
-  {
-    id: "wai",
-    number: "01",
-    name: "WAI",
-    category: "Feel Shoes",
-    image: "/wai10-opt.jpeg",
-    position: "center 58%",
-    statement: "Freiheit, die man anzieht.",
-    description:
-      "Flexible Feel Shoes für Zuhause, unterwegs und alles dazwischen. Reduziert in der Form, leicht am Fuß und gemacht für natürliche Bewegung.",
-  },
-  {
-    id: "vehon",
-    number: "02",
-    name: "Vehon",
-    category: "Mocassini",
-    image: "/hero-wai.png",
-    position: "center 64%",
-    statement: "Italienische Ruhe am Fuß.",
-    description:
-      "Mocassini und Pantofole, die Tradition nicht ausstellen müssen. In Italien gefertigt, präzise im Detail und entspannt im Alltag.",
-  },
-  {
-    id: "green-comfort",
-    number: "03",
-    name: "Green Comfort",
-    category: "Knitwear",
-    image: "/pully-red-front.png",
-    position: "center",
-    statement: "Strick mit eigener Stimme.",
-    description:
-      "Markanter Jacquard-Strick mit Tiefe, Struktur und Charakter. Für Menschen, die Komfort nicht mit Zurückhaltung verwechseln.",
-  },
-];
-
-const FAIR_MOMENTS = [
+const MOMENTS = [
   {
     src: "/messe-offenbach/beratung-am-stand.jpeg",
-    alt: "Besucher im Gespräch am WAI Messestand in Offenbach",
-    label: "Austausch am Stand",
-    className: "fair-photo-main",
+    alt: "Besucher im persönlichen Gespräch am WAI Messestand",
+    number: "01",
+    label: "Austausch",
+    className: "moment-main",
   },
   {
     src: "/messe-offenbach/feel-shoes-auswahl.jpeg",
-    alt: "Auswahl der WAI Feel Shoes auf dem Messetisch",
-    label: "Die Kollektion",
-    className: "fair-photo-products",
+    alt: "WAI Feel Shoes in verschiedenen Farben auf dem Messetisch",
+    number: "02",
+    label: "Kollektion",
+    className: "moment-products",
   },
   {
-    src: "/messe-offenbach/material-und-sohlen.jpeg",
-    alt: "Material- und Sohlenmuster der WAI Feel Shoes",
-    label: "Material zum Anfassen",
-    className: "fair-photo-material",
+    src: "/messe-offenbach/messegespraech-hq.jpeg",
+    alt: "Fachgespräch mit Besuchern in der Messehalle",
+    number: "03",
+    label: "Beratung",
+    className: "moment-talk",
   },
   {
-    src: "/messe-offenbach/messegespraech.jpeg",
-    alt: "Fachgespräch mit Besuchern auf der Messe in Offenbach",
-    label: "Persönliche Beratung",
-    className: "fair-photo-talk",
-  },
-  {
-    src: "/messe-offenbach/produktpraesentation.jpeg",
-    alt: "Präsentation eines WAI Feel Shoes am Messestand",
-    label: "Feel Shoes erleben",
-    className: "fair-photo-demo",
-  },
-  {
-    src: "/messe-offenbach/team-in-der-halle.jpeg",
-    alt: "Das WAI Team mit einem Besucher in der Messehalle",
-    label: "Begegnungen in Offenbach",
-    className: "fair-photo-team",
+    src: "/messe-offenbach/team-in-der-halle-hq.jpeg",
+    alt: "Das WAI Team gemeinsam mit einem Besucher auf der Messe",
+    number: "04",
+    label: "Begegnungen",
+    className: "moment-team",
   },
 ];
 
@@ -88,14 +44,15 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
     const elements = document.querySelectorAll("[data-reveal]");
+
     if (!("IntersectionObserver" in window)) {
       elements.forEach((element) => element.classList.add("is-visible"));
       return undefined;
@@ -110,7 +67,7 @@ export default function App() {
           }
         });
       },
-      { threshold: 0.12 },
+      { threshold: 0.1 },
     );
 
     elements.forEach((element) => observer.observe(element));
@@ -124,123 +81,143 @@ export default function App() {
       <main>
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-copy">
-            <p className="hero-kicker"><span>01</span> N.E.S vor Ort</p>
-            <div className="hero-print">
-              <h1 className="hero-mark" id="hero-title">
+            <p className="hero-overline">
+              <span>01</span>
+              <span>N.E.S vor Ort</span>
+            </p>
+
+            <div className="hero-content">
+              <h1 id="hero-title">
                 Messe
                 <em>Offenbach</em>
               </h1>
-              <p className="hero-intro">
-                WAI Feel Shoes live erleben — neue Modelle, natürliche Bewegung
-                und persönliche Gespräche direkt an unserem Messestand.
+              <p>
+                WAI Feel Shoes zum Anfassen, Anprobieren und Weiterdenken —
+                ein Rückblick auf Begegnungen, Materialien und neue Perspektiven.
               </p>
-              <div className="hero-actions">
-                <a className="hero-primary" href="#einblicke">
-                  <span>Messe-Einblicke</span>
-                  <ArrowIcon />
-                </a>
-                <a className="hero-secondary" href="#marken">Unsere Marken</a>
-              </div>
+              <a className="button button-dark" href="#einblicke">
+                <span>Einblicke ansehen</span>
+                <ArrowIcon />
+              </a>
             </div>
 
-            <div className="hero-base">
+            <div className="hero-meta" aria-label="Veranstaltungsinformationen">
               <span>Offenbach am Main</span>
               <span>WAI Feel Shoes</span>
             </div>
           </div>
 
-          <figure className="hero-picture">
+          <figure className="hero-media">
             <img
-              src="/messe-offenbach/team-am-stand.jpeg"
-              alt="Das WAI Team gemeinsam am Messestand in Offenbach"
+              src="/messe-offenbach/produktpraesentation-hq.jpeg"
+              alt="Zwei Besucher betrachten einen WAI Feel Shoe am Messestand"
             />
             <figcaption>
-              <span>Das Team vor Ort</span>
-              <span>Messe Offenbach</span>
+              <span>Am Stand</span>
+              <span>01 / 04</span>
             </figcaption>
           </figure>
         </section>
 
-        <section className="manifesto section-pad" id="haus">
-          <div className="manifesto-heading" data-reveal>
+        <section className="intro section-wrap" id="messe">
+          <div className="intro-heading" data-reveal>
             <p className="eyebrow">Messe-Rückblick</p>
-            <h2>
-              WAI live.
-              <em>Direkt im Austausch.</em>
-            </h2>
+            <h2>Ein Schuh wird erst im Gespräch lebendig.</h2>
           </div>
 
-          <div className="manifesto-body" data-reveal>
-            <p className="manifesto-lead">
-              In Offenbach wurde aus Produktwissen ein echtes Erlebnis: sehen,
-              fühlen, anprobieren und miteinander sprechen.
+          <div className="intro-copy" data-reveal>
+            <p className="intro-lead">
+              In Offenbach ging es nicht um eine klassische Produktshow. Es ging
+              darum, WAI direkt zu erleben.
             </p>
             <p>
-              Unser Team zeigte die aktuelle WAI Auswahl und erklärte, wie flexible
-              Materialien, eine breite Zehenbox und die Zero-Drop-Konstruktion zu
-              einem natürlichen Laufgefühl beitragen.
+              Besucher konnten Passformen vergleichen, Materialien fühlen und mit
+              unserem Team über natürliche Bewegung sprechen. Genau dieser direkte
+              Austausch macht eine Messe für uns wertvoll.
             </p>
           </div>
 
-          <div className="principle-grid" data-reveal>
+          <div className="fact-row" data-reveal>
             <article>
               <span>01</span>
               <h3>Anprobieren</h3>
-              <p>Passform und Bewegungsfreiheit lassen sich am besten direkt am Fuß erleben.</p>
+              <p>Bewegungsfreiheit dort erleben, wo sie zählt: am eigenen Fuß.</p>
             </article>
             <article>
               <span>02</span>
-              <h3>Material fühlen</h3>
-              <p>Flexible Sohlen und weiche Obermaterialien wurden vor Ort greifbar.</p>
+              <h3>Verstehen</h3>
+              <p>Material, Sohle und Konstruktion ohne Umwege kennenlernen.</p>
             </article>
             <article>
               <span>03</span>
-              <h3>Fragen stellen</h3>
-              <p>Persönliche Beratung und ehrlicher Austausch standen im Mittelpunkt.</p>
+              <h3>Austauschen</h3>
+              <p>Fragen stellen, Erfahrungen teilen und neue Kontakte knüpfen.</p>
             </article>
           </div>
         </section>
 
-        <FairStory />
-
-        <BrandJourney />
-
-        <section className="standard-section" id="anspruch">
-          <div className="standard-image" data-reveal>
-            <img
-              src="/messe-offenbach/material-und-sohlen.jpeg"
-              alt="Verschiedene Material- und Sohlenmuster am Messestand"
-              loading="lazy"
-            />
-          </div>
-          <div className="standard-copy" data-reveal>
-            <p className="eyebrow">Am Messetisch</p>
-            <h2>Materialien, die ihre Qualität zeigen dürfen.</h2>
-            <p>
-              Auf der Messe konnten Besucher Konstruktion und Material unmittelbar
-              vergleichen. Genau dort wird sichtbar, was WAI ausmacht: Flexibilität,
-              Funktion und ein Komfort, der nicht erklärt werden muss.
-            </p>
-            <div className="standard-lines">
-              <span>Breite Zehenbox</span>
-              <span>Flexible Sohle</span>
-              <span>Natürliches Laufgefühl</span>
+        <section className="moments" id="einblicke">
+          <header className="moments-heading" data-reveal>
+            <div>
+              <p className="eyebrow">Momente aus Offenbach</p>
+              <h2>Nah dran.</h2>
             </div>
+            <p>
+              Keine Hochglanzkulisse — sondern echte Gespräche, neugierige Hände
+              und Schuhe, die ausprobiert werden wollen.
+            </p>
+          </header>
+
+          <div className="moments-grid">
+            {MOMENTS.map((moment) => (
+              <figure className={`moment ${moment.className}`} data-reveal key={moment.src}>
+                <div className="moment-image">
+                  <img src={moment.src} alt={moment.alt} loading="lazy" />
+                </div>
+                <figcaption>
+                  <span>{moment.number}</span>
+                  <span>{moment.label}</span>
+                </figcaption>
+              </figure>
+            ))}
           </div>
         </section>
 
-        <section className="launch-section" id="notify">
-          <div className="launch-orbit" aria-hidden="true">
-            <span>N</span><span>E</span><span>S</span>
-          </div>
-          <div className="launch-content" data-reveal>
-            <p className="eyebrow">Im Gespräch bleiben</p>
-            <h2>Nach der Messe ist vor der nächsten Begegnung.</h2>
+        <section className="product-story" id="wai">
+          <figure className="product-story-media" data-reveal>
+            <img
+              src="/messe-offenbach/material-und-sohlen-hq.jpeg"
+              alt="Verschiedene Material- und Sohlenmuster am Messestand"
+              loading="lazy"
+            />
+            <figcaption>Materialbibliothek · Offenbach</figcaption>
+          </figure>
+
+          <div className="product-story-copy" data-reveal>
+            <p className="eyebrow">WAI Feel Shoes</p>
+            <h2>Komfort, den man nicht erklären muss.</h2>
             <p>
-              Trag dich ein und erfahre zuerst von neuen Modellen, kommenden
-              Messeterminen und den Geschichten hinter unseren Marken.
+              Flexible Sohlen, eine breite Zehenbox und sorgfältig ausgewählte
+              Materialien geben dem Fuß Raum für natürliche Bewegung. Auf der Messe
+              wurde aus diesen Details ein unmittelbares Gefühl.
             </p>
-            <SignupForm id="launch-email" dark />
+            <ul>
+              <li><span>01</span> Zero Drop</li>
+              <li><span>02</span> Flexible Konstruktion</li>
+              <li><span>03</span> Breite Zehenbox</li>
+            </ul>
+          </div>
+        </section>
+
+        <section className="updates" id="updates">
+          <div className="updates-inner" data-reveal>
+            <p className="eyebrow">Im Gespräch bleiben</p>
+            <h2>Wir sehen uns.</h2>
+            <p>
+              Neue Modelle, nächste Messetermine und Geschichten aus dem N.E.S Haus —
+              kompakt in deinem Postfach.
+            </p>
+            <SignupForm />
           </div>
         </section>
       </main>
@@ -255,11 +232,11 @@ function Header({ scrolled }) {
     <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
       <a className="wordmark" href="#top" aria-label="N.E.S Startseite">N.E.S</a>
       <nav aria-label="Hauptnavigation">
-        <a href="#haus">Messe</a>
+        <a href="#messe">Messe</a>
         <a href="#einblicke">Einblicke</a>
-        <a href="#marken">Marken</a>
+        <a href="#wai">WAI</a>
       </nav>
-      <a className="header-cta" href="#notify">
+      <a className="header-link" href="#updates">
         <span>Updates</span>
         <ArrowIcon />
       </a>
@@ -267,36 +244,7 @@ function Header({ scrolled }) {
   );
 }
 
-function FairStory() {
-  return (
-    <section className="fair-story" id="einblicke">
-      <header className="fair-heading" data-reveal>
-        <div>
-          <p className="eyebrow">Einblicke aus Offenbach</p>
-          <h2>Mittendrin statt nur ausgestellt.</h2>
-        </div>
-        <p>
-          Unser Stand war Treffpunkt, Anprobe und Werkbank zugleich. Eine Auswahl
-          an Momenten, Produkten und Gesprächen von der Messe.
-        </p>
-      </header>
-
-      <div className="fair-grid">
-        {FAIR_MOMENTS.map((moment, index) => (
-          <figure className={`fair-photo ${moment.className}`} data-reveal key={moment.src}>
-            <img src={moment.src} alt={moment.alt} loading="lazy" />
-            <figcaption>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <span>{moment.label}</span>
-            </figcaption>
-          </figure>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function SignupForm({ id, dark = false }) {
+function SignupForm() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
@@ -318,11 +266,13 @@ function SignupForm({ id, dark = false }) {
         if (!response.ok) throw new Error("Subscription failed");
       } else {
         const saved = JSON.parse(localStorage.getItem("nes-waitlist") || "[]");
-        if (!saved.includes(email)) localStorage.setItem("nes-waitlist", JSON.stringify([...saved, email]));
+        if (!saved.includes(email)) {
+          localStorage.setItem("nes-waitlist", JSON.stringify([...saved, email]));
+        }
       }
 
       setStatus("success");
-      setMessage("Danke — du bist auf der Liste.");
+      setMessage("Danke — wir halten dich auf dem Laufenden.");
       setEmail("");
     } catch {
       setStatus("error");
@@ -331,126 +281,42 @@ function SignupForm({ id, dark = false }) {
   }
 
   if (status === "success") {
-    return (
-      <div className={`signup-success${dark ? " signup-success-dark" : ""}`} role="status">
-        <span>✓</span>
-        <p>{message}</p>
-      </div>
-    );
+    return <p className="form-message form-success" role="status">{message}</p>;
   }
 
   return (
-    <div className={`signup-wrap${dark ? " signup-wrap-dark" : ""}`}>
-      <form className="signup-form" onSubmit={handleSubmit}>
-        <label htmlFor={id}>E-Mail-Adresse</label>
-        <input
-          id={id}
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="Deine E-Mail-Adresse"
-          autoComplete="email"
-          required
-          disabled={status === "loading"}
-        />
-        <button type="submit" disabled={status === "loading"}>
-          <span>{status === "loading" ? "Einen Moment" : "Informiert mich"}</span>
-          <ArrowIcon />
-        </button>
-      </form>
-      <div className="signup-meta">
-        <span>Messe- und Produktupdates, keine Dauerwerbung.</span>
-        {status === "error" && <span className="signup-error" role="alert">{message}</span>}
-      </div>
-    </div>
-  );
-}
-
-function BrandJourney() {
-  const [activeBrand, setActiveBrand] = useState(BRANDS[0].id);
-
-  useEffect(() => {
-    const chapters = document.querySelectorAll("[data-brand-chapter]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveBrand(visible.target.dataset.brandChapter);
-      },
-      { rootMargin: "-28% 0px -42% 0px", threshold: [0, 0.2, 0.5] },
-    );
-
-    chapters.forEach((chapter) => observer.observe(chapter));
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <section className="brand-journey" id="marken">
-      <div className="journey-visual" aria-hidden="true">
-        {BRANDS.map((brand) => (
-          <img
-            className={`${activeBrand === brand.id ? "is-active" : ""} journey-image-${brand.id}`}
-            src={brand.image}
-            alt=""
-            key={brand.id}
-            style={{ objectPosition: brand.position }}
-          />
-        ))}
-        <div className="journey-visual-meta">
-          <span>{BRANDS.find((brand) => brand.id === activeBrand)?.number} / 03</span>
-          <span>Scroll to explore</span>
-        </div>
-      </div>
-
-      <div className="journey-content">
-        <header className="journey-heading" data-reveal>
-          <p className="eyebrow">Die Marken</p>
-          <h2>Drei Wege zu einem besseren Gefühl.</h2>
-          <p>Scrolle durch die drei Perspektiven, die N.E.S zu einem Haus verbinden.</p>
-        </header>
-
-        {BRANDS.map((brand) => (
-          <article
-            className={`brand-chapter${activeBrand === brand.id ? " is-active" : ""}`}
-            data-brand-chapter={brand.id}
-            key={brand.id}
-          >
-            <div className={`chapter-mobile-image chapter-mobile-image-${brand.id}`}>
-              <img
-                src={brand.image}
-                alt={`${brand.name} — ${brand.category}`}
-                style={{ objectPosition: brand.position }}
-              />
-            </div>
-            <div className="chapter-index">
-              <span>{brand.number}</span>
-              <i />
-              <span>03</span>
-            </div>
-            <p className="eyebrow">{brand.category}</p>
-            <h3>{brand.name}</h3>
-            <strong>{brand.statement}</strong>
-            <p className="chapter-description">{brand.description}</p>
-            <span className="chapter-status">Kollektion in Vorbereitung</span>
-          </article>
-        ))}
-      </div>
-    </section>
+    <form className="signup-form" onSubmit={handleSubmit}>
+      <label htmlFor="update-email">E-Mail-Adresse</label>
+      <input
+        id="update-email"
+        type="email"
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+        placeholder="Deine E-Mail-Adresse"
+        autoComplete="email"
+        required
+        disabled={status === "loading"}
+      />
+      <button type="submit" disabled={status === "loading"}>
+        <span>{status === "loading" ? "Einen Moment" : "Eintragen"}</span>
+        <ArrowIcon />
+      </button>
+      {status === "error" && <p className="form-message form-error" role="alert">{message}</p>}
+    </form>
   );
 }
 
 function Footer() {
   return (
     <footer className="site-footer">
-      <div className="footer-top">
-        <a className="footer-mark" href="#top">N.E.S</a>
-        <p>Ein Haus für Feel Shoes, Mocassini und Knitwear — persönlich präsentiert in Offenbach.</p>
-        <a className="footer-up" href="#top">Nach oben <span>↑</span></a>
+      <div className="footer-main">
+        <a href="#top" className="footer-mark">N.E.S</a>
+        <p>Ein Haus für Produkte mit Haltung, Komfort und Charakter.</p>
+        <a href="#top" className="footer-up">Nach oben <span>↑</span></a>
       </div>
-      <div className="footer-bottom">
+      <div className="footer-meta">
         <span>© 2026 N.E.S</span>
-        <span>Messe Offenbach · Rückblick</span>
+        <span>Messe Offenbach</span>
         <span>WAI · Vehon · Green Comfort</span>
       </div>
     </footer>
