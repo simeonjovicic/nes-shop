@@ -45,6 +45,26 @@ function ArrowIcon() {
   );
 }
 
+function Footprint({ className }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 27 42"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      aria-hidden="true"
+    >
+      <path d="M13.4 12.2c4.7 0 7.5 3.5 7 8.6-.3 3.3-1.6 5.9-2.4 8.7-.8 2.9-.9 7.7-4.7 8-3.8.3-4.4-4.4-5-7.4-.6-2.8-2.1-5.7-2.5-9-.6-5 2.9-8.9 7.6-8.9Z" />
+      <circle cx="7.2" cy="7.6" r="3" />
+      <circle cx="12.6" cy="5.4" r="2" />
+      <circle cx="16.9" cy="5.6" r="1.7" />
+      <circle cx="20.6" cy="6.8" r="1.4" />
+      <circle cx="23.4" cy="9" r="1.1" />
+    </svg>
+  );
+}
+
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -86,17 +106,25 @@ export default function App() {
         <section className="hero" aria-labelledby="hero-title">
           <picture className="hero-picture">
             <source media="(max-width: 680px)" srcSet="/mobile-hero.png" />
-            <img src="/wai4-opt.jpeg" alt="Ein dunkelblauer WAI Feel Shoe in einer ruhigen Wohnszene" />
+            <img src="/wai4-opt.jpeg" alt="Ein dunkelblauer WAI Feel Shoe auf einer sonnigen Terrasse" />
           </picture>
           <div className="hero-shade" />
 
-          <div className="hero-content">
-            <p className="eyebrow hero-eyebrow">N.E.S · The new Soleform house</p>
-            <h1 id="hero-title">Komfort, neu gedacht.</h1>
-            <p className="hero-intro">
-              N.E.S ist das neue Haus hinter WAI, Vehon und Green Comfort — Schuhe
-              und Strick, entwickelt für Komfort, Charakter und Bewegung.
-            </p>
+          <div className="hero-print">
+            <h1 className="hero-mark" id="hero-title">NES</h1>
+            <div className="for-divider" aria-hidden="true">
+              <i />
+              <span>for</span>
+              <i />
+            </div>
+            <div className="hero-brands">
+              {BRANDS.map((brand) => (
+                <a className="hero-brand" href="#marken" key={brand.id}>
+                  <span className="hero-brand-name">{brand.name}</span>
+                  <span className="hero-brand-category">{brand.category}</span>
+                </a>
+              ))}
+            </div>
             <div className="hero-actions">
               <a className="hero-primary" href="#notify">
                 <span>Zum Launch vormerken</span>
@@ -106,15 +134,11 @@ export default function App() {
             </div>
           </div>
 
-          <div className="hero-note" aria-label="Launch Status">
-            <span>Edition 001</span>
-            <strong>In Vorbereitung</strong>
+          <div className="hero-base">
+            <span>Offenbach&ensp;·&ensp;50.100° N | 8.705° E</span>
+            <Footprint className="hero-footprint" />
+            <span>Edition 001&ensp;·&ensp;In Vorbereitung</span>
           </div>
-
-          <a className="scroll-cue" href="#haus" aria-label="Mehr über N.E.S erfahren">
-            <span>Scroll to discover</span>
-            <i />
-          </a>
         </section>
 
         <section className="manifesto section-pad" id="haus">
