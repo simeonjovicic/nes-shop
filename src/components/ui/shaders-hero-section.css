@@ -1,0 +1,135 @@
+.shader-background,
+.hero-shader-foreground {
+  position: absolute;
+  inset: 0;
+}
+
+.shader-background {
+  isolation: isolate;
+  overflow: hidden;
+  padding: inherit;
+  text-align: inherit;
+}
+
+.hero-shader-fallback,
+.hero-shader-mesh,
+.hero-shader-veil {
+  position: absolute;
+  pointer-events: none;
+}
+
+.hero-shader-fallback {
+  z-index: 0;
+  inset: 0;
+  background: linear-gradient(125deg, #f5f2e9 5%, #ddd3bc 42%, #aebcb2 72%, #f5f2e9 100%);
+}
+
+.hero-shader-mesh {
+  z-index: 1;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
+  opacity: 0.62;
+  filter: saturate(0.68) contrast(0.86) brightness(1.08);
+  transform: translate3d(0, calc(var(--hero-progress) * -18px), 0) scale(1.04);
+  will-change: transform;
+}
+
+.hero-shader-veil {
+  z-index: 2;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(245, 242, 233, 0.62), transparent 24%, transparent 76%, rgba(245, 242, 233, 0.62)),
+    linear-gradient(180deg, rgba(245, 242, 233, 0.62), rgba(245, 242, 233, 0.2) 45%, rgba(245, 242, 233, 0.72));
+}
+
+.hero-footprint-trail {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  --footprint-opacity: 0.16;
+}
+
+.footstep {
+  position: absolute;
+  top: var(--step-y);
+  left: var(--step-x);
+  width: clamp(20px, 1.85vw, 29px);
+  color: #17342a;
+  transform: translate(-50%, -50%) rotate(var(--step-rotation)) scale(var(--step-scale));
+  transform-origin: center;
+}
+
+.footstep svg {
+  display: block;
+  width: 100%;
+  fill: currentColor;
+  opacity: 0;
+  transform-origin: center;
+}
+
+.site-shell.is-ready .footstep svg {
+  animation: footprint-pass 9s var(--step-delay) infinite cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-shader-foreground {
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  padding: inherit;
+}
+
+@keyframes footprint-pass {
+  0%, 2% {
+    opacity: 0;
+    filter: blur(1.5px);
+    transform: translateY(5px) scale(0.92);
+  }
+
+  6%, 21% {
+    opacity: var(--footprint-opacity);
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+
+  32%, 100% {
+    opacity: 0;
+    filter: blur(0.8px);
+    transform: translateY(-2px) scale(1.01);
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-shader-mesh {
+    inset: -5%;
+    width: 110%;
+    height: 110%;
+    opacity: 0.54;
+  }
+
+  .hero-shader-veil {
+    background:
+      linear-gradient(90deg, rgba(245, 242, 233, 0.48), transparent 22%, transparent 78%, rgba(245, 242, 233, 0.48)),
+      linear-gradient(180deg, rgba(245, 242, 233, 0.68), rgba(245, 242, 233, 0.22) 45%, rgba(245, 242, 233, 0.76));
+  }
+
+  .hero-footprint-trail {
+    --footprint-opacity: 0.095;
+  }
+
+  .footstep {
+    width: clamp(17px, 5vw, 21px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-shader-mesh {
+    transform: scale(1.04);
+  }
+
+  .hero-footprint-trail {
+    display: none;
+  }
+}

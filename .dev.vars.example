@@ -1,0 +1,5 @@
+# Cloudflare Pages Function secrets for local testing. Copy to .dev.vars; never commit real values.
+RESEND_API_KEY=re_replace_me
+NEWSLETTER_FROM="N.E.S <messe@updates.example.com>"
+NEWSLETTER_REPLY_TO=hello@example.com
+PUBLIC_SITE_URL=http://localhost:8788
