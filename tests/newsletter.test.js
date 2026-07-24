@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { afterEach, describe, test } from "node:test";
 
 import { onRequestGet as confirmSubscription } from "../functions/api/confirm.js";
+import { onRequestGet as newsletterHealth } from "../functions/api/newsletter-health.js";
 import { onRequestPost as subscribe } from "../functions/api/subscribe.js";
 import { onRequestGet as unsubscribe } from "../functions/api/unsubscribe.js";
 
@@ -139,6 +140,30 @@ function emailRequest(body) {
 }
 
 describe("newsletter automation", () => {
+  test("reports deployment bindings without exposing their values", async () => {
+    const incomplete = await newsletterHealth({
+      env: {
+        NEWSLETTER_FROM: "N.E.S <office@nes-shop.at>",
+        PUBLIC_SITE_URL: "https://nes-shop.at",
+      },
+    });
+    const configured = await newsletterHealth({ env: createEnv() });
+
+    assert.equal(incomplete.status, 503);
+    assert.deepEqual(await incomplete.json(), {
+      ok: false,
+      services: {
+        database: false,
+        emailProvider: false,
+        sender: true,
+        replyTo: false,
+        siteUrl: true,
+      },
+    });
+    assert.equal(configured.status, 200);
+    assert.equal((await configured.json()).ok, true);
+  });
+
   test("rejects an incomplete deployment configuration", async () => {
     const response = await subscribe({
       request: emailRequest({ email: "person@example.com" }),
