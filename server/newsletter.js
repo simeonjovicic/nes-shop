@@ -4,48 +4,48 @@ const RESEND_ENDPOINT = "https://api.resend.com/emails";
 const EMAIL_COPY = {
   de: {
     confirmation: {
-      subject: "Bitte bestätige deine Anmeldung bei N.E.S",
-      preheader: "Ein Klick, dann bist du auf der N.E.S Liste.",
-      eyebrow: "MESSE OFFENBACH · N.E.S",
+      subject: "Bitte bestätige deine Anmeldung bei NES",
+      preheader: "Ein Klick, dann bist du auf der NES Liste.",
+      eyebrow: "MESSE OFFENBACH · NES",
       title: "Nur noch ein Schritt.",
       body:
-        "Bestätige kurz deine E-Mail-Adresse. Danach erhältst du als Erstes den Messetermin, neue Drops und ausgewählte Einblicke von N.E.S.",
+        "Bestätige kurz deine E-Mail-Adresse. Danach erhältst du als Erstes den Messetermin, neue Drops und ausgewählte Einblicke von NES.",
       action: "E-Mail bestätigen",
       note: "Falls du dich nicht angemeldet hast, kannst du diese E-Mail einfach ignorieren.",
       fallback: "Falls der Button nicht funktioniert, öffne diesen Link:",
     },
     welcome: {
-      subject: "Du bist auf der N.E.S Liste",
-      preheader: "Willkommen bei N.E.S — wir melden uns, wenn es etwas zu erzählen gibt.",
-      eyebrow: "WILLKOMMEN BEI N.E.S",
+      subject: "Du bist auf der NES Liste",
+      preheader: "Willkommen bei NES — wir melden uns, wenn es etwas zu erzählen gibt.",
+      eyebrow: "WILLKOMMEN BEI NES",
       title: "Du bist dabei.",
       body:
         "Von jetzt an erfährst du zuerst vom nächsten Messetermin, ausgewählten Neuheiten und Early Access. Ruhig, relevant und nur dann, wenn es etwas zu erzählen gibt.",
-      action: "N.E.S entdecken",
+      action: "NES entdecken",
       note: "Offenbach · 50.100° N | 8.705° E",
       unsubscribe: "Abmelden",
     },
   },
   en: {
     confirmation: {
-      subject: "Confirm your N.E.S subscription",
-      preheader: "One click and you are on the N.E.S list.",
-      eyebrow: "OFFENBACH TRADE FAIR · N.E.S",
+      subject: "Confirm your NES subscription",
+      preheader: "One click and you are on the NES list.",
+      eyebrow: "OFFENBACH TRADE FAIR · NES",
       title: "One last step.",
       body:
-        "Please confirm your email address. You will then be the first to receive the fair date, new drops and considered updates from N.E.S.",
+        "Please confirm your email address. You will then be the first to receive the fair date, new drops and considered updates from NES.",
       action: "Confirm email",
       note: "If you did not request this, you can simply ignore this email.",
       fallback: "If the button does not work, open this link:",
     },
     welcome: {
-      subject: "You are on the N.E.S list",
-      preheader: "Welcome to N.E.S — we will write when there is something worth knowing.",
-      eyebrow: "WELCOME TO N.E.S",
+      subject: "You are on the NES list",
+      preheader: "Welcome to NES — we will write when there is something worth knowing.",
+      eyebrow: "WELCOME TO NES",
       title: "You are on the list.",
       body:
         "From now on, you will hear first about the next fair date, selected drops and early access. Calm, relevant and only when there is something worth knowing.",
-      action: "Discover N.E.S",
+      action: "Discover NES",
       note: "Offenbach · 50.100° N | 8.705° E",
       unsubscribe: "Unsubscribe",
     },
@@ -102,7 +102,7 @@ function emailShell({
             <tr>
               <td style="padding:52px 54px 46px;">
                 <p style="margin:0;color:#a6813f;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;line-height:1.5;">${escapeHtml(eyebrow)}</p>
-                <img src="${escapeHtml(logoUrl)}" width="190" alt="N.E.S" style="display:block;width:190px;max-width:62%;height:auto;margin:34px 0 0;border:0;">
+                <img src="${escapeHtml(logoUrl)}" width="190" alt="NES" style="display:block;width:190px;max-width:62%;height:auto;margin:34px 0 0;border:0;">
                 <div style="width:54px;height:1px;margin:38px 0 34px;background:#a6813f;font-size:0;line-height:0;">&nbsp;</div>
                 <h1 style="margin:0;color:#17342a;font-family:Georgia,'Times New Roman',serif;font-size:42px;font-weight:400;letter-spacing:-1px;line-height:1.08;">${escapeHtml(title)}</h1>
                 <p style="margin:24px 0 0;color:#514d46;font-family:Arial,sans-serif;font-size:16px;line-height:1.75;">${escapeHtml(body)}</p>
@@ -119,7 +119,7 @@ function emailShell({
             </tr>
             <tr>
               <td style="padding:22px 54px;background:#eee9dd;color:#8b857a;font-family:Arial,sans-serif;font-size:10px;letter-spacing:1px;line-height:1.6;">
-                N.E.S · OFFENBACH · 50.100° N | 8.705° E${unsubscribe ? ` &nbsp;·&nbsp; ${unsubscribe}` : ""}
+                NES · OFFENBACH · 50.100° N | 8.705° E${unsubscribe ? ` &nbsp;·&nbsp; ${unsubscribe}` : ""}
               </td>
             </tr>
           </table>

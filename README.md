@@ -1,6 +1,6 @@
-# N.E.S Shop
+# NES Shop
 
-The N.E.S store (formerly Soleform) — the house that sells the Vehon WAI feel shoes and the N.E.S knit pullys, merged from the old vehon-shop and soleform stores. Built with React + Vite.
+The NES store (formerly Soleform) — the house that sells the Vehon WAI feel shoes and the NES knit pullys, merged from the old vehon-shop and soleform stores. Built with React + Vite.
 
 Start it with `npm install` and `npm run dev`.
 

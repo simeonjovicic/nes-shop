@@ -1,4 +1,4 @@
-# N.E.S newsletter setup — Cloudflare Pages
+# NES newsletter setup — Cloudflare Pages
 
 The code is prepared for a double-opt-in flow:
 
@@ -12,7 +12,7 @@ Live sending remains off until `VITE_NEWSLETTER_ENDPOINT=/api/subscribe` is adde
 
 Recommended structure:
 
-- From: `N.E.S <messe@updates.YOUR-DOMAIN>`
+- From: `NES <messe@updates.YOUR-DOMAIN>`
 - Reply-To: a real Easyname inbox such as `hello@YOUR-DOMAIN`
 
 The `From` mailbox does not need to be hosted at Easyname; Resend sends on behalf of the verified domain. The Reply-To address should be a real inbox. Resend recommends a sending subdomain so the newsletter reputation is isolated from normal company mail.
@@ -37,7 +37,7 @@ Apply the binding to both Preview and Production if preview deployments should b
 Under **Workers & Pages → the Pages project → Settings → Variables and Secrets**, add:
 
 - Secret `RESEND_API_KEY`
-- Variable `NEWSLETTER_FROM`, for example `N.E.S <messe@updates.YOUR-DOMAIN>`
+- Variable `NEWSLETTER_FROM`, for example `NES <messe@updates.YOUR-DOMAIN>`
 - Variable `NEWSLETTER_REPLY_TO`, pointing to the real Easyname inbox
 - Variable `PUBLIC_SITE_URL`, for example `https://YOUR-DOMAIN`
 

@@ -63,7 +63,7 @@ function BarefootTrail() {
               "--step-y": `${step.y}%`,
               "--step-rotation": `${step.rotation}deg`,
               "--step-scale": scale.toFixed(2),
-              "--step-delay": `${(index * 0.38).toFixed(2)}s`,
+              "--step-delay": `${(index * 0.28).toFixed(2)}s`,
             }}
             key={`${step.x}-${step.y}`}
           >

@@ -71,7 +71,7 @@
 }
 
 .site-shell.is-ready .footstep svg {
-  animation: footprint-pass 9s var(--step-delay) infinite cubic-bezier(0.22, 1, 0.36, 1);
+  animation: footprint-pass 6.5s var(--step-delay) infinite cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hero-shader-foreground {

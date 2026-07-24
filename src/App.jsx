@@ -2,110 +2,54 @@ import { useEffect, useRef, useState } from "react";
 import { ShaderBackground } from "./components/ui/shaders-hero-section";
 import "./App.css";
 
-const MESSE_PHOTOS = [
+const MESSE_GALLERY = [
   {
-    src: "/messe-carousel/messe-01.jpeg",
+    src: "/messe-offenbach/team-am-stand.jpeg",
+    area: "lead",
     alt: {
-      en: "The team celebrating together after the fair",
-      de: "Das Team feiert gemeinsam nach der Messe",
+      en: "The team at the NES stand at the fair",
+      de: "Das Team am NES-Stand auf der Messe",
     },
-    kind: "wide",
   },
   {
-    src: "/messe-carousel/messe-02.jpeg",
+    src: "/messe-offenbach/feel-shoes-auswahl.jpeg",
+    area: "ph2",
     alt: {
-      en: "A candid team selfie from the previous fair",
-      de: "Ein spontanes Teamfoto von der vergangenen Messe",
+      en: "A selection of feel shoes at the stand",
+      de: "Eine Auswahl an Feel-Schuhen am Stand",
     },
-    kind: "wide",
-  },
-  {
-    src: "/messe-carousel/messe-03.jpeg",
-    alt: {
-      en: "The team preparing the barefoot shoe stand",
-      de: "Das Team bereitet den Stand für Barfußschuhe vor",
-    },
-    kind: "wide",
-  },
-  {
-    src: "/messe-carousel/messe-04.jpeg",
-    alt: {
-      en: "A product demonstration at the barefoot shoe stand",
-      de: "Eine Produktvorführung am Messestand",
-    },
-    kind: "wide",
-  },
-  {
-    src: "/messe-carousel/messe-05.jpeg",
-    alt: {
-      en: "Natural sole and material samples presented at the fair",
-      de: "Sohlen- und Materialmuster auf der Messe",
-    },
-    kind: "wide",
-  },
-  {
-    src: "/messe-carousel/messe-06.jpeg",
-    alt: {
-      en: "Visitors in conversation at the exhibition stand",
-      de: "Besucher im Gespräch am Messestand",
-    },
-    kind: "wide",
-  },
-  {
-    src: "/messe-carousel/messe-07.jpeg",
-    alt: {
-      en: "A view through the exhibition hall in Offenbach",
-      de: "Blick durch die Messehalle in Offenbach",
-    },
-    kind: "wide",
   },
   {
     src: "/messe-carousel/messe-08.jpeg",
+    area: "ph3",
     alt: {
       en: "Barefoot shoe fitting and consultation at the stand",
       de: "Anprobe und Beratung zu Barfußschuhen am Stand",
     },
-    kind: "portrait",
   },
   {
-    src: "/messe-carousel/messe-09.jpeg",
+    src: "/messe-carousel/messe-07.jpeg",
+    area: "ph4",
     alt: {
-      en: "A team member at the previous barefoot shoe fair",
-      de: "Ein Teammitglied auf der vergangenen Barfußschuhmesse",
+      en: "A view through the exhibition hall in Offenbach",
+      de: "Blick durch die Messehalle in Offenbach",
     },
-    kind: "wide",
   },
   {
-    src: "/messe-carousel/messe-10.jpeg",
+    src: "/messe-carousel/messe-04.jpeg",
+    area: "ph5",
     alt: {
-      en: "Two team members examining a barefoot shoe",
-      de: "Zwei Teammitglieder begutachten einen Barfußschuh",
+      en: "A product demonstration at the barefoot shoe stand",
+      de: "Eine Produktvorführung am Messestand",
     },
-    kind: "wide",
   },
   {
-    src: "/messe-carousel/messe-11.jpeg",
+    src: "/messe-carousel/messe-06.jpeg",
+    area: "ph6",
     alt: {
-      en: "The fair team together in the exhibition hall",
-      de: "Das Messeteam gemeinsam in der Ausstellungshalle",
+      en: "Visitors in conversation at the exhibition stand",
+      de: "Besucher im Gespräch am Messestand",
     },
-    kind: "wide",
-  },
-  {
-    src: "/messe-carousel/messe-12.jpeg",
-    alt: {
-      en: "Visitors discovering the brands along the exhibition aisle",
-      de: "Besucher entdecken die Marken entlang des Messegangs",
-    },
-    kind: "portrait",
-  },
-  {
-    src: "/messe-carousel/messe-13.jpeg",
-    alt: {
-      en: "A barefoot shoe fitting at the previous fair",
-      de: "Anprobe eines Barfußschuhs auf der vergangenen Messe",
-    },
-    kind: "portrait",
   },
 ];
 
@@ -113,32 +57,46 @@ const BRANDS = [
   {
     name: "Green Comfort",
     logo: "/logos/greencomfort.svg?v=official",
+    products: [{}, {}, {}, {}],
     copy: {
       en: {
         meta: "Randers, Denmark · Since 1994",
+        signature:
+          "Built around the patented EnergySole™ — resilient cushioning for active feet.",
         description:
-          "Founded in Denmark in 1994, Green Comfort builds foot-health footwear around its patented EnergySole™ — resilient cushioning designed for active feet and lasting comfort. Wide fits, adaptable materials and considered production bring together Danish design, everyday well-being and craft made to last.",
+          "Danish foot-health footwear built on wide fits and lasting comfort — considered production, made to last.",
+        facts: ["Foot-health", "Wide fits", "EnergySole™"],
       },
       de: {
         meta: "Randers, Dänemark · Seit 1994",
+        signature:
+          "Rund um die patentierte EnergySole™ — langlebige Dämpfung für aktive Füße.",
         description:
-          "Seit 1994 entwickelt Green Comfort in Dänemark Schuhe für gesunde Füße rund um die patentierte EnergySole™ — eine langlebige Dämpfung für aktive Füße und anhaltenden Komfort. Weite Passformen, anpassungsfähige Materialien und bewusste Produktion verbinden dänisches Design mit Wohlbefinden und beständiger Handwerkskunst.",
+          "Dänische Schuhe für gesunde Füße — weite Passformen, bedachte Produktion, gemacht, um zu bleiben.",
+        facts: ["Gesunde Füße", "Weite Passformen", "EnergySole™"],
       },
     },
   },
   {
     name: "Vehon",
     logo: "/logos/vehon.png",
+    products: [{}, {}, {}, {}],
     copy: {
       en: {
         meta: "Italy · Formerly WAI · True barefoot",
+        signature:
+          "True barefoot construction with a signature red-grip outsole.",
         description:
-          "Formerly WAI, Vehon brings Italian elegance to true barefoot construction: zero-drop, a wide toe box and an exceptionally thin, flexible sole. Its signature red-grip outsole and light, breathable upper move easily from everyday wear to more refined occasions — unisex, precise and distinctly modern.",
+          "Italian elegance in true barefoot construction — zero-drop, a wide toe box and an exceptionally thin, flexible sole.",
+        facts: ["True barefoot", "Zero-drop", "Wide toe box"],
       },
       de: {
         meta: "Italien · Ehemals WAI · Echtes Barfußgefühl",
+        signature:
+          "Echte Barfußkonstruktion mit markanter roter Grip-Sohle.",
         description:
-          "Vehon, ehemals WAI, verbindet italienische Eleganz mit einer echten Barfußkonstruktion: Zero-Drop, eine breite Zehenbox und eine außergewöhnlich dünne, flexible Sohle. Die markante rote Grip-Sohle und das leichte, atmungsaktive Obermaterial funktionieren im Alltag ebenso wie zu eleganteren Anlässen — unisex, präzise und klar modern.",
+          "Italienische Eleganz in echter Barfußkonstruktion — Zero-Drop, breite Zehenbox und eine besonders dünne, flexible Sohle.",
+        facts: ["Echtes Barfußgefühl", "Zero-Drop", "Breite Zehenbox"],
       },
     },
   },
@@ -148,13 +106,12 @@ const COPY = {
   en: {
     languageName: "English",
     languageMenu: "Choose language",
-    homeLabel: "N.E.S home",
+    homeLabel: "NES home",
     navLabel: "Main navigation",
     nav: {
       idea: "The idea",
       brands: "Brands",
       fair: "Previous fair",
-      join: "Join the list",
     },
     arrival: {
       kicker: "Welcome to",
@@ -184,14 +141,16 @@ const COPY = {
     idea: {
       label: "The idea",
       title:
-        "N.E.S brings distinct approaches to foot health together in one place — each chosen for natural movement, lasting comfort, and design.",
-      body:
-        "From thin, zero-drop barefoot soles to considered cushioning and wide fits, every pair begins with the foot — not the other way around.",
+        "NES brings distinct approaches to foot health together in one place — each chosen for",
+      accent: "natural movement, lasting comfort, and design.",
+      foot: "Offenbach · One roof, chosen brands",
     },
     brands: {
       label: "The brands",
+      partnerNote: "For retail & brand partners",
       headline: "Foot health, done two ways.",
       subline: "Danish comfort. Italian barefoot.",
+      signatureLabel: "Signature",
       productImage: "product imagery",
       productReserved: "Product asset reserved",
     },
@@ -200,28 +159,87 @@ const COPY = {
       title: "A look back at last year.",
       body: "People, product and natural movement in Offenbach.",
       archive: "Offenbach archive",
-      motion: "Moving archive · 13 moments",
+      caption: "Offenbach · last year's fair",
     },
     closing: {
       label: "Offenbach Trade Fair",
       title: "Get the date, the drops, and early access.",
       body: "One considered email when there is something worth knowing.",
     },
+    inquiry: {
+      cta: "Inquire now",
+      bannerTitle: "Interested in carrying these brands?",
+      bannerText: "Attractive margins and dedicated trade hours at the fair — retailers and brands welcome.",
+      heroPrompt: "Retailer or brand?",
+      title: "Become a partner",
+      subtitle:
+        "For retailers and brands. Tell us a little about you and we'll be in touch.",
+      stepLabel: "Step",
+      stepOf: "of",
+      steps: ["Your contact", "Your company", "Your interest", "Almost done"],
+      next: "Continue",
+      back: "Back",
+      role: {
+        label: "I am a",
+        options: ["Retailer", "Brand / supplier", "Private customer", "Press", "Other"],
+      },
+      topic: {
+        label: "My interest",
+        options: [
+          "Reselling & wholesale terms",
+          "Meeting at Messe Offenbach",
+          "Range, catalogue & pricing",
+          "General enquiry",
+        ],
+      },
+      brands: {
+        label: "Brands of interest",
+        options: ["Green Comfort", "Vehon", "All brands"],
+      },
+      fields: {
+        name: "Name",
+        company: "Company",
+        email: "Email address",
+        phone: "Phone",
+        message: "Message",
+      },
+      placeholders: {
+        name: "First and last name",
+        company: "Store or brand name",
+        email: "you@company.com",
+        phone: "Optional",
+        message: "How can we help? Anything we should know?",
+      },
+      optional: "optional",
+      consent: "I agree that my details may be processed to handle this enquiry.",
+      consentLink: "Privacy policy",
+      newsletter: "Also keep me posted on dates, drops and early access.",
+      submit: "Send enquiry",
+      sending: "Sending…",
+      successTitle: "Thank you",
+      successBody: "We've received your enquiry and will get back to you shortly.",
+      invalid: "Please enter your name and a valid email address.",
+      invalidConsent: "Please accept the privacy note to continue.",
+      error: "Something went wrong. Please try again.",
+      close: "Close",
+    },
     footer: {
-      linksLabel: "Social and contact placeholders",
+      linksLabel: "Social and legal",
       contact: "Contact",
+      impressum: "Legal notice",
+      privacy: "Privacy",
+      legalBack: "Back to site",
     },
   },
   de: {
     languageName: "Deutsch",
     languageMenu: "Sprache wählen",
-    homeLabel: "N.E.S Startseite",
+    homeLabel: "NES Startseite",
     navLabel: "Hauptnavigation",
     nav: {
       idea: "Die Idee",
       brands: "Marken",
       fair: "Messe-Rückblick",
-      join: "Eintragen",
     },
     arrival: {
       kicker: "Willkommen bei",
@@ -251,14 +269,16 @@ const COPY = {
     idea: {
       label: "Die Idee",
       title:
-        "N.E.S vereint unterschiedliche Ansätze für gesunde Füße an einem Ort — ausgewählt für natürliche Bewegung, dauerhaften Komfort und gutes Design.",
-      body:
-        "Von dünnen Zero-Drop-Barfußsohlen bis zu durchdachter Dämpfung und weiten Passformen beginnt jedes Paar beim Fuß — nicht umgekehrt.",
+        "NES vereint unterschiedliche Ansätze für gesunde Füße an einem Ort — ausgewählt für",
+      accent: "natürliche Bewegung, dauerhaften Komfort und gutes Design.",
+      foot: "Offenbach · Ein Dach, ausgewählte Marken",
     },
     brands: {
       label: "Die Marken",
+      partnerNote: "Für Handels- und Markenpartner",
       headline: "Fußgesundheit, auf zwei Arten.",
       subline: "Dänischer Komfort. Italienisches Barfußgefühl.",
+      signatureLabel: "Signatur",
       productImage: "Produktbilder",
       productReserved: "Platz für Produktaufnahme",
     },
@@ -267,46 +287,245 @@ const COPY = {
       title: "Ein Blick zurück auf das letzte Jahr.",
       body: "Menschen, Produkte und natürliche Bewegung in Offenbach.",
       archive: "Archiv Offenbach",
-      motion: "Bewegtes Archiv · 13 Momente",
+      caption: "Offenbach · Messe im letzten Jahr",
     },
     closing: {
       label: "Messe Offenbach",
       title: "Erhalte den Termin, die Neuheiten und Early Access.",
       body: "Eine durchdachte E-Mail, wenn es wirklich etwas zu erzählen gibt.",
     },
+    inquiry: {
+      cta: "Jetzt anfragen",
+      bannerTitle: "Interesse, diese Marken zu führen?",
+      bannerText: "Attraktive Margen und eigene Händlerzeiten auf der Messe — Händler und Marken willkommen.",
+      heroPrompt: "Händler oder Marke?",
+      title: "Partner werden",
+      subtitle:
+        "Für Händler und Marken. Erzähl uns kurz von dir — wir melden uns.",
+      stepLabel: "Schritt",
+      stepOf: "von",
+      steps: ["Dein Kontakt", "Dein Unternehmen", "Dein Anliegen", "Fast geschafft"],
+      next: "Weiter",
+      back: "Zurück",
+      role: {
+        label: "Ich bin",
+        options: ["Fachhändler", "Marke / Lieferant", "Privatkunde", "Presse", "Sonstiges"],
+      },
+      topic: {
+        label: "Mein Anliegen",
+        options: [
+          "Wiederverkauf & Konditionen",
+          "Termin auf der Messe Offenbach",
+          "Sortiment, Katalog & Preise",
+          "Allgemeine Anfrage",
+        ],
+      },
+      brands: {
+        label: "Marken von Interesse",
+        options: ["Green Comfort", "Vehon", "Alle Marken"],
+      },
+      fields: {
+        name: "Name",
+        company: "Unternehmen",
+        email: "E-Mail-Adresse",
+        phone: "Telefon",
+        message: "Nachricht",
+      },
+      placeholders: {
+        name: "Vor- und Nachname",
+        company: "Geschäft oder Marke",
+        email: "du@unternehmen.de",
+        phone: "Optional",
+        message: "Wie können wir helfen? Was sollten wir wissen?",
+      },
+      optional: "optional",
+      consent: "Ich bin einverstanden, dass meine Angaben zur Bearbeitung dieser Anfrage verarbeitet werden.",
+      consentLink: "Datenschutz",
+      newsletter: "Haltet mich außerdem zu Terminen, Neuheiten und Early Access auf dem Laufenden.",
+      submit: "Anfrage senden",
+      sending: "Wird gesendet…",
+      successTitle: "Danke",
+      successBody: "Wir haben deine Anfrage erhalten und melden uns in Kürze.",
+      invalid: "Bitte gib deinen Namen und eine gültige E-Mail-Adresse an.",
+      invalidConsent: "Bitte akzeptiere den Datenschutzhinweis, um fortzufahren.",
+      error: "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      close: "Schließen",
+    },
     footer: {
-      linksLabel: "Social Media und Kontakt",
+      linksLabel: "Social und Rechtliches",
       contact: "Kontakt",
+      impressum: "Impressum",
+      privacy: "Datenschutz",
+      legalBack: "Zurück zur Seite",
     },
   },
 };
 
-function ProductPlaceholder({ brand, index, reverse, copy }) {
+// Legal templates. Bracketed values are placeholders for the company to fill in.
+const LEGAL = {
+  de: {
+    impressum: {
+      title: "Impressum",
+      intro: "Angaben gemäß § 5 DDG (Digitale-Dienste-Gesetz).",
+      blocks: [
+        {
+          h: "Anbieter",
+          p: ["[Firmenname / Rechtsform]", "[Straße und Hausnummer]", "[PLZ und Ort]", "[Land]"],
+        },
+        {
+          h: "Vertreten durch",
+          p: ["[Vertretungsberechtigte Person(en)]"],
+        },
+        {
+          h: "Kontakt",
+          p: ["Telefon: [Telefonnummer]", "E-Mail: [E-Mail-Adresse]"],
+        },
+        {
+          h: "Registereintrag",
+          p: ["Eintragung im Handelsregister.", "Registergericht: [Amtsgericht]", "Registernummer: [HRB …]"],
+        },
+        {
+          h: "Umsatzsteuer-ID",
+          p: ["Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: [USt-IdNr.]"],
+        },
+        {
+          h: "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV",
+          p: ["[Name]", "[Anschrift]"],
+        },
+        {
+          h: "Haftung und Urheberrecht",
+          p: [
+            "Trotz sorgfältiger Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links; für deren Inhalt sind ausschließlich deren Betreiber verantwortlich. Die auf dieser Website erstellten Inhalte unterliegen dem Urheberrecht.",
+          ],
+        },
+      ],
+      note: "Vorlage — bitte vor Veröffentlichung mit den echten Unternehmensdaten füllen und rechtlich prüfen lassen.",
+    },
+    datenschutz: {
+      title: "Datenschutzerklärung",
+      intro: "Wir behandeln deine personenbezogenen Daten vertraulich und gemäß der DSGVO.",
+      blocks: [
+        {
+          h: "Verantwortlicher",
+          p: ["[Firmenname]", "[Anschrift]", "E-Mail: [E-Mail-Adresse]"],
+        },
+        {
+          h: "Hosting",
+          p: [
+            "Diese Website wird bei Cloudflare Pages (Cloudflare, Inc.) gehostet. Beim Aufruf werden serverseitig technische Zugriffsdaten (z. B. IP-Adresse, Zeitpunkt, User-Agent) verarbeitet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (sicherer, stabiler Betrieb).",
+          ],
+        },
+        {
+          h: "Newsletter (Double-Opt-in)",
+          p: [
+            "Für den Newsletter speichern wir E-Mail-Adresse, Zeitpunkt und Einwilligung. Der Versand erfolgt über Resend (Resend, Inc.). Rechtsgrundlage ist deine Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO. Du kannst dich jederzeit über den Abmeldelink in jeder E-Mail abmelden.",
+          ],
+        },
+        {
+          h: "Anfrageformular",
+          p: [
+            "Bei einer Anfrage verarbeiten wir die von dir angegebenen Daten (Name, Unternehmen, E-Mail, Telefon, Anliegen und Nachricht) ausschließlich zur Bearbeitung deiner Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b und lit. f DSGVO.",
+          ],
+        },
+        {
+          h: "Deine Rechte",
+          p: [
+            "Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht, eine erteilte Einwilligung jederzeit zu widerrufen. Zudem steht dir ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu.",
+          ],
+        },
+        {
+          h: "Kontakt zum Datenschutz",
+          p: ["[E-Mail-Adresse für Datenschutzanfragen]"],
+        },
+      ],
+      note: "Vorlage — bitte vor Veröffentlichung an eure tatsächlichen Verarbeitungen anpassen und rechtlich prüfen lassen.",
+    },
+  },
+  en: {
+    impressum: {
+      title: "Legal notice",
+      intro: "Information pursuant to § 5 DDG (German Digital Services Act).",
+      blocks: [
+        {
+          h: "Provider",
+          p: ["[Company name / legal form]", "[Street and number]", "[Postal code and city]", "[Country]"],
+        },
+        { h: "Represented by", p: ["[Authorised representative(s)]"] },
+        { h: "Contact", p: ["Phone: [phone number]", "Email: [email address]"] },
+        {
+          h: "Register entry",
+          p: ["Entry in the commercial register.", "Register court: [local court]", "Register number: [HRB …]"],
+        },
+        { h: "VAT ID", p: ["VAT identification number pursuant to § 27a UStG: [VAT ID]"] },
+        {
+          h: "Responsible for content pursuant to § 18 (2) MStV",
+          p: ["[Name]", "[Address]"],
+        },
+        {
+          h: "Liability and copyright",
+          p: [
+            "Despite careful review, we assume no liability for the content of external links; their operators are solely responsible. The content created on this website is protected by copyright.",
+          ],
+        },
+      ],
+      note: "Template — please complete with the real company details and have it reviewed legally before publishing.",
+    },
+    datenschutz: {
+      title: "Privacy policy",
+      intro: "We handle your personal data confidentially and in accordance with the GDPR.",
+      blocks: [
+        { h: "Controller", p: ["[Company name]", "[Address]", "Email: [email address]"] },
+        {
+          h: "Hosting",
+          p: [
+            "This website is hosted on Cloudflare Pages (Cloudflare, Inc.). When the site is accessed, technical access data (e.g. IP address, time, user agent) is processed server-side. The legal basis is Art. 6(1)(f) GDPR (secure, stable operation).",
+          ],
+        },
+        {
+          h: "Newsletter (double opt-in)",
+          p: [
+            "For the newsletter we store your email address, the time and your consent. Delivery is handled via Resend (Resend, Inc.). The legal basis is your consent under Art. 6(1)(a) GDPR. You can unsubscribe at any time via the link in every email.",
+          ],
+        },
+        {
+          h: "Enquiry form",
+          p: [
+            "When you submit an enquiry we process the details you provide (name, company, email, phone, interest and message) solely to handle your enquiry. The legal basis is Art. 6(1)(b) and (f) GDPR.",
+          ],
+        },
+        {
+          h: "Your rights",
+          p: [
+            "You have the right to access, rectification, erasure, restriction of processing, data portability and objection, as well as the right to withdraw consent at any time. You also have the right to lodge a complaint with a data protection authority.",
+          ],
+        },
+        { h: "Data protection contact", p: ["[email address for privacy requests]"] },
+      ],
+      note: "Template — please adapt to your actual processing activities and have it reviewed legally before publishing.",
+    },
+  },
+};
+
+function BrandProduct({ brand, product, index, copy }) {
+  const number = String(index + 1).padStart(2, "0");
+  const label = `${brand} ${copy.productImage} ${number}`;
+
   return (
-    <div
-      className="product-stage"
-      data-reveal={reverse ? "right" : "left"}
-      style={{ "--delay": "80ms" }}
-    >
-      <span className="product-sequence" aria-hidden="true">
-        {String(index + 1).padStart(2, "0")}
-      </span>
-      <div
-        className="product-placeholder"
-        data-parallax
-        data-parallax-amount={reverse ? "-20" : "20"}
-        role="img"
-        aria-label={`${brand} ${copy.productImage}`}
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="3.5" y="4" width="17" height="16" rx="0.5" />
-          <circle cx="9" cy="9" r="1.4" />
-          <path d="m5.5 17 4.2-4.1 2.9 2.6 2.2-2 3.7 3.5" />
-        </svg>
-        <span>{brand} {copy.productImage}</span>
-        <small>{copy.productReserved}</small>
+    <figure className="brand-product">
+      <div className="brand-product-frame" role="img" aria-label={label}>
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name ? `${brand} — ${product.name}` : label}
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <span className="brand-product-index" aria-hidden="true">{number}</span>
+        )}
       </div>
-    </div>
+      {product.name && <figcaption>{product.name}</figcaption>}
+    </figure>
   );
 }
 
@@ -482,12 +701,12 @@ function LanguageSwitcher({ language, onLanguageChange, copy }) {
   );
 }
 
-function Header({ scrolled, language, onLanguageChange, copy }) {
+function Header({ scrolled, language, onLanguageChange, onInquire, copy }) {
   return (
     <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="header-inner">
         <a className="header-brand" href="#top" aria-label={copy.homeLabel}>
-          <img src="/logos/nes-logo.png" alt="N.E.S" />
+          <span className="brand-wordmark">NES</span>
         </a>
         <nav className="header-nav" aria-label={copy.navLabel}>
           <a href="#idea">{copy.nav.idea}</a>
@@ -496,11 +715,383 @@ function Header({ scrolled, language, onLanguageChange, copy }) {
         </nav>
         <div className="header-actions">
           <LanguageSwitcher language={language} onLanguageChange={onLanguageChange} copy={copy} />
-          <a className="header-cta" href="#join">{copy.nav.join}</a>
+          <button type="button" className="header-cta" onClick={onInquire}>
+            {copy.inquiry.cta}
+            <svg className="header-cta-arrow" viewBox="0 0 14 10" aria-hidden="true">
+              <path d="M1 5h11M8.5 1.5 12 5l-3.5 3.5" />
+            </svg>
+          </button>
         </div>
       </div>
       <span className="scroll-progress" aria-hidden="true" />
     </header>
+  );
+}
+
+const INQUIRY_STEP_COUNT = 4;
+const EMPTY_INQUIRY = { name: "", email: "", company: "", phone: "", message: "" };
+
+function OptionChips({ label, options, selected, onSelect }) {
+  return (
+    <div className="modal-field">
+      <span>{label}</span>
+      <div className="modal-chips" role="group" aria-label={label}>
+        {options.map((option, index) => (
+          <button
+            type="button"
+            key={option}
+            className={`modal-chip${index === selected ? " is-selected" : ""}`}
+            aria-pressed={index === selected}
+            onClick={() => onSelect(index)}
+          >
+            {option}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function InquiryModal({ open, onClose, onOpenPrivacy, language, copy }) {
+  const dialogRef = useRef(null);
+  const [step, setStep] = useState(0);
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState("");
+  const [form, setForm] = useState(EMPTY_INQUIRY);
+  const [roleIdx, setRoleIdx] = useState(0);
+  const [topicIdx, setTopicIdx] = useState(0);
+  const [brandIdx, setBrandIdx] = useState(copy.brands.options.length - 1);
+  const [consent, setConsent] = useState(false);
+  const [newsletter, setNewsletter] = useState(false);
+
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open, onClose]);
+
+  useEffect(() => {
+    if (!open) {
+      setStep(0);
+      setStatus("idle");
+      setError("");
+      setForm(EMPTY_INQUIRY);
+      setRoleIdx(0);
+      setTopicIdx(0);
+      setBrandIdx(copy.brands.options.length - 1);
+      setConsent(false);
+      setNewsletter(false);
+    }
+  }, [open, copy.brands.options.length]);
+
+  useEffect(() => {
+    if (!open) return;
+    const firstField = dialogRef.current?.querySelector(".modal-step input, .modal-step textarea");
+    firstField?.focus();
+  }, [open, step]);
+
+  if (!open) return null;
+
+  const isLast = step === INQUIRY_STEP_COUNT - 1;
+
+  function setField(key, value) {
+    setForm((current) => ({ ...current, [key]: value }));
+    if (status === "error") {
+      setStatus("idle");
+      setError("");
+    }
+  }
+
+  function validateStep() {
+    if (step === 0) {
+      const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim());
+      if (!form.name.trim() || !validEmail) {
+        setStatus("error");
+        setError(copy.invalid);
+        return false;
+      }
+    }
+    return true;
+  }
+
+  async function send() {
+    if (!consent) {
+      setStatus("error");
+      setError(copy.invalidConsent);
+      return;
+    }
+
+    setStatus("loading");
+    setError("");
+
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      company: form.company.trim(),
+      phone: form.phone.trim(),
+      role: copy.role.options[roleIdx],
+      topic: copy.topic.options[topicIdx],
+      brand: copy.brands.options[brandIdx],
+      message: form.message.trim(),
+      newsletter,
+      locale: language,
+      source: "nes-inquiry",
+    };
+
+    try {
+      const endpoint = import.meta.env.VITE_INQUIRY_ENDPOINT;
+      if (endpoint) {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) throw new Error("Inquiry failed");
+      } else {
+        const saved = JSON.parse(localStorage.getItem("nes-inquiries") || "[]");
+        localStorage.setItem("nes-inquiries", JSON.stringify([...saved, { ...payload, at: Date.now() }]));
+      }
+      setStatus("success");
+    } catch {
+      setStatus("error");
+      setError(copy.error);
+    }
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    if (String(new FormData(event.currentTarget).get("company_website") || "")) return; // honeypot
+    if (!validateStep()) return;
+    if (isLast) {
+      send();
+    } else {
+      setStep((value) => value + 1);
+    }
+  }
+
+  const progress = ((step + 1) / INQUIRY_STEP_COUNT) * 100;
+
+  return (
+    <div className="modal-overlay" role="presentation" onClick={onClose}>
+      <div
+        className="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="inquiry-title"
+        ref={dialogRef}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button type="button" className="modal-close" onClick={onClose} aria-label={copy.close}>
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M3 3l10 10M13 3L3 13" />
+          </svg>
+        </button>
+
+        {status === "success" ? (
+          <div className="modal-success" role="status">
+            <p className="modal-eyebrow">{copy.title}</p>
+            <h2 id="inquiry-title">{copy.successTitle}<span>.</span></h2>
+            <p>{copy.successBody}</p>
+            <button type="button" className="modal-submit" onClick={onClose}>{copy.close}</button>
+          </div>
+        ) : (
+          <form className="modal-form" onSubmit={handleSubmit} noValidate>
+            <header className="modal-head">
+              <div className="modal-steps-meta">
+                <p className="modal-eyebrow">{copy.title}</p>
+                <span className="modal-step-count">
+                  {copy.stepLabel} {step + 1} {copy.stepOf} {INQUIRY_STEP_COUNT}
+                </span>
+              </div>
+              <h2 id="inquiry-title">{copy.steps[step]}</h2>
+              <div className="modal-progress" aria-hidden="true">
+                <span style={{ width: `${progress}%` }} />
+              </div>
+            </header>
+
+            <input
+              className="modal-honeypot"
+              type="text"
+              name="company_website"
+              tabIndex="-1"
+              autoComplete="off"
+              aria-hidden="true"
+            />
+
+            <div className="modal-step" key={step}>
+              {step === 0 && (
+                <div className="modal-grid">
+                  <label className="modal-field modal-field-wide">
+                    <span>{copy.fields.name} *</span>
+                    <input
+                      type="text"
+                      value={form.name}
+                      onChange={(event) => setField("name", event.target.value)}
+                      placeholder={copy.placeholders.name}
+                      autoComplete="name"
+                    />
+                  </label>
+                  <label className="modal-field modal-field-wide">
+                    <span>{copy.fields.email} *</span>
+                    <input
+                      type="email"
+                      value={form.email}
+                      onChange={(event) => setField("email", event.target.value)}
+                      placeholder={copy.placeholders.email}
+                      autoComplete="email"
+                      inputMode="email"
+                    />
+                  </label>
+                </div>
+              )}
+
+              {step === 1 && (
+                <div className="modal-grid">
+                  <label className="modal-field modal-field-wide">
+                    <span>{copy.fields.company}</span>
+                    <input
+                      type="text"
+                      value={form.company}
+                      onChange={(event) => setField("company", event.target.value)}
+                      placeholder={copy.placeholders.company}
+                      autoComplete="organization"
+                    />
+                  </label>
+                  <label className="modal-field modal-field-wide">
+                    <span>{copy.fields.phone} <i>{copy.optional}</i></span>
+                    <input
+                      type="tel"
+                      value={form.phone}
+                      onChange={(event) => setField("phone", event.target.value)}
+                      placeholder={copy.placeholders.phone}
+                      autoComplete="tel"
+                    />
+                  </label>
+                </div>
+              )}
+
+              {step === 2 && (
+                <div className="modal-stack">
+                  <OptionChips label={copy.role.label} options={copy.role.options} selected={roleIdx} onSelect={setRoleIdx} />
+                  <OptionChips label={copy.topic.label} options={copy.topic.options} selected={topicIdx} onSelect={setTopicIdx} />
+                  <OptionChips label={copy.brands.label} options={copy.brands.options} selected={brandIdx} onSelect={setBrandIdx} />
+                </div>
+              )}
+
+              {step === 3 && (
+                <div className="modal-stack">
+                  <label className="modal-field modal-field-wide">
+                    <span>{copy.fields.message} <i>{copy.optional}</i></span>
+                    <textarea
+                      value={form.message}
+                      onChange={(event) => setField("message", event.target.value)}
+                      rows="3"
+                      placeholder={copy.placeholders.message}
+                    />
+                  </label>
+                  <label className="modal-consent">
+                    <input
+                      type="checkbox"
+                      checked={consent}
+                      onChange={(event) => {
+                        setConsent(event.target.checked);
+                        if (status === "error") { setStatus("idle"); setError(""); }
+                      }}
+                    />
+                    <span>
+                      {copy.consent}{" "}
+                      <button type="button" className="modal-consent-link" onClick={onOpenPrivacy}>
+                        {copy.consentLink}
+                      </button>
+                    </span>
+                  </label>
+                  <label className="modal-consent">
+                    <input
+                      type="checkbox"
+                      checked={newsletter}
+                      onChange={(event) => setNewsletter(event.target.checked)}
+                    />
+                    <span>{copy.newsletter}</span>
+                  </label>
+                </div>
+              )}
+            </div>
+
+            <p className="modal-error" aria-live="polite">{status === "error" ? error : ""}</p>
+
+            <div className="modal-nav">
+              {step > 0 ? (
+                <button
+                  type="button"
+                  className="modal-back"
+                  onClick={() => { setStep((value) => value - 1); setStatus("idle"); setError(""); }}
+                >
+                  <span aria-hidden="true">←</span> {copy.back}
+                </button>
+              ) : (
+                <span />
+              )}
+              <button type="submit" className="modal-submit" disabled={status === "loading"}>
+                {status === "loading" ? copy.sending : isLast ? copy.submit : copy.next}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function LegalPage({ kind, language, onBack, copy }) {
+  const doc = LEGAL[language][kind];
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.scrollTo(0, 0);
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") onBack();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [onBack]);
+
+  return (
+    <div className="legal-page">
+      <div className="legal-inner">
+        <button type="button" className="legal-back" onClick={onBack}>
+          <span aria-hidden="true">←</span> {copy.footer.legalBack}
+        </button>
+        <span className="brand-wordmark legal-wordmark">NES</span>
+        <h1>{doc.title}</h1>
+        <p className="legal-intro">{doc.intro}</p>
+        <div className="legal-blocks">
+          {doc.blocks.map((block) => (
+            <section className="legal-block" key={block.h}>
+              <h2>{block.h}</h2>
+              {block.p.map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
+            </section>
+          ))}
+        </div>
+        <p className="legal-note">{doc.note}</p>
+      </div>
+    </div>
   );
 }
 
@@ -517,7 +1108,7 @@ function ArrivalIntro({ copy }) {
       <div className="arrival-content">
         <p className="arrival-kicker">{copy.arrival.kicker}</p>
         <div className="arrival-wordmark-frame">
-          <img className="arrival-wordmark" src="/logos/nes-logo.png" alt="" />
+          <span className="arrival-wordmark brand-wordmark">NES</span>
         </div>
         <div className="arrival-rule"><span /></div>
         <p className="arrival-place">{copy.arrival.place}</p>
@@ -527,40 +1118,57 @@ function ArrivalIntro({ copy }) {
   );
 }
 
-function BrandBlock({ brand, index, reverse = false, language, copy }) {
+function BrandBlock({ brand, language, copy }) {
   const brandCopy = brand.copy[language];
+  const hasImages = brand.products.some((product) => product.image);
 
   return (
-    <article className={`brand-block${reverse ? " brand-block-reverse" : ""}`}>
-      <ProductPlaceholder brand={brand.name} index={index} reverse={reverse} copy={copy.brands} />
-      <div
-        className="brand-copy"
-        data-reveal={reverse ? "left" : "right"}
-        style={{ "--delay": "160ms" }}
-      >
+    <article className="brand-block">
+      <div className="brand-header" data-reveal style={{ "--delay": "60ms" }}>
         <img className="brand-logo" src={brand.logo} alt={`${brand.name} logo`} loading="lazy" />
         <p className="brand-meta">{brandCopy.meta}</p>
+        <p className="brand-signature">
+          <span className="brand-signature-label">{copy.brands.signatureLabel}</span>
+          {brandCopy.signature}
+        </p>
         <p className="brand-description">{brandCopy.description}</p>
+        <ul className="brand-facts">
+          {brandCopy.facts.map((fact) => (
+            <li key={fact}>{fact}</li>
+          ))}
+        </ul>
       </div>
+      <div className="brand-gallery" data-reveal="scale" style={{ "--delay": "140ms" }}>
+        {brand.products.map((product, productIndex) => (
+          <BrandProduct
+            key={product.name || productIndex}
+            brand={brand.name}
+            product={product}
+            index={productIndex}
+            copy={copy.brands}
+          />
+        ))}
+      </div>
+      {!hasImages && <p className="brand-gallery-note">{copy.brands.productReserved}</p>}
     </article>
   );
 }
 
-function MesseSequence({ duplicate = false, language, copy }) {
+function MesseMosaic({ language }) {
   return (
-    <div className="messe-sequence" aria-hidden={duplicate || undefined}>
-      {MESSE_PHOTOS.map((photo, index) => (
-        <figure className={`messe-card messe-card-${photo.kind}`} key={`${duplicate ? "copy" : "main"}-${photo.src}`}>
-          <img
-            src={photo.src}
-            alt={duplicate ? "" : photo.alt[language]}
-            loading="eager"
-            decoding="async"
-          />
-          <figcaption>
-            <span>{String(index + 1).padStart(2, "0")}</span>
-            <small>{copy.fair.archive}</small>
-          </figcaption>
+    <div className="messe-mosaic">
+      {MESSE_GALLERY.map((photo, index) => (
+        <figure
+          className={`messe-tile messe-tile-${photo.area}`}
+          data-reveal="scale"
+          style={{ "--delay": `${index * 70}ms` }}
+          key={photo.src}
+        >
+          <img src={photo.src} alt={photo.alt[language]} loading="lazy" decoding="async" />
+          <span className="messe-tile-index" aria-hidden="true">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <figcaption>{photo.alt[language]}</figcaption>
         </figure>
       ))}
     </div>
@@ -585,12 +1193,41 @@ function getInitialNewsletterState() {
   return ["confirmed", "expired", "invalid", "unsubscribed"].includes(state) ? state : "idle";
 }
 
+function getInitialLegal() {
+  if (typeof window === "undefined") return null;
+  const hash = window.location.hash.replace("#", "");
+  return hash === "impressum" || hash === "datenschutz" ? hash : null;
+}
+
 export default function App() {
   const [language, setLanguage] = useState(getInitialLanguage);
   const [newsletterState, setNewsletterState] = useState(getInitialNewsletterState);
   const [scrolled, setScrolled] = useState(false);
   const [arrivalVisible, setArrivalVisible] = useState(shouldPlayArrival);
+  const [inquiryOpen, setInquiryOpen] = useState(false);
+  const [legal, setLegal] = useState(getInitialLegal);
   const copy = COPY[language];
+
+  function openLegal(kind) {
+    setInquiryOpen(false);
+    setLegal(kind);
+    window.history.pushState({}, "", `#${kind}`);
+  }
+
+  function closeLegal() {
+    setLegal(null);
+    window.history.pushState({}, "", window.location.pathname + window.location.search);
+  }
+
+  useEffect(() => {
+    const onHashChange = () => setLegal(getInitialLegal());
+    window.addEventListener("hashchange", onHashChange);
+    window.addEventListener("popstate", onHashChange);
+    return () => {
+      window.removeEventListener("hashchange", onHashChange);
+      window.removeEventListener("popstate", onHashChange);
+    };
+  }, []);
 
   function changeLanguage(nextLanguage) {
     setLanguage(nextLanguage);
@@ -602,8 +1239,8 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = language;
     document.title = language === "de"
-      ? "N.E.S — Natürliche Bewegung · Messe Offenbach"
-      : "N.E.S — Natural movement · Offenbach Trade Fair";
+      ? "NES — Natürliche Bewegung · Messe Offenbach"
+      : "NES — Natural movement · Offenbach Trade Fair";
     window.localStorage.setItem("nes-language", language);
   }, [language]);
 
@@ -697,6 +1334,7 @@ export default function App() {
         scrolled={scrolled}
         language={language}
         onLanguageChange={changeLanguage}
+        onInquire={() => setInquiryOpen(true)}
         copy={copy}
       />
 
@@ -708,13 +1346,13 @@ export default function App() {
                 {copy.hero.kicker}
               </div>
               <div className="hero-logo-frame" data-reveal="scale" style={{ "--delay": "100ms" }}>
-                <img
-                  className="hero-logo"
-                  src="/logos/nes-logo.png"
-                  alt="N.E.S"
+                <span
+                  className="hero-logo brand-wordmark"
                   data-parallax
                   data-parallax-amount="-14"
-                />
+                >
+                  NES
+                </span>
               </div>
               <h1 id="hero-title" data-reveal style={{ "--delay": "170ms" }}>
                 {copy.hero.title}
@@ -731,6 +1369,19 @@ export default function App() {
                   copy={copy.signup}
                 />
               </div>
+              <button
+                type="button"
+                className="hero-inquire"
+                onClick={() => setInquiryOpen(true)}
+                data-reveal
+                style={{ "--delay": "350ms" }}
+              >
+                <span className="hero-inquire-prompt">{copy.inquiry.heroPrompt}</span>
+                <span className="hero-inquire-link">{copy.inquiry.cta}</span>
+                <svg viewBox="0 0 14 10" aria-hidden="true">
+                  <path d="M1 5h11M8.5 1.5 12 5l-3.5 3.5" />
+                </svg>
+              </button>
             </div>
             <p className="hero-side-note hero-side-note-right" aria-hidden="true">{copy.hero.sideNote}</p>
             <a className="scroll-cue" href="#idea" aria-label={copy.hero.scrollLabel}>
@@ -741,14 +1392,19 @@ export default function App() {
         </section>
 
         <section className="idea section" id="idea">
-          <div className="narrow-copy">
-            <p className="section-label" data-reveal>{copy.idea.label}</p>
-            <div className="idea-rule" data-reveal="line" aria-hidden="true" />
+          <div className="narrow-copy" data-idea-mark="NES">
+            <p className="section-label section-label--framed" data-reveal>{copy.idea.label}</p>
+            <div className="idea-ornament" data-reveal="line" aria-hidden="true">
+              <span className="idea-ornament-line" />
+              <span className="idea-ornament-node" />
+              <span className="idea-ornament-line" />
+            </div>
             <h2 data-reveal="scale" style={{ "--delay": "80ms" }}>
-              {copy.idea.title}
+              {copy.idea.title} <em className="idea-accent">{copy.idea.accent}</em>
             </h2>
-            <p className="idea-body" data-reveal style={{ "--delay": "150ms" }}>
-              {copy.idea.body}
+            <p className="idea-foot" data-reveal style={{ "--delay": "180ms" }}>
+              <span className="idea-foot-rule" aria-hidden="true" />
+              {copy.idea.foot}
             </p>
           </div>
         </section>
@@ -756,37 +1412,45 @@ export default function App() {
         <section className="brands section" id="brands">
           <div className="content-width">
             <div className="brands-heading">
-              <p className="section-label" data-reveal>{copy.brands.label}</p>
+              <div className="brands-heading-lead">
+                <p className="section-label section-label--framed section-label--start" data-reveal>{copy.brands.label}</p>
+                <p className="brands-partner-note" data-reveal style={{ "--delay": "60ms" }}>{copy.brands.partnerNote}</p>
+              </div>
               <p data-reveal style={{ "--delay": "90ms" }}>{copy.brands.headline}<br />{copy.brands.subline}</p>
             </div>
             <div className="brand-list">
-              <BrandBlock brand={BRANDS[0]} index={0} language={language} copy={copy} />
-              <BrandBlock brand={BRANDS[1]} index={1} reverse language={language} copy={copy} />
+              <BrandBlock brand={BRANDS[0]} language={language} copy={copy} />
+              <BrandBlock brand={BRANDS[1]} language={language} copy={copy} />
+            </div>
+            <div className="brands-cta" data-reveal="scale">
+              <div className="brands-cta-copy">
+                <p className="brands-cta-title">{copy.inquiry.bannerTitle}</p>
+                <p className="brands-cta-text">{copy.inquiry.bannerText}</p>
+              </div>
+              <button type="button" className="cta-button" onClick={() => setInquiryOpen(true)}>
+                {copy.inquiry.cta}
+                <svg className="cta-button-arrow" viewBox="0 0 14 10" aria-hidden="true">
+                  <path d="M1 5h11M8.5 1.5 12 5l-3.5 3.5" />
+                </svg>
+              </button>
             </div>
           </div>
         </section>
 
         <section className="last-messe section" id="last-messe">
-          <div className="content-width messe-heading-wrap">
+          <div className="content-width">
             <header className="messe-heading">
               <div>
-                <p className="section-label" data-reveal>{copy.fair.label}</p>
+                <p className="section-label section-label--framed section-label--start" data-reveal>{copy.fair.label}</p>
                 <h2 data-reveal style={{ "--delay": "80ms" }}>{copy.fair.title}</h2>
               </div>
               <p data-reveal="right" style={{ "--delay": "140ms" }}>
                 {copy.fair.body}
               </p>
             </header>
+            <MesseMosaic language={language} />
+            <p className="messe-caption" data-reveal>{copy.fair.caption}</p>
           </div>
-          <div className="messe-marquee" data-reveal="scale" style={{ "--delay": "120ms" }}>
-            <div className="messe-track">
-              <MesseSequence language={language} copy={copy} />
-              <MesseSequence duplicate language={language} copy={copy} />
-            </div>
-          </div>
-          <p className="messe-motion-note" data-reveal>
-            <span aria-hidden="true">↗</span> {copy.fair.motion}
-          </p>
         </section>
 
         <section className="closing" id="join">
@@ -813,14 +1477,32 @@ export default function App() {
       </main>
 
       <footer className="site-footer">
-        <img className="footer-logo" src="/logos/nes-logo.png" alt="N.E.S" />
+        <span className="footer-logo brand-wordmark">NES</span>
         <p className="footer-coordinates">Offenbach · 50.100° N | 8.705° E</p>
         <div className="footer-links" aria-label={copy.footer.linksLabel}>
           <span>Instagram</span>
           <span>{copy.footer.contact}</span>
+          <button type="button" className="footer-link" onClick={() => openLegal("impressum")}>
+            {copy.footer.impressum}
+          </button>
+          <button type="button" className="footer-link" onClick={() => openLegal("datenschutz")}>
+            {copy.footer.privacy}
+          </button>
         </div>
-        <p className="copyright">© 2026 N.E.S — Natural. Everyday. Shoes.</p>
+        <p className="copyright">© 2026 <span className="wordmark">NES</span> — Natural. Everyday. Shoes.</p>
       </footer>
+
+      <InquiryModal
+        open={inquiryOpen}
+        onClose={() => setInquiryOpen(false)}
+        onOpenPrivacy={() => openLegal("datenschutz")}
+        language={language}
+        copy={copy.inquiry}
+      />
+
+      {legal && (
+        <LegalPage kind={legal} language={language} onBack={closeLegal} copy={copy} />
+      )}
     </div>
   );
 }
