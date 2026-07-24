@@ -203,6 +203,7 @@ export async function sendEmail(env, { to, subject, html, text, idempotencyKey }
       Authorization: `Bearer ${env.RESEND_API_KEY}`,
       "Content-Type": "application/json",
       "Idempotency-Key": idempotencyKey,
+      "User-Agent": "nes-shop-newsletter/1.0",
     },
     body: JSON.stringify(payload),
   });

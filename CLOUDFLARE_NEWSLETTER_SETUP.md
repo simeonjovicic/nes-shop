@@ -12,12 +12,12 @@ Live sending remains off until `VITE_NEWSLETTER_ENDPOINT=/api/subscribe` is adde
 
 Recommended structure:
 
-- From: `NES <messe@updates.YOUR-DOMAIN>`
-- Reply-To: a real Easyname inbox such as `hello@YOUR-DOMAIN`
+- From: `N.E.S <office@nes-shop.at>`
+- Reply-To: `office@nes-shop.at`
 
-The `From` mailbox does not need to be hosted at Easyname; Resend sends on behalf of the verified domain. The Reply-To address should be a real inbox. Resend recommends a sending subdomain so the newsletter reputation is isolated from normal company mail.
+The visible sender and Reply-To address are both the real Hostinger inbox at `office@nes-shop.at`. Resend sends on behalf of the verified `nes-shop.at` domain, while incoming replies continue to be handled by Hostinger.
 
-Add the SPF and DKIM records shown by Resend wherever the authoritative DNS is managed. If the domain uses Cloudflare nameservers, add them in Cloudflare DNS. If it still uses Easyname nameservers, add them at Easyname.
+The authoritative nameservers for `nes-shop.at` are already at Cloudflare. Add the SPF and DKIM records shown by Resend in **Cloudflare → DNS → Records**. Do not replace the existing Hostinger MX records or the existing Hostinger SPF record. Add only the additional records and hostnames supplied by Resend.
 
 ## 2. Create and bind D1
 
@@ -37,9 +37,9 @@ Apply the binding to both Preview and Production if preview deployments should b
 Under **Workers & Pages → the Pages project → Settings → Variables and Secrets**, add:
 
 - Secret `RESEND_API_KEY`
-- Variable `NEWSLETTER_FROM`, for example `NES <messe@updates.YOUR-DOMAIN>`
-- Variable `NEWSLETTER_REPLY_TO`, pointing to the real Easyname inbox
-- Variable `PUBLIC_SITE_URL`, for example `https://YOUR-DOMAIN`
+- Variable `NEWSLETTER_FROM`: `N.E.S <office@nes-shop.at>`
+- Variable `NEWSLETTER_REPLY_TO`: `office@nes-shop.at`
+- Variable `PUBLIC_SITE_URL`: `https://nes-shop.at`
 
 Redeploy after changing bindings or secrets.
 
