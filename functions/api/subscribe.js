@@ -10,6 +10,7 @@ import {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const TOKEN_LIFETIME_MS = 24 * 60 * 60 * 1000;
+const RESEND_COOLDOWN_MS = 60 * 1000;
 
 function isConfigured(env) {
   return env.NEWSLETTER_DB && env.RESEND_API_KEY && env.NEWSLETTER_FROM;
@@ -27,6 +28,10 @@ export async function onRequestPost({ request, env }) {
     return jsonResponse({ ok: false, error: "invalid_json" }, 400);
   }
 
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return jsonResponse({ ok: false, error: "invalid_json" }, 400);
+  }
+
   if (payload.company) return jsonResponse({ ok: true, status: "confirmation_sent" }, 202);
 
   const email = String(payload.email || "").trim().toLowerCase();
@@ -38,11 +43,18 @@ export async function onRequestPost({ request, env }) {
   }
 
   const existing = await env.NEWSLETTER_DB
-    .prepare("SELECT status FROM newsletter_subscribers WHERE email = ? COLLATE NOCASE")
+    .prepare("SELECT status, updated_at FROM newsletter_subscribers WHERE email = ? COLLATE NOCASE")
     .bind(email)
     .first();
 
   if (existing?.status === "confirmed") {
+    return jsonResponse({ ok: true, status: "confirmation_sent" }, 202);
+  }
+
+  if (
+    existing?.status === "pending"
+    && Date.now() - Date.parse(existing.updated_at) < RESEND_COOLDOWN_MS
+  ) {
     return jsonResponse({ ok: true, status: "confirmation_sent" }, 202);
   }
 
@@ -63,6 +75,9 @@ export async function onRequestPost({ request, env }) {
         status = 'pending',
         confirmation_token_hash = excluded.confirmation_token_hash,
         confirmation_expires_at = excluded.confirmation_expires_at,
+        unsubscribe_token_hash = NULL,
+        confirmed_at = NULL,
+        unsubscribed_at = NULL,
         updated_at = excluded.updated_at
     `)
     .bind(email, locale, source, tokenHash, expiresAt, now, now)

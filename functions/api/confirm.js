@@ -38,7 +38,8 @@ export async function onRequestGet({ request, env }) {
   if (!subscriber) return redirectToSite(siteUrl, "invalid", requestedLocale);
 
   const locale = normalizeLocale(subscriber.locale);
-  if (Date.parse(subscriber.confirmation_expires_at) < Date.now()) {
+  const confirmationExpiresAt = Date.parse(subscriber.confirmation_expires_at);
+  if (!Number.isFinite(confirmationExpiresAt) || confirmationExpiresAt < Date.now()) {
     return redirectToSite(siteUrl, "expired", locale);
   }
 
@@ -46,16 +47,20 @@ export async function onRequestGet({ request, env }) {
   const unsubscribeTokenHash = await hashToken(unsubscribeToken);
   const confirmedAt = new Date().toISOString();
 
-  await env.NEWSLETTER_DB
+  const confirmationResult = await env.NEWSLETTER_DB
     .prepare(`
       UPDATE newsletter_subscribers
       SET status = 'confirmed', confirmed_at = ?, updated_at = ?,
           confirmation_token_hash = NULL, confirmation_expires_at = NULL,
           unsubscribe_token_hash = ?
-      WHERE id = ?
+      WHERE id = ? AND status = 'pending' AND confirmation_token_hash = ?
     `)
-    .bind(confirmedAt, confirmedAt, unsubscribeTokenHash, subscriber.id)
+    .bind(confirmedAt, confirmedAt, unsubscribeTokenHash, subscriber.id, tokenHash)
     .run();
+
+  if (confirmationResult.meta?.changes !== 1) {
+    return redirectToSite(siteUrl, "invalid", locale);
+  }
 
   const unsubscribeUrl = `${siteUrl}/api/unsubscribe?token=${encodeURIComponent(unsubscribeToken)}&lang=${locale}`;
   const emailContent = getWelcomeEmail({
@@ -69,7 +74,7 @@ export async function onRequestGet({ request, env }) {
     await sendEmail(env, {
       to: subscriber.email,
       ...emailContent,
-      idempotencyKey: `nes-welcome-${subscriber.id}-${confirmedAt.slice(0, 10)}`,
+      idempotencyKey: `nes-welcome-${subscriber.id}-${unsubscribeTokenHash.slice(0, 32)}`,
     });
   } catch (error) {
     console.error("Unable to send welcome email", error);

@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>N.E.S — E-Mail Designvorschau</title>
+    <style>
+      :root {
+        color: #171512;
+        background: #10271f;
+        font-family: Arial, Helvetica, sans-serif;
+        font-synthesis: none;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        margin: 0;
+        background:
+          radial-gradient(circle at 18% 5%, rgba(200, 162, 94, 0.13), transparent 26rem),
+          #10271f;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .preview-shell {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 38px 0 72px;
+      }
+
+      .preview-header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 30px;
+        padding-bottom: 28px;
+        border-bottom: 1px solid rgba(245, 242, 233, 0.18);
+        color: #f5f2e9;
+      }
+
+      .preview-kicker,
+      .preview-status,
+      .group-label,
+      .mail-label,
+      .email-kicker,
+      .email-footer {
+        text-transform: uppercase;
+      }
+
+      .preview-kicker {
+        margin: 0;
+        color: #c8a25e;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.34em;
+      }
+
+      .preview-header h1 {
+        margin: 13px 0 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(29px, 4vw, 48px);
+        font-weight: 400;
+        letter-spacing: -0.035em;
+      }
+
+      .preview-status {
+        margin: 0;
+        color: rgba(245, 242, 233, 0.5);
+        font-size: 8px;
+        letter-spacing: 0.24em;
+        white-space: nowrap;
+      }
+
+      .preview-controls {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 26px;
+        padding: 24px 0;
+      }
+
+      .control-groups {
+        display: flex;
+        gap: 28px;
+      }
+
+      .group-label {
+        display: block;
+        margin-bottom: 9px;
+        color: rgba(245, 242, 233, 0.45);
+        font-size: 7px;
+        letter-spacing: 0.24em;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 6px;
+      }
+
+      .button-group button {
+        min-height: 36px;
+        padding: 0 14px;
+        border: 1px solid rgba(245, 242, 233, 0.2);
+        background: transparent;
+        color: rgba(245, 242, 233, 0.62);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.09em;
+        cursor: pointer;
+        transition: 180ms ease;
+      }
+
+      .button-group button:hover,
+      .button-group button.is-active {
+        border-color: #c8a25e;
+        background: #c8a25e;
+        color: #10271f;
+      }
+
+      .draft-note {
+        max-width: 330px;
+        margin: 0;
+        color: rgba(245, 242, 233, 0.52);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 14px;
+        font-style: italic;
+        line-height: 1.55;
+        text-align: right;
+      }
+
+      .mail-window {
+        overflow: hidden;
+        border: 1px solid rgba(245, 242, 233, 0.15);
+        background: #f7f5ef;
+        box-shadow: 0 40px 90px rgba(0, 0, 0, 0.27);
+      }
+
+      .mail-chrome {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        padding: 17px 22px;
+        border-bottom: 1px solid #ded8cc;
+        background: #fff;
+      }
+
+      .mail-chrome p {
+        margin: 0;
+        color: #69645c;
+        font-size: 11px;
+        line-height: 1.55;
+      }
+
+      .mail-chrome p:last-child {
+        text-align: right;
+      }
+
+      .mail-label {
+        margin-right: 8px;
+        color: #a19a8e;
+        font-size: 7px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+      }
+
+      .email-stage {
+        padding: clamp(30px, 6vw, 64px) 16px;
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0)),
+          #e9e4d8;
+      }
+
+      .email-card {
+        width: min(600px, 100%);
+        margin: 0 auto;
+        border: 1px solid #d9d2c4;
+        background: #f5f2e9;
+        box-shadow: 0 15px 35px rgba(46, 40, 31, 0.08);
+      }
+
+      .email-topline {
+        height: 4px;
+        background: #17342a;
+      }
+
+      .email-content {
+        padding: 52px 54px 46px;
+      }
+
+      .email-kicker {
+        margin: 0;
+        color: #a6813f;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.29em;
+        line-height: 1.5;
+      }
+
+      .email-logo {
+        width: 190px;
+        max-width: 62%;
+        display: block;
+        margin-top: 34px;
+      }
+
+      .email-rule {
+        width: 54px;
+        height: 1px;
+        margin: 38px 0 34px;
+        background: #a6813f;
+      }
+
+      .email-card h2 {
+        margin: 0;
+        color: #17342a;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(35px, 7vw, 42px);
+        font-weight: 400;
+        letter-spacing: -0.03em;
+        line-height: 1.08;
+      }
+
+      .email-body {
+        margin: 24px 0 0;
+        color: #514d46;
+        font-size: 16px;
+        line-height: 1.75;
+      }
+
+      .email-button {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        margin-top: 34px;
+        padding: 0 27px;
+        background: #17342a;
+        color: #f5f2e9;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      .email-note {
+        margin: 36px 0 0;
+        padding-top: 25px;
+        border-top: 1px solid #d9d2c4;
+        color: #777167;
+        font-size: 12px;
+        line-height: 1.7;
+      }
+
+      .email-footer {
+        padding: 22px 54px;
+        background: #eee9dd;
+        color: #8b857a;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        line-height: 1.6;
+      }
+
+      .email-unsubscribe {
+        color: inherit;
+        text-decoration: underline;
+      }
+
+      @media (max-width: 720px) {
+        .preview-shell {
+          width: min(100% - 24px, 1180px);
+          padding-top: 24px;
+        }
+
+        .preview-header,
+        .preview-controls {
+          align-items: start;
+          flex-direction: column;
+        }
+
+        .preview-status {
+          white-space: normal;
+        }
+
+        .control-groups {
+          width: 100%;
+          justify-content: space-between;
+          gap: 14px;
+        }
+
+        .draft-note {
+          text-align: left;
+        }
+
+        .mail-chrome {
+          grid-template-columns: 1fr;
+        }
+
+        .mail-chrome p:last-child {
+          text-align: left;
+        }
+
+        .email-content {
+          padding: 38px 28px 34px;
+        }
+
+        .email-footer {
+          padding: 18px 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="preview-shell">
+      <header class="preview-header">
+        <div>
+          <p class="preview-kicker">N.E.S · Communication system</p>
+          <h1>E-Mail Designvorschau</h1>
+        </div>
+        <p class="preview-status">Entwurf 01 · Noch kein Live-Versand</p>
+      </header>
+
+      <section class="preview-controls" aria-label="Vorschauoptionen">
+        <div class="control-groups">
+          <div>
+            <span class="group-label">E-Mail</span>
+            <div class="button-group" data-control="type">
+              <button class="is-active" type="button" data-value="confirmation">Bestätigung</button>
+              <button type="button" data-value="welcome">Willkommen</button>
+            </div>
+          </div>
+          <div>
+            <span class="group-label">Sprache</span>
+            <div class="button-group" data-control="language">
+              <button class="is-active" type="button" data-value="de">DE</button>
+              <button type="button" data-value="en">EN</button>
+            </div>
+          </div>
+        </div>
+        <p class="draft-note">Ruhig, editorial und bewusst näher an einer Einladung als an einem klassischen Newsletter.</p>
+      </section>
+
+      <section class="mail-window" aria-label="E-Mail Vorschau">
+        <div class="mail-chrome">
+          <p><span class="mail-label">VON</span>N.E.S &lt;office@nes-shop.at&gt;</p>
+          <p><span class="mail-label">BETREFF</span><span id="mail-subject"></span></p>
+        </div>
+        <div class="email-stage">
+          <article class="email-card">
+            <div class="email-topline"></div>
+            <div class="email-content">
+              <p class="email-kicker" id="email-kicker"></p>
+              <img class="email-logo" src="/logos/nes-logo.png" alt="N.E.S" />
+              <div class="email-rule"></div>
+              <h2 id="email-title"></h2>
+              <p class="email-body" id="email-body"></p>
+              <a class="email-button" id="email-button" href="#preview"></a>
+              <p class="email-note" id="email-note"></p>
+            </div>
+            <div class="email-footer">
+              N.E.S · OFFENBACH · 50.100° N | 8.705° E
+              <span id="unsubscribe-wrap" hidden> · <a class="email-unsubscribe" href="#preview" id="unsubscribe"></a></span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const copy = {
+        de: {
+          confirmation: {
+            subject: "Bitte bestätige deine Anmeldung bei N.E.S",
+            kicker: "MESSE OFFENBACH · N.E.S",
+            title: "Nur noch ein Schritt.",
+            body: "Bestätige kurz deine E-Mail-Adresse. Danach erhältst du als Erstes den Messetermin, neue Drops und ausgewählte Einblicke von N.E.S.",
+            button: "E-Mail bestätigen",
+            note: "Falls du dich nicht angemeldet hast, kannst du diese E-Mail einfach ignorieren.",
+          },
+          welcome: {
+            subject: "Du bist auf der N.E.S Liste",
+            kicker: "WILLKOMMEN BEI N.E.S",
+            title: "Du bist dabei.",
+            body: "Von jetzt an erfährst du zuerst vom nächsten Messetermin, ausgewählten Neuheiten und Early Access. Ruhig, relevant und nur dann, wenn es etwas zu erzählen gibt.",
+            button: "N.E.S entdecken",
+            note: "Offenbach · 50.100° N | 8.705° E",
+            unsubscribe: "Abmelden",
+          },
+        },
+        en: {
+          confirmation: {
+            subject: "Confirm your N.E.S subscription",
+            kicker: "OFFENBACH TRADE FAIR · N.E.S",
+            title: "One last step.",
+            body: "Please confirm your email address. You will then be the first to receive the fair date, new drops and considered updates from N.E.S.",
+            button: "Confirm email",
+            note: "If you did not request this, you can simply ignore this email.",
+          },
+          welcome: {
+            subject: "You are on the N.E.S list",
+            kicker: "WELCOME TO N.E.S",
+            title: "You are on the list.",
+            body: "From now on, you will hear first about the next fair date, selected drops and early access. Calm, relevant and only when there is something worth knowing.",
+            button: "Discover N.E.S",
+            note: "Offenbach · 50.100° N | 8.705° E",
+            unsubscribe: "Unsubscribe",
+          },
+        },
+      };
+
+      const state = { type: "confirmation", language: "de" };
+      const elements = {
+        subject: document.querySelector("#mail-subject"),
+        kicker: document.querySelector("#email-kicker"),
+        title: document.querySelector("#email-title"),
+        body: document.querySelector("#email-body"),
+        button: document.querySelector("#email-button"),
+        note: document.querySelector("#email-note"),
+        unsubscribe: document.querySelector("#unsubscribe"),
+        unsubscribeWrap: document.querySelector("#unsubscribe-wrap"),
+      };
+
+      function render() {
+        const content = copy[state.language][state.type];
+        document.documentElement.lang = state.language;
+        elements.subject.textContent = content.subject;
+        elements.kicker.textContent = content.kicker;
+        elements.title.textContent = content.title;
+        elements.body.textContent = content.body;
+        elements.button.textContent = content.button;
+        elements.note.textContent = content.note;
+        elements.unsubscribeWrap.hidden = state.type !== "welcome";
+        elements.unsubscribe.textContent = content.unsubscribe || "";
+      }
+
+      document.querySelectorAll("[data-control]").forEach((group) => {
+        group.addEventListener("click", (event) => {
+          const button = event.target.closest("button[data-value]");
+          if (!button) return;
+          state[group.dataset.control] = button.dataset.value;
+          group.querySelectorAll("button").forEach((item) => item.classList.toggle("is-active", item === button));
+          render();
+        });
+      });
+
+      document.querySelectorAll('a[href="#preview"]').forEach((link) => {
+        link.addEventListener("click", (event) => event.preventDefault());
+      });
+
+      render();
+    </script>
+  </body>
+</html>

@@ -6,7 +6,7 @@ The code is prepared for a double-opt-in flow:
 2. `GET /api/confirm` confirms the address and sends the welcome email.
 3. `GET /api/unsubscribe` removes consent while retaining the minimal suppression record.
 
-Live sending remains off until `VITE_NEWSLETTER_ENDPOINT=/api/subscribe` is added to the Pages build variables.
+The frontend posts to the same-origin `/api/subscribe` route by default. Live sending becomes active as soon as the D1 binding, Resend secret and sender variables below are present in a new Production deployment.
 
 ## 1. Decide the sender
 
@@ -43,15 +43,15 @@ Under **Workers & Pages → the Pages project → Settings → Variables and Sec
 
 Redeploy after changing bindings or secrets.
 
-## 4. Activate the frontend after approval
+## 4. Frontend endpoint
 
-Add this Pages **build variable** and redeploy:
+The production frontend defaults to:
 
 ```text
-VITE_NEWSLETTER_ENDPOINT=/api/subscribe
+/api/subscribe
 ```
 
-Until that variable exists, the current development build only stores test submissions locally in the browser and no email is sent.
+`VITE_NEWSLETTER_ENDPOINT` remains available as an optional build-time override. Local Vite development does not emulate Pages Functions; use Wrangler for an end-to-end local test.
 
 ## 5. Preview locally
 

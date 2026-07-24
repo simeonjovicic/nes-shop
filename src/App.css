@@ -814,6 +814,28 @@ main section {
   letter-spacing: 0.06em;
 }
 
+.signup-privacy {
+  max-width: 440px;
+  margin: 2px auto 0;
+  color: rgba(23, 21, 18, 0.4);
+  font-size: 8px;
+  line-height: 1.55;
+}
+
+.signup-privacy button {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.signup-privacy button:hover {
+  color: var(--forest);
+}
+
 .signup-success {
   padding: 13px 0;
   color: var(--forest);
@@ -1425,6 +1447,14 @@ main section {
 
 .signup-dark .signup-feedback {
   color: rgba(245, 242, 233, 0.48);
+}
+
+.signup-dark .signup-privacy {
+  color: rgba(245, 242, 233, 0.4);
+}
+
+.signup-dark .signup-privacy button:hover {
+  color: var(--gold-bright);
 }
 
 .signup-success-dark {

@@ -137,6 +137,9 @@ const COPY = {
       expired: "That confirmation link has expired. Please sign up again.",
       invalidLink: "That confirmation link is not valid. Please sign up again.",
       unsubscribed: "You have been unsubscribed. You can join again at any time.",
+      privacy:
+        "By joining, you agree to receive the NES newsletter. Unsubscribe at any time.",
+      privacyLink: "Privacy",
     },
     idea: {
       label: "The idea",
@@ -265,6 +268,9 @@ const COPY = {
       expired: "Dieser Bestätigungslink ist abgelaufen. Bitte trage dich erneut ein.",
       invalidLink: "Dieser Bestätigungslink ist ungültig. Bitte trage dich erneut ein.",
       unsubscribed: "Du wurdest abgemeldet. Du kannst dich jederzeit wieder eintragen.",
+      privacy:
+        "Mit deiner Anmeldung stimmst du dem Erhalt des NES Newsletters zu. Jederzeit widerrufbar.",
+      privacyLink: "Datenschutz",
     },
     idea: {
       label: "Die Idee",
@@ -529,7 +535,15 @@ function BrandProduct({ brand, product, index, copy }) {
   );
 }
 
-function SignupForm({ theme = "light", placement, newsletterState, onSubscribe, language, copy }) {
+function SignupForm({
+  theme = "light",
+  placement,
+  newsletterState,
+  onSubscribe,
+  onOpenPrivacy,
+  language,
+  copy,
+}) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
@@ -551,26 +565,18 @@ function SignupForm({ theme = "light", placement, newsletterState, onSubscribe, 
     setMessage("");
 
     try {
-      const endpoint = import.meta.env.VITE_NEWSLETTER_ENDPOINT;
-
-      if (endpoint) {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            email: normalizedEmail,
-            source: `nes-landing-${placement}`,
-            locale: language,
-            company,
-          }),
-        });
-        if (!response.ok) throw new Error("Subscription failed");
-      } else {
-        const saved = JSON.parse(localStorage.getItem("nes-waitlist") || "[]");
-        if (!saved.includes(normalizedEmail)) {
-          localStorage.setItem("nes-waitlist", JSON.stringify([...saved, normalizedEmail]));
-        }
-      }
+      const endpoint = import.meta.env.VITE_NEWSLETTER_ENDPOINT || "/api/subscribe";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          email: normalizedEmail,
+          source: `nes-landing-${placement}`,
+          locale: language,
+          company,
+        }),
+      });
+      if (!response.ok) throw new Error("Subscription failed");
 
       setStatus("success");
       setEmail("");
@@ -630,6 +636,10 @@ function SignupForm({ theme = "light", placement, newsletterState, onSubscribe, 
                 ? copy.unsubscribed
                 : copy.feedback}
       </div>
+      <p className="signup-privacy">
+        {copy.privacy}{" "}
+        <button type="button" onClick={onOpenPrivacy}>{copy.privacyLink}</button>
+      </p>
     </div>
   );
 }
@@ -862,6 +872,23 @@ function InquiryModal({ open, onClose, onOpenPrivacy, language, copy }) {
         const saved = JSON.parse(localStorage.getItem("nes-inquiries") || "[]");
         localStorage.setItem("nes-inquiries", JSON.stringify([...saved, { ...payload, at: Date.now() }]));
       }
+
+      if (newsletter) {
+        const newsletterEndpoint =
+          import.meta.env.VITE_NEWSLETTER_ENDPOINT || "/api/subscribe";
+        const newsletterResponse = await fetch(newsletterEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            email: payload.email,
+            source: "nes-inquiry",
+            locale: language,
+            company: "",
+          }),
+        });
+        if (!newsletterResponse.ok) throw new Error("Newsletter subscription failed");
+      }
+
       setStatus("success");
     } catch {
       setStatus("error");
@@ -1365,6 +1392,7 @@ export default function App() {
                   placement="hero"
                   newsletterState={newsletterState}
                   onSubscribe={() => setNewsletterState("pending")}
+                  onOpenPrivacy={() => openLegal("datenschutz")}
                   language={language}
                   copy={copy.signup}
                 />
@@ -1468,6 +1496,7 @@ export default function App() {
                 placement="closing"
                 newsletterState={newsletterState}
                 onSubscribe={() => setNewsletterState("pending")}
+                onOpenPrivacy={() => openLegal("datenschutz")}
                 language={language}
                 copy={copy.signup}
               />
