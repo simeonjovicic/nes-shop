@@ -1,5 +1,6 @@
 import {
   createToken,
+  getSignupNotificationEmail,
   getSiteUrl,
   getWelcomeEmail,
   hashToken,
@@ -28,7 +29,7 @@ export async function onRequestGet({ request, env }) {
   const tokenHash = await hashToken(token);
   const subscriber = await env.NEWSLETTER_DB
     .prepare(`
-      SELECT id, email, locale, confirmation_expires_at
+      SELECT id, email, locale, source, confirmation_expires_at
       FROM newsletter_subscribers
       WHERE confirmation_token_hash = ? AND status = 'pending'
     `)
@@ -66,7 +67,6 @@ export async function onRequestGet({ request, env }) {
   const emailContent = getWelcomeEmail({
     locale,
     siteUrl,
-    logoUrl: `${siteUrl}/logos/nes-logo.png`,
     unsubscribeUrl,
   });
 
@@ -78,6 +78,26 @@ export async function onRequestGet({ request, env }) {
     });
   } catch (error) {
     console.error("Unable to send welcome email", error);
+  }
+
+  const notificationRecipient = env.NEWSLETTER_NOTIFY_TO || env.NEWSLETTER_REPLY_TO;
+  if (notificationRecipient) {
+    const notificationContent = getSignupNotificationEmail({
+      email: subscriber.email,
+      locale,
+      source: subscriber.source,
+      confirmedAt,
+    });
+
+    try {
+      await sendEmail(env, {
+        to: notificationRecipient,
+        ...notificationContent,
+        idempotencyKey: `nes-signup-notify-${subscriber.id}-${unsubscribeTokenHash.slice(0, 24)}`,
+      });
+    } catch (error) {
+      console.error("Unable to send signup notification", error);
+    }
   }
 
   return redirectToSite(siteUrl, "confirmed", locale);

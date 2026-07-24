@@ -43,6 +43,7 @@ class MemoryD1 {
                 id: subscriber.id,
                 email: subscriber.email,
                 locale: subscriber.locale,
+                source: subscriber.source,
                 confirmation_expires_at: subscriber.confirmation_expires_at,
               }
             : null;
@@ -230,11 +231,17 @@ describe("newsletter automation", () => {
     assert.equal(sentEmails[0].payload.to[0], "visitor@example.com");
     assert.equal(sentEmails[0].payload.reply_to, "office@nes-shop.at");
     assert.match(sentEmails[0].headers["Idempotency-Key"], /^nes-confirm-/);
+    assert.doesNotMatch(sentEmails[0].payload.html, /<img\b/i);
+    assert.match(sentEmails[0].payload.html, />hier klicken\.<\/a>/);
 
     const confirmationUrl = sentEmails[0].payload.text.match(
       /https:\/\/nes-shop\.at\/api\/confirm\?token=[^\s]+/,
     )?.[0];
     assert.ok(confirmationUrl);
+    assert.doesNotMatch(
+      sentEmails[0].payload.html,
+      new RegExp(`>${confirmationUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<\\/a>`),
+    );
 
     const confirmResponse = await confirmSubscription({
       request: new Request(confirmationUrl),
@@ -246,8 +253,13 @@ describe("newsletter automation", () => {
       confirmResponse.headers.get("location"),
       "https://nes-shop.at/?newsletter=confirmed&lang=de#join",
     );
-    assert.equal(sentEmails.length, 2);
+    assert.equal(sentEmails.length, 3);
     assert.match(sentEmails[1].headers["Idempotency-Key"], /^nes-welcome-/);
+    assert.equal(sentEmails[2].payload.to[0], "office@nes-shop.at");
+    assert.equal(sentEmails[2].payload.subject, "Neue bestätigte Newsletter-Anmeldung");
+    assert.match(sentEmails[2].payload.text, /visitor@example\.com/);
+    assert.match(sentEmails[2].payload.text, /nes-landing-hero/);
+    assert.match(sentEmails[2].headers["Idempotency-Key"], /^nes-signup-notify-/);
 
     const unsubscribeUrl = sentEmails[1].payload.text.match(
       /https:\/\/nes-shop\.at\/api\/unsubscribe\?token=[^\s]+/,
@@ -342,7 +354,7 @@ describe("newsletter automation", () => {
     ]);
     const destinations = responses.map((response) => response.headers.get("location"));
 
-    assert.equal(sentEmails.length, 2);
+    assert.equal(sentEmails.length, 3);
     assert.equal(
       destinations.filter((destination) => destination.includes("newsletter=confirmed")).length,
       1,

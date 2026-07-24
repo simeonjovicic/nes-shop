@@ -88,7 +88,6 @@ export async function onRequestPost({ request, env }) {
   const emailContent = getConfirmationEmail({
     locale,
     confirmationUrl,
-    logoUrl: `${siteUrl}/logos/nes-logo.png`,
   });
 
   try {

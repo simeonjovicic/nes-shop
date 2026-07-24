@@ -39,6 +39,7 @@ Under **Workers & Pages → the Pages project → Settings → Variables and Sec
 - Secret `RESEND_API_KEY`
 - Variable `NEWSLETTER_FROM`: `N.E.S <office@nes-shop.at>`
 - Variable `NEWSLETTER_REPLY_TO`: `office@nes-shop.at`
+- Optional variable `NEWSLETTER_NOTIFY_TO`: recipient for confirmed-signup notifications; defaults to `NEWSLETTER_REPLY_TO`
 - Variable `PUBLIC_SITE_URL`: `https://nes-shop.at`
 
 Redeploy after changing bindings or secrets.
