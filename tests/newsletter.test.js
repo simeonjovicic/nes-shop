@@ -2,8 +2,10 @@ import assert from "node:assert/strict";
 import { afterEach, describe, test } from "node:test";
 
 import { onRequestGet as confirmSubscription } from "../functions/api/confirm.js";
-import { onRequestGet as newsletterHealth } from "../functions/api/newsletter-health.js";
-import { onRequestPost as subscribe } from "../functions/api/subscribe.js";
+import {
+  onRequestGet as newsletterHealth,
+  onRequestPost as subscribe,
+} from "../functions/api/subscribe.js";
 import { onRequestGet as unsubscribe } from "../functions/api/unsubscribe.js";
 
 class MemoryD1 {
