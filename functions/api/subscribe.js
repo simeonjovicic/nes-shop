@@ -110,6 +110,9 @@ export function onRequestGet({ env }) {
     emailProvider: Boolean(env.RESEND_API_KEY),
     sender: Boolean(env.NEWSLETTER_FROM),
     replyTo: Boolean(env.NEWSLETTER_REPLY_TO),
+    inquiryRecipient: Boolean(
+      env.INQUIRY_NOTIFY_TO || env.NEWSLETTER_NOTIFY_TO || env.NEWSLETTER_REPLY_TO,
+    ),
     siteUrl: Boolean(env.PUBLIC_SITE_URL),
   };
   const ok = Object.values(services).every(Boolean);

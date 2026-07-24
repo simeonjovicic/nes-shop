@@ -160,6 +160,7 @@ describe("newsletter automation", () => {
         emailProvider: false,
         sender: true,
         replyTo: false,
+        inquiryRecipient: false,
         siteUrl: true,
       },
     });

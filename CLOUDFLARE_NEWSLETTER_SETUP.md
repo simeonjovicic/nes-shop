@@ -32,6 +32,8 @@ Then open the Pages project and add a D1 binding:
 
 Apply the binding to both Preview and Production if preview deployments should be testable.
 
+The same database stores partner enquiries in the `inquiries` table. The `/api/inquiry` Function creates that table automatically if the original schema was applied before enquiry storage was added.
+
 ## 3. Add Pages secrets and variables
 
 Under **Workers & Pages → the Pages project → Settings → Variables and Secrets**, add:
@@ -40,6 +42,7 @@ Under **Workers & Pages → the Pages project → Settings → Variables and Sec
 - Variable `NEWSLETTER_FROM`: `N.E.S <office@nes-shop.at>`
 - Variable `NEWSLETTER_REPLY_TO`: `office@nes-shop.at`
 - Optional variable `NEWSLETTER_NOTIFY_TO`: recipient for confirmed-signup notifications; defaults to `NEWSLETTER_REPLY_TO`
+- Optional variable `INQUIRY_NOTIFY_TO`: recipient for new partner enquiries; defaults to `NEWSLETTER_NOTIFY_TO` and then `NEWSLETTER_REPLY_TO`
 - Variable `PUBLIC_SITE_URL`: `https://nes-shop.at`
 
 Redeploy after changing bindings or secrets.

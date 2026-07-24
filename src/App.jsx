@@ -430,7 +430,7 @@ const LEGAL = {
         {
           h: "Anfrageformular",
           p: [
-            "Bei einer Anfrage verarbeiten wir die von dir angegebenen Daten (Name, Unternehmen, E-Mail, Telefon, Anliegen und Nachricht) ausschließlich zur Bearbeitung deiner Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b und lit. f DSGVO.",
+            "Bei einer Anfrage speichern wir die von dir angegebenen Daten (Name, Unternehmen, E-Mail, Telefon, Anliegen und Nachricht) in Cloudflare D1 und senden eine Benachrichtigung über Resend an unser Office-Postfach. Die Verarbeitung erfolgt ausschließlich zur Bearbeitung deiner Anfrage auf Grundlage von Art. 6 Abs. 1 lit. b und lit. f DSGVO. Wir löschen die Daten, sobald die Anfrage abschließend bearbeitet ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.",
           ],
         },
         {
@@ -496,7 +496,7 @@ const LEGAL = {
         {
           h: "Enquiry form",
           p: [
-            "When you submit an enquiry we process the details you provide (name, company, email, phone, interest and message) solely to handle your enquiry. The legal basis is Art. 6(1)(b) and (f) GDPR.",
+            "When you submit an enquiry, we store the details you provide (name, company, email, phone, interest and message) in Cloudflare D1 and send a notification via Resend to our office mailbox. We process this data solely to handle your enquiry under Art. 6(1)(b) and (f) GDPR. We delete it once the enquiry has been fully handled unless statutory retention obligations apply.",
           ],
         },
         {
@@ -857,21 +857,18 @@ function InquiryModal({ open, onClose, onOpenPrivacy, language, copy }) {
       newsletter,
       locale: language,
       source: "nes-inquiry",
+      consent: true,
+      website: "",
     };
 
     try {
-      const endpoint = import.meta.env.VITE_INQUIRY_ENDPOINT;
-      if (endpoint) {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(payload),
-        });
-        if (!response.ok) throw new Error("Inquiry failed");
-      } else {
-        const saved = JSON.parse(localStorage.getItem("nes-inquiries") || "[]");
-        localStorage.setItem("nes-inquiries", JSON.stringify([...saved, { ...payload, at: Date.now() }]));
-      }
+      const endpoint = import.meta.env.VITE_INQUIRY_ENDPOINT || "/api/inquiry";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error("Inquiry failed");
 
       if (newsletter) {
         const newsletterEndpoint =
@@ -967,6 +964,7 @@ function InquiryModal({ open, onClose, onOpenPrivacy, language, copy }) {
                       onChange={(event) => setField("name", event.target.value)}
                       placeholder={copy.placeholders.name}
                       autoComplete="name"
+                      maxLength="120"
                     />
                   </label>
                   <label className="modal-field modal-field-wide">
@@ -978,6 +976,7 @@ function InquiryModal({ open, onClose, onOpenPrivacy, language, copy }) {
                       placeholder={copy.placeholders.email}
                       autoComplete="email"
                       inputMode="email"
+                      maxLength="254"
                     />
                   </label>
                 </div>
@@ -993,6 +992,7 @@ function InquiryModal({ open, onClose, onOpenPrivacy, language, copy }) {
                       onChange={(event) => setField("company", event.target.value)}
                       placeholder={copy.placeholders.company}
                       autoComplete="organization"
+                      maxLength="160"
                     />
                   </label>
                   <label className="modal-field modal-field-wide">
@@ -1003,6 +1003,7 @@ function InquiryModal({ open, onClose, onOpenPrivacy, language, copy }) {
                       onChange={(event) => setField("phone", event.target.value)}
                       placeholder={copy.placeholders.phone}
                       autoComplete="tel"
+                      maxLength="60"
                     />
                   </label>
                 </div>
@@ -1025,6 +1026,7 @@ function InquiryModal({ open, onClose, onOpenPrivacy, language, copy }) {
                       onChange={(event) => setField("message", event.target.value)}
                       rows="3"
                       placeholder={copy.placeholders.message}
+                      maxLength="4000"
                     />
                   </label>
                   <label className="modal-consent">

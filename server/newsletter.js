@@ -254,7 +254,101 @@ export function getSignupNotificationEmail({
   };
 }
 
-export async function sendEmail(env, { to, subject, html, text, idempotencyKey }) {
+export function getInquiryNotificationEmail({
+  inquiry,
+  receivedAt,
+}) {
+  const receivedDate = new Date(receivedAt);
+  const displayedReceivedAt = Number.isNaN(receivedDate.valueOf())
+    ? receivedAt
+    : new Intl.DateTimeFormat("de-AT", {
+        dateStyle: "medium",
+        timeStyle: "short",
+        timeZone: "Europe/Vienna",
+      }).format(receivedDate);
+  const optionalValue = (value) => escapeHtml(value || "—");
+  const emailLink = `<a href="${escapeHtml(`mailto:${inquiry.email}`)}" style="color:#17342a;text-decoration:underline;">${escapeHtml(inquiry.email)}</a>`;
+  const phoneLink = inquiry.phone
+    ? `<a href="${escapeHtml(`tel:${inquiry.phone}`)}" style="color:#17342a;text-decoration:underline;">${escapeHtml(inquiry.phone)}</a>`
+    : "—";
+  const fields = [
+    ["Name", escapeHtml(inquiry.name)],
+    ["E-Mail", emailLink],
+    ["Unternehmen", optionalValue(inquiry.company)],
+    ["Telefon", phoneLink],
+    ["Rolle", optionalValue(inquiry.role)],
+    ["Anliegen", optionalValue(inquiry.topic)],
+    ["Marke", optionalValue(inquiry.brand)],
+    ["Newsletter", inquiry.newsletter ? "Ja – im Formular ausgewählt" : "Nein"],
+    ["Sprache", escapeHtml(normalizeLocale(inquiry.locale).toUpperCase())],
+    ["Eingegangen", escapeHtml(displayedReceivedAt)],
+  ];
+  const rows = fields
+    .map(
+      ([label, value]) => `
+        <tr>
+          <td style="padding:11px 18px 11px 0;border-bottom:1px solid #d9d2c4;color:#8b857a;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;vertical-align:top;">${label}</td>
+          <td style="padding:11px 0;border-bottom:1px solid #d9d2c4;color:#514d46;font-family:Arial,sans-serif;font-size:14px;line-height:1.5;vertical-align:top;">${value}</td>
+        </tr>`,
+    )
+    .join("");
+  const message = inquiry.message
+    ? `<div style="margin-top:28px;padding:20px;background:#eee9dd;">
+        <p style="margin:0;color:#8b857a;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;">Nachricht</p>
+        <p style="margin:12px 0 0;color:#514d46;font-family:Arial,sans-serif;font-size:14px;line-height:1.65;white-space:pre-wrap;">${escapeHtml(inquiry.message)}</p>
+      </div>`
+    : "";
+
+  return {
+    subject: `Neue N.E.S Anfrage · ${inquiry.name}`,
+    html: `<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Neue N.E.S Anfrage</title>
+  </head>
+  <body style="margin:0;padding:0;background:#e9e4d8;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#e9e4d8;">
+      <tr>
+        <td align="center" style="padding:34px 12px;">
+          <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#f5f2e9;border:1px solid #d9d2c4;">
+            <tr><td style="height:4px;background:#17342a;font-size:0;line-height:0;">&nbsp;</td></tr>
+            <tr>
+              <td style="padding:44px 46px;">
+                <p style="margin:0;color:#a6813f;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;">N.E.S · PARTNERANFRAGE</p>
+                <h1 style="margin:28px 0 0;color:#17342a;font-family:Georgia,'Times New Roman',serif;font-size:36px;font-weight:400;line-height:1.12;">Neue Anfrage.</h1>
+                <p style="margin:18px 0 24px;color:#514d46;font-family:Arial,sans-serif;font-size:15px;line-height:1.65;">Die Anfrage wurde über nes-shop.at gesendet. Eine direkte Antwort auf diese E-Mail geht an ${escapeHtml(inquiry.name)}.</p>
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
+                ${message}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`,
+    text:
+      `Neue N.E.S Anfrage\n\n`
+      + `Name: ${inquiry.name}\n`
+      + `E-Mail: ${inquiry.email}\n`
+      + `Unternehmen: ${inquiry.company || "—"}\n`
+      + `Telefon: ${inquiry.phone || "—"}\n`
+      + `Rolle: ${inquiry.role || "—"}\n`
+      + `Anliegen: ${inquiry.topic || "—"}\n`
+      + `Marke: ${inquiry.brand || "—"}\n`
+      + `Newsletter: ${inquiry.newsletter ? "Ja" : "Nein"}\n`
+      + `Sprache: ${normalizeLocale(inquiry.locale).toUpperCase()}\n`
+      + `Eingegangen: ${displayedReceivedAt}\n\n`
+      + `Nachricht:\n${inquiry.message || "—"}`,
+  };
+}
+
+export async function sendEmail(
+  env,
+  { to, subject, html, text, idempotencyKey, replyTo },
+) {
   const payload = {
     from: env.NEWSLETTER_FROM,
     to: [to],
@@ -263,7 +357,8 @@ export async function sendEmail(env, { to, subject, html, text, idempotencyKey }
     text,
   };
 
-  if (env.NEWSLETTER_REPLY_TO) payload.reply_to = env.NEWSLETTER_REPLY_TO;
+  const resolvedReplyTo = replyTo || env.NEWSLETTER_REPLY_TO;
+  if (resolvedReplyTo) payload.reply_to = resolvedReplyTo;
 
   const response = await fetch(RESEND_ENDPOINT, {
     method: "POST",
