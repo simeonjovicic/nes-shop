@@ -4,24 +4,24 @@ const RESEND_ENDPOINT = "https://api.resend.com/emails";
 const EMAIL_COPY = {
   de: {
     confirmation: {
-      subject: "Bitte bestätige deine Anmeldung bei NES",
-      preheader: "Ein Klick, dann bist du auf der NES Liste.",
+      subject: "Bitte bestätigen Sie Ihre Anmeldung bei NES",
+      preheader: "Ein Klick, dann sind Sie auf der NES Liste.",
       eyebrow: "MESSE OFFENBACH · NES",
       title: "Nur noch ein Schritt.",
       body:
-        "Bestätige kurz deine E-Mail-Adresse. Danach erhältst du als Erstes den Messetermin, neue Drops und ausgewählte Einblicke von NES.",
+        "Bestätigen Sie kurz Ihre E-Mail-Adresse. Danach erhalten Sie als Erstes den Messetermin, neue Drops und ausgewählte Einblicke von NES.",
       action: "E-Mail bestätigen",
-      note: "Falls du dich nicht angemeldet hast, kannst du diese E-Mail einfach ignorieren.",
+      note: "Falls Sie sich nicht angemeldet haben, können Sie diese E-Mail einfach ignorieren.",
       fallbackPrefix: "Falls der Button nicht funktioniert,",
       fallbackAction: "hier klicken.",
     },
     welcome: {
-      subject: "Du bist auf der NES Liste",
+      subject: "Sie sind auf der NES Liste",
       preheader: "Willkommen bei NES — wir melden uns, wenn es etwas zu erzählen gibt.",
       eyebrow: "WILLKOMMEN BEI NES",
-      title: "Du bist dabei.",
+      title: "Sie sind dabei.",
       body:
-        "Von jetzt an erfährst du zuerst vom nächsten Messetermin, ausgewählten Neuheiten und Early Access. Ruhig, relevant und nur dann, wenn es etwas zu erzählen gibt.",
+        "Von jetzt an erfahren Sie zuerst vom nächsten Messetermin, ausgewählten Neuheiten und Early Access. Ruhig, relevant und nur dann, wenn es etwas zu erzählen gibt.",
       action: "NES entdecken",
       note: "Offenbach · 50.100° N | 8.705° E",
       unsubscribe: "Abmelden",

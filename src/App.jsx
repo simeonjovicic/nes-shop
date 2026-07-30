@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { ShaderBackground } from "./components/ui/shaders-hero-section";
 import "./App.css";
 
+/* Tiles shown before the "show all" button kicks in (mobile layout only) */
+const MOBILE_GALLERY_PREVIEW = 3;
+
 const MESSE_GALLERY = [
   {
     src: "/messe-offenbach/team-am-stand.jpeg",
@@ -57,7 +60,6 @@ const BRANDS = [
   {
     name: "Green Comfort",
     logo: "/logos/greencomfort.svg?v=official",
-    products: [{}, {}, {}, {}],
     copy: {
       en: {
         meta: "Randers, Denmark · Since 1994",
@@ -80,7 +82,6 @@ const BRANDS = [
   {
     name: "Vehon",
     logo: "/logos/vehon.png",
-    products: [{}, {}, {}, {}],
     copy: {
       en: {
         meta: "Italy · Formerly WAI · True barefoot",
@@ -154,8 +155,7 @@ const COPY = {
       headline: "Foot health, done two ways.",
       subline: "Danish comfort. Italian barefoot.",
       signatureLabel: "Signature",
-      productImage: "product imagery",
-      productReserved: "Product asset reserved",
+      logoAlt: "logo",
     },
     fair: {
       label: "Previous fair",
@@ -163,6 +163,8 @@ const COPY = {
       body: "People, product and natural movement in Offenbach.",
       archive: "Offenbach archive",
       caption: "Offenbach · last year's fair",
+      showMore: "Show all photos",
+      showLess: "Show fewer",
     },
     closing: {
       label: "Offenbach Trade Fair",
@@ -229,9 +231,9 @@ const COPY = {
     footer: {
       linksLabel: "Social and legal",
       contact: "Contact",
-      impressum: "Legal notice",
       privacy: "Privacy",
       legalBack: "Back to site",
+      tagline: "Natural. Everyday. Shoes.",
     },
   },
   de: {
@@ -257,19 +259,19 @@ const COPY = {
     },
     signup: {
       label: "E-Mail-Adresse",
-      placeholder: "Deine E-Mail-Adresse",
+      placeholder: "Ihre E-Mail-Adresse",
       idle: "Eintragen",
       loading: "Wird eingetragen…",
-      success: "Bitte prüfe dein Postfach",
-      confirmed: "Du bist auf der Liste",
+      success: "Bitte prüfen Sie Ihr Postfach",
+      confirmed: "Sie sind auf der Liste",
       feedback: "Termine, Neuheiten und Early Access. Ohne Lärm.",
-      invalid: "Bitte gib eine gültige E-Mail-Adresse ein.",
-      error: "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
-      expired: "Dieser Bestätigungslink ist abgelaufen. Bitte trage dich erneut ein.",
-      invalidLink: "Dieser Bestätigungslink ist ungültig. Bitte trage dich erneut ein.",
-      unsubscribed: "Du wurdest abgemeldet. Du kannst dich jederzeit wieder eintragen.",
+      invalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      error: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+      expired: "Dieser Bestätigungslink ist abgelaufen. Bitte tragen Sie sich erneut ein.",
+      invalidLink: "Dieser Bestätigungslink ist ungültig. Bitte tragen Sie sich erneut ein.",
+      unsubscribed: "Sie wurden abgemeldet. Sie können sich jederzeit wieder eintragen.",
       privacy:
-        "Mit deiner Anmeldung stimmst du dem Erhalt des NES Newsletters zu. Jederzeit widerrufbar.",
+        "Mit Ihrer Anmeldung stimmen Sie dem Erhalt des NES Newsletters zu. Jederzeit widerrufbar.",
       privacyLink: "Datenschutz",
     },
     idea: {
@@ -285,8 +287,7 @@ const COPY = {
       headline: "Fußgesundheit, auf zwei Arten.",
       subline: "Dänischer Komfort. Italienisches Barfußgefühl.",
       signatureLabel: "Signatur",
-      productImage: "Produktbilder",
-      productReserved: "Platz für Produktaufnahme",
+      logoAlt: "Logo",
     },
     fair: {
       label: "Messe-Rückblick",
@@ -294,10 +295,12 @@ const COPY = {
       body: "Menschen, Produkte und natürliche Bewegung in Offenbach.",
       archive: "Archiv Offenbach",
       caption: "Offenbach · Messe im letzten Jahr",
+      showMore: "Alle Fotos anzeigen",
+      showLess: "Weniger anzeigen",
     },
     closing: {
       label: "Messe Offenbach",
-      title: "Erhalte den Termin, die Neuheiten und Early Access.",
+      title: "Erhalten Sie den Termin, die Neuheiten und Early Access.",
       body: "Eine durchdachte E-Mail, wenn es wirklich etwas zu erzählen gibt.",
     },
     inquiry: {
@@ -307,10 +310,10 @@ const COPY = {
       heroPrompt: "Händler oder Marke?",
       title: "Partner werden",
       subtitle:
-        "Für Händler und Marken. Erzähl uns kurz von dir — wir melden uns.",
+        "Für Händler und Marken. Erzählen Sie uns kurz von sich — wir melden uns.",
       stepLabel: "Schritt",
       stepOf: "von",
-      steps: ["Dein Kontakt", "Dein Unternehmen", "Dein Anliegen", "Fast geschafft"],
+      steps: ["Ihr Kontakt", "Ihr Unternehmen", "Ihr Anliegen", "Fast geschafft"],
       next: "Weiter",
       back: "Zurück",
       role: {
@@ -340,29 +343,29 @@ const COPY = {
       placeholders: {
         name: "Vor- und Nachname",
         company: "Geschäft oder Marke",
-        email: "du@unternehmen.de",
+        email: "name@unternehmen.de",
         phone: "Optional",
         message: "Wie können wir helfen? Was sollten wir wissen?",
       },
       optional: "optional",
       consent: "Ich bin einverstanden, dass meine Angaben zur Bearbeitung dieser Anfrage verarbeitet werden.",
       consentLink: "Datenschutz",
-      newsletter: "Haltet mich außerdem zu Terminen, Neuheiten und Early Access auf dem Laufenden.",
+      newsletter: "Halten Sie mich außerdem zu Terminen, Neuheiten und Early Access auf dem Laufenden.",
       submit: "Anfrage senden",
       sending: "Wird gesendet…",
       successTitle: "Danke",
-      successBody: "Wir haben deine Anfrage erhalten und melden uns in Kürze.",
-      invalid: "Bitte gib deinen Namen und eine gültige E-Mail-Adresse an.",
-      invalidConsent: "Bitte akzeptiere den Datenschutzhinweis, um fortzufahren.",
-      error: "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+      successBody: "Wir haben Ihre Anfrage erhalten und melden uns in Kürze.",
+      invalid: "Bitte geben Sie Ihren Namen und eine gültige E-Mail-Adresse an.",
+      invalidConsent: "Bitte akzeptieren Sie den Datenschutzhinweis, um fortzufahren.",
+      error: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
       close: "Schließen",
     },
     footer: {
       linksLabel: "Social und Rechtliches",
       contact: "Kontakt",
-      impressum: "Impressum",
       privacy: "Datenschutz",
       legalBack: "Zurück zur Seite",
+      tagline: "Natürlich. Alltäglich. Schuhe.",
     },
   },
 };
@@ -370,46 +373,9 @@ const COPY = {
 // Legal templates. Bracketed values are placeholders for the company to fill in.
 const LEGAL = {
   de: {
-    impressum: {
-      title: "Impressum",
-      intro: "Angaben gemäß § 5 DDG (Digitale-Dienste-Gesetz).",
-      blocks: [
-        {
-          h: "Anbieter",
-          p: ["[Firmenname / Rechtsform]", "[Straße und Hausnummer]", "[PLZ und Ort]", "[Land]"],
-        },
-        {
-          h: "Vertreten durch",
-          p: ["[Vertretungsberechtigte Person(en)]"],
-        },
-        {
-          h: "Kontakt",
-          p: ["Telefon: [Telefonnummer]", "E-Mail: [E-Mail-Adresse]"],
-        },
-        {
-          h: "Registereintrag",
-          p: ["Eintragung im Handelsregister.", "Registergericht: [Amtsgericht]", "Registernummer: [HRB …]"],
-        },
-        {
-          h: "Umsatzsteuer-ID",
-          p: ["Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: [USt-IdNr.]"],
-        },
-        {
-          h: "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV",
-          p: ["[Name]", "[Anschrift]"],
-        },
-        {
-          h: "Haftung und Urheberrecht",
-          p: [
-            "Trotz sorgfältiger Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links; für deren Inhalt sind ausschließlich deren Betreiber verantwortlich. Die auf dieser Website erstellten Inhalte unterliegen dem Urheberrecht.",
-          ],
-        },
-      ],
-      note: "Vorlage — bitte vor Veröffentlichung mit den echten Unternehmensdaten füllen und rechtlich prüfen lassen.",
-    },
     datenschutz: {
       title: "Datenschutzerklärung",
-      intro: "Wir behandeln deine personenbezogenen Daten vertraulich und gemäß der DSGVO.",
+      intro: "Wir behandeln Ihre personenbezogenen Daten vertraulich und gemäß der DSGVO.",
       blocks: [
         {
           h: "Verantwortlicher",
@@ -424,19 +390,19 @@ const LEGAL = {
         {
           h: "Newsletter (Double-Opt-in)",
           p: [
-            "Für den Newsletter speichern wir E-Mail-Adresse, Zeitpunkt und Einwilligung. Der Versand erfolgt über Resend (Resend, Inc.). Rechtsgrundlage ist deine Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO. Du kannst dich jederzeit über den Abmeldelink in jeder E-Mail abmelden.",
+            "Für den Newsletter speichern wir E-Mail-Adresse, Zeitpunkt und Einwilligung. Der Versand erfolgt über Resend (Resend, Inc.). Rechtsgrundlage ist Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO. Sie können sich jederzeit über den Abmeldelink in jeder E-Mail abmelden.",
           ],
         },
         {
           h: "Anfrageformular",
           p: [
-            "Bei einer Anfrage speichern wir die von dir angegebenen Daten (Name, Unternehmen, E-Mail, Telefon, Anliegen und Nachricht) in Cloudflare D1 und senden eine Benachrichtigung über Resend an unser Office-Postfach. Die Verarbeitung erfolgt ausschließlich zur Bearbeitung deiner Anfrage auf Grundlage von Art. 6 Abs. 1 lit. b und lit. f DSGVO. Wir löschen die Daten, sobald die Anfrage abschließend bearbeitet ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.",
+            "Bei einer Anfrage speichern wir die von Ihnen angegebenen Daten (Name, Unternehmen, E-Mail, Telefon, Anliegen und Nachricht) in Cloudflare D1 und senden eine Benachrichtigung über Resend an unser Office-Postfach. Die Verarbeitung erfolgt ausschließlich zur Bearbeitung Ihrer Anfrage auf Grundlage von Art. 6 Abs. 1 lit. b und lit. f DSGVO. Wir löschen die Daten, sobald die Anfrage abschließend bearbeitet ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.",
           ],
         },
         {
-          h: "Deine Rechte",
+          h: "Ihre Rechte",
           p: [
-            "Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht, eine erteilte Einwilligung jederzeit zu widerrufen. Zudem steht dir ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu.",
+            "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht, eine erteilte Einwilligung jederzeit zu widerrufen. Zudem steht Ihnen ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu.",
           ],
         },
         {
@@ -448,34 +414,6 @@ const LEGAL = {
     },
   },
   en: {
-    impressum: {
-      title: "Legal notice",
-      intro: "Information pursuant to § 5 DDG (German Digital Services Act).",
-      blocks: [
-        {
-          h: "Provider",
-          p: ["[Company name / legal form]", "[Street and number]", "[Postal code and city]", "[Country]"],
-        },
-        { h: "Represented by", p: ["[Authorised representative(s)]"] },
-        { h: "Contact", p: ["Phone: [phone number]", "Email: [email address]"] },
-        {
-          h: "Register entry",
-          p: ["Entry in the commercial register.", "Register court: [local court]", "Register number: [HRB …]"],
-        },
-        { h: "VAT ID", p: ["VAT identification number pursuant to § 27a UStG: [VAT ID]"] },
-        {
-          h: "Responsible for content pursuant to § 18 (2) MStV",
-          p: ["[Name]", "[Address]"],
-        },
-        {
-          h: "Liability and copyright",
-          p: [
-            "Despite careful review, we assume no liability for the content of external links; their operators are solely responsible. The content created on this website is protected by copyright.",
-          ],
-        },
-      ],
-      note: "Template — please complete with the real company details and have it reviewed legally before publishing.",
-    },
     datenschutz: {
       title: "Privacy policy",
       intro: "We handle your personal data confidentially and in accordance with the GDPR.",
@@ -511,29 +449,6 @@ const LEGAL = {
     },
   },
 };
-
-function BrandProduct({ brand, product, index, copy }) {
-  const number = String(index + 1).padStart(2, "0");
-  const label = `${brand} ${copy.productImage} ${number}`;
-
-  return (
-    <figure className="brand-product">
-      <div className="brand-product-frame" role="img" aria-label={label}>
-        {product.image ? (
-          <img
-            src={product.image}
-            alt={product.name ? `${brand} — ${product.name}` : label}
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <span className="brand-product-index" aria-hidden="true">{number}</span>
-        )}
-      </div>
-      {product.name && <figcaption>{product.name}</figcaption>}
-    </figure>
-  );
-}
 
 function SignupForm({
   theme = "light",
@@ -1149,12 +1064,16 @@ function ArrivalIntro({ copy }) {
 
 function BrandBlock({ brand, language, copy }) {
   const brandCopy = brand.copy[language];
-  const hasImages = brand.products.some((product) => product.image);
 
   return (
     <article className="brand-block">
       <div className="brand-header" data-reveal style={{ "--delay": "60ms" }}>
-        <img className="brand-logo" src={brand.logo} alt={`${brand.name} logo`} loading="lazy" />
+        <img
+          className="brand-logo"
+          src={brand.logo}
+          alt={`${brand.name} ${copy.brands.logoAlt}`}
+          loading="lazy"
+        />
         <p className="brand-meta">{brandCopy.meta}</p>
         <p className="brand-signature">
           <span className="brand-signature-label">{copy.brands.signatureLabel}</span>
@@ -1167,40 +1086,43 @@ function BrandBlock({ brand, language, copy }) {
           ))}
         </ul>
       </div>
-      <div className="brand-gallery" data-reveal="scale" style={{ "--delay": "140ms" }}>
-        {brand.products.map((product, productIndex) => (
-          <BrandProduct
-            key={product.name || productIndex}
-            brand={brand.name}
-            product={product}
-            index={productIndex}
-            copy={copy.brands}
-          />
-        ))}
-      </div>
-      {!hasImages && <p className="brand-gallery-note">{copy.brands.productReserved}</p>}
     </article>
   );
 }
 
-function MesseMosaic({ language }) {
+function MesseMosaic({ language, copy }) {
+  const [expanded, setExpanded] = useState(false);
+  const hiddenCount = MESSE_GALLERY.length - MOBILE_GALLERY_PREVIEW;
+
   return (
-    <div className="messe-mosaic">
-      {MESSE_GALLERY.map((photo, index) => (
-        <figure
-          className={`messe-tile messe-tile-${photo.area}`}
-          data-reveal="scale"
-          style={{ "--delay": `${index * 70}ms` }}
-          key={photo.src}
-        >
-          <img src={photo.src} alt={photo.alt[language]} loading="lazy" decoding="async" />
-          <span className="messe-tile-index" aria-hidden="true">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <figcaption>{photo.alt[language]}</figcaption>
-        </figure>
-      ))}
-    </div>
+    <>
+      <div className={`messe-mosaic${expanded ? " is-expanded" : ""}`}>
+        {MESSE_GALLERY.map((photo, index) => (
+          <figure
+            className={`messe-tile messe-tile-${photo.area}${
+              expanded && index >= MOBILE_GALLERY_PREVIEW ? " is-visible" : ""
+            }`}
+            data-reveal="scale"
+            style={{ "--delay": `${index * 70}ms` }}
+            key={photo.src}
+          >
+            <img src={photo.src} alt={photo.alt[language]} loading="lazy" decoding="async" />
+            <span className="messe-tile-index" aria-hidden="true">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <figcaption>{photo.alt[language]}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <button
+        type="button"
+        className="messe-more"
+        onClick={() => setExpanded((value) => !value)}
+        aria-expanded={expanded}
+      >
+        {expanded ? copy.showLess : `${copy.showMore} (${hiddenCount})`}
+      </button>
+    </>
   );
 }
 
@@ -1210,10 +1132,10 @@ function getInitialLanguage() {
   const urlLanguage = new URLSearchParams(window.location.search).get("lang");
   if (urlLanguage === "de" || urlLanguage === "en") return urlLanguage;
 
-  const savedLanguage = window.localStorage.getItem("nes-language");
+  const savedLanguage = window.localStorage.getItem("nes-lang");
   if (savedLanguage === "de" || savedLanguage === "en") return savedLanguage;
 
-  return window.navigator.language.toLowerCase().startsWith("de") ? "de" : "en";
+  return "de";
 }
 
 function getInitialNewsletterState() {
@@ -1225,7 +1147,7 @@ function getInitialNewsletterState() {
 function getInitialLegal() {
   if (typeof window === "undefined") return null;
   const hash = window.location.hash.replace("#", "");
-  return hash === "impressum" || hash === "datenschutz" ? hash : null;
+  return hash === "datenschutz" ? hash : null;
 }
 
 export default function App() {
@@ -1260,6 +1182,7 @@ export default function App() {
 
   function changeLanguage(nextLanguage) {
     setLanguage(nextLanguage);
+    window.localStorage.setItem("nes-lang", nextLanguage);
     const url = new URL(window.location.href);
     url.searchParams.set("lang", nextLanguage);
     window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
@@ -1270,7 +1193,6 @@ export default function App() {
     document.title = language === "de"
       ? "NES — Natürliche Bewegung · Messe Offenbach"
       : "NES — Natural movement · Offenbach Trade Fair";
-    window.localStorage.setItem("nes-language", language);
   }, [language]);
 
   useEffect(() => {
@@ -1478,7 +1400,7 @@ export default function App() {
                 {copy.fair.body}
               </p>
             </header>
-            <MesseMosaic language={language} />
+            <MesseMosaic language={language} copy={copy.fair} />
             <p className="messe-caption" data-reveal>{copy.fair.caption}</p>
           </div>
         </section>
@@ -1513,14 +1435,11 @@ export default function App() {
         <div className="footer-links" aria-label={copy.footer.linksLabel}>
           <span>Instagram</span>
           <span>{copy.footer.contact}</span>
-          <button type="button" className="footer-link" onClick={() => openLegal("impressum")}>
-            {copy.footer.impressum}
-          </button>
           <button type="button" className="footer-link" onClick={() => openLegal("datenschutz")}>
             {copy.footer.privacy}
           </button>
         </div>
-        <p className="copyright">© 2026 <span className="wordmark">NES</span> — Natural. Everyday. Shoes.</p>
+        <p className="copyright">© 2026 <span className="wordmark">NES</span> — {copy.footer.tagline}</p>
       </footer>
 
       <InquiryModal
