@@ -295,6 +295,45 @@ const BRAND_WORLDS = [
   },
 ];
 
+const CATALOG_LINEUPS = [
+  { id: "wai", index: "01", filter: "vehon", image: "/shop/collections/wai-lineup-v1.webp" },
+  { id: "vehon", index: "02", filter: "vehon", image: "/shop/collections/vehon-lineup-v1.webp" },
+  { id: "loungers", index: "03", filter: "loungers", image: "/shop/collections/loungers-lineup-v1.webp" },
+];
+
+const GALLERY_IMAGES = [
+  { src: "/shop/gallery/loungers-clouds.webp", brand: "Loungers" },
+  { src: "/shop/gallery/wai-ground.webp", brand: "WAI" },
+  { src: "/shop/gallery/montechiaro-statement.webp", brand: "Montechiaro" },
+  { src: "/shop/gallery/loungers-forest.webp", brand: "Loungers" },
+  { src: "/shop/gallery/wai-home-step.webp", brand: "WAI" },
+  { src: "/shop/gallery/loungers-bordeaux-beach.webp", brand: "Loungers" },
+  { src: "/shop/gallery/montechiaro-kitchen.webp", brand: "Montechiaro" },
+  { src: "/shop/gallery/wai-coast.webp", brand: "WAI" },
+  { src: "/shop/gallery/loungers-cafe.webp", brand: "Loungers" },
+  { src: "/shop/gallery/wai-zen.webp", brand: "WAI" },
+  { src: "/shop/gallery/loungers-stitching.webp", brand: "Loungers" },
+  { src: "/shop/gallery/wai-sunset.webp", brand: "WAI" },
+  { src: "/shop/gallery/loungers-airport.webp", brand: "Loungers" },
+  { src: "/shop/gallery/montechiaro-work.webp", brand: "Montechiaro" },
+  { src: "/shop/gallery/wai-poolside.webp", brand: "WAI" },
+  { src: "/shop/gallery/loungers-temple.webp", brand: "Loungers" },
+  { src: "/shop/gallery/wai-stream.webp", brand: "WAI" },
+  { src: "/shop/gallery/loungers-oldtimer.webp", brand: "Loungers" },
+  { src: "/shop/gallery/wai-tea.webp", brand: "WAI" },
+  { src: "/shop/gallery/loungers-breathe.webp", brand: "Loungers" },
+  { src: "/shop/gallery/montechiaro-detail.webp", brand: "Montechiaro" },
+  { src: "/shop/gallery/wai-beach-step.webp", brand: "WAI" },
+  { src: "/shop/gallery/loungers-rooftop.webp", brand: "Loungers" },
+  { src: "/shop/gallery/wai-curtain.webp", brand: "WAI" },
+  { src: "/shop/gallery/loungers-slow-living.webp", brand: "Loungers" },
+  { src: "/shop/gallery/wai-warm-sand.webp", brand: "WAI" },
+  { src: "/shop/gallery/loungers-drive.webp", brand: "Loungers" },
+  { src: "/shop/gallery/wai-stone-lounge.webp", brand: "WAI" },
+  { src: "/shop/gallery/loungers-imperfection.webp", brand: "Loungers" },
+  { src: "/shop/gallery/loungers-bangkok.webp", brand: "Loungers" },
+];
+
 const FEATURED_IDS = [9, 1, 12, 5];
 
 const COPY = {
@@ -316,10 +355,46 @@ const COPY = {
     },
     featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", all: "Alle Produkte" },
     brands: { label: "Die Marken", title: "Ein Haus. Vier Handschriften.", open: "Kollektion ansehen", soon: "Kollektion folgt" },
-    editorial: { label: "Loungers · Made in Italy", title: "Komfort, der nicht nach Komfort aussieht.", body: "Leichte Loafer, weiche Konstruktion und eine Haltung, die vom Café bis zur Reise funktioniert.", cta: "Loungers entdecken" },
+    gallery: { label: "NES / Bildarchiv", title: "Bewegung in Bildern.", intro: "Weitere Motive aus Alltag, Reise, Material und Ruhe — gesammelt als visuelles Archiv der Kollektionen.", aria: "Visuelles Archiv", imageAlt: "Editorialaufnahme von" },
+    editorial: {
+      label: "Die Idee · Natürlich bewegen",
+      title: "Barfuß ist der Anfang.",
+      body: "Bevor Schuhe Haltung zeigten, gaben Füße den Rhythmus vor. Raum für die Zehen, Nähe zum Boden und Bewegung ohne Umweg — nach diesem Gefühl wählen wir unsere Kollektionen aus.",
+      cta: "Weitere Bilder ansehen",
+      alt: "Flexibler Feel Shoe in einem ruhigen Wohnraum",
+    },
     standard: { label: "Der NES Maßstab", title: "Gute Dinge beginnen beim Material.", body: "Wir wählen Marken, deren Komfort konstruiert, nicht behauptet wird. Präzise Materialien, durchdachte Sohlen und Handwerk, das man im Alltag spürt.", points: [["01", "Material", "Texturen mit Funktion und Charakter."], ["02", "Handwerk", "Präzise Konstruktion statt kurzlebiger Effekte."], ["03", "Bewegung", "Formen, die den Alltag begleiten."]], cta: "Das Sortiment entdecken" },
     trade: { label: "Für Händler & Marken", title: "Interesse an unseren Kollektionen?", body: "Sortiment, Konditionen oder ein persönlicher Termin — wir sprechen gerne mit Ihnen.", cta: "Partneranfrage" },
-    shop: { breadcrumb: "NES / Shop", title: "Die Kollektion", intro: "Feel Shoes, italienische Loafer und charakterstarker Strick — ausgewählt für Komfort, Bewegung und Alltag.", all: "Alle", products: "Produkte", product: "Produkt", searchLabel: "Suche", searchPlaceholder: "Produkt oder Marke suchen", sortLabel: "Sortieren", featured: "Empfohlen", priceAsc: "Preis: aufsteigend", priceDesc: "Preis: absteigend", name: "Name: A–Z", noResults: "Keine Produkte gefunden.", noResultsBody: "Versuchen Sie einen anderen Suchbegriff oder wechseln Sie die Marke.", upcomingTitle: "Green Comfort kommt ins Sortiment.", upcomingBody: "Die erste Auswahl wird gerade zusammengestellt. Entdecken Sie bis dahin die übrigen Marken im Haus.", showAll: "Alle Produkte zeigen" },
+    shop: {
+      breadcrumb: "NES / Shop",
+      title: "Die Kollektion",
+      intro: "Feel Shoes, italienische Loafer und charakterstarker Strick — ausgewählt für Komfort, Bewegung und Alltag.",
+      all: "Alle",
+      products: "Produkte",
+      product: "Produkt",
+      searchLabel: "Suche",
+      searchPlaceholder: "Produkt oder Marke suchen",
+      sortLabel: "Sortieren",
+      featured: "Empfohlen",
+      priceAsc: "Preis: aufsteigend",
+      priceDesc: "Preis: absteigend",
+      name: "Name: A–Z",
+      noResults: "Keine Produkte gefunden.",
+      noResultsBody: "Versuchen Sie einen anderen Suchbegriff oder wechseln Sie die Marke.",
+      upcomingTitle: "Green Comfort kommt ins Sortiment.",
+      upcomingBody: "Die erste Auswahl wird gerade zusammengestellt. Entdecken Sie bis dahin die übrigen Marken im Haus.",
+      showAll: "Alle Produkte zeigen",
+      lineups: {
+        label: "NES / Markenkatalog",
+        title: "Drei Linien. Elf Modelle.",
+        intro: "WAI, Vehon und Loungers — jeweils als vollständige Kollektion.",
+        items: {
+          wai: { meta: "04 Modelle · Feel Shoes", title: "WAI by Vehon", body: "Vier textile Feel Shoes für natürliche Bewegung, Reise und Alltag.", cta: "WAI ansehen" },
+          vehon: { meta: "04 Modelle · Made in Italy", title: "Vehon", body: "Mocassini, Velvet und Tech-knit in vier eigenständigen Konstruktionen.", cta: "Vehon ansehen" },
+          loungers: { meta: "03 Modelle · Leisure Loafers", title: "Loungers", body: "Drei leichte Loafer zwischen italienischem Handwerk, Reise und entspannter Eleganz.", cta: "Loungers ansehen" },
+        },
+      },
+    },
     product: { view: "ansehen", chooseSize: "Größe wählen", guide: "Größenberatung", add: "In den Warenkorb", chooseFirst: "Bitte Größe wählen", back: "Zurück zur Kollektion", material: "Material", color: "Farbe", delivery: "Versand", deliveryValue: "Wird im Checkout berechnet", returns: "Rückgabe", returnsValue: "14 Tage", added: "Zum Warenkorb hinzugefügt" },
     bag: { title: "Warenkorb", empty: "Ihr Warenkorb ist leer.", shop: "Zum Shop", size: "Größe", subtotal: "Zwischensumme", note: "Versand und Steuern werden im Checkout berechnet.", checkout: "Weiter zum Checkout", checkoutSoon: "Der Checkout wird im nächsten Schritt angebunden." },
     newsletter: { label: "Notes from the house", title: "Neue Modelle, Materialien und Geschichten.", body: "Ein ruhiges Update, wenn es etwas Neues zu entdecken gibt.", placeholder: "Ihre E-Mail-Adresse", submit: "Eintragen", loading: "Wird eingetragen…", success: "Bitte prüfen Sie Ihr Postfach.", invalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein.", error: "Das hat leider nicht funktioniert. Bitte versuchen Sie es erneut.", privacy: "Mit Ihrer Anmeldung stimmen Sie dem Newsletter zu. Jederzeit widerrufbar.", privacyLink: "Datenschutz" },
@@ -342,10 +417,46 @@ const COPY = {
     intro: { label: "The NES principle", title: "Search less. Choose better.", text: "NES brings distinct brands together in one place — curated for comfort, material and forms that will still feel right tomorrow." },
     featured: { label: "New in the house", title: "Selected for now.", all: "View all products" },
     brands: { label: "The brands", title: "One house. Four signatures.", open: "View collection", soon: "Collection coming soon" },
-    editorial: { label: "Loungers · Made in Italy", title: "Comfort that does not look like comfort.", body: "Lightweight loafers, soft construction and an attitude that works from café to journey.", cta: "Discover Loungers" },
+    gallery: { label: "NES / Image archive", title: "Movement in pictures.", intro: "More scenes from everyday life, travel, material and quiet moments — collected as a visual archive of the collections.", aria: "Visual archive", imageAlt: "Editorial image by" },
+    editorial: {
+      label: "The idea · Natural movement",
+      title: "Barefoot is where it begins.",
+      body: "Before shoes made a statement, feet set the rhythm. Room for the toes, closeness to the ground and movement without detours — that is the feeling behind every collection we choose.",
+      cta: "View more images",
+      alt: "A flexible feel shoe in a calm living space",
+    },
     standard: { label: "The NES standard", title: "Good things begin with material.", body: "We select brands whose comfort is constructed, not claimed. Precise materials, considered soles and craft you can feel every day.", points: [["01", "Material", "Textures with function and character."], ["02", "Craft", "Precise construction over short-lived effects."], ["03", "Movement", "Forms designed to accompany everyday life."]], cta: "Discover the collection" },
     trade: { label: "For retailers & brands", title: "Interested in our collections?", body: "Range, terms or a personal appointment — we would be happy to talk.", cta: "Partner enquiry" },
-    shop: { breadcrumb: "NES / Shop", title: "The collection", intro: "Feel shoes, Italian loafers and distinctive knitwear — selected for comfort, movement and everyday life.", all: "All", products: "Products", product: "Product", searchLabel: "Search", searchPlaceholder: "Search product or brand", sortLabel: "Sort", featured: "Featured", priceAsc: "Price: low to high", priceDesc: "Price: high to low", name: "Name: A–Z", noResults: "No products found.", noResultsBody: "Try another search term or choose a different brand.", upcomingTitle: "Green Comfort is joining the collection.", upcomingBody: "The first edit is being prepared. In the meantime, discover the other brands in the house.", showAll: "Show all products" },
+    shop: {
+      breadcrumb: "NES / Shop",
+      title: "The collection",
+      intro: "Feel shoes, Italian loafers and distinctive knitwear — selected for comfort, movement and everyday life.",
+      all: "All",
+      products: "Products",
+      product: "Product",
+      searchLabel: "Search",
+      searchPlaceholder: "Search product or brand",
+      sortLabel: "Sort",
+      featured: "Featured",
+      priceAsc: "Price: low to high",
+      priceDesc: "Price: high to low",
+      name: "Name: A–Z",
+      noResults: "No products found.",
+      noResultsBody: "Try another search term or choose a different brand.",
+      upcomingTitle: "Green Comfort is joining the collection.",
+      upcomingBody: "The first edit is being prepared. In the meantime, discover the other brands in the house.",
+      showAll: "Show all products",
+      lineups: {
+        label: "NES / Brand catalogue",
+        title: "Three lines. Eleven models.",
+        intro: "WAI, Vehon and Loungers — each shown as a complete collection.",
+        items: {
+          wai: { meta: "04 models · Feel shoes", title: "WAI by Vehon", body: "Four textile feel shoes made for natural movement, travel and everyday life.", cta: "View WAI" },
+          vehon: { meta: "04 models · Made in Italy", title: "Vehon", body: "Moccasins, velvet and technical knit across four distinct constructions.", cta: "View Vehon" },
+          loungers: { meta: "03 models · Leisure loafers", title: "Loungers", body: "Three lightweight loafers balancing Italian craft, travel and relaxed elegance.", cta: "View Loungers" },
+        },
+      },
+    },
     product: { view: "view", chooseSize: "Choose size", guide: "Size guide", add: "Add to bag", chooseFirst: "Please choose a size", back: "Back to collection", material: "Material", color: "Colour", delivery: "Delivery", deliveryValue: "Calculated at checkout", returns: "Returns", returnsValue: "14 days", added: "Added to your bag" },
     bag: { title: "Bag", empty: "Your bag is empty.", shop: "Go to shop", size: "Size", subtotal: "Subtotal", note: "Delivery and taxes are calculated at checkout.", checkout: "Continue to checkout", checkoutSoon: "Checkout will be connected in the next step." },
     newsletter: { label: "Notes from the house", title: "New models, materials and stories.", body: "A considered update whenever there is something new to discover.", placeholder: "Your email address", submit: "Join the list", loading: "Joining…", success: "Please check your inbox.", invalid: "Please enter a valid email address.", error: "Something went wrong. Please try again.", privacy: "By joining, you consent to the newsletter. Unsubscribe at any time.", privacyLink: "Privacy" },
@@ -414,7 +525,10 @@ function getInitialLanguage() {
 }
 
 function routeFromLocation() {
-  return window.location.pathname.startsWith("/shop") ? "shop" : "home";
+  if (window.location.pathname.startsWith("/shop")) return "shop";
+  if (window.location.pathname.startsWith("/brands")) return "brands";
+  if (window.location.pathname.startsWith("/gallery")) return "gallery";
+  return "home";
 }
 
 function filterFromLocation() {
@@ -553,6 +667,22 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function navigateBrands() {
+    setRoute("brands");
+    setMobileOpen(false);
+    setActiveProductId(null);
+    window.history.pushState({}, "", "/brands");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function navigateGallery() {
+    setRoute("gallery");
+    setMobileOpen(false);
+    setActiveProductId(null);
+    window.history.pushState({}, "", "/gallery");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   function updateFilter(brand) {
     setFilter(brand);
     const query = brand === "all" ? "" : `?brand=${brand}`;
@@ -599,6 +729,7 @@ export default function App() {
         onLanguage={() => setLanguage((value) => value === "de" ? "en" : "de")}
         onHome={navigateHome}
         onShop={navigateShop}
+        onBrands={navigateBrands}
         onSearch={focusSearch}
         onBag={() => setBagOpen(true)}
       />
@@ -608,10 +739,15 @@ export default function App() {
           copy={copy}
           language={language}
           onShop={navigateShop}
+          onGallery={navigateGallery}
           onOpen={openProduct}
           onTrade={() => setTradeOpen(true)}
           onPrivacy={() => setLegalOpen("privacy")}
         />
+      ) : route === "brands" ? (
+        <BrandsPage copy={copy} onShop={navigateShop} />
+      ) : route === "gallery" ? (
+        <GalleryPage copy={copy} />
       ) : (
         <ShopPage
           copy={copy}
@@ -691,7 +827,7 @@ export default function App() {
   );
 }
 
-function Header({ route, copy, language, bagCount, scrolled, mobileOpen, onToggleMobile, onLanguage, onHome, onShop, onSearch, onBag }) {
+function Header({ route, copy, language, bagCount, scrolled, mobileOpen, onToggleMobile, onLanguage, onHome, onShop, onBrands, onSearch, onBag }) {
   return (
     <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="announcement-bar"><span>{copy.announcement}</span></div>
@@ -699,7 +835,7 @@ function Header({ route, copy, language, bagCount, scrolled, mobileOpen, onToggl
         <div className="nav-cluster nav-cluster-left">
           <button type="button" onClick={() => onShop("all")} aria-current={route === "shop" ? "page" : undefined}>{copy.nav.shop}</button>
           <button type="button" onClick={() => onShop("all")}>{copy.nav.new}</button>
-          <button type="button" onClick={() => onHome("brands")}>{copy.nav.brands}</button>
+          <button type="button" onClick={onBrands} aria-current={route === "brands" ? "page" : undefined}>{copy.nav.brands}</button>
         </div>
         <button className="header-wordmark" type="button" onClick={() => onHome()} aria-label="NES home">NES</button>
         <div className="nav-cluster nav-cluster-right">
@@ -717,7 +853,7 @@ function Header({ route, copy, language, bagCount, scrolled, mobileOpen, onToggl
         <div className="mobile-menu">
           <div className="mobile-menu-links">
             <button type="button" onClick={() => onShop("all")}>{copy.nav.shop}<ArrowIcon /></button>
-            <button type="button" onClick={() => onHome("brands")}>{copy.nav.brands}<ArrowIcon /></button>
+            <button type="button" onClick={onBrands}>{copy.nav.brands}<ArrowIcon /></button>
             <button type="button" onClick={() => onHome("standard")}>{copy.nav.about}<ArrowIcon /></button>
           </div>
           <div className="mobile-menu-meta">
@@ -730,7 +866,7 @@ function Header({ route, copy, language, bagCount, scrolled, mobileOpen, onToggl
   );
 }
 
-function HomePage({ copy, language, onShop, onOpen, onTrade, onPrivacy }) {
+function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onPrivacy }) {
   const featured = FEATURED_IDS.map((id) => PRODUCTS.find((product) => product.id === id)).filter(Boolean);
   return (
     <main className="home-page">
@@ -789,22 +925,22 @@ function HomePage({ copy, language, onShop, onOpen, onTrade, onPrivacy }) {
       </section>
 
       <section className="editorial-feature">
-        <img src="/shop/loungers-banner.webp" alt="Brauner Loungers Loafer vor bordeauxfarbenem Hintergrund" loading="lazy" />
+        <img src="/wai10-opt.jpeg" alt={copy.editorial.alt} loading="lazy" />
         <span className="editorial-feature-overlay" aria-hidden="true" />
         <div className="editorial-feature-copy">
           <p className="eyebrow eyebrow-light">{copy.editorial.label}</p>
           <h2>{copy.editorial.title}</h2>
           <p>{copy.editorial.body}</p>
-          <button className="button button-ivory" type="button" onClick={() => onShop("loungers")}>{copy.editorial.cta}<ArrowIcon /></button>
+          <button className="button button-ivory" type="button" onClick={onGallery}>{copy.editorial.cta}<ArrowIcon /></button>
         </div>
       </section>
 
       <section className="standard-section" id="standard">
-        <div className="standard-media"><img src="/craftsmanship-wai.png" alt="Craftsmanship in an Italian footwear workshop" loading="lazy" /><span>Atelier / Italy</span></div>
         <div className="standard-copy">
-          <p className="eyebrow">{copy.standard.label}</p>
-          <h2>{copy.standard.title}</h2>
-          <p className="standard-body">{copy.standard.body}</p>
+          <div className="standard-head">
+            <div><p className="eyebrow">{copy.standard.label}</p><h2>{copy.standard.title}</h2></div>
+            <p className="standard-body">{copy.standard.body}</p>
+          </div>
           <div className="principle-list">
             {copy.standard.points.map(([index, title, body]) => <div className="principle" key={index}><span>{index}</span><strong>{title}</strong><p>{body}</p></div>)}
           </div>
@@ -825,23 +961,89 @@ function HomePage({ copy, language, onShop, onOpen, onTrade, onPrivacy }) {
   );
 }
 
+function GalleryPage({ copy }) {
+  return (
+    <main className="gallery-page">
+      <section className="gallery-intro section-pad">
+        <div><p className="eyebrow">{copy.gallery.label}</p><h1>{copy.gallery.title}</h1></div>
+        <p>{copy.gallery.intro}</p>
+      </section>
+      <section className="gallery-grid section-pad" aria-label={copy.gallery.aria}>
+        {GALLERY_IMAGES.map((item, index) => (
+          <figure className="gallery-item" key={item.src}>
+            <img src={item.src} alt={`${copy.gallery.imageAlt} ${item.brand}`} loading={index < 3 ? "eager" : "lazy"} decoding="async" />
+            <figcaption>{item.brand}</figcaption>
+          </figure>
+        ))}
+      </section>
+      <ServiceStrip copy={copy} />
+    </main>
+  );
+}
+
+function BrandsPage({ copy, onShop }) {
+  return (
+    <main className="lineups-page">
+      <CatalogLineups copy={copy.shop.lineups} onSelect={onShop} />
+      <ServiceStrip copy={copy} />
+    </main>
+  );
+}
+
+function CatalogLineups({ copy, onSelect }) {
+  return (
+    <section className="catalog-lineups section-pad" aria-labelledby="catalog-lineups-title">
+      <header className="catalog-lineups-heading">
+        <div>
+          <p className="eyebrow">{copy.label}</p>
+          <h2 id="catalog-lineups-title">{copy.title}</h2>
+        </div>
+        <p>{copy.intro}</p>
+      </header>
+      <div className="catalog-lineup-grid">
+        {CATALOG_LINEUPS.map((lineup) => {
+          const item = copy.items[lineup.id];
+          return (
+            <button className={`catalog-lineup-card catalog-lineup-${lineup.id}`} type="button" onClick={() => onSelect(lineup.filter)} key={lineup.id}>
+              <span className="catalog-lineup-media">
+                <img src={lineup.image} alt={`${item.title} — ${item.meta}`} loading="lazy" decoding="async" />
+                <span className="catalog-lineup-index" aria-hidden="true">{lineup.index}</span>
+              </span>
+              <span className="catalog-lineup-copy">
+                <span className="catalog-lineup-meta">{item.meta}</span>
+                <strong>{item.title}</strong>
+                <span className="catalog-lineup-link">{item.cta}<ArrowIcon /></span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 function ShopPage({ copy, language, products, filter, search, sort, onFilter, onSearch, onSort, onOpen, onShowAll }) {
   const greenSelected = filter === "green";
   return (
     <main className="catalog-page">
       <section className="catalog-intro section-pad">
-        <p className="eyebrow">{copy.shop.breadcrumb}</p>
-        <div><h1>{copy.shop.title}</h1><p>{copy.shop.intro}</p></div>
+        <div className="catalog-intro-heading">
+          <p className="eyebrow">{copy.shop.breadcrumb}</p>
+          <h1>{copy.shop.title}</h1>
+        </div>
+        <div className="catalog-intro-summary"><p>{copy.shop.intro}</p></div>
       </section>
       <section className="catalog section-pad" aria-label={copy.shop.title}>
-        <div className="catalog-tabs" role="group" aria-label={copy.brands.label}>
-          <button className={filter === "all" ? "is-active" : ""} type="button" onClick={() => onFilter("all")}>{copy.shop.all}</button>
-          {BRAND_WORLDS.map((brand) => <button className={filter === brand.id ? "is-active" : ""} type="button" onClick={() => onFilter(brand.id)} key={brand.id}>{brand.name}</button>)}
-        </div>
-        <div className="catalog-toolbar">
-          <label className="catalog-search" htmlFor="catalog-search"><SearchIcon /><span className="sr-only">{copy.shop.searchLabel}</span><input id="catalog-search" type="search" value={search} onChange={(event) => onSearch(event.target.value)} placeholder={copy.shop.searchPlaceholder} /></label>
-          <span className="catalog-count">{products.length} {products.length === 1 ? copy.shop.product : copy.shop.products}</span>
-          <label className="catalog-sort"><span>{copy.shop.sortLabel}</span><select value={sort} onChange={(event) => onSort(event.target.value)}><option value="featured">{copy.shop.featured}</option><option value="price-asc">{copy.shop.priceAsc}</option><option value="price-desc">{copy.shop.priceDesc}</option><option value="name">{copy.shop.name}</option></select></label>
+        <div className="catalog-controls">
+          <div className="catalog-tabs" role="group" aria-label={copy.brands.label}>
+            <button className={filter === "all" ? "is-active" : ""} type="button" onClick={() => onFilter("all")}>{copy.shop.all}</button>
+            {BRAND_WORLDS.map((brand) => <button className={filter === brand.id ? "is-active" : ""} type="button" onClick={() => onFilter(brand.id)} key={brand.id}>{brand.name}</button>)}
+          </div>
+          <div className="catalog-toolbar">
+            <label className="catalog-search" htmlFor="catalog-search"><SearchIcon /><span className="sr-only">{copy.shop.searchLabel}</span><input id="catalog-search" type="search" value={search} onChange={(event) => onSearch(event.target.value)} placeholder={copy.shop.searchPlaceholder} /></label>
+            <span className="catalog-count">{products.length} {products.length === 1 ? copy.shop.product : copy.shop.products}</span>
+            <label className="catalog-sort"><span>{copy.shop.sortLabel}</span><select value={sort} onChange={(event) => onSort(event.target.value)}><option value="featured">{copy.shop.featured}</option><option value="price-asc">{copy.shop.priceAsc}</option><option value="price-desc">{copy.shop.priceDesc}</option><option value="name">{copy.shop.name}</option></select></label>
+          </div>
         </div>
         {products.length > 0 ? (
           <div className="product-grid catalog-grid">{products.map((product) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={onOpen} />)}</div>
