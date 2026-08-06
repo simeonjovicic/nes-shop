@@ -1,1458 +1,1021 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ShaderBackground } from "./components/ui/shaders-hero-section";
 import "./App.css";
 
-/* Tiles shown before the "show all" button kicks in (mobile layout only) */
-const MOBILE_GALLERY_PREVIEW = 3;
-
-const MESSE_GALLERY = [
+const PRODUCTS = [
   {
-    src: "/messe-offenbach/team-am-stand.jpeg",
-    area: "lead",
-    alt: {
-      en: "The team at the NES stand at the fair",
-      de: "Das Team am NES-Stand auf der Messe",
+    id: 1,
+    brand: "WAI by Vehon",
+    brandId: "vehon",
+    name: "WAI Home",
+    subtitle: { de: "Indoor Feel Shoe", en: "Indoor feel shoe" },
+    price: 169,
+    color: { de: "Indigo", en: "Indigo" },
+    material: "IVIVI Barefoot Textile",
+    category: { de: "Feel Shoes", en: "Feel shoes" },
+    image: "/wai_front.jpeg",
+    hoverImage: "/wai_behind.jpeg",
+    tag: { de: "Signature", en: "Signature" },
+    fit: "cover",
+    sizes: ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45"],
+    description: {
+      de: "Ein leichter Feel Shoe für Zuhause, das Studio und alle Momente dazwischen. Flexibel, atmungsaktiv und bewusst reduziert konstruiert.",
+      en: "A lightweight feel shoe for home, the studio and every moment in between. Flexible, breathable and deliberately reduced.",
     },
   },
   {
-    src: "/messe-offenbach/feel-shoes-auswahl.jpeg",
-    area: "ph2",
-    alt: {
-      en: "A selection of feel shoes at the stand",
-      de: "Eine Auswahl an Feel-Schuhen am Stand",
+    id: 2,
+    brand: "WAI by Vehon",
+    brandId: "vehon",
+    name: "WAI Travel",
+    subtitle: { de: "Packable Loafer", en: "Packable loafer" },
+    price: 179,
+    color: { de: "Deep Navy", en: "Deep navy" },
+    material: "Flexible Textile Upper",
+    category: { de: "Feel Shoes", en: "Feel shoes" },
+    image: "/wai1_front.jpeg",
+    hoverImage: "/wai1_behind.jpeg",
+    tag: { de: "Travel", en: "Travel" },
+    fit: "cover",
+    sizes: ["38", "39", "40", "41", "42", "43", "44", "45"],
+    description: {
+      de: "Gemacht für Wege, Wartezeiten und leichte Routinen unterwegs. Die flexible Konstruktion lässt sich flach verstauen und bleibt stabil genug für den ganzen Tag.",
+      en: "Made for journeys, waiting times and easy routines on the road. Its flexible construction packs flat while staying supportive all day.",
     },
   },
   {
-    src: "/messe-carousel/messe-08.jpeg",
-    area: "ph3",
-    alt: {
-      en: "Barefoot shoe fitting and consultation at the stand",
-      de: "Anprobe und Beratung zu Barfußschuhen am Stand",
+    id: 3,
+    brand: "WAI by Vehon",
+    brandId: "vehon",
+    name: "WAI Flex",
+    subtitle: { de: "Barefoot Technology", en: "Barefoot technology" },
+    price: 189,
+    color: { de: "Blue Canvas", en: "Blue canvas" },
+    material: "IVIVI Sole System",
+    category: { de: "Feel Shoes", en: "Feel shoes" },
+    image: "/wai2_front.jpeg",
+    hoverImage: "/wai2_behind.jpeg",
+    tag: { de: "Neu", en: "New" },
+    fit: "cover",
+    sizes: ["37", "38", "39", "40", "41", "42", "43", "44"],
+    description: {
+      de: "Die weiche, rollbare Sohle gibt dem Fuß Raum, ohne den Look eines klassischen Slippers zu verlieren. Ruhig im Ausdruck, technisch in der Substanz.",
+      en: "The soft, rollable sole gives the foot room without losing the look of a classic slipper. Calm in expression, technical at heart.",
     },
   },
   {
-    src: "/messe-carousel/messe-07.jpeg",
-    area: "ph4",
-    alt: {
-      en: "A view through the exhibition hall in Offenbach",
-      de: "Blick durch die Messehalle in Offenbach",
+    id: 4,
+    brand: "WAI by Vehon",
+    brandId: "vehon",
+    name: "WAI Lounge",
+    subtitle: { de: "Soft Everyday Slip-on", en: "Soft everyday slip-on" },
+    price: 159,
+    color: { de: "Washed Blue", en: "Washed blue" },
+    material: "Soft-woven Textile",
+    category: { de: "Feel Shoes", en: "Feel shoes" },
+    image: "/wai3_front.jpeg",
+    hoverImage: "/wai3_behind.jpeg",
+    fit: "cover",
+    sizes: ["36", "37", "38", "39", "40", "41", "42", "43"],
+    description: {
+      de: "Ein entspannter Slip-on für ruhige Innenräume, kurze Wege und Tage, an denen Komfort selbstverständlich sein soll.",
+      en: "A relaxed slip-on for calm interiors, short walks and days when comfort should feel effortless.",
     },
   },
   {
-    src: "/messe-carousel/messe-04.jpeg",
-    area: "ph5",
-    alt: {
-      en: "A product demonstration at the barefoot shoe stand",
-      de: "Eine Produktvorführung am Messestand",
+    id: 5,
+    brand: "Vehon",
+    brandId: "vehon",
+    name: "Duke Cervo",
+    subtitle: { de: "Mocassino", en: "Moccasin" },
+    price: 289,
+    color: { de: "Nero", en: "Nero" },
+    material: "Cervo Leather",
+    category: { de: "Mocassini", en: "Moccasins" },
+    image: "/shop/products/vehon-duke-cervo-front.webp",
+    hoverImage: "/shop/products/vehon-duke-cervo-side.webp",
+    tag: { de: "Handgemacht", en: "Handmade" },
+    fit: "cover",
+    sizes: ["39", "40", "41", "42", "43", "44", "45", "46"],
+    description: {
+      de: "Der Duke aus genarbtem Cervo-Leder wird von Hand in Italien gefertigt. Ein Mocassino, der vom Wohnraum aufs Boot und durch den ganzen Tag trägt.",
+      en: "The Duke in grained Cervo leather is handmade in Italy. A moccasin designed to move from home to deck and through the entire day.",
     },
   },
   {
-    src: "/messe-carousel/messe-06.jpeg",
-    area: "ph6",
-    alt: {
-      en: "Visitors in conversation at the exhibition stand",
-      de: "Besucher im Gespräch am Messestand",
+    id: 6,
+    brand: "Vehon",
+    brandId: "vehon",
+    name: "Duke Velvet",
+    subtitle: { de: "Mocassino", en: "Moccasin" },
+    price: 279,
+    color: { de: "Nero", en: "Nero" },
+    material: "Velvet",
+    category: { de: "Mocassini", en: "Moccasins" },
+    image: "/shop/products/vehon-duke-velvet-front.webp",
+    hoverImage: "/shop/products/vehon-duke-velvet-side.webp",
+    fit: "cover",
+    sizes: ["39", "40", "41", "42", "43", "44", "45", "46"],
+    description: {
+      de: "Samtweicher Auftritt mit fester Haltung: der Duke in Velvet, mit eigens entwickelter Sohle für Halt, Leichtigkeit und Ruhe.",
+      en: "A velvet-soft entrance with composure: the Duke in velvet, finished with a custom sole for grip, lightness and ease.",
+    },
+  },
+  {
+    id: 7,
+    brand: "Vehon",
+    brandId: "vehon",
+    name: "Prince Loafer",
+    subtitle: { de: "Tech-knit Loafer", en: "Tech-knit loafer" },
+    price: 259,
+    color: { de: "Nero", en: "Nero" },
+    material: "3D Knit",
+    category: { de: "Mocassini", en: "Moccasins" },
+    image: "/shop/products/vehon-prince-front.webp",
+    hoverImage: "/shop/products/vehon-prince-side.webp",
+    tag: { de: "Neu", en: "New" },
+    fit: "cover",
+    sizes: ["39", "40", "41", "42", "43", "44", "45", "46"],
+    description: {
+      de: "Der Prince verbindet die Silhouette des klassischen Loafers mit gestricktem Obermaterial: leicht, flexibel und vollständig Made in Italy.",
+      en: "The Prince combines a classic loafer silhouette with a knitted upper: light, flexible and entirely made in Italy.",
+    },
+  },
+  {
+    id: 8,
+    brand: "Vehon",
+    brandId: "vehon",
+    name: "Velluto Nero",
+    subtitle: { de: "Pantofola", en: "Velvet slipper" },
+    price: 249,
+    color: { de: "Nero", en: "Nero" },
+    material: "Velvet",
+    category: { de: "Pantofole", en: "Slippers" },
+    image: "/shop/products/vehon-velluto-front.webp",
+    hoverImage: "/shop/products/vehon-velluto-side.webp",
+    fit: "cover",
+    sizes: ["38", "39", "40", "41", "42", "43", "44", "45"],
+    description: {
+      de: "Die Pantofola für drinnen: Velvet, cleaner Spann und die Ruhe von Cashmere-Decken und Marmorböden.",
+      en: "The indoor pantofola: velvet, a clean vamp and the quiet luxury of cashmere throws and marble floors.",
+    },
+  },
+  {
+    id: 9,
+    brand: "Loungers",
+    brandId: "loungers",
+    name: "Driver Brown",
+    subtitle: { de: "Italian Driving Loafer", en: "Italian driving loafer" },
+    price: 229,
+    color: { de: "Cognac", en: "Cognac" },
+    material: "Soft Nappa Leather",
+    category: { de: "Loafers", en: "Loafers" },
+    image: "/shop/products/loungers-driver-brown-front.webp",
+    hoverImage: "/shop/products/loungers-driver-brown-side.webp",
+    tag: { de: "Neu bei NES", en: "New at NES" },
+    fit: "cover",
+    sizes: ["39", "40", "41", "42", "43", "44", "45", "46"],
+    description: {
+      de: "Ein weich konstruierter Driving Loafer aus italienischem Nappaleder. Leicht am Fuß, präzise von Hand vollendet und für lange Tage gemacht.",
+      en: "A softly constructed driving loafer in Italian nappa leather. Light on the foot, finished by hand and made for long days.",
+    },
+  },
+  {
+    id: 10,
+    brand: "Loungers",
+    brandId: "loungers",
+    name: "City Ease",
+    subtitle: { de: "Canvas Penny Loafer", en: "Canvas penny loafer" },
+    price: 219,
+    color: { de: "Black / Tan", en: "Black / tan" },
+    material: "Canvas & Nappa Leather",
+    category: { de: "Loafers", en: "Loafers" },
+    image: "/shop/products/loungers-city-ease-front.webp",
+    hoverImage: "/shop/products/loungers-city-ease-side.webp",
+    fit: "cover",
+    sizes: ["39", "40", "41", "42", "43", "44", "45", "46"],
+    description: {
+      de: "Canvas trifft Nappaleder: ein leichter Penny Loafer für Stadt, Reise und entspannte Abende. Charaktervoll, ohne laut zu werden.",
+      en: "Canvas meets nappa leather in a lightweight penny loafer for the city, travel and easy evenings. Distinct without being loud.",
+    },
+  },
+  {
+    id: 11,
+    brand: "Loungers",
+    brandId: "loungers",
+    name: "Bordeaux Ease",
+    subtitle: { de: "Velvet Leisure Loafer", en: "Velvet leisure loafer" },
+    price: 219,
+    color: { de: "Bordeaux", en: "Bordeaux" },
+    material: "Cotton Velvet",
+    category: { de: "Loafers", en: "Loafers" },
+    image: "/shop/products/loungers-bordeaux-front.webp",
+    hoverImage: "/shop/products/loungers-bordeaux-side.webp",
+    fit: "cover",
+    sizes: ["39", "40", "41", "42", "43", "44", "45", "46"],
+    description: {
+      de: "Ein unkomplizierter Velvet Loafer mit weicher Linie und markanter Farbe — geschaffen für Reisen und Momente außerhalb der Routine.",
+      en: "An effortless velvet loafer with a soft line and a distinctive colour, designed for travel and moments outside the ordinary.",
+    },
+  },
+  {
+    id: 12,
+    brand: "Montechiaro",
+    brandId: "montechiaro",
+    name: "Pully Rosso",
+    subtitle: { de: "Signature Knit Pullover", en: "Signature knit pullover" },
+    price: 219,
+    color: { de: "Rosso", en: "Rosso" },
+    material: "Heavy Jacquard Knit",
+    category: { de: "Strick", en: "Knitwear" },
+    image: "/shop/pully-red-front.webp",
+    hoverImage: "/shop/pully-red-side.webp",
+    tag: { de: "Statement Knit", en: "Statement knit" },
+    fit: "contain",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    description: {
+      de: "Schwerer Jacquard-Strick mit reliefartiger Struktur, geradem Schnitt und gerippten Bündchen. Ein italienisches Statement-Piece mit Haltung.",
+      en: "Heavy jacquard knit with sculptural texture, a straight fit and ribbed trims. An Italian statement piece with composure.",
     },
   },
 ];
 
-const BRANDS = [
+const BRAND_WORLDS = [
   {
+    id: "vehon",
+    index: "01",
+    name: "Vehon / WAI",
+    category: { de: "Feel Shoes & Mocassini", en: "Feel shoes & moccasins" },
+    note: {
+      de: "Natürliche Bewegung trifft italienische Form.",
+      en: "Natural movement meets Italian form.",
+    },
+    image: "/shop/hero-wai-sunset.webp",
+    position: "58% center",
+    className: "brand-world-wide",
+  },
+  {
+    id: "loungers",
+    index: "02",
+    name: "Loungers",
+    category: { de: "Leisure Loafers", en: "Leisure loafers" },
+    note: {
+      de: "Easy luxury, handgemacht in Italien.",
+      en: "Easy luxury, handmade in Italy.",
+    },
+    image: "/shop/loungers-cafe.webp",
+    position: "center 62%",
+    className: "brand-world-tall",
+  },
+  {
+    id: "montechiaro",
+    index: "03",
+    name: "Montechiaro",
+    category: { de: "Italian Knitwear", en: "Italian knitwear" },
+    note: {
+      de: "Dressed down. Never plain.",
+      en: "Dressed down. Never plain.",
+    },
+    image: "/shop/montechiaro-editorial.webp",
+    position: "42% center",
+    className: "brand-world-wide brand-world-dark",
+  },
+  {
+    id: "green",
+    index: "04",
     name: "Green Comfort",
+    category: { de: "Danish Foot Health", en: "Danish foot health" },
+    note: {
+      de: "Weite Passformen und EnergySole™ Komfort.",
+      en: "Wide fits and EnergySole™ comfort.",
+    },
     logo: "/logos/greencomfort.svg?v=official",
-    copy: {
-      en: {
-        meta: "Randers, Denmark · Since 1994",
-        signature:
-          "Built around the patented EnergySole™ — resilient cushioning for active feet.",
-        description:
-          "Danish foot-health footwear built on wide fits and lasting comfort — considered production, made to last.",
-        facts: ["Foot-health", "Wide fits", "EnergySole™"],
-      },
-      de: {
-        meta: "Randers, Dänemark · Seit 1994",
-        signature:
-          "Rund um die patentierte EnergySole™ — langlebige Dämpfung für aktive Füße.",
-        description:
-          "Dänische Schuhe für gesunde Füße — weite Passformen, bedachte Produktion, gemacht, um zu bleiben.",
-        facts: ["Gesunde Füße", "Weite Passformen", "EnergySole™"],
-      },
-    },
-  },
-  {
-    name: "Vehon",
-    logo: "/logos/vehon.png",
-    copy: {
-      en: {
-        meta: "Italy · Formerly WAI · True barefoot",
-        signature:
-          "True barefoot construction with a signature red-grip outsole.",
-        description:
-          "Italian elegance in true barefoot construction — zero-drop, a wide toe box and an exceptionally thin, flexible sole.",
-        facts: ["True barefoot", "Zero-drop", "Wide toe box"],
-      },
-      de: {
-        meta: "Italien · Ehemals WAI · Echtes Barfußgefühl",
-        signature:
-          "Echte Barfußkonstruktion mit markanter roter Grip-Sohle.",
-        description:
-          "Italienische Eleganz in echter Barfußkonstruktion — Zero-Drop, breite Zehenbox und eine besonders dünne, flexible Sohle.",
-        facts: ["Echtes Barfußgefühl", "Zero-Drop", "Breite Zehenbox"],
-      },
-    },
+    className: "brand-world-green",
+    upcoming: true,
   },
 ];
+
+const FEATURED_IDS = [9, 1, 12, 5];
 
 const COPY = {
-  en: {
-    languageName: "English",
-    languageMenu: "Choose language",
-    homeLabel: "NES home",
-    navLabel: "Main navigation",
-    nav: {
-      idea: "The idea",
-      brands: "Brands",
-      fair: "Previous fair",
-    },
-    arrival: {
-      kicker: "Welcome to",
-      place: "Offenbach · Fair edition",
-    },
-    hero: {
-      kicker: "Curated barefoot footwear",
-      title: "Barefoot and natural comfort, under one roof.",
-      sideNote: "Offenbach · Germany",
-      scroll: "Scroll",
-      scrollLabel: "Continue to the idea",
-    },
-    signup: {
-      label: "Email address",
-      placeholder: "Your email address",
-      idle: "Join the list",
-      loading: "Joining…",
-      success: "Check your inbox",
-      confirmed: "You are on the list",
-      feedback: "Dates, drops and early access. No noise.",
-      invalid: "Please enter a valid email address.",
-      error: "Something went wrong. Please try again.",
-      expired: "That confirmation link has expired. Please sign up again.",
-      invalidLink: "That confirmation link is not valid. Please sign up again.",
-      unsubscribed: "You have been unsubscribed. You can join again at any time.",
-      privacy:
-        "By joining, you agree to receive the NES newsletter. Unsubscribe at any time.",
-      privacyLink: "Privacy",
-    },
-    idea: {
-      label: "The idea",
-      title:
-        "NES brings distinct approaches to foot health together in one place — each chosen for",
-      accent: "natural movement, lasting comfort, and design.",
-      foot: "Offenbach · One roof, chosen brands",
-    },
-    brands: {
-      label: "The brands",
-      partnerNote: "For retail & brand partners",
-      headline: "Foot health, done two ways.",
-      subline: "Danish comfort. Italian barefoot.",
-      signatureLabel: "Signature",
-      logoAlt: "logo",
-    },
-    fair: {
-      label: "Previous fair",
-      title: "A look back at last year.",
-      body: "People, product and natural movement in Offenbach.",
-      archive: "Offenbach archive",
-      caption: "Offenbach · last year's fair",
-      showMore: "Show all photos",
-      showLess: "Show fewer",
-    },
-    closing: {
-      label: "Offenbach Trade Fair",
-      title: "Get the date, the drops, and early access.",
-      body: "One considered email when there is something worth knowing.",
-    },
-    inquiry: {
-      cta: "Inquire now",
-      bannerTitle: "Interested in carrying these brands?",
-      bannerText: "Attractive margins and dedicated trade hours at the fair — retailers and brands welcome.",
-      heroPrompt: "Retailer or brand?",
-      title: "Become a partner",
-      subtitle:
-        "For retailers and brands. Tell us a little about you and we'll be in touch.",
-      stepLabel: "Step",
-      stepOf: "of",
-      steps: ["Your contact", "Your company", "Your interest", "Almost done"],
-      next: "Continue",
-      back: "Back",
-      role: {
-        label: "I am a",
-        options: ["Retailer", "Brand / supplier", "Private customer", "Press", "Other"],
-      },
-      topic: {
-        label: "My interest",
-        options: [
-          "Reselling & wholesale terms",
-          "Meeting at Messe Offenbach",
-          "Range, catalogue & pricing",
-          "General enquiry",
-        ],
-      },
-      brands: {
-        label: "Brands of interest",
-        options: ["Green Comfort", "Vehon", "All brands"],
-      },
-      fields: {
-        name: "Name",
-        company: "Company",
-        email: "Email address",
-        phone: "Phone",
-        message: "Message",
-      },
-      placeholders: {
-        name: "First and last name",
-        company: "Store or brand name",
-        email: "you@company.com",
-        phone: "Optional",
-        message: "How can we help? Anything we should know?",
-      },
-      optional: "optional",
-      consent: "I agree that my details may be processed to handle this enquiry.",
-      consentLink: "Privacy policy",
-      newsletter: "Also keep me posted on dates, drops and early access.",
-      submit: "Send enquiry",
-      sending: "Sending…",
-      successTitle: "Thank you",
-      successBody: "We've received your enquiry and will get back to you shortly.",
-      invalid: "Please enter your name and a valid email address.",
-      invalidConsent: "Please accept the privacy note to continue.",
-      error: "Something went wrong. Please try again.",
-      close: "Close",
-    },
-    footer: {
-      linksLabel: "Social and legal",
-      contact: "Contact",
-      privacy: "Privacy",
-      legalBack: "Back to site",
-      tagline: "Natural. Everyday. Shoes.",
-    },
-  },
   de: {
-    languageName: "Deutsch",
-    languageMenu: "Sprache wählen",
-    homeLabel: "NES Startseite",
-    navLabel: "Hauptnavigation",
-    nav: {
-      idea: "Die Idee",
-      brands: "Marken",
-      fair: "Messe-Rückblick",
-    },
-    arrival: {
-      kicker: "Willkommen bei",
-      place: "Offenbach · Messe Edition",
-    },
+    announcement: "Ausgewählte Marken · natürliche Bewegung · gutes Design",
+    nav: { shop: "Shop", new: "Neu", brands: "Marken", about: "Über NES", search: "Suche", bag: "Warenkorb", menu: "Menü", close: "Schließen" },
     hero: {
-      kicker: "Ausgewählte Schuhe für natürliche Bewegung",
-      title: "Barfuß und natürlicher Komfort — unter einem Dach.",
-      sideNote: "Offenbach · Deutschland",
-      scroll: "Entdecken",
-      scrollLabel: "Weiter zur Idee",
+      eyebrow: "Curated footwear & everyday pieces",
+      title: "Natürlich bewegen. Besser ankommen.",
+      body: "Ausgewählte Marken für Komfort, Handwerk und modernes Design — für jeden Schritt im Alltag.",
+      primary: "Kollektion entdecken",
+      secondary: "Unsere Marken",
+      campaign: "Vehon / WAI · Feel Shoes",
     },
-    signup: {
-      label: "E-Mail-Adresse",
-      placeholder: "Ihre E-Mail-Adresse",
-      idle: "Eintragen",
-      loading: "Wird eingetragen…",
-      success: "Bitte prüfen Sie Ihr Postfach",
-      confirmed: "Sie sind auf der Liste",
-      feedback: "Termine, Neuheiten und Early Access. Ohne Lärm.",
-      invalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
-      error: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
-      expired: "Dieser Bestätigungslink ist abgelaufen. Bitte tragen Sie sich erneut ein.",
-      invalidLink: "Dieser Bestätigungslink ist ungültig. Bitte tragen Sie sich erneut ein.",
-      unsubscribed: "Sie wurden abgemeldet. Sie können sich jederzeit wieder eintragen.",
-      privacy:
-        "Mit Ihrer Anmeldung stimmen Sie dem Erhalt des NES Newsletters zu. Jederzeit widerrufbar.",
-      privacyLink: "Datenschutz",
+    intro: {
+      label: "Das NES Prinzip",
+      title: "Weniger suchen. Besser auswählen.",
+      text: "NES bringt eigenständige Marken an einen Ort — kuratiert nach Komfort, Material und einer Form, die auch morgen noch richtig wirkt.",
     },
-    idea: {
-      label: "Die Idee",
-      title:
-        "NES vereint unterschiedliche Ansätze für gesunde Füße an einem Ort — ausgewählt für",
-      accent: "natürliche Bewegung, dauerhaften Komfort und gutes Design.",
-      foot: "Offenbach · Ein Dach, ausgewählte Marken",
+    featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", all: "Alle Produkte" },
+    brands: { label: "Die Marken", title: "Ein Haus. Vier Handschriften.", open: "Kollektion ansehen", soon: "Kollektion folgt" },
+    editorial: { label: "Loungers · Made in Italy", title: "Komfort, der nicht nach Komfort aussieht.", body: "Leichte Loafer, weiche Konstruktion und eine Haltung, die vom Café bis zur Reise funktioniert.", cta: "Loungers entdecken" },
+    standard: { label: "Der NES Maßstab", title: "Gute Dinge beginnen beim Material.", body: "Wir wählen Marken, deren Komfort konstruiert, nicht behauptet wird. Präzise Materialien, durchdachte Sohlen und Handwerk, das man im Alltag spürt.", points: [["01", "Material", "Texturen mit Funktion und Charakter."], ["02", "Handwerk", "Präzise Konstruktion statt kurzlebiger Effekte."], ["03", "Bewegung", "Formen, die den Alltag begleiten."]], cta: "Das Sortiment entdecken" },
+    trade: { label: "Für Händler & Marken", title: "Interesse an unseren Kollektionen?", body: "Sortiment, Konditionen oder ein persönlicher Termin — wir sprechen gerne mit Ihnen.", cta: "Partneranfrage" },
+    shop: { breadcrumb: "NES / Shop", title: "Die Kollektion", intro: "Feel Shoes, italienische Loafer und charakterstarker Strick — ausgewählt für Komfort, Bewegung und Alltag.", all: "Alle", products: "Produkte", product: "Produkt", searchLabel: "Suche", searchPlaceholder: "Produkt oder Marke suchen", sortLabel: "Sortieren", featured: "Empfohlen", priceAsc: "Preis: aufsteigend", priceDesc: "Preis: absteigend", name: "Name: A–Z", noResults: "Keine Produkte gefunden.", noResultsBody: "Versuchen Sie einen anderen Suchbegriff oder wechseln Sie die Marke.", upcomingTitle: "Green Comfort kommt ins Sortiment.", upcomingBody: "Die erste Auswahl wird gerade zusammengestellt. Entdecken Sie bis dahin die übrigen Marken im Haus.", showAll: "Alle Produkte zeigen" },
+    product: { view: "ansehen", chooseSize: "Größe wählen", guide: "Größenberatung", add: "In den Warenkorb", chooseFirst: "Bitte Größe wählen", back: "Zurück zur Kollektion", material: "Material", color: "Farbe", delivery: "Versand", deliveryValue: "Wird im Checkout berechnet", returns: "Rückgabe", returnsValue: "14 Tage", added: "Zum Warenkorb hinzugefügt" },
+    bag: { title: "Warenkorb", empty: "Ihr Warenkorb ist leer.", shop: "Zum Shop", size: "Größe", subtotal: "Zwischensumme", note: "Versand und Steuern werden im Checkout berechnet.", checkout: "Weiter zum Checkout", checkoutSoon: "Der Checkout wird im nächsten Schritt angebunden." },
+    newsletter: { label: "Notes from the house", title: "Neue Modelle, Materialien und Geschichten.", body: "Ein ruhiges Update, wenn es etwas Neues zu entdecken gibt.", placeholder: "Ihre E-Mail-Adresse", submit: "Eintragen", loading: "Wird eingetragen…", success: "Bitte prüfen Sie Ihr Postfach.", invalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein.", error: "Das hat leider nicht funktioniert. Bitte versuchen Sie es erneut.", privacy: "Mit Ihrer Anmeldung stimmen Sie dem Newsletter zu. Jederzeit widerrufbar.", privacyLink: "Datenschutz" },
+    services: [["01", "Kuratierte Auswahl", "Nur Marken, die zum NES Maßstab passen."], ["02", "14 Tage Rückgabe", "In Ruhe anprobieren und entscheiden."], ["03", "Persönliche Beratung", "Hilfe bei Modell, Material und Größe."]],
+    tradeForm: { title: "Partner werden", body: "Erzählen Sie uns kurz, worum es geht. Wir melden uns persönlich zurück.", name: "Name", company: "Unternehmen", email: "E-Mail", message: "Nachricht", consent: "Ich stimme der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage zu.", submit: "Anfrage senden", sending: "Wird gesendet…", successTitle: "Vielen Dank.", successBody: "Ihre Anfrage ist angekommen. Wir melden uns in Kürze.", invalid: "Bitte füllen Sie Name, E-Mail und Zustimmung aus.", error: "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut." },
+    footer: { about: "Ein kuratiertes Haus für Schuhe, Strick und Dinge, die sich gut anfühlen.", collections: "Kollektionen", service: "Service", house: "Das Haus", contact: "Kontakt & Händler", privacy: "Datenschutz", imprint: "Impressum", country: "Deutschland / EUR" },
+    legalBack: "Zurück",
+  },
+  en: {
+    announcement: "Selected brands · natural movement · considered design",
+    nav: { shop: "Shop", new: "New", brands: "Brands", about: "About NES", search: "Search", bag: "Bag", menu: "Menu", close: "Close" },
+    hero: {
+      eyebrow: "Curated footwear & everyday pieces",
+      title: "Move naturally. Arrive better.",
+      body: "Selected brands for comfort, craft and modern design — made for every step of everyday life.",
+      primary: "Discover the collection",
+      secondary: "Our brands",
+      campaign: "Vehon / WAI · Feel Shoes",
     },
-    brands: {
-      label: "Die Marken",
-      partnerNote: "Für Handels- und Markenpartner",
-      headline: "Fußgesundheit, auf zwei Arten.",
-      subline: "Dänischer Komfort. Italienisches Barfußgefühl.",
-      signatureLabel: "Signatur",
-      logoAlt: "Logo",
-    },
-    fair: {
-      label: "Messe-Rückblick",
-      title: "Ein Blick zurück auf das letzte Jahr.",
-      body: "Menschen, Produkte und natürliche Bewegung in Offenbach.",
-      archive: "Archiv Offenbach",
-      caption: "Offenbach · Messe im letzten Jahr",
-      showMore: "Alle Fotos anzeigen",
-      showLess: "Weniger anzeigen",
-    },
-    closing: {
-      label: "Messe Offenbach",
-      title: "Erhalten Sie den Termin, die Neuheiten und Early Access.",
-      body: "Eine durchdachte E-Mail, wenn es wirklich etwas zu erzählen gibt.",
-    },
-    inquiry: {
-      cta: "Jetzt anfragen",
-      bannerTitle: "Interesse, diese Marken zu führen?",
-      bannerText: "Attraktive Margen und eigene Händlerzeiten auf der Messe — Händler und Marken willkommen.",
-      heroPrompt: "Händler oder Marke?",
-      title: "Partner werden",
-      subtitle:
-        "Für Händler und Marken. Erzählen Sie uns kurz von sich — wir melden uns.",
-      stepLabel: "Schritt",
-      stepOf: "von",
-      steps: ["Ihr Kontakt", "Ihr Unternehmen", "Ihr Anliegen", "Fast geschafft"],
-      next: "Weiter",
-      back: "Zurück",
-      role: {
-        label: "Ich bin",
-        options: ["Fachhändler", "Marke / Lieferant", "Privatkunde", "Presse", "Sonstiges"],
-      },
-      topic: {
-        label: "Mein Anliegen",
-        options: [
-          "Wiederverkauf & Konditionen",
-          "Termin auf der Messe Offenbach",
-          "Sortiment, Katalog & Preise",
-          "Allgemeine Anfrage",
-        ],
-      },
-      brands: {
-        label: "Marken von Interesse",
-        options: ["Green Comfort", "Vehon", "Alle Marken"],
-      },
-      fields: {
-        name: "Name",
-        company: "Unternehmen",
-        email: "E-Mail-Adresse",
-        phone: "Telefon",
-        message: "Nachricht",
-      },
-      placeholders: {
-        name: "Vor- und Nachname",
-        company: "Geschäft oder Marke",
-        email: "name@unternehmen.de",
-        phone: "Optional",
-        message: "Wie können wir helfen? Was sollten wir wissen?",
-      },
-      optional: "optional",
-      consent: "Ich bin einverstanden, dass meine Angaben zur Bearbeitung dieser Anfrage verarbeitet werden.",
-      consentLink: "Datenschutz",
-      newsletter: "Halten Sie mich außerdem zu Terminen, Neuheiten und Early Access auf dem Laufenden.",
-      submit: "Anfrage senden",
-      sending: "Wird gesendet…",
-      successTitle: "Danke",
-      successBody: "Wir haben Ihre Anfrage erhalten und melden uns in Kürze.",
-      invalid: "Bitte geben Sie Ihren Namen und eine gültige E-Mail-Adresse an.",
-      invalidConsent: "Bitte akzeptieren Sie den Datenschutzhinweis, um fortzufahren.",
-      error: "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
-      close: "Schließen",
-    },
-    footer: {
-      linksLabel: "Social und Rechtliches",
-      contact: "Kontakt",
-      privacy: "Datenschutz",
-      legalBack: "Zurück zur Seite",
-      tagline: "Natürlich. Alltäglich. Schuhe.",
-    },
+    intro: { label: "The NES principle", title: "Search less. Choose better.", text: "NES brings distinct brands together in one place — curated for comfort, material and forms that will still feel right tomorrow." },
+    featured: { label: "New in the house", title: "Selected for now.", all: "View all products" },
+    brands: { label: "The brands", title: "One house. Four signatures.", open: "View collection", soon: "Collection coming soon" },
+    editorial: { label: "Loungers · Made in Italy", title: "Comfort that does not look like comfort.", body: "Lightweight loafers, soft construction and an attitude that works from café to journey.", cta: "Discover Loungers" },
+    standard: { label: "The NES standard", title: "Good things begin with material.", body: "We select brands whose comfort is constructed, not claimed. Precise materials, considered soles and craft you can feel every day.", points: [["01", "Material", "Textures with function and character."], ["02", "Craft", "Precise construction over short-lived effects."], ["03", "Movement", "Forms designed to accompany everyday life."]], cta: "Discover the collection" },
+    trade: { label: "For retailers & brands", title: "Interested in our collections?", body: "Range, terms or a personal appointment — we would be happy to talk.", cta: "Partner enquiry" },
+    shop: { breadcrumb: "NES / Shop", title: "The collection", intro: "Feel shoes, Italian loafers and distinctive knitwear — selected for comfort, movement and everyday life.", all: "All", products: "Products", product: "Product", searchLabel: "Search", searchPlaceholder: "Search product or brand", sortLabel: "Sort", featured: "Featured", priceAsc: "Price: low to high", priceDesc: "Price: high to low", name: "Name: A–Z", noResults: "No products found.", noResultsBody: "Try another search term or choose a different brand.", upcomingTitle: "Green Comfort is joining the collection.", upcomingBody: "The first edit is being prepared. In the meantime, discover the other brands in the house.", showAll: "Show all products" },
+    product: { view: "view", chooseSize: "Choose size", guide: "Size guide", add: "Add to bag", chooseFirst: "Please choose a size", back: "Back to collection", material: "Material", color: "Colour", delivery: "Delivery", deliveryValue: "Calculated at checkout", returns: "Returns", returnsValue: "14 days", added: "Added to your bag" },
+    bag: { title: "Bag", empty: "Your bag is empty.", shop: "Go to shop", size: "Size", subtotal: "Subtotal", note: "Delivery and taxes are calculated at checkout.", checkout: "Continue to checkout", checkoutSoon: "Checkout will be connected in the next step." },
+    newsletter: { label: "Notes from the house", title: "New models, materials and stories.", body: "A considered update whenever there is something new to discover.", placeholder: "Your email address", submit: "Join the list", loading: "Joining…", success: "Please check your inbox.", invalid: "Please enter a valid email address.", error: "Something went wrong. Please try again.", privacy: "By joining, you consent to the newsletter. Unsubscribe at any time.", privacyLink: "Privacy" },
+    services: [["01", "Curated selection", "Only brands that meet the NES standard."], ["02", "14-day returns", "Try at home and decide in peace."], ["03", "Personal advice", "Help with style, material and sizing."]],
+    tradeForm: { title: "Become a partner", body: "Tell us briefly what you are looking for. We will get back to you personally.", name: "Name", company: "Company", email: "Email", message: "Message", consent: "I consent to my details being processed to handle this enquiry.", submit: "Send enquiry", sending: "Sending…", successTitle: "Thank you.", successBody: "Your enquiry has arrived. We will be in touch shortly.", invalid: "Please complete your name, email and consent.", error: "The enquiry could not be sent. Please try again." },
+    footer: { about: "A curated house for shoes, knitwear and things that simply feel good.", collections: "Collections", service: "Service", house: "The house", contact: "Contact & wholesale", privacy: "Privacy", imprint: "Legal notice", country: "Germany / EUR" },
+    legalBack: "Back",
   },
 };
 
-// Legal templates. Bracketed values are placeholders for the company to fill in.
 const LEGAL = {
   de: {
-    datenschutz: {
+    privacy: {
       title: "Datenschutzerklärung",
-      intro: "Wir behandeln Ihre personenbezogenen Daten vertraulich und gemäß der DSGVO.",
+      intro: "Wir behandeln personenbezogene Daten vertraulich und gemäß der DSGVO.",
       blocks: [
-        {
-          h: "Verantwortlicher",
-          p: ["[Firmenname]", "[Anschrift]", "E-Mail: [E-Mail-Adresse]"],
-        },
-        {
-          h: "Hosting",
-          p: [
-            "Diese Website wird bei Cloudflare Pages (Cloudflare, Inc.) gehostet. Beim Aufruf werden serverseitig technische Zugriffsdaten (z. B. IP-Adresse, Zeitpunkt, User-Agent) verarbeitet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (sicherer, stabiler Betrieb).",
-          ],
-        },
-        {
-          h: "Newsletter (Double-Opt-in)",
-          p: [
-            "Für den Newsletter speichern wir E-Mail-Adresse, Zeitpunkt und Einwilligung. Der Versand erfolgt über Resend (Resend, Inc.). Rechtsgrundlage ist Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO. Sie können sich jederzeit über den Abmeldelink in jeder E-Mail abmelden.",
-          ],
-        },
-        {
-          h: "Anfrageformular",
-          p: [
-            "Bei einer Anfrage speichern wir die von Ihnen angegebenen Daten (Name, Unternehmen, E-Mail, Telefon, Anliegen und Nachricht) in Cloudflare D1 und senden eine Benachrichtigung über Resend an unser Office-Postfach. Die Verarbeitung erfolgt ausschließlich zur Bearbeitung Ihrer Anfrage auf Grundlage von Art. 6 Abs. 1 lit. b und lit. f DSGVO. Wir löschen die Daten, sobald die Anfrage abschließend bearbeitet ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.",
-          ],
-        },
-        {
-          h: "Ihre Rechte",
-          p: [
-            "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht, eine erteilte Einwilligung jederzeit zu widerrufen. Zudem steht Ihnen ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu.",
-          ],
-        },
-        {
-          h: "Kontakt zum Datenschutz",
-          p: ["[E-Mail-Adresse für Datenschutzanfragen]"],
-        },
+        ["Verantwortlicher", "[Firmenname] · [Anschrift] · [E-Mail-Adresse]"],
+        ["Hosting", "Diese Website wird bei Cloudflare Pages gehostet. Beim Aufruf werden technische Zugriffsdaten für den sicheren und stabilen Betrieb verarbeitet."],
+        ["Newsletter", "Für den Newsletter speichern wir E-Mail-Adresse, Zeitpunkt und Einwilligung. Der Versand erfolgt über Resend und kann jederzeit widerrufen werden."],
+        ["Anfragen", "Angaben aus dem Anfrageformular werden ausschließlich zur Bearbeitung der Anfrage verarbeitet und nach Abschluss im Rahmen der gesetzlichen Vorgaben gelöscht."],
+        ["Ihre Rechte", "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch sowie ein Beschwerderecht bei einer Aufsichtsbehörde."],
       ],
-      note: "Vorlage — bitte vor Veröffentlichung an eure tatsächlichen Verarbeitungen anpassen und rechtlich prüfen lassen.",
+      note: "Vorlage — bitte vor Veröffentlichung mit den vollständigen Unternehmensdaten ergänzen und rechtlich prüfen lassen.",
+    },
+    imprint: {
+      title: "Impressum",
+      intro: "Angaben gemäß den geltenden Informationspflichten.",
+      blocks: [["Anbieter", "[Firmenname] · [Rechtsform] · [Anschrift]"], ["Kontakt", "E-Mail: [E-Mail-Adresse] · Telefon: [Telefonnummer]"], ["Vertretungsberechtigt", "[Name der vertretungsberechtigten Person]"], ["Register & Umsatzsteuer", "[Registergericht / Registernummer] · [USt-IdNr.]"]],
+      note: "Vorlage — bitte vor Veröffentlichung vollständig ergänzen und rechtlich prüfen lassen.",
     },
   },
   en: {
-    datenschutz: {
+    privacy: {
       title: "Privacy policy",
-      intro: "We handle your personal data confidentially and in accordance with the GDPR.",
-      blocks: [
-        { h: "Controller", p: ["[Company name]", "[Address]", "Email: [email address]"] },
-        {
-          h: "Hosting",
-          p: [
-            "This website is hosted on Cloudflare Pages (Cloudflare, Inc.). When the site is accessed, technical access data (e.g. IP address, time, user agent) is processed server-side. The legal basis is Art. 6(1)(f) GDPR (secure, stable operation).",
-          ],
-        },
-        {
-          h: "Newsletter (double opt-in)",
-          p: [
-            "For the newsletter we store your email address, the time and your consent. Delivery is handled via Resend (Resend, Inc.). The legal basis is your consent under Art. 6(1)(a) GDPR. You can unsubscribe at any time via the link in every email.",
-          ],
-        },
-        {
-          h: "Enquiry form",
-          p: [
-            "When you submit an enquiry, we store the details you provide (name, company, email, phone, interest and message) in Cloudflare D1 and send a notification via Resend to our office mailbox. We process this data solely to handle your enquiry under Art. 6(1)(b) and (f) GDPR. We delete it once the enquiry has been fully handled unless statutory retention obligations apply.",
-          ],
-        },
-        {
-          h: "Your rights",
-          p: [
-            "You have the right to access, rectification, erasure, restriction of processing, data portability and objection, as well as the right to withdraw consent at any time. You also have the right to lodge a complaint with a data protection authority.",
-          ],
-        },
-        { h: "Data protection contact", p: ["[email address for privacy requests]"] },
-      ],
-      note: "Template — please adapt to your actual processing activities and have it reviewed legally before publishing.",
+      intro: "We handle personal data confidentially and in accordance with the GDPR.",
+      blocks: [["Controller", "[Company name] · [Address] · [Email address]"], ["Hosting", "This website is hosted on Cloudflare Pages. Technical access data is processed to provide a secure and stable service."], ["Newsletter", "For the newsletter we store your email address, time and consent. Delivery is handled by Resend and consent can be withdrawn at any time."], ["Enquiries", "Information submitted through the enquiry form is used exclusively to handle the enquiry and deleted in accordance with statutory requirements."], ["Your rights", "You have rights to access, rectification, erasure, restriction, portability and objection, as well as the right to lodge a complaint with a supervisory authority."]],
+      note: "Template — complete with the company details and obtain legal review before publication.",
+    },
+    imprint: {
+      title: "Legal notice",
+      intro: "Information in accordance with applicable disclosure obligations.",
+      blocks: [["Provider", "[Company name] · [Legal form] · [Address]"], ["Contact", "Email: [Email address] · Phone: [Phone number]"], ["Authorised representative", "[Name of authorised representative]"], ["Register & VAT", "[Register / registration number] · [VAT ID]"]],
+      note: "Template — complete all details and obtain legal review before publication.",
     },
   },
 };
 
-function SignupForm({
-  theme = "light",
-  placement,
-  newsletterState,
-  onSubscribe,
-  onOpenPrivacy,
-  language,
-  copy,
-}) {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("idle");
-  const [message, setMessage] = useState("");
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const company = String(formData.get("company") || "");
-    const normalizedEmail = email.trim();
-    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(normalizedEmail);
-
-    if (!isValid) {
-      setStatus("error");
-      setMessage(copy.invalid);
-      return;
-    }
-
-    setStatus("loading");
-    setMessage("");
-
-    try {
-      const endpoint = import.meta.env.VITE_NEWSLETTER_ENDPOINT || "/api/subscribe";
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          email: normalizedEmail,
-          source: `nes-landing-${placement}`,
-          locale: language,
-          company,
-        }),
-      });
-      if (!response.ok) throw new Error("Subscription failed");
-
-      setStatus("success");
-      setEmail("");
-      onSubscribe();
-    } catch {
-      setStatus("error");
-      setMessage(copy.error);
-    }
-  }
-
-  if (newsletterState === "pending" || newsletterState === "confirmed" || status === "success") {
-    return (
-      <div className={`signup-success signup-success-${theme}`} role="status">
-        {newsletterState === "confirmed" ? copy.confirmed : copy.success}<span>.</span>
-      </div>
-    );
-  }
-
-  return (
-    <div className={`signup signup-${theme}`}>
-      <form className="signup-form" onSubmit={handleSubmit} noValidate>
-        <input
-          className="signup-honeypot"
-          type="text"
-          name="company"
-          tabIndex="-1"
-          autoComplete="off"
-          aria-hidden="true"
-        />
-        <label htmlFor={`${placement}-email`}>{copy.label}</label>
-        <input
-          id={`${placement}-email`}
-          type="email"
-          value={email}
-          onChange={(event) => {
-            setEmail(event.target.value);
-            if (status === "error") setStatus("idle");
-          }}
-          placeholder={copy.placeholder}
-          autoComplete="email"
-          inputMode="email"
-          required
-          disabled={status === "loading"}
-        />
-        <button type="submit" disabled={status === "loading"}>
-          {status === "loading" ? copy.loading : copy.idle}
-        </button>
-      </form>
-      <div className="signup-feedback" aria-live="polite">
-        {status === "error"
-          ? message
-          : newsletterState === "expired"
-            ? copy.expired
-            : newsletterState === "invalid"
-              ? copy.invalidLink
-              : newsletterState === "unsubscribed"
-                ? copy.unsubscribed
-                : copy.feedback}
-      </div>
-      <p className="signup-privacy">
-        {copy.privacy}{" "}
-        <button type="button" onClick={onOpenPrivacy}>{copy.privacyLink}</button>
-      </p>
-    </div>
-  );
+function localize(value, language) {
+  return typeof value === "object" && value !== null && !Array.isArray(value)
+    ? value[language]
+    : value;
 }
 
-function LanguageSwitcher({ language, onLanguageChange, copy }) {
-  const [open, setOpen] = useState(false);
-  const menuRef = useRef(null);
-
-  useEffect(() => {
-    if (!open) return undefined;
-
-    function closeMenu(event) {
-      if (event.type === "keydown" && event.key !== "Escape") return;
-      if (event.type === "pointerdown" && menuRef.current?.contains(event.target)) return;
-      setOpen(false);
-    }
-
-    document.addEventListener("pointerdown", closeMenu);
-    document.addEventListener("keydown", closeMenu);
-    return () => {
-      document.removeEventListener("pointerdown", closeMenu);
-      document.removeEventListener("keydown", closeMenu);
-    };
-  }, [open]);
-
-  return (
-    <div className={`language-switcher${open ? " is-open" : ""}`} ref={menuRef}>
-      <button
-        className="language-trigger"
-        type="button"
-        aria-haspopup="menu"
-        aria-expanded={open}
-        onClick={() => setOpen((value) => !value)}
-      >
-        <span>{language.toUpperCase()}</span>
-        <svg viewBox="0 0 12 12" aria-hidden="true">
-          <path d="m2.5 4.5 3.5 3 3.5-3" />
-        </svg>
-      </button>
-      <div className="language-menu" role="menu" aria-label={copy.languageMenu} hidden={!open}>
-        <button
-          type="button"
-          role="menuitem"
-          className={language === "en" ? "is-current" : undefined}
-          aria-current={language === "en" ? "true" : undefined}
-          onClick={() => {
-            onLanguageChange("en");
-            setOpen(false);
-          }}
-        >
-          <span>English</span>
-          <small>EN</small>
-        </button>
-        <button
-          type="button"
-          role="menuitem"
-          className={language === "de" ? "is-current" : undefined}
-          aria-current={language === "de" ? "true" : undefined}
-          onClick={() => {
-            onLanguageChange("de");
-            setOpen(false);
-          }}
-        >
-          <span>Deutsch</span>
-          <small>DE</small>
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function Header({ scrolled, language, onLanguageChange, onInquire, copy }) {
-  return (
-    <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
-      <div className="header-inner">
-        <a className="header-brand" href="#top" aria-label={copy.homeLabel}>
-          <span className="brand-wordmark">NES</span>
-        </a>
-        <nav className="header-nav" aria-label={copy.navLabel}>
-          <a href="#idea">{copy.nav.idea}</a>
-          <a href="#brands">{copy.nav.brands}</a>
-          <a href="#last-messe">{copy.nav.fair}</a>
-        </nav>
-        <div className="header-actions">
-          <LanguageSwitcher language={language} onLanguageChange={onLanguageChange} copy={copy} />
-          <button type="button" className="header-cta" onClick={onInquire}>
-            {copy.inquiry.cta}
-            <svg className="header-cta-arrow" viewBox="0 0 14 10" aria-hidden="true">
-              <path d="M1 5h11M8.5 1.5 12 5l-3.5 3.5" />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <span className="scroll-progress" aria-hidden="true" />
-    </header>
-  );
-}
-
-const INQUIRY_STEP_COUNT = 4;
-const EMPTY_INQUIRY = { name: "", email: "", company: "", phone: "", message: "" };
-
-function OptionChips({ label, options, selected, onSelect }) {
-  return (
-    <div className="modal-field">
-      <span>{label}</span>
-      <div className="modal-chips" role="group" aria-label={label}>
-        {options.map((option, index) => (
-          <button
-            type="button"
-            key={option}
-            className={`modal-chip${index === selected ? " is-selected" : ""}`}
-            aria-pressed={index === selected}
-            onClick={() => onSelect(index)}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function InquiryModal({ open, onClose, onOpenPrivacy, language, copy }) {
-  const dialogRef = useRef(null);
-  const [step, setStep] = useState(0);
-  const [status, setStatus] = useState("idle");
-  const [error, setError] = useState("");
-  const [form, setForm] = useState(EMPTY_INQUIRY);
-  const [roleIdx, setRoleIdx] = useState(0);
-  const [topicIdx, setTopicIdx] = useState(0);
-  const [brandIdx, setBrandIdx] = useState(copy.brands.options.length - 1);
-  const [consent, setConsent] = useState(false);
-  const [newsletter, setNewsletter] = useState(false);
-
-  useEffect(() => {
-    if (!open) return undefined;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const onKeyDown = (event) => {
-      if (event.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [open, onClose]);
-
-  useEffect(() => {
-    if (!open) {
-      setStep(0);
-      setStatus("idle");
-      setError("");
-      setForm(EMPTY_INQUIRY);
-      setRoleIdx(0);
-      setTopicIdx(0);
-      setBrandIdx(copy.brands.options.length - 1);
-      setConsent(false);
-      setNewsletter(false);
-    }
-  }, [open, copy.brands.options.length]);
-
-  useEffect(() => {
-    if (!open) return;
-    const firstField = dialogRef.current?.querySelector(".modal-step input, .modal-step textarea");
-    firstField?.focus();
-  }, [open, step]);
-
-  if (!open) return null;
-
-  const isLast = step === INQUIRY_STEP_COUNT - 1;
-
-  function setField(key, value) {
-    setForm((current) => ({ ...current, [key]: value }));
-    if (status === "error") {
-      setStatus("idle");
-      setError("");
-    }
-  }
-
-  function validateStep() {
-    if (step === 0) {
-      const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim());
-      if (!form.name.trim() || !validEmail) {
-        setStatus("error");
-        setError(copy.invalid);
-        return false;
-      }
-    }
-    return true;
-  }
-
-  async function send() {
-    if (!consent) {
-      setStatus("error");
-      setError(copy.invalidConsent);
-      return;
-    }
-
-    setStatus("loading");
-    setError("");
-
-    const payload = {
-      name: form.name.trim(),
-      email: form.email.trim(),
-      company: form.company.trim(),
-      phone: form.phone.trim(),
-      role: copy.role.options[roleIdx],
-      topic: copy.topic.options[topicIdx],
-      brand: copy.brands.options[brandIdx],
-      message: form.message.trim(),
-      newsletter,
-      locale: language,
-      source: "nes-inquiry",
-      consent: true,
-      website: "",
-    };
-
-    try {
-      const endpoint = import.meta.env.VITE_INQUIRY_ENDPOINT || "/api/inquiry";
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!response.ok) throw new Error("Inquiry failed");
-
-      if (newsletter) {
-        const newsletterEndpoint =
-          import.meta.env.VITE_NEWSLETTER_ENDPOINT || "/api/subscribe";
-        const newsletterResponse = await fetch(newsletterEndpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            email: payload.email,
-            source: "nes-inquiry",
-            locale: language,
-            company: "",
-          }),
-        });
-        if (!newsletterResponse.ok) throw new Error("Newsletter subscription failed");
-      }
-
-      setStatus("success");
-    } catch {
-      setStatus("error");
-      setError(copy.error);
-    }
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    if (String(new FormData(event.currentTarget).get("company_website") || "")) return; // honeypot
-    if (!validateStep()) return;
-    if (isLast) {
-      send();
-    } else {
-      setStep((value) => value + 1);
-    }
-  }
-
-  const progress = ((step + 1) / INQUIRY_STEP_COUNT) * 100;
-
-  return (
-    <div className="modal-overlay" role="presentation" onClick={onClose}>
-      <div
-        className="modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="inquiry-title"
-        ref={dialogRef}
-        onClick={(event) => event.stopPropagation()}
-      >
-        <button type="button" className="modal-close" onClick={onClose} aria-label={copy.close}>
-          <svg viewBox="0 0 16 16" aria-hidden="true">
-            <path d="M3 3l10 10M13 3L3 13" />
-          </svg>
-        </button>
-
-        {status === "success" ? (
-          <div className="modal-success" role="status">
-            <p className="modal-eyebrow">{copy.title}</p>
-            <h2 id="inquiry-title">{copy.successTitle}<span>.</span></h2>
-            <p>{copy.successBody}</p>
-            <button type="button" className="modal-submit" onClick={onClose}>{copy.close}</button>
-          </div>
-        ) : (
-          <form className="modal-form" onSubmit={handleSubmit} noValidate>
-            <header className="modal-head">
-              <div className="modal-steps-meta">
-                <p className="modal-eyebrow">{copy.title}</p>
-                <span className="modal-step-count">
-                  {copy.stepLabel} {step + 1} {copy.stepOf} {INQUIRY_STEP_COUNT}
-                </span>
-              </div>
-              <h2 id="inquiry-title">{copy.steps[step]}</h2>
-              <div className="modal-progress" aria-hidden="true">
-                <span style={{ width: `${progress}%` }} />
-              </div>
-            </header>
-
-            <input
-              className="modal-honeypot"
-              type="text"
-              name="company_website"
-              tabIndex="-1"
-              autoComplete="off"
-              aria-hidden="true"
-            />
-
-            <div className="modal-step" key={step}>
-              {step === 0 && (
-                <div className="modal-grid">
-                  <label className="modal-field modal-field-wide">
-                    <span>{copy.fields.name} *</span>
-                    <input
-                      type="text"
-                      value={form.name}
-                      onChange={(event) => setField("name", event.target.value)}
-                      placeholder={copy.placeholders.name}
-                      autoComplete="name"
-                      maxLength="120"
-                    />
-                  </label>
-                  <label className="modal-field modal-field-wide">
-                    <span>{copy.fields.email} *</span>
-                    <input
-                      type="email"
-                      value={form.email}
-                      onChange={(event) => setField("email", event.target.value)}
-                      placeholder={copy.placeholders.email}
-                      autoComplete="email"
-                      inputMode="email"
-                      maxLength="254"
-                    />
-                  </label>
-                </div>
-              )}
-
-              {step === 1 && (
-                <div className="modal-grid">
-                  <label className="modal-field modal-field-wide">
-                    <span>{copy.fields.company}</span>
-                    <input
-                      type="text"
-                      value={form.company}
-                      onChange={(event) => setField("company", event.target.value)}
-                      placeholder={copy.placeholders.company}
-                      autoComplete="organization"
-                      maxLength="160"
-                    />
-                  </label>
-                  <label className="modal-field modal-field-wide">
-                    <span>{copy.fields.phone} <i>{copy.optional}</i></span>
-                    <input
-                      type="tel"
-                      value={form.phone}
-                      onChange={(event) => setField("phone", event.target.value)}
-                      placeholder={copy.placeholders.phone}
-                      autoComplete="tel"
-                      maxLength="60"
-                    />
-                  </label>
-                </div>
-              )}
-
-              {step === 2 && (
-                <div className="modal-stack">
-                  <OptionChips label={copy.role.label} options={copy.role.options} selected={roleIdx} onSelect={setRoleIdx} />
-                  <OptionChips label={copy.topic.label} options={copy.topic.options} selected={topicIdx} onSelect={setTopicIdx} />
-                  <OptionChips label={copy.brands.label} options={copy.brands.options} selected={brandIdx} onSelect={setBrandIdx} />
-                </div>
-              )}
-
-              {step === 3 && (
-                <div className="modal-stack">
-                  <label className="modal-field modal-field-wide">
-                    <span>{copy.fields.message} <i>{copy.optional}</i></span>
-                    <textarea
-                      value={form.message}
-                      onChange={(event) => setField("message", event.target.value)}
-                      rows="3"
-                      placeholder={copy.placeholders.message}
-                      maxLength="4000"
-                    />
-                  </label>
-                  <label className="modal-consent">
-                    <input
-                      type="checkbox"
-                      checked={consent}
-                      onChange={(event) => {
-                        setConsent(event.target.checked);
-                        if (status === "error") { setStatus("idle"); setError(""); }
-                      }}
-                    />
-                    <span>
-                      {copy.consent}{" "}
-                      <button type="button" className="modal-consent-link" onClick={onOpenPrivacy}>
-                        {copy.consentLink}
-                      </button>
-                    </span>
-                  </label>
-                  <label className="modal-consent">
-                    <input
-                      type="checkbox"
-                      checked={newsletter}
-                      onChange={(event) => setNewsletter(event.target.checked)}
-                    />
-                    <span>{copy.newsletter}</span>
-                  </label>
-                </div>
-              )}
-            </div>
-
-            <p className="modal-error" aria-live="polite">{status === "error" ? error : ""}</p>
-
-            <div className="modal-nav">
-              {step > 0 ? (
-                <button
-                  type="button"
-                  className="modal-back"
-                  onClick={() => { setStep((value) => value - 1); setStatus("idle"); setError(""); }}
-                >
-                  <span aria-hidden="true">←</span> {copy.back}
-                </button>
-              ) : (
-                <span />
-              )}
-              <button type="submit" className="modal-submit" disabled={status === "loading"}>
-                {status === "loading" ? copy.sending : isLast ? copy.submit : copy.next}
-              </button>
-            </div>
-          </form>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function LegalPage({ kind, language, onBack, copy }) {
-  const doc = LEGAL[language][kind];
-
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.scrollTo(0, 0);
-    const onKeyDown = (event) => {
-      if (event.key === "Escape") onBack();
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [onBack]);
-
-  return (
-    <div className="legal-page">
-      <div className="legal-inner">
-        <button type="button" className="legal-back" onClick={onBack}>
-          <span aria-hidden="true">←</span> {copy.footer.legalBack}
-        </button>
-        <span className="brand-wordmark legal-wordmark">NES</span>
-        <h1>{doc.title}</h1>
-        <p className="legal-intro">{doc.intro}</p>
-        <div className="legal-blocks">
-          {doc.blocks.map((block) => (
-            <section className="legal-block" key={block.h}>
-              <h2>{block.h}</h2>
-              {block.p.map((line, index) => (
-                <p key={index}>{line}</p>
-              ))}
-            </section>
-          ))}
-        </div>
-        <p className="legal-note">{doc.note}</p>
-      </div>
-    </div>
-  );
-}
-
-function shouldPlayArrival() {
-  return typeof window !== "undefined" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
-function ArrivalIntro({ copy }) {
-  return (
-    <div className="arrival-intro" aria-hidden="true">
-      <div className="arrival-panel arrival-panel-left" />
-      <div className="arrival-panel arrival-panel-right" />
-      <span className="arrival-seam" />
-      <div className="arrival-content">
-        <p className="arrival-kicker">{copy.arrival.kicker}</p>
-        <div className="arrival-wordmark-frame">
-          <span className="arrival-wordmark brand-wordmark">NES</span>
-        </div>
-        <div className="arrival-rule"><span /></div>
-        <p className="arrival-place">{copy.arrival.place}</p>
-        <p className="arrival-coordinates">50.100° N <i>|</i> 8.705° E</p>
-      </div>
-    </div>
-  );
-}
-
-function BrandBlock({ brand, language, copy }) {
-  const brandCopy = brand.copy[language];
-
-  return (
-    <article className="brand-block">
-      <div className="brand-header" data-reveal style={{ "--delay": "60ms" }}>
-        <img
-          className="brand-logo"
-          src={brand.logo}
-          alt={`${brand.name} ${copy.brands.logoAlt}`}
-          loading="lazy"
-        />
-        <p className="brand-meta">{brandCopy.meta}</p>
-        <p className="brand-signature">
-          <span className="brand-signature-label">{copy.brands.signatureLabel}</span>
-          {brandCopy.signature}
-        </p>
-        <p className="brand-description">{brandCopy.description}</p>
-        <ul className="brand-facts">
-          {brandCopy.facts.map((fact) => (
-            <li key={fact}>{fact}</li>
-          ))}
-        </ul>
-      </div>
-    </article>
-  );
-}
-
-function MesseMosaic({ language, copy }) {
-  const [expanded, setExpanded] = useState(false);
-  const hiddenCount = MESSE_GALLERY.length - MOBILE_GALLERY_PREVIEW;
-
-  return (
-    <>
-      <div className={`messe-mosaic${expanded ? " is-expanded" : ""}`}>
-        {MESSE_GALLERY.map((photo, index) => (
-          <figure
-            className={`messe-tile messe-tile-${photo.area}${
-              expanded && index >= MOBILE_GALLERY_PREVIEW ? " is-visible" : ""
-            }`}
-            data-reveal="scale"
-            style={{ "--delay": `${index * 70}ms` }}
-            key={photo.src}
-          >
-            <img src={photo.src} alt={photo.alt[language]} loading="lazy" decoding="async" />
-            <span className="messe-tile-index" aria-hidden="true">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <figcaption>{photo.alt[language]}</figcaption>
-          </figure>
-        ))}
-      </div>
-      <button
-        type="button"
-        className="messe-more"
-        onClick={() => setExpanded((value) => !value)}
-        aria-expanded={expanded}
-      >
-        {expanded ? copy.showLess : `${copy.showMore} (${hiddenCount})`}
-      </button>
-    </>
-  );
+function formatPrice(value, language) {
+  return new Intl.NumberFormat(language === "de" ? "de-DE" : "en-GB", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 0,
+  }).format(value);
 }
 
 function getInitialLanguage() {
-  if (typeof window === "undefined") return "en";
-
-  const urlLanguage = new URLSearchParams(window.location.search).get("lang");
-  if (urlLanguage === "de" || urlLanguage === "en") return urlLanguage;
-
-  const savedLanguage = window.localStorage.getItem("nes-lang");
-  if (savedLanguage === "de" || savedLanguage === "en") return savedLanguage;
-
-  return "de";
+  if (typeof window === "undefined") return "de";
+  const saved = window.localStorage.getItem("nes-language");
+  return saved === "en" ? "en" : "de";
 }
 
-function getInitialNewsletterState() {
-  if (typeof window === "undefined") return "idle";
-  const state = new URLSearchParams(window.location.search).get("newsletter");
-  return ["confirmed", "expired", "invalid", "unsubscribed"].includes(state) ? state : "idle";
+function routeFromLocation() {
+  return window.location.pathname.startsWith("/shop") ? "shop" : "home";
 }
 
-function getInitialLegal() {
-  if (typeof window === "undefined") return null;
-  const hash = window.location.hash.replace("#", "");
-  return hash === "datenschutz" ? hash : null;
+function filterFromLocation() {
+  const requested = new URLSearchParams(window.location.search).get("brand");
+  return BRAND_WORLDS.some((brand) => brand.id === requested) ? requested : "all";
+}
+
+function getInitialBag() {
+  if (typeof window === "undefined") return [];
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem("nes-bag") || "[]");
+    return Array.isArray(parsed)
+      ? parsed.filter((item) => PRODUCTS.some((product) => product.id === item.productId))
+      : [];
+  } catch {
+    return [];
+  }
 }
 
 export default function App() {
   const [language, setLanguage] = useState(getInitialLanguage);
-  const [newsletterState, setNewsletterState] = useState(getInitialNewsletterState);
+  const [route, setRoute] = useState(routeFromLocation);
+  const [filter, setFilter] = useState(filterFromLocation);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("featured");
+  const [activeProductId, setActiveProductId] = useState(null);
+  const [selectedSize, setSelectedSize] = useState("");
+  const [bag, setBag] = useState(getInitialBag);
+  const [bagOpen, setBagOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [tradeOpen, setTradeOpen] = useState(false);
+  const [legalOpen, setLegalOpen] = useState(null);
   const [scrolled, setScrolled] = useState(false);
-  const [arrivalVisible, setArrivalVisible] = useState(shouldPlayArrival);
-  const [inquiryOpen, setInquiryOpen] = useState(false);
-  const [legal, setLegal] = useState(getInitialLegal);
+  const [toast, setToast] = useState("");
+
   const copy = COPY[language];
 
-  function openLegal(kind) {
-    setInquiryOpen(false);
-    setLegal(kind);
-    window.history.pushState({}, "", `#${kind}`);
-  }
-
-  function closeLegal() {
-    setLegal(null);
-    window.history.pushState({}, "", window.location.pathname + window.location.search);
-  }
-
   useEffect(() => {
-    const onHashChange = () => setLegal(getInitialLegal());
-    window.addEventListener("hashchange", onHashChange);
-    window.addEventListener("popstate", onHashChange);
+    const handleScroll = () => setScrolled(window.scrollY > 18);
+    const handlePopState = () => {
+      setRoute(routeFromLocation());
+      setFilter(filterFromLocation());
+      setActiveProductId(null);
+      setBagOpen(false);
+      setMobileOpen(false);
+      window.scrollTo(0, 0);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("popstate", handlePopState);
     return () => {
-      window.removeEventListener("hashchange", onHashChange);
-      window.removeEventListener("popstate", onHashChange);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("popstate", handlePopState);
     };
   }, []);
-
-  function changeLanguage(nextLanguage) {
-    setLanguage(nextLanguage);
-    window.localStorage.setItem("nes-lang", nextLanguage);
-    const url = new URL(window.location.href);
-    url.searchParams.set("lang", nextLanguage);
-    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
-  }
 
   useEffect(() => {
     document.documentElement.lang = language;
-    document.title = language === "de"
-      ? "NES — Natürliche Bewegung · Messe Offenbach"
-      : "NES — Natural movement · Offenbach Trade Fair";
+    window.localStorage.setItem("nes-language", language);
   }, [language]);
 
   useEffect(() => {
-    if (!arrivalVisible) return undefined;
+    window.localStorage.setItem("nes-bag", JSON.stringify(bag));
+  }, [bag]);
 
-    const previousOverflow = document.body.style.overflow;
-    const finishArrival = window.setTimeout(() => setArrivalVisible(false), 1850);
-    const skipArrival = (event) => {
-      if (event.key === "Escape") setArrivalVisible(false);
-    };
-
+  useEffect(() => {
+    const locked = Boolean(activeProductId || bagOpen || mobileOpen || tradeOpen || legalOpen);
+    if (!locked) return undefined;
+    const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", skipArrival);
-
     return () => {
-      window.clearTimeout(finishArrival);
-      window.removeEventListener("keydown", skipArrival);
-      document.body.style.overflow = previousOverflow;
+      document.body.style.overflow = previous;
     };
-  }, [arrivalVisible]);
+  }, [activeProductId, bagOpen, mobileOpen, tradeOpen, legalOpen]);
 
   useEffect(() => {
-    const elements = document.querySelectorAll("[data-reveal]");
-
-    if (!("IntersectionObserver" in window)) {
-      elements.forEach((element) => element.classList.add("is-visible"));
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.14, rootMargin: "0px 0px -5% 0px" },
-    );
-
-    elements.forEach((element) => observer.observe(element));
-    return () => observer.disconnect();
+    const handleEscape = (event) => {
+      if (event.key !== "Escape") return;
+      setActiveProductId(null);
+      setBagOpen(false);
+      setMobileOpen(false);
+      setTradeOpen(false);
+      setLegalOpen(null);
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
   useEffect(() => {
-    const root = document.documentElement;
-    const parallaxItems = [...document.querySelectorAll("[data-parallax]")];
-    let frame = 0;
+    if (!toast) return undefined;
+    const timeout = window.setTimeout(() => setToast(""), 2400);
+    return () => window.clearTimeout(timeout);
+  }, [toast]);
 
-    function renderScroll() {
-      const scrollTop = window.scrollY;
-      const scrollRange = Math.max(root.scrollHeight - window.innerHeight, 1);
-      const heroProgress = Math.min(scrollTop / Math.max(window.innerHeight * 0.78, 1), 1);
+  const visibleProducts = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    const matches = PRODUCTS.filter((product) => {
+      const matchesBrand = filter === "all" || product.brandId === filter;
+      const haystack = `${product.brand} ${product.name} ${localize(product.subtitle, language)} ${product.material}`.toLowerCase();
+      return matchesBrand && (!query || haystack.includes(query));
+    });
+    return [...matches].sort((a, b) => {
+      if (sort === "price-asc") return a.price - b.price;
+      if (sort === "price-desc") return b.price - a.price;
+      if (sort === "name") return a.name.localeCompare(b.name);
+      return a.id - b.id;
+    });
+  }, [filter, search, sort, language]);
 
-      root.style.setProperty("--scroll-progress", String(scrollTop / scrollRange));
-      root.style.setProperty("--hero-progress", String(heroProgress));
-      setScrolled(scrollTop > 24);
+  const activeProduct = PRODUCTS.find((product) => product.id === activeProductId) || null;
+  const bagCount = bag.reduce((sum, item) => sum + item.qty, 0);
+  const bagTotal = bag.reduce((sum, item) => {
+    const product = PRODUCTS.find((candidate) => candidate.id === item.productId);
+    return sum + (product ? product.price * item.qty : 0);
+  }, 0);
 
-      parallaxItems.forEach((item) => {
-        const anchor = item.parentElement?.getBoundingClientRect() || item.getBoundingClientRect();
-        const center = anchor.top + anchor.height / 2;
-        const distance = (center - window.innerHeight / 2) / window.innerHeight;
-        const amount = Number(item.dataset.parallaxAmount || 28);
-        const shift = Math.max(-1, Math.min(1, distance)) * amount;
-        item.style.setProperty("--parallax-y", `${shift.toFixed(2)}px`);
-      });
+  function navigateHome(section) {
+    setRoute("home");
+    setMobileOpen(false);
+    setActiveProductId(null);
+    window.history.pushState({}, "", "/");
+    window.setTimeout(() => {
+      if (section) document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+      else window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 30);
+  }
 
-      frame = 0;
-    }
+  function navigateShop(brand = "all") {
+    setRoute("shop");
+    setFilter(brand);
+    setSearch("");
+    setMobileOpen(false);
+    setActiveProductId(null);
+    const query = brand === "all" ? "" : `?brand=${brand}`;
+    window.history.pushState({}, "", `/shop${query}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
-    function requestRender() {
-      if (!frame) frame = window.requestAnimationFrame(renderScroll);
-    }
+  function updateFilter(brand) {
+    setFilter(brand);
+    const query = brand === "all" ? "" : `?brand=${brand}`;
+    window.history.replaceState({}, "", `/shop${query}`);
+  }
 
-    renderScroll();
-    window.addEventListener("scroll", requestRender, { passive: true });
-    window.addEventListener("resize", requestRender);
-    return () => {
-      window.removeEventListener("scroll", requestRender);
-      window.removeEventListener("resize", requestRender);
-      if (frame) window.cancelAnimationFrame(frame);
-    };
-  }, []);
+  function focusSearch() {
+    if (route !== "shop") navigateShop("all");
+    window.setTimeout(() => document.getElementById("catalog-search")?.focus(), 80);
+  }
+
+  function openProduct(productId) {
+    setSelectedSize("");
+    setActiveProductId(productId);
+  }
+
+  function addToBag(productId, size) {
+    setBag((current) => {
+      const existingIndex = current.findIndex((item) => item.productId === productId && item.size === size);
+      if (existingIndex === -1) return [...current, { productId, size, qty: 1 }];
+      return current.map((item, index) => index === existingIndex ? { ...item, qty: item.qty + 1 } : item);
+    });
+    setActiveProductId(null);
+    setToast(copy.product.added);
+    setBagOpen(true);
+  }
+
+  function updateBagItem(index, delta) {
+    setBag((current) => current
+      .map((item, itemIndex) => itemIndex === index ? { ...item, qty: item.qty + delta } : item)
+      .filter((item) => item.qty > 0));
+  }
 
   return (
-    <div className={`site-shell ${arrivalVisible ? "is-arriving" : "is-ready"}`} id="top">
-      {arrivalVisible && <ArrivalIntro copy={copy} />}
+    <div className="site-shell is-ready">
       <Header
-        scrolled={scrolled}
-        language={language}
-        onLanguageChange={changeLanguage}
-        onInquire={() => setInquiryOpen(true)}
+        route={route}
         copy={copy}
-      />
-
-      <main>
-        <section className="hero" aria-labelledby="hero-title">
-          <ShaderBackground>
-            <div className="hero-content">
-              <div className="hero-kicker" data-reveal style={{ "--delay": "40ms" }}>
-                {copy.hero.kicker}
-              </div>
-              <div className="hero-logo-frame" data-reveal="scale" style={{ "--delay": "100ms" }}>
-                <span
-                  className="hero-logo brand-wordmark"
-                  data-parallax
-                  data-parallax-amount="-14"
-                >
-                  NES
-                </span>
-              </div>
-              <h1 id="hero-title" data-reveal style={{ "--delay": "170ms" }}>
-                {copy.hero.title}
-              </h1>
-              <p className="coordinates" data-reveal style={{ "--delay": "230ms" }}>
-                Offenbach <i>·</i> 50.100° N <i>|</i> 8.705° E
-              </p>
-              <div className="hero-signup" data-reveal style={{ "--delay": "290ms" }}>
-                <SignupForm
-                  placement="hero"
-                  newsletterState={newsletterState}
-                  onSubscribe={() => setNewsletterState("pending")}
-                  onOpenPrivacy={() => openLegal("datenschutz")}
-                  language={language}
-                  copy={copy.signup}
-                />
-              </div>
-              <button
-                type="button"
-                className="hero-inquire"
-                onClick={() => setInquiryOpen(true)}
-                data-reveal
-                style={{ "--delay": "350ms" }}
-              >
-                <span className="hero-inquire-prompt">{copy.inquiry.heroPrompt}</span>
-                <span className="hero-inquire-link">{copy.inquiry.cta}</span>
-                <svg viewBox="0 0 14 10" aria-hidden="true">
-                  <path d="M1 5h11M8.5 1.5 12 5l-3.5 3.5" />
-                </svg>
-              </button>
-            </div>
-            <p className="hero-side-note hero-side-note-right" aria-hidden="true">{copy.hero.sideNote}</p>
-            <a className="scroll-cue" href="#idea" aria-label={copy.hero.scrollLabel}>
-              <span />
-              <small>{copy.hero.scroll}</small>
-            </a>
-          </ShaderBackground>
-        </section>
-
-        <section className="idea section" id="idea">
-          <div className="narrow-copy" data-idea-mark="NES">
-            <p className="section-label section-label--framed" data-reveal>{copy.idea.label}</p>
-            <div className="idea-ornament" data-reveal="line" aria-hidden="true">
-              <span className="idea-ornament-line" />
-              <span className="idea-ornament-node" />
-              <span className="idea-ornament-line" />
-            </div>
-            <h2 data-reveal="scale" style={{ "--delay": "80ms" }}>
-              {copy.idea.title} <em className="idea-accent">{copy.idea.accent}</em>
-            </h2>
-            <p className="idea-foot" data-reveal style={{ "--delay": "180ms" }}>
-              <span className="idea-foot-rule" aria-hidden="true" />
-              {copy.idea.foot}
-            </p>
-          </div>
-        </section>
-
-        <section className="brands section" id="brands">
-          <div className="content-width">
-            <div className="brands-heading">
-              <div className="brands-heading-lead">
-                <p className="section-label section-label--framed section-label--start" data-reveal>{copy.brands.label}</p>
-                <p className="brands-partner-note" data-reveal style={{ "--delay": "60ms" }}>{copy.brands.partnerNote}</p>
-              </div>
-              <p data-reveal style={{ "--delay": "90ms" }}>{copy.brands.headline}<br />{copy.brands.subline}</p>
-            </div>
-            <div className="brand-list">
-              <BrandBlock brand={BRANDS[0]} language={language} copy={copy} />
-              <BrandBlock brand={BRANDS[1]} language={language} copy={copy} />
-            </div>
-            <div className="brands-cta" data-reveal="scale">
-              <div className="brands-cta-copy">
-                <p className="brands-cta-title">{copy.inquiry.bannerTitle}</p>
-                <p className="brands-cta-text">{copy.inquiry.bannerText}</p>
-              </div>
-              <button type="button" className="cta-button" onClick={() => setInquiryOpen(true)}>
-                {copy.inquiry.cta}
-                <svg className="cta-button-arrow" viewBox="0 0 14 10" aria-hidden="true">
-                  <path d="M1 5h11M8.5 1.5 12 5l-3.5 3.5" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <section className="last-messe section" id="last-messe">
-          <div className="content-width">
-            <header className="messe-heading">
-              <div>
-                <p className="section-label section-label--framed section-label--start" data-reveal>{copy.fair.label}</p>
-                <h2 data-reveal style={{ "--delay": "80ms" }}>{copy.fair.title}</h2>
-              </div>
-              <p data-reveal="right" style={{ "--delay": "140ms" }}>
-                {copy.fair.body}
-              </p>
-            </header>
-            <MesseMosaic language={language} copy={copy.fair} />
-            <p className="messe-caption" data-reveal>{copy.fair.caption}</p>
-          </div>
-        </section>
-
-        <section className="closing" id="join">
-          <div className="closing-inner">
-            <p className="section-label section-label-bright" data-reveal>{copy.closing.label}</p>
-            <h2 data-reveal="scale" style={{ "--delay": "80ms" }}>
-              {copy.closing.title}
-            </h2>
-            <p className="closing-copy" data-reveal style={{ "--delay": "130ms" }}>
-              {copy.closing.body}
-            </p>
-            <div data-reveal style={{ "--delay": "190ms" }}>
-              <SignupForm
-                theme="dark"
-                placement="closing"
-                newsletterState={newsletterState}
-                onSubscribe={() => setNewsletterState("pending")}
-                onOpenPrivacy={() => openLegal("datenschutz")}
-                language={language}
-                copy={copy.signup}
-              />
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer className="site-footer">
-        <span className="footer-logo brand-wordmark">NES</span>
-        <p className="footer-coordinates">Offenbach · 50.100° N | 8.705° E</p>
-        <div className="footer-links" aria-label={copy.footer.linksLabel}>
-          <span>Instagram</span>
-          <span>{copy.footer.contact}</span>
-          <button type="button" className="footer-link" onClick={() => openLegal("datenschutz")}>
-            {copy.footer.privacy}
-          </button>
-        </div>
-        <p className="copyright">© 2026 <span className="wordmark">NES</span> — {copy.footer.tagline}</p>
-      </footer>
-
-      <InquiryModal
-        open={inquiryOpen}
-        onClose={() => setInquiryOpen(false)}
-        onOpenPrivacy={() => openLegal("datenschutz")}
         language={language}
-        copy={copy.inquiry}
+        bagCount={bagCount}
+        scrolled={scrolled}
+        mobileOpen={mobileOpen}
+        onToggleMobile={() => setMobileOpen((value) => !value)}
+        onLanguage={() => setLanguage((value) => value === "de" ? "en" : "de")}
+        onHome={navigateHome}
+        onShop={navigateShop}
+        onSearch={focusSearch}
+        onBag={() => setBagOpen(true)}
       />
 
-      {legal && (
-        <LegalPage kind={legal} language={language} onBack={closeLegal} copy={copy} />
+      {route === "home" ? (
+        <HomePage
+          copy={copy}
+          language={language}
+          onShop={navigateShop}
+          onOpen={openProduct}
+          onTrade={() => setTradeOpen(true)}
+          onPrivacy={() => setLegalOpen("privacy")}
+        />
+      ) : (
+        <ShopPage
+          copy={copy}
+          language={language}
+          products={visibleProducts}
+          filter={filter}
+          search={search}
+          sort={sort}
+          onFilter={updateFilter}
+          onSearch={setSearch}
+          onSort={setSort}
+          onOpen={openProduct}
+          onShowAll={() => updateFilter("all")}
+        />
       )}
+
+      <Footer
+        copy={copy}
+        onHome={navigateHome}
+        onShop={navigateShop}
+        onTrade={() => setTradeOpen(true)}
+        onLegal={setLegalOpen}
+      />
+
+      {activeProduct && (
+        <ProductDetail
+          product={activeProduct}
+          copy={copy}
+          language={language}
+          selectedSize={selectedSize}
+          onSelectSize={setSelectedSize}
+          onClose={() => setActiveProductId(null)}
+          onAdd={() => selectedSize && addToBag(activeProduct.id, selectedSize)}
+        />
+      )}
+
+      {bagOpen && (
+        <BagDrawer
+          bag={bag}
+          total={bagTotal}
+          copy={copy}
+          language={language}
+          onClose={() => setBagOpen(false)}
+          onUpdate={updateBagItem}
+          onShop={() => {
+            setBagOpen(false);
+            navigateShop();
+          }}
+        />
+      )}
+
+      {tradeOpen && (
+        <TradeModal
+          copy={copy}
+          language={language}
+          onClose={() => setTradeOpen(false)}
+          onPrivacy={() => {
+            setTradeOpen(false);
+            setLegalOpen("privacy");
+          }}
+        />
+      )}
+
+      {legalOpen && (
+        <LegalModal
+          kind={legalOpen}
+          language={language}
+          copy={copy}
+          onClose={() => setLegalOpen(null)}
+        />
+      )}
+
+      <div className={`shop-toast${toast ? " is-visible" : ""}`} role="status" aria-live="polite">
+        <span aria-hidden="true">✓</span>{toast}
+      </div>
     </div>
   );
 }
+
+function Header({ route, copy, language, bagCount, scrolled, mobileOpen, onToggleMobile, onLanguage, onHome, onShop, onSearch, onBag }) {
+  return (
+    <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
+      <div className="announcement-bar"><span>{copy.announcement}</span></div>
+      <nav className="main-nav" aria-label="Main navigation">
+        <div className="nav-cluster nav-cluster-left">
+          <button type="button" onClick={() => onShop("all")} aria-current={route === "shop" ? "page" : undefined}>{copy.nav.shop}</button>
+          <button type="button" onClick={() => onShop("all")}>{copy.nav.new}</button>
+          <button type="button" onClick={() => onHome("brands")}>{copy.nav.brands}</button>
+        </div>
+        <button className="header-wordmark" type="button" onClick={() => onHome()} aria-label="NES home">NES</button>
+        <div className="nav-cluster nav-cluster-right">
+          <button type="button" onClick={() => onHome("standard")}>{copy.nav.about}</button>
+          <button className="language-button" type="button" onClick={onLanguage} aria-label={language === "de" ? "Switch to English" : "Auf Deutsch wechseln"}>{language.toUpperCase()}</button>
+          <button className="icon-button" type="button" onClick={onSearch} aria-label={copy.nav.search}><SearchIcon /></button>
+          <button className="bag-button" type="button" onClick={onBag} aria-label={`${copy.nav.bag}: ${bagCount}`}><BagIcon /><span>{bagCount}</span></button>
+        </div>
+        <button className="mobile-menu-button" type="button" onClick={onToggleMobile} aria-expanded={mobileOpen} aria-label={mobileOpen ? copy.nav.close : copy.nav.menu}>
+          {mobileOpen ? <CloseIcon /> : <MenuIcon />}
+        </button>
+        <button className="mobile-bag-button" type="button" onClick={onBag} aria-label={`${copy.nav.bag}: ${bagCount}`}><BagIcon /><span>{bagCount}</span></button>
+      </nav>
+      {mobileOpen && (
+        <div className="mobile-menu">
+          <div className="mobile-menu-links">
+            <button type="button" onClick={() => onShop("all")}>{copy.nav.shop}<ArrowIcon /></button>
+            <button type="button" onClick={() => onHome("brands")}>{copy.nav.brands}<ArrowIcon /></button>
+            <button type="button" onClick={() => onHome("standard")}>{copy.nav.about}<ArrowIcon /></button>
+          </div>
+          <div className="mobile-menu-meta">
+            <button type="button" onClick={onSearch}><SearchIcon />{copy.nav.search}</button>
+            <button type="button" onClick={onLanguage}>{language === "de" ? "English" : "Deutsch"}</button>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
+function HomePage({ copy, language, onShop, onOpen, onTrade, onPrivacy }) {
+  const featured = FEATURED_IDS.map((id) => PRODUCTS.find((product) => product.id === id)).filter(Boolean);
+  return (
+    <main className="home-page">
+      <section className="shop-hero" aria-labelledby="hero-title">
+        <ShaderBackground>
+          <div className="shop-hero-copy">
+            <p className="eyebrow">{copy.hero.eyebrow}</p>
+            <h1 id="hero-title">{copy.hero.title}</h1>
+            <p className="shop-hero-body">{copy.hero.body}</p>
+            <div className="shop-hero-actions">
+              <button className="button button-forest" type="button" onClick={() => onShop("all")}>{copy.hero.primary}<ArrowIcon /></button>
+              <a className="underlined-link" href="#brands">{copy.hero.secondary}</a>
+            </div>
+          </div>
+          <div className="shop-hero-signature"><span>NES / 01</span><p>{copy.hero.campaign}</p></div>
+          <a className="hero-scroll" href="#featured" aria-label={copy.featured.title}><span />Scroll</a>
+        </ShaderBackground>
+      </section>
+
+      <section className="house-intro section-pad">
+        <div className="house-intro-index">NES<br />CURATED<br />HOUSE</div>
+        <div className="house-intro-copy">
+          <p className="eyebrow">{copy.intro.label}</p>
+          <h2>{copy.intro.title}</h2>
+          <p>{copy.intro.text}</p>
+        </div>
+      </section>
+
+      <section className="featured-section section-pad" id="featured">
+        <SectionHeading label={copy.featured.label} title={copy.featured.title} action={copy.featured.all} onAction={() => onShop("all")} />
+        <div className="product-grid product-grid-featured">
+          {featured.map((product) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={onOpen} />)}
+        </div>
+      </section>
+
+      <section className="brand-section section-pad" id="brands">
+        <div className="brand-section-heading">
+          <p className="eyebrow">{copy.brands.label}</p>
+          <h2>{copy.brands.title}</h2>
+        </div>
+        <div className="brand-world-grid">
+          {BRAND_WORLDS.map((brand) => (
+            <button className={`brand-world ${brand.className}`} type="button" key={brand.id} onClick={() => onShop(brand.id)}>
+              {brand.image ? <img src={brand.image} alt="" aria-hidden="true" loading="lazy" style={{ objectPosition: brand.position }} /> : <span className="brand-world-gradient" aria-hidden="true" />}
+              <span className="brand-world-shade" aria-hidden="true" />
+              {brand.logo && <img className="brand-world-logo" src={brand.logo} alt={brand.name} loading="lazy" />}
+              <span className="brand-world-index">{brand.index} / {localize(brand.category, language)}</span>
+              <span className="brand-world-copy">
+                {!brand.logo && <strong>{brand.name}</strong>}
+                <span>{localize(brand.note, language)}</span>
+                <span className="brand-world-link">{brand.upcoming ? copy.brands.soon : copy.brands.open}<ArrowIcon /></span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="editorial-feature">
+        <img src="/shop/loungers-banner.webp" alt="Brauner Loungers Loafer vor bordeauxfarbenem Hintergrund" loading="lazy" />
+        <span className="editorial-feature-overlay" aria-hidden="true" />
+        <div className="editorial-feature-copy">
+          <p className="eyebrow eyebrow-light">{copy.editorial.label}</p>
+          <h2>{copy.editorial.title}</h2>
+          <p>{copy.editorial.body}</p>
+          <button className="button button-ivory" type="button" onClick={() => onShop("loungers")}>{copy.editorial.cta}<ArrowIcon /></button>
+        </div>
+      </section>
+
+      <section className="standard-section" id="standard">
+        <div className="standard-media"><img src="/craftsmanship-wai.png" alt="Craftsmanship in an Italian footwear workshop" loading="lazy" /><span>Atelier / Italy</span></div>
+        <div className="standard-copy">
+          <p className="eyebrow">{copy.standard.label}</p>
+          <h2>{copy.standard.title}</h2>
+          <p className="standard-body">{copy.standard.body}</p>
+          <div className="principle-list">
+            {copy.standard.points.map(([index, title, body]) => <div className="principle" key={index}><span>{index}</span><strong>{title}</strong><p>{body}</p></div>)}
+          </div>
+          <button className="button button-forest" type="button" onClick={() => onShop("all")}>{copy.standard.cta}<ArrowIcon /></button>
+        </div>
+      </section>
+
+      <ServiceStrip copy={copy} />
+
+      <section className="trade-band">
+        <div><p className="eyebrow eyebrow-light">{copy.trade.label}</p><h2>{copy.trade.title}</h2></div>
+        <p>{copy.trade.body}</p>
+        <button className="button button-gold" type="button" onClick={onTrade}>{copy.trade.cta}<ArrowIcon /></button>
+      </section>
+
+      <Newsletter copy={copy} language={language} onPrivacy={onPrivacy} />
+    </main>
+  );
+}
+
+function ShopPage({ copy, language, products, filter, search, sort, onFilter, onSearch, onSort, onOpen, onShowAll }) {
+  const greenSelected = filter === "green";
+  return (
+    <main className="catalog-page">
+      <section className="catalog-intro section-pad">
+        <p className="eyebrow">{copy.shop.breadcrumb}</p>
+        <div><h1>{copy.shop.title}</h1><p>{copy.shop.intro}</p></div>
+      </section>
+      <section className="catalog section-pad" aria-label={copy.shop.title}>
+        <div className="catalog-tabs" role="group" aria-label={copy.brands.label}>
+          <button className={filter === "all" ? "is-active" : ""} type="button" onClick={() => onFilter("all")}>{copy.shop.all}</button>
+          {BRAND_WORLDS.map((brand) => <button className={filter === brand.id ? "is-active" : ""} type="button" onClick={() => onFilter(brand.id)} key={brand.id}>{brand.name}</button>)}
+        </div>
+        <div className="catalog-toolbar">
+          <label className="catalog-search" htmlFor="catalog-search"><SearchIcon /><span className="sr-only">{copy.shop.searchLabel}</span><input id="catalog-search" type="search" value={search} onChange={(event) => onSearch(event.target.value)} placeholder={copy.shop.searchPlaceholder} /></label>
+          <span className="catalog-count">{products.length} {products.length === 1 ? copy.shop.product : copy.shop.products}</span>
+          <label className="catalog-sort"><span>{copy.shop.sortLabel}</span><select value={sort} onChange={(event) => onSort(event.target.value)}><option value="featured">{copy.shop.featured}</option><option value="price-asc">{copy.shop.priceAsc}</option><option value="price-desc">{copy.shop.priceDesc}</option><option value="name">{copy.shop.name}</option></select></label>
+        </div>
+        {products.length > 0 ? (
+          <div className="product-grid catalog-grid">{products.map((product) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={onOpen} />)}</div>
+        ) : (
+          <div className={`catalog-empty${greenSelected ? " catalog-empty-green" : ""}`}>
+            {greenSelected && <img src="/logos/greencomfort.svg?v=official" alt="Green Comfort" />}
+            <h2>{greenSelected ? copy.shop.upcomingTitle : copy.shop.noResults}</h2>
+            <p>{greenSelected ? copy.shop.upcomingBody : copy.shop.noResultsBody}</p>
+            <button className="button button-forest" type="button" onClick={onShowAll}>{copy.shop.showAll}<ArrowIcon /></button>
+          </div>
+        )}
+      </section>
+      <ServiceStrip copy={copy} />
+    </main>
+  );
+}
+
+function SectionHeading({ label, title, action, onAction }) {
+  return <div className="section-heading"><div><p className="eyebrow">{label}</p><h2>{title}</h2></div><button className="underlined-link" type="button" onClick={onAction}>{action}<ArrowIcon /></button></div>;
+}
+
+function ProductCard({ product, copy, language, onOpen }) {
+  return (
+    <article className={`product-card product-card-${product.brandId}`}>
+      <button className={`product-media product-fit-${product.fit}`} type="button" onClick={() => onOpen(product.id)} aria-label={`${product.name} ${copy.product.view}`}>
+        {product.tag && <span className="product-tag">{localize(product.tag, language)}</span>}
+        <img className="product-image product-image-main" src={product.image} alt={product.name} loading="lazy" decoding="async" />
+        <img className="product-image product-image-hover" src={product.hoverImage} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        <span className="product-plus" aria-hidden="true">+</span>
+      </button>
+      <button className="product-copy" type="button" onClick={() => onOpen(product.id)}>
+        <span className="product-brand">{product.brand}</span>
+        <span className="product-title-row"><strong>{product.name}</strong><span>{formatPrice(product.price, language)}</span></span>
+        <span className="product-subtitle">{localize(product.subtitle, language)} · {localize(product.color, language)}</span>
+      </button>
+    </article>
+  );
+}
+
+function ProductDetail({ product, copy, language, selectedSize, onSelectSize, onClose, onAdd }) {
+  return (
+    <div className="modal-backdrop product-backdrop" role="presentation" onMouseDown={onClose}>
+      <div className="product-detail" role="dialog" aria-modal="true" aria-labelledby="product-detail-title" onMouseDown={(event) => event.stopPropagation()}>
+        <button className="overlay-close" type="button" onClick={onClose} aria-label={copy.nav.close}><CloseIcon /></button>
+        <div className={`product-detail-gallery product-card-${product.brandId}`}>
+          <div className={`product-detail-image product-fit-${product.fit}`}><img src={product.image} alt={product.name} /></div>
+          <div className={`product-detail-image product-fit-${product.fit}`}><img src={product.hoverImage} alt={`${product.name}, second view`} /></div>
+        </div>
+        <div className="product-detail-copy">
+          <button className="detail-back" type="button" onClick={onClose}><span aria-hidden="true">←</span>{copy.product.back}</button>
+          <p className="eyebrow">{product.brand} / {localize(product.category, language)}</p>
+          <h2 id="product-detail-title">{product.name}</h2>
+          <p className="detail-subtitle">{localize(product.subtitle, language)} · {localize(product.color, language)}</p>
+          <p className="detail-price">{formatPrice(product.price, language)}</p>
+          <div className="size-picker"><div><span>{copy.product.chooseSize}</span><button type="button">{copy.product.guide}</button></div><div className="size-grid">{product.sizes.map((size) => <button className={selectedSize === size ? "is-active" : ""} type="button" key={size} onClick={() => onSelectSize(size)}>{size}</button>)}</div></div>
+          <button className="add-to-bag" type="button" disabled={!selectedSize} onClick={onAdd}>{selectedSize ? `${copy.product.add} · ${selectedSize}` : copy.product.chooseFirst}</button>
+          <p className="detail-description">{localize(product.description, language)}</p>
+          <dl className="detail-facts"><div><dt>{copy.product.material}</dt><dd>{product.material}</dd></div><div><dt>{copy.product.color}</dt><dd>{localize(product.color, language)}</dd></div><div><dt>{copy.product.delivery}</dt><dd>{copy.product.deliveryValue}</dd></div><div><dt>{copy.product.returns}</dt><dd>{copy.product.returnsValue}</dd></div></dl>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BagDrawer({ bag, total, copy, language, onClose, onUpdate, onShop }) {
+  const [checkoutMessage, setCheckoutMessage] = useState("");
+  return (
+    <div className="drawer-layer">
+      <button className="drawer-backdrop" type="button" onClick={onClose} aria-label={copy.nav.close} />
+      <aside className="bag-drawer" aria-label={copy.bag.title}>
+        <div className="bag-heading"><div><p className="eyebrow">NES</p><h2>{copy.bag.title}</h2></div><button type="button" onClick={onClose} aria-label={copy.nav.close}><CloseIcon /></button></div>
+        <div className="bag-content">
+          {bag.length === 0 ? <div className="bag-empty"><p>{copy.bag.empty}</p><button className="button button-forest" type="button" onClick={onShop}>{copy.bag.shop}</button></div> : bag.map((item, index) => {
+            const product = PRODUCTS.find((candidate) => candidate.id === item.productId);
+            if (!product) return null;
+            return <article className="bag-item" key={`${item.productId}-${item.size}`}><div className={`bag-item-image product-fit-${product.fit}`}><img src={product.image} alt={product.name} /></div><div className="bag-item-copy"><span>{product.brand}</span><h3>{product.name}</h3><p>{copy.bag.size} {item.size}</p><div className="quantity-control"><button type="button" onClick={() => onUpdate(index, -1)} aria-label="Decrease">−</button><span>{item.qty}</span><button type="button" onClick={() => onUpdate(index, 1)} aria-label="Increase">+</button></div></div><strong>{formatPrice(product.price * item.qty, language)}</strong></article>;
+          })}
+        </div>
+        {bag.length > 0 && <div className="bag-footer"><div className="bag-total"><span>{copy.bag.subtotal}</span><strong>{formatPrice(total, language)}</strong></div><p>{copy.bag.note}</p><button className="checkout-button" type="button" onClick={() => setCheckoutMessage(copy.bag.checkoutSoon)}>{copy.bag.checkout}</button><p className="checkout-message" role="status">{checkoutMessage}</p></div>}
+      </aside>
+    </div>
+  );
+}
+
+function ServiceStrip({ copy }) {
+  return <section className="service-strip" aria-label="Shop services">{copy.services.map(([index, title, body]) => <div key={index}><span>{index}</span><strong>{title}</strong><p>{body}</p></div>)}</section>;
+}
+
+function Newsletter({ copy, language, onPrivacy }) {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle");
+  const [message, setMessage] = useState("");
+
+  async function submit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    if (String(formData.get("company") || "")) return;
+    const normalized = email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(normalized)) {
+      setStatus("error"); setMessage(copy.newsletter.invalid); return;
+    }
+    setStatus("loading"); setMessage("");
+    try {
+      const response = await fetch(import.meta.env.VITE_NEWSLETTER_ENDPOINT || "/api/subscribe", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ email: normalized, source: "nes-shop-home", locale: language, company: "" }) });
+      if (!response.ok) throw new Error("Newsletter failed");
+      setStatus("success"); setEmail("");
+    } catch {
+      setStatus("error"); setMessage(copy.newsletter.error);
+    }
+  }
+
+  return (
+    <section className="newsletter-section">
+      <div><p className="eyebrow eyebrow-light">{copy.newsletter.label}</p><h2>{copy.newsletter.title}</h2><p>{copy.newsletter.body}</p></div>
+      {status === "success" ? <p className="newsletter-success" role="status">{copy.newsletter.success}</p> : <form onSubmit={submit} noValidate><input className="honeypot" type="text" name="company" tabIndex="-1" autoComplete="off" aria-hidden="true" /><label className="sr-only" htmlFor="newsletter-email">Email</label><div><input id="newsletter-email" type="email" value={email} onChange={(event) => { setEmail(event.target.value); if (status === "error") setStatus("idle"); }} placeholder={copy.newsletter.placeholder} disabled={status === "loading"} /><button type="submit" disabled={status === "loading"}>{status === "loading" ? copy.newsletter.loading : copy.newsletter.submit}<ArrowIcon /></button></div><p className="newsletter-message" role="status">{status === "error" ? message : ""}</p><p className="newsletter-privacy">{copy.newsletter.privacy} <button type="button" onClick={onPrivacy}>{copy.newsletter.privacyLink}</button></p></form>}
+    </section>
+  );
+}
+
+function TradeModal({ copy, language, onClose, onPrivacy }) {
+  const [form, setForm] = useState({ name: "", company: "", email: "", message: "", consent: false });
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState("");
+
+  function update(key, value) { setForm((current) => ({ ...current, [key]: value })); if (status === "error") { setStatus("idle"); setError(""); } }
+  async function submit(event) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    if (String(data.get("company_website") || "")) return;
+    const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim());
+    if (!form.name.trim() || !validEmail || !form.consent) { setStatus("error"); setError(copy.tradeForm.invalid); return; }
+    setStatus("loading"); setError("");
+    try {
+      const response = await fetch(import.meta.env.VITE_INQUIRY_ENDPOINT || "/api/inquiry", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ name: form.name.trim(), company: form.company.trim(), email: form.email.trim(), phone: "", role: "Retailer / Brand", topic: "Wholesale & collections", brand: "All brands", message: form.message.trim(), newsletter: false, locale: language, source: "nes-shop-trade", consent: true, website: "" }) });
+      if (!response.ok) throw new Error("Inquiry failed");
+      setStatus("success");
+    } catch { setStatus("error"); setError(copy.tradeForm.error); }
+  }
+
+  return (
+    <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
+      <div className="trade-modal" role="dialog" aria-modal="true" aria-labelledby="trade-title" onMouseDown={(event) => event.stopPropagation()}>
+        <button className="overlay-close" type="button" onClick={onClose} aria-label={copy.nav.close}><CloseIcon /></button>
+        {status === "success" ? <div className="trade-success"><p className="eyebrow">NES / B2B</p><h2 id="trade-title">{copy.tradeForm.successTitle}</h2><p>{copy.tradeForm.successBody}</p><button className="button button-forest" type="button" onClick={onClose}>{copy.nav.close}</button></div> : <form onSubmit={submit} noValidate><p className="eyebrow">NES / B2B</p><h2 id="trade-title">{copy.tradeForm.title}</h2><p className="trade-modal-intro">{copy.tradeForm.body}</p><input className="honeypot" type="text" name="company_website" tabIndex="-1" autoComplete="off" aria-hidden="true" /><div className="trade-fields"><label><span>{copy.tradeForm.name} *</span><input type="text" value={form.name} onChange={(event) => update("name", event.target.value)} autoComplete="name" /></label><label><span>{copy.tradeForm.company}</span><input type="text" value={form.company} onChange={(event) => update("company", event.target.value)} autoComplete="organization" /></label><label className="trade-field-wide"><span>{copy.tradeForm.email} *</span><input type="email" value={form.email} onChange={(event) => update("email", event.target.value)} autoComplete="email" /></label><label className="trade-field-wide"><span>{copy.tradeForm.message}</span><textarea rows="4" value={form.message} onChange={(event) => update("message", event.target.value)} /></label></div><label className="trade-consent"><input type="checkbox" checked={form.consent} onChange={(event) => update("consent", event.target.checked)} /><span>{copy.tradeForm.consent} <button type="button" onClick={onPrivacy}>{copy.newsletter.privacyLink}</button></span></label><p className="trade-error" role="status">{status === "error" ? error : ""}</p><button className="trade-submit" type="submit" disabled={status === "loading"}>{status === "loading" ? copy.tradeForm.sending : copy.tradeForm.submit}<ArrowIcon /></button></form>}
+      </div>
+    </div>
+  );
+}
+
+function LegalModal({ kind, language, copy, onClose }) {
+  const documentCopy = LEGAL[language][kind];
+  return (
+    <div className="legal-overlay" role="dialog" aria-modal="true" aria-labelledby="legal-title">
+      <button className="legal-close" type="button" onClick={onClose}><span aria-hidden="true">←</span>{copy.legalBack}</button>
+      <div className="legal-document"><span className="legal-wordmark">NES</span><h1 id="legal-title">{documentCopy.title}</h1><p className="legal-intro">{documentCopy.intro}</p>{documentCopy.blocks.map(([title, body]) => <section key={title}><h2>{title}</h2><p>{body}</p></section>)}<p className="legal-note">{documentCopy.note}</p></div>
+    </div>
+  );
+}
+
+function Footer({ copy, onHome, onShop, onTrade, onLegal }) {
+  return (
+    <footer className="site-footer">
+      <div className="footer-main">
+        <div className="footer-brand"><button className="footer-wordmark" type="button" onClick={() => onHome()}>NES</button><p>{copy.footer.about}</p></div>
+        <div className="footer-column"><h3>{copy.footer.collections}</h3><button type="button" onClick={() => onShop("vehon")}>Vehon / WAI</button><button type="button" onClick={() => onShop("loungers")}>Loungers</button><button type="button" onClick={() => onShop("montechiaro")}>Montechiaro</button><button type="button" onClick={() => onShop("green")}>Green Comfort</button></div>
+        <div className="footer-column"><h3>{copy.footer.house}</h3><button type="button" onClick={() => onHome("standard")}>{copy.nav.about}</button><button type="button" onClick={onTrade}>{copy.footer.contact}</button><button type="button" onClick={() => onLegal("privacy")}>{copy.footer.privacy}</button><button type="button" onClick={() => onLegal("imprint")}>{copy.footer.imprint}</button></div>
+      </div>
+      <div className="footer-bottom"><span>© 2026 NES</span><span>Natural · Everyday · Selected</span><span>{copy.footer.country}</span></div>
+    </footer>
+  );
+}
+
+function ArrowIcon() { return <svg className="arrow-icon" viewBox="0 0 16 12" aria-hidden="true"><path d="M1 6h13M9.5 1.5 14 6l-4.5 4.5" /></svg>; }
+function SearchIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.3" /><path d="m15.5 15.5 4.2 4.2" /></svg>; }
+function BagIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 8.5h13l.8 11h-14.6l.8-11Z" /><path d="M9 9V6.7a3 3 0 0 1 6 0V9" /></svg>; }
+function MenuIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18M3 17h18" /></svg>; }
+function CloseIcon() { return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 5 14 14M19 5 5 19" /></svg>; }
