@@ -181,25 +181,6 @@ const PRODUCTS = [
     },
   },
   {
-    id: 10,
-    brand: "Loungers",
-    brandId: "loungers",
-    name: "City Ease",
-    subtitle: { de: "Canvas Penny Loafer", en: "Canvas penny loafer" },
-    price: 219,
-    color: { de: "Black / Tan", en: "Black / tan" },
-    material: "Canvas & Nappa Leather",
-    category: { de: "Loafers", en: "Loafers" },
-    image: "/shop/products/loungers-city-ease-front.webp",
-    hoverImage: "/shop/products/loungers-city-ease-side.webp",
-    fit: "cover",
-    sizes: ["39", "40", "41", "42", "43", "44", "45", "46"],
-    description: {
-      de: "Canvas trifft Nappaleder: ein leichter Penny Loafer für Stadt, Reise und entspannte Abende. Charaktervoll, ohne laut zu werden.",
-      en: "Canvas meets nappa leather in a lightweight penny loafer for the city, travel and easy evenings. Distinct without being loud.",
-    },
-  },
-  {
     id: 11,
     brand: "Loungers",
     brandId: "loungers",
@@ -263,8 +244,8 @@ const BRAND_WORLDS = [
       de: "Easy luxury, handgemacht in Italien.",
       en: "Easy luxury, handmade in Italy.",
     },
-    image: "/shop/loungers-cafe.webp",
-    position: "center 62%",
+    image: "/shop/loungers-cliff.webp",
+    position: "center 58%",
     className: "brand-world-tall",
   },
   {
@@ -298,7 +279,7 @@ const BRAND_WORLDS = [
 const CATALOG_LINEUPS = [
   { id: "wai", index: "01", filter: "vehon", image: "/shop/collections/wai-lineup-v1.webp" },
   { id: "vehon", index: "02", filter: "vehon", image: "/shop/collections/vehon-lineup-v1.webp" },
-  { id: "loungers", index: "03", filter: "loungers", image: "/shop/collections/loungers-lineup-v1.webp" },
+  { id: "loungers", index: "03", filter: "loungers", image: "/shop/loungers-banner.webp" },
 ];
 
 const GALLERY_IMAGES = [
@@ -310,11 +291,9 @@ const GALLERY_IMAGES = [
   { src: "/shop/gallery/loungers-bordeaux-beach.webp", brand: "Loungers" },
   { src: "/shop/gallery/montechiaro-kitchen.webp", brand: "Montechiaro" },
   { src: "/shop/gallery/wai-coast.webp", brand: "WAI" },
-  { src: "/shop/gallery/loungers-cafe.webp", brand: "Loungers" },
   { src: "/shop/gallery/wai-zen.webp", brand: "WAI" },
   { src: "/shop/gallery/loungers-stitching.webp", brand: "Loungers" },
   { src: "/shop/gallery/wai-sunset.webp", brand: "WAI" },
-  { src: "/shop/gallery/loungers-airport.webp", brand: "Loungers" },
   { src: "/shop/gallery/montechiaro-work.webp", brand: "Montechiaro" },
   { src: "/shop/gallery/wai-poolside.webp", brand: "WAI" },
   { src: "/shop/gallery/loungers-temple.webp", brand: "Loungers" },
@@ -324,17 +303,37 @@ const GALLERY_IMAGES = [
   { src: "/shop/gallery/loungers-breathe.webp", brand: "Loungers" },
   { src: "/shop/gallery/montechiaro-detail.webp", brand: "Montechiaro" },
   { src: "/shop/gallery/wai-beach-step.webp", brand: "WAI" },
-  { src: "/shop/gallery/loungers-rooftop.webp", brand: "Loungers" },
   { src: "/shop/gallery/wai-curtain.webp", brand: "WAI" },
   { src: "/shop/gallery/loungers-slow-living.webp", brand: "Loungers" },
   { src: "/shop/gallery/wai-warm-sand.webp", brand: "WAI" },
-  { src: "/shop/gallery/loungers-drive.webp", brand: "Loungers" },
   { src: "/shop/gallery/wai-stone-lounge.webp", brand: "WAI" },
   { src: "/shop/gallery/loungers-imperfection.webp", brand: "Loungers" },
   { src: "/shop/gallery/loungers-bangkok.webp", brand: "Loungers" },
 ];
 
 const FEATURED_IDS = [9, 1, 12, 5];
+
+const OCCASION_CONFIG = [
+  {
+    id: "home",
+    index: "01",
+    image: "/shop/gallery/wai-home-step.webp",
+    productIds: [1, 4],
+  },
+  {
+    id: "travel",
+    index: "02",
+    image: "/shop/gallery/wai-sunset.webp",
+    productIds: [2, 5],
+  },
+  {
+    id: "statement",
+    index: "03",
+    image: "/shop/pully-red-side.webp",
+    productIds: [12, 6],
+    productVisual: true,
+  },
+];
 
 const COPY = {
   de: {
@@ -354,7 +353,45 @@ const COPY = {
       text: "NES bringt eigenständige Marken an einen Ort — kuratiert nach Komfort, Material und einer Form, die auch morgen noch richtig wirkt.",
     },
     featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", all: "Alle Produkte" },
-    brands: { label: "Die Marken", title: "Ein Haus. Vier Handschriften.", open: "Kollektion ansehen", soon: "Kollektion folgt" },
+    brands: { label: "Die Marken", title: "Ein Haus. Drei Handschriften.", open: "Kollektion ansehen", soon: "Kollektion folgt" },
+    look: {
+      label: "NES / Shop the look",
+      title: "Ein Look. Zwei Handschriften.",
+      body: "Montechiaro-Strick trifft WAI Feel Shoe. Entdecken Sie die markierten Produkte direkt im Bild.",
+      hint: "Punkte antippen und Produkt ansehen",
+      open: "Produkt ansehen",
+      alt: "Model im Pully Rosso von Montechiaro und blauen WAI Home Feel Shoes",
+    },
+    occasions: {
+      label: "Nach Anlass entdecken",
+      title: "Was passt zu Ihrem Tag?",
+      intro: "Drei Stimmungen, bewusst kuratiert — vom ruhigen Morgen bis zum Auftritt am Abend.",
+      cta: "Gesamte Kollektion ansehen",
+      productsLabel: "Passende Auswahl",
+      items: {
+        home: {
+          tab: "Zuhause",
+          eyebrow: "Leicht & entspannt",
+          title: "Ruhe beginnt beim ersten Schritt.",
+          body: "Weiche Konstruktionen, flexible Sohlen und Materialien, die sich vom ersten Moment an selbstverständlich anfühlen.",
+          alt: "WAI Feel Shoes in einem hellen Wohnraum",
+        },
+        travel: {
+          tab: "Unterwegs",
+          eyebrow: "Reise & Alltag",
+          title: "Leicht bleiben, wenn der Tag weitergeht.",
+          body: "Reduzierte Formen für Wege, Termine und spontane Umwege — komfortabel, ohne nach Komfort auszusehen.",
+          alt: "WAI Feel Shoes bei Sonnenuntergang am Meer",
+        },
+        statement: {
+          tab: "Statement",
+          eyebrow: "Farbe & Charakter",
+          title: "Ein Stück, das den Ton angibt.",
+          body: "Markanter Strick und präzise Loafer für Momente, in denen Zurückhaltung trotzdem Haltung zeigen darf.",
+          alt: "Pully Rosso von Montechiaro",
+        },
+      },
+    },
     gallery: { label: "NES / Bildarchiv", title: "Bewegung in Bildern.", intro: "Weitere Motive aus Alltag, Reise, Material und Ruhe — gesammelt als visuelles Archiv der Kollektionen.", aria: "Visuelles Archiv", imageAlt: "Editorialaufnahme von" },
     editorial: {
       label: "Die Idee · Natürlich bewegen",
@@ -386,21 +423,32 @@ const COPY = {
       showAll: "Alle Produkte zeigen",
       lineups: {
         label: "NES / Markenkatalog",
-        title: "Drei Linien. Elf Modelle.",
+        title: "Drei Linien. Zehn Modelle.",
         intro: "WAI, Vehon und Loungers — jeweils als vollständige Kollektion.",
         items: {
           wai: { meta: "04 Modelle · Feel Shoes", title: "WAI by Vehon", body: "Vier textile Feel Shoes für natürliche Bewegung, Reise und Alltag.", cta: "WAI ansehen" },
           vehon: { meta: "04 Modelle · Made in Italy", title: "Vehon", body: "Mocassini, Velvet und Tech-knit in vier eigenständigen Konstruktionen.", cta: "Vehon ansehen" },
-          loungers: { meta: "03 Modelle · Leisure Loafers", title: "Loungers", body: "Drei leichte Loafer zwischen italienischem Handwerk, Reise und entspannter Eleganz.", cta: "Loungers ansehen" },
+          loungers: { meta: "02 Modelle · Leisure Loafers", title: "Loungers", body: "Zwei leichte Loafer zwischen italienischem Handwerk, Reise und entspannter Eleganz.", cta: "Loungers ansehen" },
         },
       },
     },
     product: { view: "ansehen", chooseSize: "Größe wählen", guide: "Größenberatung", add: "In den Warenkorb", chooseFirst: "Bitte Größe wählen", back: "Zurück zur Kollektion", material: "Material", color: "Farbe", delivery: "Versand", deliveryValue: "Wird im Checkout berechnet", returns: "Rückgabe", returnsValue: "14 Tage", added: "Zum Warenkorb hinzugefügt" },
     bag: { title: "Warenkorb", empty: "Ihr Warenkorb ist leer.", shop: "Zum Shop", size: "Größe", subtotal: "Zwischensumme", note: "Versand und Steuern werden im Checkout berechnet.", checkout: "Weiter zum Checkout", checkoutSoon: "Der Checkout wird im nächsten Schritt angebunden." },
     newsletter: { label: "Notes from the house", title: "Neue Modelle, Materialien und Geschichten.", body: "Ein ruhiges Update, wenn es etwas Neues zu entdecken gibt.", placeholder: "Ihre E-Mail-Adresse", submit: "Eintragen", loading: "Wird eingetragen…", success: "Bitte prüfen Sie Ihr Postfach.", invalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein.", error: "Das hat leider nicht funktioniert. Bitte versuchen Sie es erneut.", privacy: "Mit Ihrer Anmeldung stimmen Sie dem Newsletter zu. Jederzeit widerrufbar.", privacyLink: "Datenschutz" },
-    services: [["01", "Kuratierte Auswahl", "Nur Marken, die zum NES Maßstab passen."], ["02", "14 Tage Rückgabe", "In Ruhe anprobieren und entscheiden."], ["03", "Persönliche Beratung", "Hilfe bei Modell, Material und Größe."]],
+    services: [["01", "Kuratierte Auswahl", "Nur Marken, die zum NES Maßstab passen.", "Kollektion ansehen"], ["02", "14 Tage Rückgabe", "Fragen zu Rückgabe, Versand oder Bestellung? Wir helfen.", "Service anfragen"], ["03", "Persönliche Beratung", "Hilfe bei Modell, Material und Größe.", "Beratung starten"]],
+    serviceForms: {
+      name: "Name",
+      email: "E-Mail",
+      message: "Ihre Nachricht",
+      consent: "Ich stimme der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage zu.",
+      sending: "Wird gesendet…",
+      invalid: "Bitte füllen Sie Name, E-Mail, Nachricht und Zustimmung aus.",
+      error: "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+      advice: { eyebrow: "NES / Beratung", title: "Was passt zu Ihnen?", body: "Nennen Sie uns Ihr Wunschmodell, Ihre übliche Größe und was Ihnen bei einem Schuh wichtig ist. Wir melden uns persönlich mit einer Empfehlung.", detail: "Modell oder Marke (optional)", submit: "Beratung anfragen", successTitle: "Anfrage erhalten.", successBody: "Vielen Dank. Wir schauen uns Ihre Angaben an und melden uns persönlich zurück." },
+      returns: { eyebrow: "NES / Service", title: "Rückgabe & Versand", body: "Sie möchten etwas zurückgeben oder haben eine Frage zu Versand oder Bestellung? Schreiben Sie uns kurz – idealerweise mit Ihrer Bestellnummer.", detail: "Bestellnummer (optional)", submit: "Service anfragen", successTitle: "Wir kümmern uns darum.", successBody: "Ihre Anfrage ist angekommen. Wir melden uns mit den nächsten Schritten zurück." },
+    },
     tradeForm: { title: "Partner werden", body: "Erzählen Sie uns kurz, worum es geht. Wir melden uns persönlich zurück.", name: "Name", company: "Unternehmen", email: "E-Mail", message: "Nachricht", consent: "Ich stimme der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage zu.", submit: "Anfrage senden", sending: "Wird gesendet…", successTitle: "Vielen Dank.", successBody: "Ihre Anfrage ist angekommen. Wir melden uns in Kürze.", invalid: "Bitte füllen Sie Name, E-Mail und Zustimmung aus.", error: "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut." },
-    footer: { about: "Ein kuratiertes Haus für Schuhe, Strick und Dinge, die sich gut anfühlen.", collections: "Kollektionen", service: "Service", house: "Das Haus", contact: "Kontakt & Händler", privacy: "Datenschutz", imprint: "Impressum", country: "Deutschland / EUR" },
+    footer: { about: "Ein kuratiertes Haus für Schuhe, Strick und Dinge, die sich gut anfühlen.", collections: "Kollektionen", service: "Service", advice: "Persönliche Beratung", returns: "Rückgabe & Versand", house: "Das Haus", contact: "Kontakt & Händler", privacy: "Datenschutz", imprint: "Impressum", country: "Deutschland / EUR" },
     legalBack: "Zurück",
   },
   en: {
@@ -416,7 +464,45 @@ const COPY = {
     },
     intro: { label: "The NES principle", title: "Search less. Choose better.", text: "NES brings distinct brands together in one place — curated for comfort, material and forms that will still feel right tomorrow." },
     featured: { label: "New in the house", title: "Selected for now.", all: "View all products" },
-    brands: { label: "The brands", title: "One house. Four signatures.", open: "View collection", soon: "Collection coming soon" },
+    brands: { label: "The brands", title: "One house. Three signatures.", open: "View collection", soon: "Collection coming soon" },
+    look: {
+      label: "NES / Shop the look",
+      title: "One look. Two signatures.",
+      body: "Montechiaro knitwear meets the WAI feel shoe. Discover the marked products directly in the image.",
+      hint: "Tap a point to view the product",
+      open: "View product",
+      alt: "Model wearing the Montechiaro Pully Rosso and blue WAI Home feel shoes",
+    },
+    occasions: {
+      label: "Shop by occasion",
+      title: "What suits your day?",
+      intro: "Three considered moods — from a quiet morning to an evening with presence.",
+      cta: "View the full collection",
+      productsLabel: "Selected for the moment",
+      items: {
+        home: {
+          tab: "At home",
+          eyebrow: "Light & relaxed",
+          title: "Ease begins with the first step.",
+          body: "Soft construction, flexible soles and materials that feel natural from the very first moment.",
+          alt: "WAI feel shoes in a light-filled interior",
+        },
+        travel: {
+          tab: "On the move",
+          eyebrow: "Travel & everyday",
+          title: "Stay light when the day keeps moving.",
+          body: "Reduced forms for journeys, appointments and spontaneous detours — comfortable without looking like comfort wear.",
+          alt: "WAI feel shoes by the sea at sunset",
+        },
+        statement: {
+          tab: "Statement",
+          eyebrow: "Colour & character",
+          title: "One piece sets the tone.",
+          body: "Distinctive knitwear and precise loafers for moments when restraint can still show character.",
+          alt: "Montechiaro Pully Rosso",
+        },
+      },
+    },
     gallery: { label: "NES / Image archive", title: "Movement in pictures.", intro: "More scenes from everyday life, travel, material and quiet moments — collected as a visual archive of the collections.", aria: "Visual archive", imageAlt: "Editorial image by" },
     editorial: {
       label: "The idea · Natural movement",
@@ -448,21 +534,32 @@ const COPY = {
       showAll: "Show all products",
       lineups: {
         label: "NES / Brand catalogue",
-        title: "Three lines. Eleven models.",
+        title: "Three lines. Ten models.",
         intro: "WAI, Vehon and Loungers — each shown as a complete collection.",
         items: {
           wai: { meta: "04 models · Feel shoes", title: "WAI by Vehon", body: "Four textile feel shoes made for natural movement, travel and everyday life.", cta: "View WAI" },
           vehon: { meta: "04 models · Made in Italy", title: "Vehon", body: "Moccasins, velvet and technical knit across four distinct constructions.", cta: "View Vehon" },
-          loungers: { meta: "03 models · Leisure loafers", title: "Loungers", body: "Three lightweight loafers balancing Italian craft, travel and relaxed elegance.", cta: "View Loungers" },
+          loungers: { meta: "02 models · Leisure loafers", title: "Loungers", body: "Two lightweight loafers balancing Italian craft, travel and relaxed elegance.", cta: "View Loungers" },
         },
       },
     },
     product: { view: "view", chooseSize: "Choose size", guide: "Size guide", add: "Add to bag", chooseFirst: "Please choose a size", back: "Back to collection", material: "Material", color: "Colour", delivery: "Delivery", deliveryValue: "Calculated at checkout", returns: "Returns", returnsValue: "14 days", added: "Added to your bag" },
     bag: { title: "Bag", empty: "Your bag is empty.", shop: "Go to shop", size: "Size", subtotal: "Subtotal", note: "Delivery and taxes are calculated at checkout.", checkout: "Continue to checkout", checkoutSoon: "Checkout will be connected in the next step." },
     newsletter: { label: "Notes from the house", title: "New models, materials and stories.", body: "A considered update whenever there is something new to discover.", placeholder: "Your email address", submit: "Join the list", loading: "Joining…", success: "Please check your inbox.", invalid: "Please enter a valid email address.", error: "Something went wrong. Please try again.", privacy: "By joining, you consent to the newsletter. Unsubscribe at any time.", privacyLink: "Privacy" },
-    services: [["01", "Curated selection", "Only brands that meet the NES standard."], ["02", "14-day returns", "Try at home and decide in peace."], ["03", "Personal advice", "Help with style, material and sizing."]],
+    services: [["01", "Curated selection", "Only brands that meet the NES standard.", "View collection"], ["02", "14-day returns", "Questions about returns, shipping or an order? We can help.", "Ask service"], ["03", "Personal advice", "Help with style, material and sizing.", "Start consultation"]],
+    serviceForms: {
+      name: "Name",
+      email: "Email",
+      message: "Your message",
+      consent: "I consent to my details being processed to handle this enquiry.",
+      sending: "Sending…",
+      invalid: "Please complete your name, email, message and consent.",
+      error: "The enquiry could not be sent. Please try again.",
+      advice: { eyebrow: "NES / Advice", title: "What suits you?", body: "Tell us which style you are considering, your usual size and what matters to you in a shoe. We will reply personally with a recommendation.", detail: "Style or brand (optional)", submit: "Request advice", successTitle: "Enquiry received.", successBody: "Thank you. We will review your details and get back to you personally." },
+      returns: { eyebrow: "NES / Service", title: "Returns & shipping", body: "Would you like to return an item or ask about shipping or an order? Send us a short note, ideally including your order number.", detail: "Order number (optional)", submit: "Ask service", successTitle: "We are on it.", successBody: "Your enquiry has arrived. We will reply with the next steps." },
+    },
     tradeForm: { title: "Become a partner", body: "Tell us briefly what you are looking for. We will get back to you personally.", name: "Name", company: "Company", email: "Email", message: "Message", consent: "I consent to my details being processed to handle this enquiry.", submit: "Send enquiry", sending: "Sending…", successTitle: "Thank you.", successBody: "Your enquiry has arrived. We will be in touch shortly.", invalid: "Please complete your name, email and consent.", error: "The enquiry could not be sent. Please try again." },
-    footer: { about: "A curated house for shoes, knitwear and things that simply feel good.", collections: "Collections", service: "Service", house: "The house", contact: "Contact & wholesale", privacy: "Privacy", imprint: "Legal notice", country: "Germany / EUR" },
+    footer: { about: "A curated house for shoes, knitwear and things that simply feel good.", collections: "Collections", service: "Service", advice: "Personal advice", returns: "Returns & shipping", house: "The house", contact: "Contact & wholesale", privacy: "Privacy", imprint: "Legal notice", country: "Germany / EUR" },
     legalBack: "Back",
   },
 };
@@ -560,6 +657,7 @@ export default function App() {
   const [bagOpen, setBagOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [tradeOpen, setTradeOpen] = useState(false);
+  const [serviceOpen, setServiceOpen] = useState(null);
   const [legalOpen, setLegalOpen] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const [toast, setToast] = useState("");
@@ -574,6 +672,8 @@ export default function App() {
       setActiveProductId(null);
       setBagOpen(false);
       setMobileOpen(false);
+      setTradeOpen(false);
+      setServiceOpen(null);
       window.scrollTo(0, 0);
     };
     handleScroll();
@@ -586,6 +686,41 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const root = document.documentElement;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion || !("IntersectionObserver" in window)) {
+      root.classList.remove("reveal-ready");
+      return undefined;
+    }
+
+    root.classList.add("reveal-ready");
+    let observer;
+    const frame = window.requestAnimationFrame(() => {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-revealed");
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+
+      document.querySelectorAll("[data-reveal]").forEach((element) => {
+        if (element.getBoundingClientRect().top < window.innerHeight * 0.92) {
+          element.classList.add("is-revealed");
+        } else {
+          observer.observe(element);
+        }
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer?.disconnect();
+      root.classList.remove("reveal-ready");
+    };
+  }, [route]);
+
+  useEffect(() => {
     document.documentElement.lang = language;
     window.localStorage.setItem("nes-language", language);
   }, [language]);
@@ -595,14 +730,14 @@ export default function App() {
   }, [bag]);
 
   useEffect(() => {
-    const locked = Boolean(activeProductId || bagOpen || mobileOpen || tradeOpen || legalOpen);
+    const locked = Boolean(activeProductId || bagOpen || mobileOpen || tradeOpen || serviceOpen || legalOpen);
     if (!locked) return undefined;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = previous;
     };
-  }, [activeProductId, bagOpen, mobileOpen, tradeOpen, legalOpen]);
+  }, [activeProductId, bagOpen, mobileOpen, tradeOpen, serviceOpen, legalOpen]);
 
   useEffect(() => {
     const handleEscape = (event) => {
@@ -611,6 +746,7 @@ export default function App() {
       setBagOpen(false);
       setMobileOpen(false);
       setTradeOpen(false);
+      setServiceOpen(null);
       setLegalOpen(null);
     };
     document.addEventListener("keydown", handleEscape);
@@ -742,12 +878,13 @@ export default function App() {
           onGallery={navigateGallery}
           onOpen={openProduct}
           onTrade={() => setTradeOpen(true)}
+          onService={setServiceOpen}
           onPrivacy={() => setLegalOpen("privacy")}
         />
       ) : route === "brands" ? (
-        <BrandsPage copy={copy} onShop={navigateShop} />
+        <BrandsPage copy={copy} onShop={navigateShop} onService={setServiceOpen} />
       ) : route === "gallery" ? (
-        <GalleryPage copy={copy} />
+        <GalleryPage copy={copy} onShop={navigateShop} onService={setServiceOpen} />
       ) : (
         <ShopPage
           copy={copy}
@@ -761,6 +898,7 @@ export default function App() {
           onSort={setSort}
           onOpen={openProduct}
           onShowAll={() => updateFilter("all")}
+          onService={setServiceOpen}
         />
       )}
 
@@ -769,6 +907,7 @@ export default function App() {
         onHome={navigateHome}
         onShop={navigateShop}
         onTrade={() => setTradeOpen(true)}
+        onService={setServiceOpen}
         onLegal={setLegalOpen}
       />
 
@@ -780,6 +919,10 @@ export default function App() {
           selectedSize={selectedSize}
           onSelectSize={setSelectedSize}
           onClose={() => setActiveProductId(null)}
+          onAdvice={() => {
+            setActiveProductId(null);
+            setServiceOpen("advice");
+          }}
           onAdd={() => selectedSize && addToBag(activeProduct.id, selectedSize)}
         />
       )}
@@ -806,6 +949,20 @@ export default function App() {
           onClose={() => setTradeOpen(false)}
           onPrivacy={() => {
             setTradeOpen(false);
+            setLegalOpen("privacy");
+          }}
+        />
+      )}
+
+      {serviceOpen && (
+        <ServiceModal
+          key={serviceOpen}
+          type={serviceOpen}
+          copy={copy}
+          language={language}
+          onClose={() => setServiceOpen(null)}
+          onPrivacy={() => {
+            setServiceOpen(null);
             setLegalOpen("privacy");
           }}
         />
@@ -866,7 +1023,119 @@ function Header({ route, copy, language, bagCount, scrolled, mobileOpen, onToggl
   );
 }
 
-function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onPrivacy }) {
+function OccasionExplorer({ copy, language, onOpen, onShop }) {
+  const [activeId, setActiveId] = useState(OCCASION_CONFIG[0].id);
+  const active = OCCASION_CONFIG.find((item) => item.id === activeId) || OCCASION_CONFIG[0];
+  const activeCopy = copy.occasions.items[active.id];
+  const products = active.productIds.map((id) => PRODUCTS.find((product) => product.id === id)).filter(Boolean);
+
+  return (
+    <section className="occasion-section section-pad" id="occasions" aria-labelledby="occasion-title">
+      <div className="occasion-heading" data-reveal>
+        <div>
+          <p className="eyebrow eyebrow-light">{copy.occasions.label}</p>
+          <h2 id="occasion-title">{copy.occasions.title}</h2>
+        </div>
+        <p>{copy.occasions.intro}</p>
+      </div>
+
+      <div className="occasion-tabs" role="group" aria-label={copy.occasions.label} data-reveal style={{ "--reveal-delay": "90ms" }}>
+        {OCCASION_CONFIG.map((item) => (
+          <button
+            className={active.id === item.id ? "is-active" : ""}
+            type="button"
+            key={item.id}
+            onClick={() => setActiveId(item.id)}
+            aria-pressed={active.id === item.id}
+          >
+            <span>{item.index}</span>
+            <strong>{copy.occasions.items[item.id].tab}</strong>
+          </button>
+        ))}
+      </div>
+
+      <div className="occasion-stage" data-reveal="clip" style={{ "--reveal-delay": "150ms" }}>
+        <div className={`occasion-visual${active.productVisual ? " occasion-visual-product" : ""}`} key={`visual-${active.id}`}>
+          <img src={active.image} alt={activeCopy.alt} width="1200" height="900" loading="lazy" />
+          <span className="occasion-visual-shade" aria-hidden="true" />
+          <span className="occasion-visual-index">{active.index} / {activeCopy.tab}</span>
+        </div>
+
+        <div className="occasion-panel" key={`panel-${active.id}`} aria-live="polite">
+          <div>
+            <p className="eyebrow">{activeCopy.eyebrow}</p>
+            <h3>{activeCopy.title}</h3>
+            <p className="occasion-panel-body">{activeCopy.body}</p>
+          </div>
+          <div className="occasion-selection">
+            <span className="occasion-selection-label">{copy.occasions.productsLabel}</span>
+            {products.map((product) => (
+              <button className="occasion-product" type="button" key={product.id} onClick={() => onOpen(product.id)}>
+                <span className={`occasion-product-image product-fit-${product.fit}`}><img src={product.image} alt="" loading="lazy" /></span>
+                <span className="occasion-product-copy">
+                  <small>{product.brand}</small>
+                  <strong>{product.name}</strong>
+                  <span>{localize(product.subtitle, language)}</span>
+                </span>
+                <span className="occasion-product-price">{formatPrice(product.price, language)}</span>
+                <ArrowIcon />
+              </button>
+            ))}
+            <button className="underlined-link occasion-all" type="button" onClick={() => onShop("all")}>{copy.occasions.cta}<ArrowIcon /></button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ShoppableLook({ copy, language, onOpen }) {
+  const hotspots = [
+    { product: PRODUCTS.find((product) => product.id === 12), className: "shoppable-hotspot-pullover" },
+    { product: PRODUCTS.find((product) => product.id === 1), className: "shoppable-hotspot-shoe" },
+  ].filter(({ product }) => product);
+
+  return (
+    <section className="shoppable-look" id="shop-the-look" aria-labelledby="shoppable-look-title">
+      <div className="shoppable-look-inner" data-reveal="clip">
+        <div className="shoppable-look-copy">
+          <p className="eyebrow">{copy.look.label}</p>
+          <h2 id="shoppable-look-title">{copy.look.title}</h2>
+          <p>{copy.look.body}</p>
+          <span className="shoppable-look-hint"><span aria-hidden="true" />{copy.look.hint}</span>
+        </div>
+        <div className="shoppable-look-media">
+          <img
+            src="/shop/editorial/nes-shoppable-look-v1.webp"
+            alt={copy.look.alt}
+            width="1536"
+            height="1024"
+            loading="lazy"
+          />
+          <span className="shoppable-look-wash" aria-hidden="true" />
+          {hotspots.map(({ product, className }) => (
+            <button
+              className={`shoppable-hotspot ${className}`}
+              type="button"
+              key={product.id}
+              onClick={() => onOpen(product.id)}
+              aria-label={`${product.brand}, ${product.name}, ${formatPrice(product.price, language)} — ${copy.look.open}`}
+            >
+              <span className="shoppable-hotspot-marker" aria-hidden="true" />
+              <span className="shoppable-hotspot-product" aria-hidden="true">
+                <span>{product.brand}</span>
+                <strong>{product.name}</strong>
+                <span className="shoppable-hotspot-price">{formatPrice(product.price, language)}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onService, onPrivacy }) {
   const featured = FEATURED_IDS.map((id) => PRODUCTS.find((product) => product.id === id)).filter(Boolean);
   return (
     <main className="home-page">
@@ -887,8 +1156,8 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onPrivac
       </section>
 
       <section className="house-intro section-pad">
-        <div className="house-intro-index">NES<br />CURATED<br />HOUSE</div>
-        <div className="house-intro-copy">
+        <div className="house-intro-index" data-reveal>NES<br />CURATED<br />HOUSE</div>
+        <div className="house-intro-copy" data-reveal style={{ "--reveal-delay": "80ms" }}>
           <p className="eyebrow">{copy.intro.label}</p>
           <h2>{copy.intro.title}</h2>
           <p>{copy.intro.text}</p>
@@ -898,22 +1167,24 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onPrivac
       <section className="featured-section section-pad" id="featured">
         <SectionHeading label={copy.featured.label} title={copy.featured.title} action={copy.featured.all} onAction={() => onShop("all")} />
         <div className="product-grid product-grid-featured">
-          {featured.map((product) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={onOpen} />)}
+          {featured.map((product, productIndex) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={onOpen} revealDelay={`${productIndex * 70}ms`} />)}
         </div>
       </section>
 
+      <OccasionExplorer copy={copy} language={language} onOpen={onOpen} onShop={onShop} />
+
       <section className="brand-section section-pad" id="brands">
-        <div className="brand-section-heading">
+        <div className="brand-section-heading" data-reveal>
           <p className="eyebrow">{copy.brands.label}</p>
           <h2>{copy.brands.title}</h2>
         </div>
-        <div className="brand-world-grid">
-          {BRAND_WORLDS.map((brand) => (
-            <button className={`brand-world ${brand.className}`} type="button" key={brand.id} onClick={() => onShop(brand.id)}>
+        <div className="brand-world-grid brand-world-grid-home">
+          {BRAND_WORLDS.filter((brand) => brand.id !== "loungers").map((brand, brandIndex) => (
+            <button className={`brand-world ${brand.className}`} type="button" key={brand.id} onClick={() => onShop(brand.id)} data-reveal="clip" style={{ "--reveal-delay": `${brandIndex * 90}ms` }}>
               {brand.image ? <img src={brand.image} alt="" aria-hidden="true" loading="lazy" style={{ objectPosition: brand.position }} /> : <span className="brand-world-gradient" aria-hidden="true" />}
               <span className="brand-world-shade" aria-hidden="true" />
               {brand.logo && <img className="brand-world-logo" src={brand.logo} alt={brand.name} loading="lazy" />}
-              <span className="brand-world-index">{brand.index} / {localize(brand.category, language)}</span>
+              <span className="brand-world-index">{String(brandIndex + 1).padStart(2, "0")} / {localize(brand.category, language)}</span>
               <span className="brand-world-copy">
                 {!brand.logo && <strong>{brand.name}</strong>}
                 <span>{localize(brand.note, language)}</span>
@@ -924,10 +1195,12 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onPrivac
         </div>
       </section>
 
+      <ShoppableLook copy={copy} language={language} onOpen={onOpen} />
+
       <section className="editorial-feature">
         <img src="/wai10-opt.jpeg" alt={copy.editorial.alt} loading="lazy" />
         <span className="editorial-feature-overlay" aria-hidden="true" />
-        <div className="editorial-feature-copy">
+        <div className="editorial-feature-copy" data-reveal>
           <p className="eyebrow eyebrow-light">{copy.editorial.label}</p>
           <h2>{copy.editorial.title}</h2>
           <p>{copy.editorial.body}</p>
@@ -937,23 +1210,23 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onPrivac
 
       <section className="standard-section" id="standard">
         <div className="standard-copy">
-          <div className="standard-head">
+          <div className="standard-head" data-reveal>
             <div><p className="eyebrow">{copy.standard.label}</p><h2>{copy.standard.title}</h2></div>
             <p className="standard-body">{copy.standard.body}</p>
           </div>
           <div className="principle-list">
-            {copy.standard.points.map(([index, title, body]) => <div className="principle" key={index}><span>{index}</span><strong>{title}</strong><p>{body}</p></div>)}
+            {copy.standard.points.map(([index, title, body], pointIndex) => <div className="principle" key={index} data-reveal style={{ "--reveal-delay": `${pointIndex * 70}ms` }}><span>{index}</span><strong>{title}</strong><p>{body}</p></div>)}
           </div>
           <button className="button button-forest" type="button" onClick={() => onShop("all")}>{copy.standard.cta}<ArrowIcon /></button>
         </div>
       </section>
 
-      <ServiceStrip copy={copy} />
+      <ServiceStrip copy={copy} onShop={onShop} onService={onService} />
 
       <section className="trade-band">
-        <div><p className="eyebrow eyebrow-light">{copy.trade.label}</p><h2>{copy.trade.title}</h2></div>
-        <p>{copy.trade.body}</p>
-        <button className="button button-gold" type="button" onClick={onTrade}>{copy.trade.cta}<ArrowIcon /></button>
+        <div data-reveal><p className="eyebrow eyebrow-light">{copy.trade.label}</p><h2>{copy.trade.title}</h2></div>
+        <p data-reveal style={{ "--reveal-delay": "70ms" }}>{copy.trade.body}</p>
+        <button className="button button-gold" type="button" onClick={onTrade} data-reveal style={{ "--reveal-delay": "140ms" }}>{copy.trade.cta}<ArrowIcon /></button>
       </section>
 
       <Newsletter copy={copy} language={language} onPrivacy={onPrivacy} />
@@ -961,7 +1234,7 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onPrivac
   );
 }
 
-function GalleryPage({ copy }) {
+function GalleryPage({ copy, onShop, onService }) {
   return (
     <main className="gallery-page">
       <section className="gallery-intro section-pad">
@@ -976,16 +1249,16 @@ function GalleryPage({ copy }) {
           </figure>
         ))}
       </section>
-      <ServiceStrip copy={copy} />
+      <ServiceStrip copy={copy} onShop={onShop} onService={onService} />
     </main>
   );
 }
 
-function BrandsPage({ copy, onShop }) {
+function BrandsPage({ copy, onShop, onService }) {
   return (
     <main className="lineups-page">
       <CatalogLineups copy={copy.shop.lineups} onSelect={onShop} />
-      <ServiceStrip copy={copy} />
+      <ServiceStrip copy={copy} onShop={onShop} onService={onService} />
     </main>
   );
 }
@@ -1022,7 +1295,7 @@ function CatalogLineups({ copy, onSelect }) {
   );
 }
 
-function ShopPage({ copy, language, products, filter, search, sort, onFilter, onSearch, onSort, onOpen, onShowAll }) {
+function ShopPage({ copy, language, products, filter, search, sort, onFilter, onSearch, onSort, onOpen, onShowAll, onService }) {
   const greenSelected = filter === "green";
   return (
     <main className="catalog-page">
@@ -1056,18 +1329,18 @@ function ShopPage({ copy, language, products, filter, search, sort, onFilter, on
           </div>
         )}
       </section>
-      <ServiceStrip copy={copy} />
+      <ServiceStrip copy={copy} onShop={onShowAll} onService={onService} />
     </main>
   );
 }
 
 function SectionHeading({ label, title, action, onAction }) {
-  return <div className="section-heading"><div><p className="eyebrow">{label}</p><h2>{title}</h2></div><button className="underlined-link" type="button" onClick={onAction}>{action}<ArrowIcon /></button></div>;
+  return <div className="section-heading" data-reveal><div><p className="eyebrow">{label}</p><h2>{title}</h2></div><button className="underlined-link" type="button" onClick={onAction}>{action}<ArrowIcon /></button></div>;
 }
 
-function ProductCard({ product, copy, language, onOpen }) {
+function ProductCard({ product, copy, language, onOpen, revealDelay }) {
   return (
-    <article className={`product-card product-card-${product.brandId}`}>
+    <article className={`product-card product-card-${product.brandId}`} data-reveal style={revealDelay ? { "--reveal-delay": revealDelay } : undefined}>
       <button className={`product-media product-fit-${product.fit}`} type="button" onClick={() => onOpen(product.id)} aria-label={`${product.name} ${copy.product.view}`}>
         {product.tag && <span className="product-tag">{localize(product.tag, language)}</span>}
         <img className="product-image product-image-main" src={product.image} alt={product.name} loading="lazy" decoding="async" />
@@ -1083,7 +1356,7 @@ function ProductCard({ product, copy, language, onOpen }) {
   );
 }
 
-function ProductDetail({ product, copy, language, selectedSize, onSelectSize, onClose, onAdd }) {
+function ProductDetail({ product, copy, language, selectedSize, onSelectSize, onClose, onAdvice, onAdd }) {
   return (
     <div className="modal-backdrop product-backdrop" role="presentation" onMouseDown={onClose}>
       <div className="product-detail" role="dialog" aria-modal="true" aria-labelledby="product-detail-title" onMouseDown={(event) => event.stopPropagation()}>
@@ -1098,7 +1371,7 @@ function ProductDetail({ product, copy, language, selectedSize, onSelectSize, on
           <h2 id="product-detail-title">{product.name}</h2>
           <p className="detail-subtitle">{localize(product.subtitle, language)} · {localize(product.color, language)}</p>
           <p className="detail-price">{formatPrice(product.price, language)}</p>
-          <div className="size-picker"><div><span>{copy.product.chooseSize}</span><button type="button">{copy.product.guide}</button></div><div className="size-grid">{product.sizes.map((size) => <button className={selectedSize === size ? "is-active" : ""} type="button" key={size} onClick={() => onSelectSize(size)}>{size}</button>)}</div></div>
+          <div className="size-picker"><div><span>{copy.product.chooseSize}</span><button type="button" onClick={onAdvice}>{copy.product.guide}</button></div><div className="size-grid">{product.sizes.map((size) => <button className={selectedSize === size ? "is-active" : ""} type="button" key={size} onClick={() => onSelectSize(size)}>{size}</button>)}</div></div>
           <button className="add-to-bag" type="button" disabled={!selectedSize} onClick={onAdd}>{selectedSize ? `${copy.product.add} · ${selectedSize}` : copy.product.chooseFirst}</button>
           <p className="detail-description">{localize(product.description, language)}</p>
           <dl className="detail-facts"><div><dt>{copy.product.material}</dt><dd>{product.material}</dd></div><div><dt>{copy.product.color}</dt><dd>{localize(product.color, language)}</dd></div><div><dt>{copy.product.delivery}</dt><dd>{copy.product.deliveryValue}</dd></div><div><dt>{copy.product.returns}</dt><dd>{copy.product.returnsValue}</dd></div></dl>
@@ -1128,8 +1401,23 @@ function BagDrawer({ bag, total, copy, language, onClose, onUpdate, onShop }) {
   );
 }
 
-function ServiceStrip({ copy }) {
-  return <section className="service-strip" aria-label="Shop services">{copy.services.map(([index, title, body]) => <div key={index}><span>{index}</span><strong>{title}</strong><p>{body}</p></div>)}</section>;
+function ServiceStrip({ copy, onShop, onService }) {
+  return (
+    <section className="service-strip" aria-label="Shop services">
+      <div className="service-strip-inner">
+        {copy.services.map(([index, title, body, action], serviceIndex) => (
+          <button className="service-card" type="button" key={index} onClick={() => index === "01" ? onShop("all") : onService(index === "02" ? "returns" : "advice")} data-reveal style={{ "--reveal-delay": `${serviceIndex * 70}ms` }}>
+            <span className="service-card-index">{index}</span>
+            <div className="service-card-copy">
+              <strong>{title}</strong>
+              <p>{body}</p>
+              <span className="service-card-action">{action}<ArrowIcon /></span>
+            </div>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 function Newsletter({ copy, language, onPrivacy }) {
@@ -1193,6 +1481,94 @@ function TradeModal({ copy, language, onClose, onPrivacy }) {
   );
 }
 
+function ServiceModal({ type, copy, language, onClose, onPrivacy }) {
+  const labels = copy.serviceForms;
+  const content = labels[type];
+  const [form, setForm] = useState({ name: "", email: "", detail: "", message: "", consent: false });
+  const [status, setStatus] = useState("idle");
+  const [error, setError] = useState("");
+
+  function update(key, value) {
+    setForm((current) => ({ ...current, [key]: value }));
+    if (status === "error") { setStatus("idle"); setError(""); }
+  }
+
+  async function submit(event) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    if (String(data.get("company_website") || "")) return;
+    const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim());
+    if (!form.name.trim() || !validEmail || !form.message.trim() || !form.consent) {
+      setStatus("error");
+      setError(labels.invalid);
+      return;
+    }
+
+    const detail = form.detail.trim();
+    const message = [detail ? `${content.detail}: ${detail}` : "", form.message.trim()].filter(Boolean).join("\n\n");
+    setStatus("loading");
+    setError("");
+    try {
+      const response = await fetch(import.meta.env.VITE_INQUIRY_ENDPOINT || "/api/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          company: "",
+          email: form.email.trim(),
+          phone: "",
+          role: "Customer",
+          topic: type === "advice" ? "Personal product and sizing advice" : "Returns and shipping",
+          brand: "All brands",
+          message,
+          newsletter: false,
+          locale: language,
+          source: `nes-shop-service-${type}`,
+          consent: true,
+          website: "",
+        }),
+      });
+      if (!response.ok) throw new Error("Service enquiry failed");
+      setStatus("success");
+    } catch {
+      setStatus("error");
+      setError(labels.error);
+    }
+  }
+
+  return (
+    <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
+      <div className="trade-modal service-modal" role="dialog" aria-modal="true" aria-labelledby="service-title" onMouseDown={(event) => event.stopPropagation()}>
+        <button className="overlay-close" type="button" onClick={onClose} aria-label={copy.nav.close}><CloseIcon /></button>
+        {status === "success" ? (
+          <div className="trade-success">
+            <p className="eyebrow">{content.eyebrow}</p>
+            <h2 id="service-title">{content.successTitle}</h2>
+            <p>{content.successBody}</p>
+            <button className="button button-forest" type="button" onClick={onClose}>{copy.nav.close}</button>
+          </div>
+        ) : (
+          <form onSubmit={submit} noValidate aria-busy={status === "loading"}>
+            <p className="eyebrow">{content.eyebrow}</p>
+            <h2 id="service-title">{content.title}</h2>
+            <p className="trade-modal-intro">{content.body}</p>
+            <input className="honeypot" type="text" name="company_website" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+            <div className="trade-fields">
+              <label><span>{labels.name} *</span><input type="text" value={form.name} onChange={(event) => update("name", event.target.value)} autoComplete="name" disabled={status === "loading"} /></label>
+              <label><span>{labels.email} *</span><input type="email" value={form.email} onChange={(event) => update("email", event.target.value)} autoComplete="email" disabled={status === "loading"} /></label>
+              <label className="trade-field-wide"><span>{content.detail}</span><input type="text" value={form.detail} onChange={(event) => update("detail", event.target.value)} disabled={status === "loading"} /></label>
+              <label className="trade-field-wide"><span>{labels.message} *</span><textarea rows="4" value={form.message} onChange={(event) => update("message", event.target.value)} disabled={status === "loading"} /></label>
+            </div>
+            <label className="trade-consent"><input type="checkbox" checked={form.consent} onChange={(event) => update("consent", event.target.checked)} disabled={status === "loading"} /><span>{labels.consent} <button type="button" onClick={onPrivacy}>{copy.newsletter.privacyLink}</button></span></label>
+            <p className="trade-error" role="status">{status === "error" ? error : ""}</p>
+            <button className="trade-submit" type="submit" disabled={status === "loading"}>{status === "loading" ? labels.sending : content.submit}<ArrowIcon /></button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function LegalModal({ kind, language, copy, onClose }) {
   const documentCopy = LEGAL[language][kind];
   return (
@@ -1203,12 +1579,13 @@ function LegalModal({ kind, language, copy, onClose }) {
   );
 }
 
-function Footer({ copy, onHome, onShop, onTrade, onLegal }) {
+function Footer({ copy, onHome, onShop, onTrade, onService, onLegal }) {
   return (
     <footer className="site-footer">
       <div className="footer-main">
         <div className="footer-brand"><button className="footer-wordmark" type="button" onClick={() => onHome()}>NES</button><p>{copy.footer.about}</p></div>
         <div className="footer-column"><h3>{copy.footer.collections}</h3><button type="button" onClick={() => onShop("vehon")}>Vehon / WAI</button><button type="button" onClick={() => onShop("loungers")}>Loungers</button><button type="button" onClick={() => onShop("montechiaro")}>Montechiaro</button><button type="button" onClick={() => onShop("green")}>Green Comfort</button></div>
+        <div className="footer-column"><h3>{copy.footer.service}</h3><button type="button" onClick={() => onService("advice")}>{copy.footer.advice}</button><button type="button" onClick={() => onService("returns")}>{copy.footer.returns}</button></div>
         <div className="footer-column"><h3>{copy.footer.house}</h3><button type="button" onClick={() => onHome("standard")}>{copy.nav.about}</button><button type="button" onClick={onTrade}>{copy.footer.contact}</button><button type="button" onClick={() => onLegal("privacy")}>{copy.footer.privacy}</button><button type="button" onClick={() => onLegal("imprint")}>{copy.footer.imprint}</button></div>
       </div>
       <div className="footer-bottom"><span>© 2026 NES</span><span>Natural · Everyday · Selected</span><span>{copy.footer.country}</span></div>
