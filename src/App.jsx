@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ShaderBackground } from "./components/ui/shaders-hero-section";
 import "./App.css";
 
@@ -161,45 +161,6 @@ const PRODUCTS = [
     },
   },
   {
-    id: 9,
-    brand: "Loungers",
-    brandId: "loungers",
-    name: "Driver Brown",
-    subtitle: { de: "Italian Driving Loafer", en: "Italian driving loafer" },
-    price: 229,
-    color: { de: "Cognac", en: "Cognac" },
-    material: "Soft Nappa Leather",
-    category: { de: "Loafers", en: "Loafers" },
-    image: "/shop/products/loungers-driver-brown-front.webp",
-    hoverImage: "/shop/products/loungers-driver-brown-side.webp",
-    tag: { de: "Neu bei NES", en: "New at NES" },
-    fit: "cover",
-    sizes: ["39", "40", "41", "42", "43", "44", "45", "46"],
-    description: {
-      de: "Ein weich konstruierter Driving Loafer aus italienischem Nappaleder. Leicht am Fuß, präzise von Hand vollendet und für lange Tage gemacht.",
-      en: "A softly constructed driving loafer in Italian nappa leather. Light on the foot, finished by hand and made for long days.",
-    },
-  },
-  {
-    id: 11,
-    brand: "Loungers",
-    brandId: "loungers",
-    name: "Bordeaux Ease",
-    subtitle: { de: "Velvet Leisure Loafer", en: "Velvet leisure loafer" },
-    price: 219,
-    color: { de: "Bordeaux", en: "Bordeaux" },
-    material: "Cotton Velvet",
-    category: { de: "Loafers", en: "Loafers" },
-    image: "/shop/products/loungers-bordeaux-front.webp",
-    hoverImage: "/shop/products/loungers-bordeaux-side.webp",
-    fit: "cover",
-    sizes: ["39", "40", "41", "42", "43", "44", "45", "46"],
-    description: {
-      de: "Ein unkomplizierter Velvet Loafer mit weicher Linie und markanter Farbe — geschaffen für Reisen und Momente außerhalb der Routine.",
-      en: "An effortless velvet loafer with a soft line and a distinctive colour, designed for travel and moments outside the ordinary.",
-    },
-  },
-  {
     id: 12,
     brand: "Montechiaro",
     brandId: "montechiaro",
@@ -236,103 +197,60 @@ const BRAND_WORLDS = [
     className: "brand-world-wide",
   },
   {
-    id: "loungers",
-    index: "02",
-    name: "Loungers",
-    category: { de: "Leisure Loafers", en: "Leisure loafers" },
-    note: {
-      de: "Easy luxury, handgemacht in Italien.",
-      en: "Easy luxury, handmade in Italy.",
-    },
-    image: "/shop/loungers-cliff.webp",
-    position: "center 58%",
-    className: "brand-world-tall",
-  },
-  {
     id: "montechiaro",
-    index: "03",
+    index: "02",
     name: "Montechiaro",
     category: { de: "Italian Knitwear", en: "Italian knitwear" },
     note: {
       de: "Dressed down. Never plain.",
       en: "Dressed down. Never plain.",
     },
+    // This frame carries campaign type down its right-hand side. The tile is
+    // taller than it is wide, so the landscape crop keeps only the left third —
+    // the model — and leaves the burnt-in headline out of frame.
     image: "/shop/montechiaro-editorial.webp",
-    position: "42% center",
+    position: "15% center",
     className: "brand-world-wide brand-world-dark",
-  },
-  {
-    id: "green",
-    index: "04",
-    name: "Green Comfort",
-    category: { de: "Danish Foot Health", en: "Danish foot health" },
-    note: {
-      de: "Weite Passformen und EnergySole™ Komfort.",
-      en: "Wide fits and EnergySole™ comfort.",
-    },
-    logo: "/logos/greencomfort.svg?v=official",
-    className: "brand-world-green",
-    upcoming: true,
   },
 ];
 
 const CATALOG_LINEUPS = [
   { id: "wai", index: "01", filter: "vehon", image: "/shop/collections/wai-lineup-v1.webp" },
   { id: "vehon", index: "02", filter: "vehon", image: "/shop/collections/vehon-lineup-v1.webp" },
-  { id: "loungers", index: "03", filter: "loungers", image: "/shop/loungers-banner.webp" },
 ];
 
 const GALLERY_IMAGES = [
-  { src: "/shop/gallery/loungers-clouds.webp", brand: "Loungers" },
   { src: "/shop/gallery/wai-ground.webp", brand: "WAI" },
   { src: "/shop/gallery/montechiaro-statement.webp", brand: "Montechiaro" },
-  { src: "/shop/gallery/loungers-forest.webp", brand: "Loungers" },
   { src: "/shop/gallery/wai-home-step.webp", brand: "WAI" },
-  { src: "/shop/gallery/loungers-bordeaux-beach.webp", brand: "Loungers" },
   { src: "/shop/gallery/montechiaro-kitchen.webp", brand: "Montechiaro" },
   { src: "/shop/gallery/wai-coast.webp", brand: "WAI" },
   { src: "/shop/gallery/wai-zen.webp", brand: "WAI" },
-  { src: "/shop/gallery/loungers-stitching.webp", brand: "Loungers" },
   { src: "/shop/gallery/wai-sunset.webp", brand: "WAI" },
   { src: "/shop/gallery/montechiaro-work.webp", brand: "Montechiaro" },
   { src: "/shop/gallery/wai-poolside.webp", brand: "WAI" },
-  { src: "/shop/gallery/loungers-temple.webp", brand: "Loungers" },
   { src: "/shop/gallery/wai-stream.webp", brand: "WAI" },
-  { src: "/shop/gallery/loungers-oldtimer.webp", brand: "Loungers" },
   { src: "/shop/gallery/wai-tea.webp", brand: "WAI" },
-  { src: "/shop/gallery/loungers-breathe.webp", brand: "Loungers" },
   { src: "/shop/gallery/montechiaro-detail.webp", brand: "Montechiaro" },
   { src: "/shop/gallery/wai-beach-step.webp", brand: "WAI" },
   { src: "/shop/gallery/wai-curtain.webp", brand: "WAI" },
-  { src: "/shop/gallery/loungers-slow-living.webp", brand: "Loungers" },
   { src: "/shop/gallery/wai-warm-sand.webp", brand: "WAI" },
   { src: "/shop/gallery/wai-stone-lounge.webp", brand: "WAI" },
-  { src: "/shop/gallery/loungers-imperfection.webp", brand: "Loungers" },
-  { src: "/shop/gallery/loungers-bangkok.webp", brand: "Loungers" },
 ];
 
-const FEATURED_IDS = [9, 1, 12, 5];
+const FEATURED_IDS = [1, 5, 12, 7];
 
-const OCCASION_CONFIG = [
-  {
-    id: "home",
-    index: "01",
-    image: "/shop/gallery/wai-home-step.webp",
-    productIds: [1, 4],
-  },
-  {
-    id: "travel",
-    index: "02",
-    image: "/shop/gallery/wai-sunset.webp",
-    productIds: [2, 5],
-  },
-  {
-    id: "statement",
-    index: "03",
-    image: "/shop/pully-red-side.webp",
-    productIds: [12, 6],
-    productVisual: true,
-  },
+// A single exploded view keeps the construction legible without tying the
+// section to scroll position.
+const CONSTRUCTION_IMAGE = "/frames/ezgif-frame-082.jpg";
+
+// One image per principle, in the order of copy.standard.points.
+// montechiaro-detail carries baked-in campaign type along its bottom edge, so
+// it is anchored to the top and cropped by the stage's 4:5 frame.
+const PRINCIPLE_MEDIA = [
+  { src: "/shop/gallery/montechiaro-detail.webp", position: "center top" },
+  { src: "/craftsmanship-wai.png", position: "62% center" },
+  { src: "/shop/gallery/wai-ground.webp", position: "center center" },
 ];
 
 const COPY = {
@@ -352,8 +270,19 @@ const COPY = {
       title: "Weniger suchen. Besser auswählen.",
       text: "NES bringt eigenständige Marken an einen Ort — kuratiert nach Komfort, Material und einer Form, die auch morgen noch richtig wirkt.",
     },
-    featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", all: "Alle Produkte" },
-    brands: { label: "Die Marken", title: "Ein Haus. Drei Handschriften.", open: "Kollektion ansehen", soon: "Kollektion folgt" },
+    featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", all: "Alle Produkte", filterAll: "Alle" },
+    construction: {
+      label: "Die Konstruktion",
+      title: "Vier Lagen. Ein Gefühl.",
+      body: "Der WAI Home, auseinandergenommen. Vier präzise Schichten zwischen Fuß und Boden.",
+      layers: [
+        ["01", "Obermaterial", "Textiles Obergewebe, weich und atmungsaktiv."],
+        ["02", "Einlegesohle", "Perforiert und herausnehmbar."],
+        ["03", "Zwischensohle", "Dämpfung, die den Boden spürbar lässt."],
+        ["04", "Laufsohle", "Profil für einen natürlichen Abrollvorgang."],
+      ],
+    },
+    brands: { label: "Die Marken", title: "Ein Haus. Zwei Handschriften.", open: "Kollektion ansehen" },
     look: {
       label: "NES / Shop the look",
       title: "Ein Look. Zwei Handschriften.",
@@ -361,36 +290,6 @@ const COPY = {
       hint: "Punkte antippen und Produkt ansehen",
       open: "Produkt ansehen",
       alt: "Model im Pully Rosso von Montechiaro und blauen WAI Home Feel Shoes",
-    },
-    occasions: {
-      label: "Nach Anlass entdecken",
-      title: "Was passt zu Ihrem Tag?",
-      intro: "Drei Stimmungen, bewusst kuratiert — vom ruhigen Morgen bis zum Auftritt am Abend.",
-      cta: "Gesamte Kollektion ansehen",
-      productsLabel: "Passende Auswahl",
-      items: {
-        home: {
-          tab: "Zuhause",
-          eyebrow: "Leicht & entspannt",
-          title: "Ruhe beginnt beim ersten Schritt.",
-          body: "Weiche Konstruktionen, flexible Sohlen und Materialien, die sich vom ersten Moment an selbstverständlich anfühlen.",
-          alt: "WAI Feel Shoes in einem hellen Wohnraum",
-        },
-        travel: {
-          tab: "Unterwegs",
-          eyebrow: "Reise & Alltag",
-          title: "Leicht bleiben, wenn der Tag weitergeht.",
-          body: "Reduzierte Formen für Wege, Termine und spontane Umwege — komfortabel, ohne nach Komfort auszusehen.",
-          alt: "WAI Feel Shoes bei Sonnenuntergang am Meer",
-        },
-        statement: {
-          tab: "Statement",
-          eyebrow: "Farbe & Charakter",
-          title: "Ein Stück, das den Ton angibt.",
-          body: "Markanter Strick und präzise Loafer für Momente, in denen Zurückhaltung trotzdem Haltung zeigen darf.",
-          alt: "Pully Rosso von Montechiaro",
-        },
-      },
     },
     gallery: { label: "NES / Bildarchiv", title: "Bewegung in Bildern.", intro: "Weitere Motive aus Alltag, Reise, Material und Ruhe — gesammelt als visuelles Archiv der Kollektionen.", aria: "Visuelles Archiv", imageAlt: "Editorialaufnahme von" },
     editorial: {
@@ -418,17 +317,14 @@ const COPY = {
       name: "Name: A–Z",
       noResults: "Keine Produkte gefunden.",
       noResultsBody: "Versuchen Sie einen anderen Suchbegriff oder wechseln Sie die Marke.",
-      upcomingTitle: "Green Comfort kommt ins Sortiment.",
-      upcomingBody: "Die erste Auswahl wird gerade zusammengestellt. Entdecken Sie bis dahin die übrigen Marken im Haus.",
       showAll: "Alle Produkte zeigen",
       lineups: {
         label: "NES / Markenkatalog",
-        title: "Drei Linien. Zehn Modelle.",
-        intro: "WAI, Vehon und Loungers — jeweils als vollständige Kollektion.",
+        title: "Zwei Linien. Neun Modelle.",
+        intro: "WAI und Vehon — jeweils als vollständige Kollektion.",
         items: {
           wai: { meta: "04 Modelle · Feel Shoes", title: "WAI by Vehon", body: "Vier textile Feel Shoes für natürliche Bewegung, Reise und Alltag.", cta: "WAI ansehen" },
           vehon: { meta: "04 Modelle · Made in Italy", title: "Vehon", body: "Mocassini, Velvet und Tech-knit in vier eigenständigen Konstruktionen.", cta: "Vehon ansehen" },
-          loungers: { meta: "02 Modelle · Leisure Loafers", title: "Loungers", body: "Zwei leichte Loafer zwischen italienischem Handwerk, Reise und entspannter Eleganz.", cta: "Loungers ansehen" },
         },
       },
     },
@@ -463,8 +359,19 @@ const COPY = {
       campaign: "Vehon / WAI · Feel Shoes",
     },
     intro: { label: "The NES principle", title: "Search less. Choose better.", text: "NES brings distinct brands together in one place — curated for comfort, material and forms that will still feel right tomorrow." },
-    featured: { label: "New in the house", title: "Selected for now.", all: "View all products" },
-    brands: { label: "The brands", title: "One house. Three signatures.", open: "View collection", soon: "Collection coming soon" },
+    featured: { label: "New in the house", title: "Selected for now.", all: "View all products", filterAll: "All" },
+    construction: {
+      label: "The construction",
+      title: "Four layers. One feeling.",
+      body: "The WAI Home, taken apart. Four precise layers between foot and ground.",
+      layers: [
+        ["01", "Upper", "Textile upper, soft and breathable."],
+        ["02", "Insole", "Perforated and removable."],
+        ["03", "Midsole", "Cushioning that still lets you feel the ground."],
+        ["04", "Outsole", "Tread built for a natural roll-through."],
+      ],
+    },
+    brands: { label: "The brands", title: "One house. Two signatures.", open: "View collection" },
     look: {
       label: "NES / Shop the look",
       title: "One look. Two signatures.",
@@ -472,36 +379,6 @@ const COPY = {
       hint: "Tap a point to view the product",
       open: "View product",
       alt: "Model wearing the Montechiaro Pully Rosso and blue WAI Home feel shoes",
-    },
-    occasions: {
-      label: "Shop by occasion",
-      title: "What suits your day?",
-      intro: "Three considered moods — from a quiet morning to an evening with presence.",
-      cta: "View the full collection",
-      productsLabel: "Selected for the moment",
-      items: {
-        home: {
-          tab: "At home",
-          eyebrow: "Light & relaxed",
-          title: "Ease begins with the first step.",
-          body: "Soft construction, flexible soles and materials that feel natural from the very first moment.",
-          alt: "WAI feel shoes in a light-filled interior",
-        },
-        travel: {
-          tab: "On the move",
-          eyebrow: "Travel & everyday",
-          title: "Stay light when the day keeps moving.",
-          body: "Reduced forms for journeys, appointments and spontaneous detours — comfortable without looking like comfort wear.",
-          alt: "WAI feel shoes by the sea at sunset",
-        },
-        statement: {
-          tab: "Statement",
-          eyebrow: "Colour & character",
-          title: "One piece sets the tone.",
-          body: "Distinctive knitwear and precise loafers for moments when restraint can still show character.",
-          alt: "Montechiaro Pully Rosso",
-        },
-      },
     },
     gallery: { label: "NES / Image archive", title: "Movement in pictures.", intro: "More scenes from everyday life, travel, material and quiet moments — collected as a visual archive of the collections.", aria: "Visual archive", imageAlt: "Editorial image by" },
     editorial: {
@@ -529,17 +406,14 @@ const COPY = {
       name: "Name: A–Z",
       noResults: "No products found.",
       noResultsBody: "Try another search term or choose a different brand.",
-      upcomingTitle: "Green Comfort is joining the collection.",
-      upcomingBody: "The first edit is being prepared. In the meantime, discover the other brands in the house.",
       showAll: "Show all products",
       lineups: {
         label: "NES / Brand catalogue",
-        title: "Three lines. Ten models.",
-        intro: "WAI, Vehon and Loungers — each shown as a complete collection.",
+        title: "Two lines. Nine models.",
+        intro: "WAI and Vehon — each shown as a complete collection.",
         items: {
           wai: { meta: "04 models · Feel shoes", title: "WAI by Vehon", body: "Four textile feel shoes made for natural movement, travel and everyday life.", cta: "View WAI" },
           vehon: { meta: "04 models · Made in Italy", title: "Vehon", body: "Moccasins, velvet and technical knit across four distinct constructions.", cta: "View Vehon" },
-          loungers: { meta: "02 models · Leisure loafers", title: "Loungers", body: "Two lightweight loafers balancing Italian craft, travel and relaxed elegance.", cta: "View Loungers" },
         },
       },
     },
@@ -695,6 +569,17 @@ export default function App() {
 
     root.classList.add("reveal-ready");
     let observer;
+    let mutations;
+
+    const register = (element) => {
+      if (element.classList.contains("is-revealed")) return;
+      if (element.getBoundingClientRect().top < window.innerHeight * 0.92) {
+        element.classList.add("is-revealed");
+      } else {
+        observer.observe(element);
+      }
+    };
+
     const frame = window.requestAnimationFrame(() => {
       observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -704,18 +589,33 @@ export default function App() {
         });
       }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
 
-      document.querySelectorAll("[data-reveal]").forEach((element) => {
-        if (element.getBoundingClientRect().top < window.innerHeight * 0.92) {
-          element.classList.add("is-revealed");
-        } else {
-          observer.observe(element);
-        }
+      document.querySelectorAll("[data-reveal]").forEach(register);
+
+      // Elements mounted later — filtered grids, modals — never reach the
+      // observer above, so without this they stay stuck at opacity 0.
+      mutations = new MutationObserver((records) => {
+        const added = [];
+        records.forEach((record) => {
+          record.addedNodes.forEach((node) => {
+            if (node.nodeType !== 1) return;
+            if (node.matches("[data-reveal]")) added.push(node);
+            node.querySelectorAll("[data-reveal]").forEach((child) => added.push(child));
+          });
+        });
+        if (!added.length) return;
+        // Flush styles so the hidden state is computed before we reveal.
+        // Deferring to rAF instead would leave the nodes invisible for however
+        // long the next frame takes.
+        void document.body.offsetHeight;
+        added.forEach(register);
       });
+      mutations.observe(document.body, { childList: true, subtree: true });
     });
 
     return () => {
       window.cancelAnimationFrame(frame);
       observer?.disconnect();
+      mutations?.disconnect();
       root.classList.remove("reveal-ready");
     };
   }, [route]);
@@ -1023,72 +923,6 @@ function Header({ route, copy, language, bagCount, scrolled, mobileOpen, onToggl
   );
 }
 
-function OccasionExplorer({ copy, language, onOpen, onShop }) {
-  const [activeId, setActiveId] = useState(OCCASION_CONFIG[0].id);
-  const active = OCCASION_CONFIG.find((item) => item.id === activeId) || OCCASION_CONFIG[0];
-  const activeCopy = copy.occasions.items[active.id];
-  const products = active.productIds.map((id) => PRODUCTS.find((product) => product.id === id)).filter(Boolean);
-
-  return (
-    <section className="occasion-section section-pad" id="occasions" aria-labelledby="occasion-title">
-      <div className="occasion-heading" data-reveal>
-        <div>
-          <p className="eyebrow eyebrow-light">{copy.occasions.label}</p>
-          <h2 id="occasion-title">{copy.occasions.title}</h2>
-        </div>
-        <p>{copy.occasions.intro}</p>
-      </div>
-
-      <div className="occasion-tabs" role="group" aria-label={copy.occasions.label} data-reveal style={{ "--reveal-delay": "90ms" }}>
-        {OCCASION_CONFIG.map((item) => (
-          <button
-            className={active.id === item.id ? "is-active" : ""}
-            type="button"
-            key={item.id}
-            onClick={() => setActiveId(item.id)}
-            aria-pressed={active.id === item.id}
-          >
-            <span>{item.index}</span>
-            <strong>{copy.occasions.items[item.id].tab}</strong>
-          </button>
-        ))}
-      </div>
-
-      <div className="occasion-stage" data-reveal="clip" style={{ "--reveal-delay": "150ms" }}>
-        <div className={`occasion-visual${active.productVisual ? " occasion-visual-product" : ""}`} key={`visual-${active.id}`}>
-          <img src={active.image} alt={activeCopy.alt} width="1200" height="900" loading="lazy" />
-          <span className="occasion-visual-shade" aria-hidden="true" />
-          <span className="occasion-visual-index">{active.index} / {activeCopy.tab}</span>
-        </div>
-
-        <div className="occasion-panel" key={`panel-${active.id}`} aria-live="polite">
-          <div>
-            <p className="eyebrow">{activeCopy.eyebrow}</p>
-            <h3>{activeCopy.title}</h3>
-            <p className="occasion-panel-body">{activeCopy.body}</p>
-          </div>
-          <div className="occasion-selection">
-            <span className="occasion-selection-label">{copy.occasions.productsLabel}</span>
-            {products.map((product) => (
-              <button className="occasion-product" type="button" key={product.id} onClick={() => onOpen(product.id)}>
-                <span className={`occasion-product-image product-fit-${product.fit}`}><img src={product.image} alt="" loading="lazy" /></span>
-                <span className="occasion-product-copy">
-                  <small>{product.brand}</small>
-                  <strong>{product.name}</strong>
-                  <span>{localize(product.subtitle, language)}</span>
-                </span>
-                <span className="occasion-product-price">{formatPrice(product.price, language)}</span>
-                <ArrowIcon />
-              </button>
-            ))}
-            <button className="underlined-link occasion-all" type="button" onClick={() => onShop("all")}>{copy.occasions.cta}<ArrowIcon /></button>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function ShoppableLook({ copy, language, onOpen }) {
   const hotspots = [
     { product: PRODUCTS.find((product) => product.id === 12), className: "shoppable-hotspot-pullover" },
@@ -1099,8 +933,8 @@ function ShoppableLook({ copy, language, onOpen }) {
     <section className="shoppable-look" id="shop-the-look" aria-labelledby="shoppable-look-title">
       <div className="shoppable-look-inner" data-reveal="clip">
         <div className="shoppable-look-copy">
-          <p className="eyebrow">{copy.look.label}</p>
-          <h2 id="shoppable-look-title">{copy.look.title}</h2>
+          <p className="eyebrow eyebrow-quoted">{copy.look.label}</p>
+          <h2 id="shoppable-look-title" className="display-italic">{copy.look.title}</h2>
           <p>{copy.look.body}</p>
           <span className="shoppable-look-hint"><span aria-hidden="true" />{copy.look.hint}</span>
         </div>
@@ -1137,6 +971,12 @@ function ShoppableLook({ copy, language, onOpen }) {
 
 function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onService, onPrivacy }) {
   const featured = FEATURED_IDS.map((id) => PRODUCTS.find((product) => product.id === id)).filter(Boolean);
+  const [featuredFilter, setFeaturedFilter] = useState("all");
+  const featuredFilters = [
+    { id: "all", label: copy.featured.filterAll },
+    ...BRAND_WORLDS.filter((brand) => featured.some((product) => product.brandId === brand.id)).map((brand) => ({ id: brand.id, label: brand.name })),
+  ];
+  const visibleFeatured = featuredFilter === "all" ? featured : featured.filter((product) => product.brandId === featuredFilter);
   return (
     <main className="home-page">
       <section className="shop-hero" aria-labelledby="hero-title">
@@ -1158,29 +998,31 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onServic
       <section className="house-intro section-pad">
         <div className="house-intro-index" data-reveal>NES<br />CURATED<br />HOUSE</div>
         <div className="house-intro-copy" data-reveal style={{ "--reveal-delay": "80ms" }}>
-          <p className="eyebrow">{copy.intro.label}</p>
-          <h2>{copy.intro.title}</h2>
+          <p className="eyebrow eyebrow-quoted">{copy.intro.label}</p>
+          <h2 className="display-italic">{copy.intro.title}</h2>
           <p>{copy.intro.text}</p>
         </div>
       </section>
 
-      <section className="featured-section section-pad" id="featured">
-        <SectionHeading label={copy.featured.label} title={copy.featured.title} action={copy.featured.all} onAction={() => onShop("all")} />
+      <section className="featured-section section-pad" id="featured" data-voice={featuredFilter}>
+        <SectionHeading label={copy.featured.label} title={copy.featured.title} />
+        <FilterPills options={featuredFilters} active={featuredFilter} onChange={setFeaturedFilter} label={copy.featured.title} />
         <div className="product-grid product-grid-featured">
-          {featured.map((product, productIndex) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={onOpen} revealDelay={`${productIndex * 70}ms`} />)}
+          {visibleFeatured.map((product, productIndex) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={onOpen} revealDelay={`${productIndex * 70}ms`} />)}
         </div>
+        <SectionAction label={copy.featured.all} onAction={() => onShop("all")} />
       </section>
 
-      <OccasionExplorer copy={copy} language={language} onOpen={onOpen} onShop={onShop} />
+      <ConstructionSection copy={copy} />
 
       <section className="brand-section section-pad" id="brands">
         <div className="brand-section-heading" data-reveal>
-          <p className="eyebrow">{copy.brands.label}</p>
-          <h2>{copy.brands.title}</h2>
+          <p className="eyebrow eyebrow-quoted">{copy.brands.label}</p>
+          <h2 className="display-italic">{copy.brands.title}</h2>
         </div>
         <div className="brand-world-grid brand-world-grid-home">
-          {BRAND_WORLDS.filter((brand) => brand.id !== "loungers").map((brand, brandIndex) => (
-            <button className={`brand-world ${brand.className}`} type="button" key={brand.id} onClick={() => onShop(brand.id)} data-reveal="clip" style={{ "--reveal-delay": `${brandIndex * 90}ms` }}>
+          {BRAND_WORLDS.map((brand, brandIndex) => (
+            <button className={`brand-world ${brand.className}`} type="button" key={brand.id} onClick={() => onShop(brand.id)} data-voice={brand.id} data-reveal="clip" style={{ "--reveal-delay": `${brandIndex * 90}ms` }}>
               {brand.image ? <img src={brand.image} alt="" aria-hidden="true" loading="lazy" style={{ objectPosition: brand.position }} /> : <span className="brand-world-gradient" aria-hidden="true" />}
               <span className="brand-world-shade" aria-hidden="true" />
               {brand.logo && <img className="brand-world-logo" src={brand.logo} alt={brand.name} loading="lazy" />}
@@ -1188,7 +1030,7 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onServic
               <span className="brand-world-copy">
                 {!brand.logo && <strong>{brand.name}</strong>}
                 <span>{localize(brand.note, language)}</span>
-                <span className="brand-world-link">{brand.upcoming ? copy.brands.soon : copy.brands.open}<ArrowIcon /></span>
+                <span className="brand-world-link">{copy.brands.open}<ArrowIcon /></span>
               </span>
             </button>
           ))}
@@ -1208,18 +1050,7 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onServic
         </div>
       </section>
 
-      <section className="standard-section" id="standard">
-        <div className="standard-copy">
-          <div className="standard-head" data-reveal>
-            <div><p className="eyebrow">{copy.standard.label}</p><h2>{copy.standard.title}</h2></div>
-            <p className="standard-body">{copy.standard.body}</p>
-          </div>
-          <div className="principle-list">
-            {copy.standard.points.map(([index, title, body], pointIndex) => <div className="principle" key={index} data-reveal style={{ "--reveal-delay": `${pointIndex * 70}ms` }}><span>{index}</span><strong>{title}</strong><p>{body}</p></div>)}
-          </div>
-          <button className="button button-forest" type="button" onClick={() => onShop("all")}>{copy.standard.cta}<ArrowIcon /></button>
-        </div>
-      </section>
+      <StandardSection copy={copy} onShop={onShop} />
 
       <ServiceStrip copy={copy} onShop={onShop} onService={onService} />
 
@@ -1296,7 +1127,6 @@ function CatalogLineups({ copy, onSelect }) {
 }
 
 function ShopPage({ copy, language, products, filter, search, sort, onFilter, onSearch, onSort, onOpen, onShowAll, onService }) {
-  const greenSelected = filter === "green";
   return (
     <main className="catalog-page">
       <section className="catalog-intro section-pad">
@@ -1319,12 +1149,11 @@ function ShopPage({ copy, language, products, filter, search, sort, onFilter, on
           </div>
         </div>
         {products.length > 0 ? (
-          <div className="product-grid catalog-grid">{products.map((product) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={onOpen} />)}</div>
+          <div className="product-grid catalog-grid">{products.map((product, productIndex) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={onOpen} revealDelay={`${Math.min(productIndex, 7) * 55}ms`} />)}</div>
         ) : (
-          <div className={`catalog-empty${greenSelected ? " catalog-empty-green" : ""}`}>
-            {greenSelected && <img src="/logos/greencomfort.svg?v=official" alt="Green Comfort" />}
-            <h2>{greenSelected ? copy.shop.upcomingTitle : copy.shop.noResults}</h2>
-            <p>{greenSelected ? copy.shop.upcomingBody : copy.shop.noResultsBody}</p>
+          <div className="catalog-empty">
+            <h2>{copy.shop.noResults}</h2>
+            <p>{copy.shop.noResultsBody}</p>
             <button className="button button-forest" type="button" onClick={onShowAll}>{copy.shop.showAll}<ArrowIcon /></button>
           </div>
         )}
@@ -1334,8 +1163,142 @@ function ShopPage({ copy, language, products, filter, search, sort, onFilter, on
   );
 }
 
-function SectionHeading({ label, title, action, onAction }) {
-  return <div className="section-heading" data-reveal><div><p className="eyebrow">{label}</p><h2>{title}</h2></div><button className="underlined-link" type="button" onClick={onAction}>{action}<ArrowIcon /></button></div>;
+function SectionHeading({ label, title }) {
+  return <div className="section-heading" data-reveal><p className="eyebrow eyebrow-quoted">{label}</p><h2 className="display-italic">{title}</h2></div>;
+}
+
+function ConstructionSection({ copy }) {
+  const layers = copy.construction.layers;
+
+  return (
+    <section className="construction" aria-labelledby="construction-title">
+      <div className="construction-inner">
+        <div className="construction-copy">
+          <p className="eyebrow eyebrow-quoted">{copy.construction.label}</p>
+          <h2 className="display-italic" id="construction-title">{copy.construction.title}</h2>
+          <p className="construction-body">{copy.construction.body}</p>
+        </div>
+
+        <div className="construction-stage">
+          <img className="construction-image" src={CONSTRUCTION_IMAGE} alt="" loading="lazy" decoding="async" />
+        </div>
+
+        <ol className="construction-layers">
+          {layers.map(([index, name, note]) => (
+            <li className="construction-layer" key={index}>
+              <span className="construction-layer-index">{index}</span>
+              <strong>{name}</strong>
+              <span className="construction-layer-note">{note}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function StandardSection({ copy, onShop }) {
+  const [active, setActive] = useState(0);
+  const points = copy.standard.points;
+
+  return (
+    <section className="standard-section" id="standard">
+      <div className="standard-copy">
+        <div className="standard-head" data-reveal>
+          <div><p className="eyebrow eyebrow-quoted">{copy.standard.label}</p><h2 className="display-italic">{copy.standard.title}</h2></div>
+          <p className="standard-body">{copy.standard.body}</p>
+        </div>
+
+        <div className="principle-study" data-reveal>
+          {/* Decorative — every principle's meaning lives in the list beside it. */}
+          <div className="principle-stage" aria-hidden="true">
+            {points.map(([index], pointIndex) => (
+              <img
+                className={`principle-stage-image${pointIndex === active ? " is-active" : ""}`}
+                key={index}
+                src={PRINCIPLE_MEDIA[pointIndex].src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                style={{ objectPosition: PRINCIPLE_MEDIA[pointIndex].position }}
+              />
+            ))}
+            <span className="principle-stage-index">{points[active][0]}</span>
+          </div>
+
+          <ul className="principle-list">
+            {points.map(([index, title, body], pointIndex) => (
+              <li className="principle-item" key={index}>
+                <button
+                  className={`principle${pointIndex === active ? " is-active" : ""}`}
+                  type="button"
+                  aria-pressed={pointIndex === active}
+                  onClick={() => setActive(pointIndex)}
+                  onMouseEnter={() => setActive(pointIndex)}
+                  onFocus={() => setActive(pointIndex)}
+                >
+                  <span className="principle-index">{index}</span>
+                  <strong>{title}</strong>
+                  <span className="principle-body"><span>{body}</span></span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <button className="button button-forest" type="button" onClick={() => onShop("all")}>{copy.standard.cta}<ArrowIcon /></button>
+      </div>
+    </section>
+  );
+}
+
+function SectionAction({ label, onAction }) {
+  return <div className="section-action" data-reveal><button className="underlined-link" type="button" onClick={onAction}>{label}<ArrowIcon /></button></div>;
+}
+
+function FilterPills({ options, active, onChange, label }) {
+  const listRef = useRef(null);
+  const [indicator, setIndicator] = useState(null);
+
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    if (!list) return undefined;
+    const move = () => {
+      const current = list.querySelector("[data-active='true']");
+      if (!current) return;
+      const listBox = list.getBoundingClientRect();
+      const box = current.getBoundingClientRect();
+      setIndicator({ left: box.left - listBox.left + list.scrollLeft, width: box.width });
+    };
+    move();
+    const resize = new ResizeObserver(move);
+    resize.observe(list);
+    return () => resize.disconnect();
+  }, [active, options.length]);
+
+  return (
+    <div className="filter-pills" role="group" aria-label={label} ref={listRef} data-reveal>
+      {indicator ? (
+        <span
+          className="filter-pill-indicator"
+          aria-hidden="true"
+          style={{ transform: `translateX(${indicator.left}px)`, width: `${indicator.width}px` }}
+        />
+      ) : null}
+      {options.map((option) => (
+        <button
+          className={`filter-pill${option.id === active ? " is-active" : ""}`}
+          type="button"
+          key={option.id}
+          data-active={option.id === active}
+          aria-pressed={option.id === active}
+          onClick={() => onChange(option.id)}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  );
 }
 
 function ProductCard({ product, copy, language, onOpen, revealDelay }) {
@@ -1584,7 +1547,7 @@ function Footer({ copy, onHome, onShop, onTrade, onService, onLegal }) {
     <footer className="site-footer">
       <div className="footer-main">
         <div className="footer-brand"><button className="footer-wordmark" type="button" onClick={() => onHome()}>NES</button><p>{copy.footer.about}</p></div>
-        <div className="footer-column"><h3>{copy.footer.collections}</h3><button type="button" onClick={() => onShop("vehon")}>Vehon / WAI</button><button type="button" onClick={() => onShop("loungers")}>Loungers</button><button type="button" onClick={() => onShop("montechiaro")}>Montechiaro</button><button type="button" onClick={() => onShop("green")}>Green Comfort</button></div>
+        <div className="footer-column"><h3>{copy.footer.collections}</h3><button type="button" onClick={() => onShop("vehon")}>Vehon / WAI</button><button type="button" onClick={() => onShop("montechiaro")}>Montechiaro</button></div>
         <div className="footer-column"><h3>{copy.footer.service}</h3><button type="button" onClick={() => onService("advice")}>{copy.footer.advice}</button><button type="button" onClick={() => onService("returns")}>{copy.footer.returns}</button></div>
         <div className="footer-column"><h3>{copy.footer.house}</h3><button type="button" onClick={() => onHome("standard")}>{copy.nav.about}</button><button type="button" onClick={onTrade}>{copy.footer.contact}</button><button type="button" onClick={() => onLegal("privacy")}>{copy.footer.privacy}</button><button type="button" onClick={() => onLegal("imprint")}>{copy.footer.imprint}</button></div>
       </div>
