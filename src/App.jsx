@@ -240,10 +240,6 @@ const GALLERY_IMAGES = [
 
 const FEATURED_IDS = [1, 5, 12, 7];
 
-// A single exploded view keeps the construction legible without tying the
-// section to scroll position.
-const CONSTRUCTION_IMAGE = "/frames/ezgif-frame-082.jpg";
-
 // One image per principle, in the order of copy.standard.points.
 // montechiaro-detail carries baked-in campaign type along its bottom edge, so
 // it is anchored to the top and cropped by the stage's 4:5 frame.
@@ -271,17 +267,6 @@ const COPY = {
       text: "NES bringt eigenständige Marken an einen Ort — kuratiert nach Komfort, Material und einer Form, die auch morgen noch richtig wirkt.",
     },
     featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", all: "Alle Produkte", filterAll: "Alle" },
-    construction: {
-      label: "Die Konstruktion",
-      title: "Vier Lagen. Ein Gefühl.",
-      body: "Der WAI Home, auseinandergenommen. Vier präzise Schichten zwischen Fuß und Boden.",
-      layers: [
-        ["01", "Obermaterial", "Textiles Obergewebe, weich und atmungsaktiv."],
-        ["02", "Einlegesohle", "Perforiert und herausnehmbar."],
-        ["03", "Zwischensohle", "Dämpfung, die den Boden spürbar lässt."],
-        ["04", "Laufsohle", "Profil für einen natürlichen Abrollvorgang."],
-      ],
-    },
     brands: { label: "Die Marken", title: "Ein Haus. Zwei Handschriften.", open: "Kollektion ansehen" },
     look: {
       label: "NES / Shop the look",
@@ -360,17 +345,6 @@ const COPY = {
     },
     intro: { label: "The NES principle", title: "Search less. Choose better.", text: "NES brings distinct brands together in one place — curated for comfort, material and forms that will still feel right tomorrow." },
     featured: { label: "New in the house", title: "Selected for now.", all: "View all products", filterAll: "All" },
-    construction: {
-      label: "The construction",
-      title: "Four layers. One feeling.",
-      body: "The WAI Home, taken apart. Four precise layers between foot and ground.",
-      layers: [
-        ["01", "Upper", "Textile upper, soft and breathable."],
-        ["02", "Insole", "Perforated and removable."],
-        ["03", "Midsole", "Cushioning that still lets you feel the ground."],
-        ["04", "Outsole", "Tread built for a natural roll-through."],
-      ],
-    },
     brands: { label: "The brands", title: "One house. Two signatures.", open: "View collection" },
     look: {
       label: "NES / Shop the look",
@@ -1013,8 +987,6 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onServic
         <SectionAction label={copy.featured.all} onAction={() => onShop("all")} />
       </section>
 
-      <ConstructionSection copy={copy} />
-
       <section className="brand-section section-pad" id="brands">
         <div className="brand-section-heading" data-reveal>
           <p className="eyebrow eyebrow-quoted">{copy.brands.label}</p>
@@ -1165,36 +1137,6 @@ function ShopPage({ copy, language, products, filter, search, sort, onFilter, on
 
 function SectionHeading({ label, title }) {
   return <div className="section-heading" data-reveal><p className="eyebrow eyebrow-quoted">{label}</p><h2 className="display-italic">{title}</h2></div>;
-}
-
-function ConstructionSection({ copy }) {
-  const layers = copy.construction.layers;
-
-  return (
-    <section className="construction" aria-labelledby="construction-title">
-      <div className="construction-inner">
-        <div className="construction-copy">
-          <p className="eyebrow eyebrow-quoted">{copy.construction.label}</p>
-          <h2 className="display-italic" id="construction-title">{copy.construction.title}</h2>
-          <p className="construction-body">{copy.construction.body}</p>
-        </div>
-
-        <div className="construction-stage">
-          <img className="construction-image" src={CONSTRUCTION_IMAGE} alt="" loading="lazy" decoding="async" />
-        </div>
-
-        <ol className="construction-layers">
-          {layers.map(([index, name, note]) => (
-            <li className="construction-layer" key={index}>
-              <span className="construction-layer-index">{index}</span>
-              <strong>{name}</strong>
-              <span className="construction-layer-note">{note}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  );
 }
 
 function StandardSection({ copy, onShop }) {
