@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#F4F0E9;color:#231F1C;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:var(--nuda-accent,#9E5638);text-decoration:none}
+  a:hover{color:#231F1C}
+  button{font-family:inherit;cursor:pointer}
+  input,select{font-family:inherit}
+  ::selection{background:#E8E0D2}
+  @keyframes nudaRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes nudaFade{from{opacity:0}to{opacity:1}}
+  @keyframes nudaDrawerR{from{transform:translateX(100%)}to{transform:translateX(0)}}
+  @keyframes nudaDrawerL{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+</style>
+</helmet>
+
+<div style="--nuda-serif:{{ serifStack }};--nuda-accent:{{ accentHex }};background:#F4F0E9;color:#231F1C;min-height:100vh;overflow-x:clip">
+
+  <div style="background:#231F1C;color:#F4F0E9;font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;text-align:center;padding:11px 20px;line-height:1.5">Versandkostenfrei ab 100 € — Lieferung in DE/AT/CH</div>
+
+  <header style="position:sticky;top:0;z-index:60;transition:background .45s ease,border-color .45s ease,box-shadow .45s ease;border-bottom:1px solid {{ headerLine }};background:{{ headerBg }};backdrop-filter:blur(8px)">
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px);height:78px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px">
+      <nav aria-label="Hauptnavigation" style="display:flex;align-items:center;gap:clamp(12px,1.9vw,30px)">
+        <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ openNav }}" aria-label="Menü öffnen" style="background:none;border:0;padding:9px 9px 9px 0;display:flex;flex-direction:column;gap:5px" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">
+            <span style="display:block;height:1px;width:22px;background:#231F1C"></span>
+            <span style="display:block;height:1px;width:22px;background:#231F1C"></span>
+            <span style="display:block;height:1px;width:14px;background:#231F1C"></span>
+          </button>
+        </sc-if>
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
+          <button onClick="{{ n.go }}" style="display:{{ n.display }};background:none;border:0;padding:8px 0;font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;color:{{ n.color }};border-bottom:1px solid {{ n.rule }}" style-hover="color:var(--nuda-accent,#9E5638)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:5px">{{ n.label }}</button>
+        </sc-for>
+      </nav>
+
+      <button onClick="{{ goHome }}" aria-label="{{ shopName }} — zur Startseite" style="background:none;border:0;padding:6px 8px;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:clamp(20px,2.4vw,27px);letter-spacing:.36em;text-transform:uppercase;color:#231F1C;line-height:1;white-space:nowrap" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:4px">{{ shopName }}</button>
+
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:clamp(10px,1.5vw,20px)">
+        <button onClick="{{ toggleGeo }}" aria-label="Land und Währung wählen" aria-expanded="{{ geoOpen }}" style="display:{{ geoBtnDisplay }};background:none;border:1px solid rgba(35,31,28,.22);border-radius:999px;padding:7px 13px;font-size:9.5px;letter-spacing:.17em;text-transform:uppercase;color:#231F1C" style-hover="border-color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">{{ geoLabel }}</button>
+        <button aria-label="Suche" style="background:none;border:0;padding:7px;line-height:0" style-hover="opacity:.55" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#231F1C" stroke-width="1.15" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="15.3" y1="15.3" x2="21" y2="21"></line></svg>
+        </button>
+        <button aria-label="Konto" style="background:none;border:0;padding:7px;line-height:0" style-hover="opacity:.55" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#231F1C" stroke-width="1.15" aria-hidden="true"><circle cx="12" cy="8.5" r="3.9"></circle><path d="M4.5 20.5c0-4.2 3.4-6.6 7.5-6.6s7.5 2.4 7.5 6.6"></path></svg>
+        </button>
+        <button onClick="{{ openCart }}" aria-label="{{ cartAria }}" style="background:none;border:0;padding:7px;line-height:0;position:relative" style-hover="opacity:.55" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#231F1C" stroke-width="1.15" aria-hidden="true"><path d="M5.2 8h13.6l-1.1 12.4H6.3L5.2 8z"></path><path d="M9.1 8V6.2a2.9 2.9 0 0 1 5.8 0V8"></path></svg>
+          <span style="position:absolute;top:-2px;right:-5px;min-width:16px;height:16px;border-radius:999px;background:var(--nuda-accent,#9E5638);color:#F4F0E9;font-size:9.5px;line-height:16px;text-align:center;padding:0 4px">{{ cartCount }}</span>
+        </button>
+      </div>
+    </div>
+
+    <sc-if value="{{ geoOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px) 16px;display:flex;justify-content:flex-end">
+        <div style="border:1px solid rgba(35,31,28,.16);background:#F4F0E9;padding:7px;display:flex;flex-direction:column;min-width:200px;animation:nudaFade .22s ease both">
+          <sc-for list="{{ geoOptions }}" as="g" hint-placeholder-count="3">
+            <button onClick="{{ g.pick }}" style="background:none;border:0;text-align:left;padding:10px 11px;font-size:12px;letter-spacing:.05em;color:{{ g.color }}" style-hover="background:#E8E0D2">{{ g.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </header>
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <main>
+    <section aria-label="Hero" style="position:relative;margin-top:-79px">
+      <div style="position:relative;height:min(100svh,920px);min-height:540px;overflow:hidden;background:repeating-linear-gradient(135deg,#E8E0D2 0 11px,#EFE9DD 11px 22px)">
+        <div role="img" aria-label="Läuferin auf Waldboden, Blick auf Füße und Schuhe" style="position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:flex-end;padding:calc(79px + 22px) 22px 0">
+          <img src="/shop/hero-wai-sunset.webp" alt="Person sitzt bei Sonnenuntergang am Strand, Schuhe im Fokus" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 60%">
+        </div>
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(244,240,233,.94) 0%,rgba(244,240,233,.5) 32%,rgba(244,240,233,0) 60%)"></div>
+        <div style="position:absolute;left:0;right:0;top:0;height:210px;background:linear-gradient(to bottom,rgba(244,240,233,.92) 0%,rgba(244,240,233,.6) 48%,rgba(244,240,233,0) 100%);pointer-events:none"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:0 clamp(18px,4vw,56px) clamp(46px,6vw,90px)">
+          <div style="max-width:1440px;margin:0 auto">
+            <div style="max-width:min(700px,92%);margin-left:clamp(0px,3.5vw,72px)">
+              <p style="font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--nuda-accent,#9E5638);margin:0 0 clamp(14px,2vw,22px);animation:nudaFade .8s .05s ease both">Barfußschuhe · Kollektion Frühjahr 26</p>
+              <h1 style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-weight:400;font-size:clamp(40px,7.2vw,98px);line-height:.98;letter-spacing:-.015em;margin:0 0 clamp(20px,3vw,30px);text-wrap:pretty;animation:nudaRise 1s .1s cubic-bezier(.2,.7,.2,1) both">Schuhe, die sich<br /><em style="font-weight:400">deinem Fuß</em> fügen</h1>
+              <p style="font-size:15px;line-height:1.75;color:rgba(35,31,28,.74);max-width:46ch;margin:0 0 clamp(26px,3.2vw,36px);animation:nudaRise 1s .22s cubic-bezier(.2,.7,.2,1) both">Zero Drop, breite Zehenbox, dünne flexible Sohle. Aus Leder, Leinen und Wolle gemacht — für einen Gang, der von unten kommt.</p>
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:clamp(16px,2.4vw,30px);animation:nudaRise 1s .34s cubic-bezier(.2,.7,.2,1) both">
+                <button onClick="{{ goSchuhe }}" style="background:#231F1C;color:#F4F0E9;border:1px solid #231F1C;padding:16px 34px;font-size:11px;letter-spacing:.19em;text-transform:uppercase" style-hover="background:var(--nuda-accent,#9E5638);border-color:var(--nuda-accent,#9E5638)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:4px">Jetzt entdecken</button>
+                <button onClick="{{ goSize }}" style="background:none;border:0;padding:8px 0;font-size:11px;letter-spacing:.19em;text-transform:uppercase;color:#231F1C;border-bottom:1px solid rgba(35,31,28,.35)" style-hover="color:var(--nuda-accent,#9E5638);border-color:var(--nuda-accent,#9E5638)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:5px">Wie barfuß laufen anfängt</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Produktvorteile" style="max-width:1440px;margin:0 auto;padding:clamp(46px,6vw,84px) clamp(18px,4vw,56px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:clamp(26px,3.4vw,54px)">
+        <div data-reveal="1" style="display:flex;flex-direction:column;gap:15px;opacity:0">
+          <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="#231F1C" stroke-width="1" aria-hidden="true"><line x1="3" y1="22" x2="29" y2="22"></line><path d="M6 22v-6h20v6"></path></svg>
+          <p style="margin:0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#231F1C">Zero Drop</p>
+          <p style="margin:0;font-size:13.5px;line-height:1.65;color:rgba(35,31,28,.62);max-width:30ch">Ferse und Ballen auf einer Höhe. Kein Sprengungsversatz.</p>
+        </div>
+        <div data-reveal="1" style="display:flex;flex-direction:column;gap:15px;opacity:0">
+          <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="#231F1C" stroke-width="1" aria-hidden="true"><path d="M8 26c-2-6 0-14 8-14s8 8 8 14z"></path></svg>
+          <p style="margin:0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#231F1C">Breite Zehenbox</p>
+          <p style="margin:0;font-size:13.5px;line-height:1.65;color:rgba(35,31,28,.62);max-width:30ch">Die Zehen spreizen sich, wie sie es barfuß auch tun.</p>
+        </div>
+        <div data-reveal="1" style="display:flex;flex-direction:column;gap:15px;opacity:0">
+          <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="#231F1C" stroke-width="1" aria-hidden="true"><path d="M3 20c6-8 20-8 26 0"></path><path d="M3 25c6-8 20-8 26 0"></path></svg>
+          <p style="margin:0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#231F1C">Flexible Sohle</p>
+          <p style="margin:0;font-size:13.5px;line-height:1.65;color:rgba(35,31,28,.62);max-width:30ch">In alle Richtungen biegsam, 4 bis 6 mm dünn.</p>
+        </div>
+        <div data-reveal="1" style="display:flex;flex-direction:column;gap:15px;opacity:0">
+          <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="#231F1C" stroke-width="1" aria-hidden="true"><path d="M16 28V10"></path><path d="M16 16c0-5 4-9 9-9 0 5-4 9-9 9z"></path><path d="M16 21c0-4-3-7-7-7 0 4 3 7 7 7z"></path></svg>
+          <p style="margin:0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#231F1C">Natürliche Materialien</p>
+          <p style="margin:0;font-size:13.5px;line-height:1.65;color:rgba(35,31,28,.62);max-width:30ch">Pflanzlich gegerbtes Leder, Leinen, Merinowolle.</p>
+        </div>
+      </div>
+    </section>
+
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px)">
+      <div style="position:relative;border-top:1px solid rgba(35,31,28,.2)">
+        <span style="position:absolute;top:-7px;left:0;background:#F4F0E9;padding-right:20px;font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(35,31,28,.5)">01 — Neu bei uns</span>
+      </div>
+    </div>
+
+    <section aria-label="Neu bei uns" style="max-width:1440px;margin:0 auto;padding:clamp(38px,4.6vw,66px) 0 clamp(46px,6vw,86px)">
+      <div style="padding:0 clamp(18px,4vw,56px);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px;margin-bottom:clamp(28px,3.4vw,46px)">
+        <h2 style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-weight:400;font-size:clamp(31px,4.4vw,58px);line-height:1.04;margin:0;max-width:16ch">Neu bei uns</h2>
+        <div role="tablist" aria-label="Kategorie wählen" style="display:flex;gap:4px;border:1px solid rgba(35,31,28,.2);padding:4px">
+          <sc-for list="{{ newTabs }}" as="t" hint-placeholder-count="3">
+            <button role="tab" aria-selected="{{ t.active }}" onClick="{{ t.pick }}" style="background:{{ t.bg }};color:{{ t.fg }};border:0;padding:10px 20px;font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;transition:background .3s ease,color .3s ease" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">{{ t.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;gap:clamp(16px,2vw,30px);overflow-x:auto;scroll-snap-type:x mandatory;padding:0 clamp(18px,4vw,56px) 8px;scrollbar-width:thin">
+        <sc-for list="{{ newProducts }}" as="p" hint-placeholder-count="4">
+          <div style="flex:0 0 clamp(250px,calc(25% - 24px),330px);scroll-snap-align:start">
+            <dc-import name="ProductCard" product-id="{{ p.id }}" brand="{{ p.brand }}" product-name="{{ p.name }}" price="{{ p.priceLabel }}" img="{{ p.img }}" img2="{{ p.img2 }}" colors="{{ p.colors }}" isNew="{{ p.isNew }}" onOpen="{{ openPdp }}" hint-size="100%,470px"></dc-import>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px)">
+      <div style="position:relative;border-top:1px solid rgba(35,31,28,.2)">
+        <span style="position:absolute;top:-7px;left:0;background:#F4F0E9;padding-right:20px;font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(35,31,28,.5)">02 — Warum barfuß</span>
+      </div>
+    </div>
+
+    <section aria-label="Warum barfuß" style="max-width:1440px;margin:0 auto;padding:clamp(52px,7vw,110px) clamp(18px,4vw,56px)">
+      <div style="display:grid;grid-template-columns:{{ storyCols }};gap:clamp(34px,5vw,90px);align-items:center">
+        <div data-reveal="1" style="opacity:0">
+          <div role="img" aria-label="Person sitzt auf Steinmauer, Schuhe im Fokus" style="position:relative;aspect-ratio:3/4;background:repeating-linear-gradient(135deg,#E1D7C4 0 11px,#E9E1D2 11px 22px);border-radius:47% 53% 8px 8px / 32% 36% 8px 8px;overflow:hidden;display:flex;align-items:flex-end;justify-content:center;padding-bottom:26px">
+            <img src="/shop/editorial/story-stone-wall.webp" alt="Person sitzt auf einer Steinmauer, Schuhe im Fokus" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+          </div>
+        </div>
+        <div data-reveal="1" style="opacity:0;max-width:52ch;padding-left:clamp(0px,2.5vw,52px)">
+          <p style="font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--nuda-accent,#9E5638);margin:0 0 22px">Die Idee</p>
+          <blockquote style="margin:0 0 30px;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-style:italic;font-weight:400;font-size:clamp(23px,2.6vw,34px);line-height:1.32;color:#231F1C;text-wrap:pretty">„Der Fuß braucht keine Korrektur. Er braucht Platz.“</blockquote>
+          <h2 style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-weight:400;font-size:clamp(26px,3.2vw,42px);line-height:1.12;margin:0 0 24px;text-wrap:pretty">Vom Schuh, der sich anpasst — nicht vom Fuß</h2>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:32px">
+            <p style="margin:0;font-size:14.5px;line-height:1.75;color:rgba(35,31,28,.72)">26 Knochen, 33 Gelenke, über 100 Bänder. Ein Fuß ist kein Block, sondern ein bewegliches Gewölbe.</p>
+            <p style="margin:0;font-size:14.5px;line-height:1.75;color:rgba(35,31,28,.72)">Unsere Leisten folgen der natürlichen Fußform: breit vorn, schmal an der Ferse, ohne Sprengung.</p>
+            <p style="margin:0;font-size:14.5px;line-height:1.75;color:rgba(35,31,28,.72)">Das Ergebnis ist unspektakulär und genau darum richtig — du merkst den Schuh nach einer Woche kaum noch.</p>
+          </div>
+          <button onClick="{{ goUeber }}" style="background:none;border:0;padding:8px 0;font-size:11px;letter-spacing:.19em;text-transform:uppercase;color:#231F1C;border-bottom:1px solid rgba(35,31,28,.35)" style-hover="color:var(--nuda-accent,#9E5638);border-color:var(--nuda-accent,#9E5638)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:5px">Unsere Geschichte lesen</button>
+        </div>
+      </div>
+    </section>
+
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px)">
+      <div style="position:relative;border-top:1px solid rgba(35,31,28,.2)">
+        <span style="position:absolute;top:-7px;left:0;background:#F4F0E9;padding-right:20px;font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(35,31,28,.5)">03 — Unsere Marken</span>
+      </div>
+    </div>
+
+    <section aria-label="Marken" style="max-width:1440px;margin:0 auto;padding:clamp(38px,4.6vw,68px) clamp(18px,4vw,56px) clamp(46px,6vw,86px)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(18px,2.4vw,34px)">
+        <sc-for list="{{ brands }}" as="b" hint-placeholder-count="2">
+          <div data-reveal="1" style="opacity:0;position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:clamp(400px,44vw,620px);padding:clamp(26px,3vw,44px);background:{{ b.bg }};overflow:hidden">
+            <span role="img" aria-label="{{ b.imgAlt }}" style="position:absolute;inset:0;background:{{ b.stripe }}"></span>
+            <span style="position:absolute;inset:0;background:linear-gradient(to top,rgba(244,240,233,.95) 0%,rgba(244,240,233,.35) 46%,rgba(244,240,233,0) 74%)"></span>
+            <div style="position:relative">
+              <p style="margin:0 0 16px;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:clamp(26px,3vw,38px);letter-spacing:.3em;text-transform:uppercase;line-height:1">{{ b.name }}</p>
+              <p style="margin:0 0 26px;font-size:14px;line-height:1.65;color:rgba(35,31,28,.72);max-width:34ch">{{ b.line }}</p>
+              <button onClick="{{ b.go }}" style="background:none;border:1px solid rgba(35,31,28,.3);padding:14px 26px;font-size:10.5px;letter-spacing:.19em;text-transform:uppercase;color:#231F1C" style-hover="background:#231F1C;color:#F4F0E9;border-color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:4px">Marke entdecken</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <p style="margin:clamp(24px,3vw,38px) 0 0;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(35,31,28,.45)">Weitere Marken folgen in Kürze.</p>
+    </section>
+
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px)">
+      <div style="position:relative;border-top:1px solid rgba(35,31,28,.2)">
+        <span style="position:absolute;top:-7px;left:0;background:#F4F0E9;padding-right:20px;font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(35,31,28,.5)">04 — Bestseller</span>
+      </div>
+    </div>
+
+    <section aria-label="Bestseller" style="max-width:1440px;margin:0 auto;padding:clamp(38px,4.6vw,68px) clamp(18px,4vw,56px) clamp(50px,6.5vw,96px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:clamp(28px,3.4vw,48px)">
+        <h2 style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-weight:400;font-size:clamp(31px,4.4vw,58px);line-height:1.04;margin:0">Was am meisten läuft</h2>
+        <button onClick="{{ goSchuhe }}" style="background:none;border:0;padding:8px 0;font-size:11px;letter-spacing:.19em;text-transform:uppercase;color:#231F1C;border-bottom:1px solid rgba(35,31,28,.35)" style-hover="color:var(--nuda-accent,#9E5638);border-color:var(--nuda-accent,#9E5638)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:5px">Alle Produkte</button>
+      </div>
+      <div style="display:grid;grid-template-columns:{{ gridCols }};gap:clamp(20px,2.6vw,44px) clamp(16px,2vw,32px)">
+        <sc-for list="{{ bestsellers }}" as="p" hint-placeholder-count="6">
+          <dc-import name="ProductCard" product-id="{{ p.id }}" brand="{{ p.brand }}" product-name="{{ p.name }}" price="{{ p.priceLabel }}" img="{{ p.img }}" img2="{{ p.img2 }}" colors="{{ p.colors }}" isNew="{{ p.isNew }}" showQuick="{{ true }}" onOpen="{{ openPdp }}" onQuick="{{ openQuick }}" hint-size="100%,520px"></dc-import>
+        </sc-for>
+      </div>
+    </section>
+
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(18px,4vw,56px)">
+      <div style="position:relative;border-top:1px solid rgba(35,31,28,.2)">
+        <span style="position:absolute;top:-7px;left:0;background:#F4F0E9;padding-right:20px;font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(35,31,28,.5)">05 — Passform</span>
+      </div>
+    </div>
+
+    <section aria-label="Passform und Fußgesundheit" style="max-width:1440px;margin:0 auto;padding:clamp(52px,7vw,110px) clamp(18px,4vw,56px)">
+      <div style="display:grid;grid-template-columns:{{ storyCols }};gap:clamp(34px,5vw,90px);align-items:center">
+        <div data-reveal="1" style="opacity:0;order:{{ mirrorOrderText }};max-width:52ch">
+          <p style="font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--nuda-accent,#9E5638);margin:0 0 22px">Passform</p>
+          <h2 style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-weight:400;font-size:clamp(26px,3.2vw,44px);line-height:1.1;margin:0 0 26px;text-wrap:pretty">Zehen brauchen die Breite, die sie <em style="font-weight:400">von Natur aus</em> haben</h2>
+          <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:34px">
+            <p style="margin:0;font-size:14.5px;line-height:1.75;color:rgba(35,31,28,.72)">Der breiteste Punkt des Fußes liegt an den Zehengrundgelenken. Konventionelle Leisten verjüngen sich genau dort.</p>
+            <p style="margin:0;font-size:14.5px;line-height:1.75;color:rgba(35,31,28,.72)">Unsere Zehenbox lässt die Zehen gespreizt stehen — beim Gehen, beim Abrollen, unter Last.</p>
+            <p style="margin:0;font-size:14.5px;line-height:1.75;color:rgba(35,31,28,.72)">Gib deinen Füßen zwei bis vier Wochen. Die Muskulatur baut sich langsam auf, und das darf sie auch.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(35,31,28,.16)">
+            <sc-for list="{{ fitFacts }}" as="f" hint-placeholder-count="3">
+              <div style="display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid rgba(35,31,28,.16)">
+                <span style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(35,31,28,.55)">{{ f.k }}</span>
+                <span style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:19px">{{ f.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div data-reveal="1" style="opacity:0;order:{{ mirrorOrderImg }}">
+          <div role="img" aria-label="Nahaufnahme eines Fußes mit gespreizten Zehen auf Holzboden" style="position:relative;aspect-ratio:3/4;background:repeating-linear-gradient(45deg,#E1D7C4 0 11px,#E9E1D2 11px 22px);border-radius:53% 47% 8px 8px / 36% 32% 8px 8px;overflow:hidden;display:flex;align-items:flex-end;justify-content:center;padding-bottom:26px">
+            <img src="/shop/gallery/wai-home-step.webp" alt="Nahaufnahme der Füße auf Holzboden" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% center">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Größenfinder" style="background:#E8E0D2;padding:clamp(52px,7vw,104px) clamp(18px,4vw,56px)">
+      <div style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:{{ sizeFinderCols }};gap:clamp(34px,5vw,80px);align-items:center">
+        <div>
+          <p style="font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--nuda-accent,#9E5638);margin:0 0 20px">Größenfinder</p>
+          <h2 style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-weight:400;font-size:clamp(28px,3.6vw,48px);line-height:1.08;margin:0 0 20px;max-width:22ch;text-wrap:pretty">Miss deine Fußlänge, wir nennen dir die Größe</h2>
+          <p style="margin:0 0 30px;font-size:14.5px;line-height:1.75;color:rgba(35,31,28,.68);max-width:44ch">Stell dich mit der Ferse an eine Wand, markiere die längste Zehe, miss in Zentimetern. Abends messen — Füße werden im Tagesverlauf größer.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+            <label style="display:flex;flex-direction:column;gap:9px">
+              <span style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(35,31,28,.6)">Fußlänge in cm</span>
+              <input type="number" step="0.1" min="14" max="34" value="{{ footLength }}" onChange="{{ setFoot }}" placeholder="26,4" aria-label="Fußlänge in Zentimetern" style="width:150px;background:#F4F0E9;border:1px solid rgba(35,31,28,.28);padding:14px 16px;font-size:15px;color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:2px" />
+            </label>
+            <button onClick="{{ calcSize }}" style="background:#231F1C;color:#F4F0E9;border:1px solid #231F1C;padding:15px 30px;font-size:10.5px;letter-spacing:.19em;text-transform:uppercase" style-hover="background:var(--nuda-accent,#9E5638);border-color:var(--nuda-accent,#9E5638)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:4px">Größe berechnen</button>
+          </div>
+          <sc-if value="{{ sizeResult }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:28px;border-top:1px solid rgba(35,31,28,.25);padding-top:24px;animation:nudaRise .55s cubic-bezier(.2,.7,.2,1) both">
+              <p style="margin:0 0 8px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(35,31,28,.55)">Deine Empfehlung</p>
+              <p style="margin:0 0 10px;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:clamp(40px,5vw,68px);line-height:1">{{ sizeResult }}</p>
+              <p style="margin:0;font-size:13.5px;line-height:1.7;color:rgba(35,31,28,.68);max-width:40ch">{{ sizeHint }}</p>
+            </div>
+          </sc-if>
+        </div>
+        <div>
+          <div role="img" aria-label="Diagramm: Fuß an der Wand, Messung von Ferse bis längster Zehe" style="position:relative;aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#DCD2BE 0 11px,#E4DBCB 11px 22px);border-radius:50% 50% 8px 8px / 34% 34% 8px 8px;overflow:hidden;display:flex;align-items:flex-end;justify-content:center;padding-bottom:26px">
+            <img src="/shop/editorial/size-guide-wall.webp" alt="Barfuß mit der Ferse an der Wand, Maßband von der Ferse bis zur längsten Zehe" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Newsletter" style="background:#E8E0D2;border-top:1px solid rgba(35,31,28,.14);padding:clamp(48px,6vw,92px) clamp(18px,4vw,56px)">
+      <div style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:{{ newsCols }};gap:clamp(28px,4vw,70px);align-items:end">
+        <div>
+          <p style="font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--nuda-accent,#9E5638);margin:0 0 18px">Post von uns</p>
+          <h2 style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-weight:400;font-size:clamp(26px,3.2vw,42px);line-height:1.1;margin:0 0 14px;max-width:24ch;text-wrap:pretty">Neue Modelle, bevor sie im Shop stehen</h2>
+          <p style="margin:0;font-size:14px;line-height:1.7;color:rgba(35,31,28,.66);max-width:42ch">Etwa einmal im Monat. Kein Countdown, keine Rabattschleuder.</p>
+        </div>
+        <div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <label style="flex:1 1 220px;display:flex;flex-direction:column;gap:9px">
+              <span style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(35,31,28,.6)">E-Mail-Adresse</span>
+              <input type="email" value="{{ email }}" onChange="{{ setEmail }}" placeholder="du@beispiel.de" style="width:100%;background:#F4F0E9;border:1px solid rgba(35,31,28,.28);padding:14px 16px;font-size:15px;color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:2px" />
+            </label>
+            <button onClick="{{ subscribe }}" style="align-self:flex-end;background:#231F1C;color:#F4F0E9;border:1px solid #231F1C;padding:15px 30px;font-size:10.5px;letter-spacing:.19em;text-transform:uppercase" style-hover="background:var(--nuda-accent,#9E5638);border-color:var(--nuda-accent,#9E5638)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:4px">Abonnieren</button>
+          </div>
+          <p style="margin:16px 0 0;font-size:11.5px;line-height:1.6;color:{{ newsMsgColor }}">{{ newsMsg }}</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isCollection }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width:1440px;margin:0 auto;padding:clamp(34px,4.4vw,70px) clamp(18px,4vw,56px) clamp(60px,7vw,110px)">
+    <nav aria-label="Brotkrümelnavigation" style="display:flex;gap:9px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(35,31,28,.5);margin-bottom:clamp(22px,3vw,40px)">
+      <button onClick="{{ goHome }}" style="background:none;border:0;padding:0;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(35,31,28,.5)" style-hover="color:#231F1C">Start</button>
+      <span aria-hidden="true">/</span>
+      <span style="color:#231F1C">{{ collTitle }}</span>
+    </nav>
+    <div style="display:grid;grid-template-columns:{{ collHeadCols }};gap:clamp(24px,4vw,70px);align-items:end;margin-bottom:clamp(30px,4vw,54px)">
+      <h1 style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-weight:400;font-size:clamp(38px,6vw,84px);line-height:1;margin:0;letter-spacing:-.01em">{{ collTitle }}</h1>
+      <p style="margin:0;font-size:14.5px;line-height:1.75;color:rgba(35,31,28,.68);max-width:46ch">{{ collIntro }}</p>
+    </div>
+
+    <div style="position:relative;border-top:1px solid rgba(35,31,28,.2);margin-bottom:26px">
+      <span style="position:absolute;top:-7px;left:0;background:#F4F0E9;padding-right:20px;font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(35,31,28,.5)">Filter</span>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:26px;align-items:flex-start;justify-content:space-between;margin-bottom:clamp(28px,3.4vw,44px)">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;flex-wrap:wrap;gap:8px" role="group" aria-label="Kategorie">
+          <sc-for list="{{ catFilters }}" as="f" hint-placeholder-count="5">
+            <button onClick="{{ f.pick }}" aria-pressed="{{ f.active }}" style="background:{{ f.bg }};color:{{ f.fg }};border:1px solid {{ f.border }};padding:10px 18px;font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;transition:background .25s ease,color .25s ease,border-color .25s ease" style-hover="border-color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">{{ f.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px" role="group" aria-label="Marke">
+          <sc-for list="{{ brandFilters }}" as="f" hint-placeholder-count="3">
+            <button onClick="{{ f.pick }}" aria-pressed="{{ f.active }}" style="background:none;border:0;border-bottom:1px solid {{ f.border }};padding:6px 2px;font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:{{ f.fg }}" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:4px">{{ f.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <span style="font-size:10.5px;letter-spacing:.17em;text-transform:uppercase;color:rgba(35,31,28,.5)">{{ resultCount }}</span>
+        <label style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(35,31,28,.5)">Sortieren</span>
+          <select value="{{ sort }}" onChange="{{ setSort }}" aria-label="Sortierung" style="background:#F4F0E9;border:1px solid rgba(35,31,28,.26);padding:10px 14px;font-size:12px;color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:2px">
+            <option value="neu">Neuheiten</option>
+            <option value="preis-auf">Preis aufsteigend</option>
+            <option value="preis-ab">Preis absteigend</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:{{ gridCols }};gap:clamp(24px,3vw,50px) clamp(16px,2vw,32px)">
+      <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="6">
+        <dc-import name="ProductCard" product-id="{{ p.id }}" brand="{{ p.brand }}" product-name="{{ p.name }}" price="{{ p.priceLabel }}" img="{{ p.img }}" img2="{{ p.img2 }}" colors="{{ p.colors }}" isNew="{{ p.isNew }}" showQuick="{{ true }}" onOpen="{{ openPdp }}" onQuick="{{ openQuick }}" hint-size="100%,520px"></dc-import>
+      </sc-for>
+    </div>
+    <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+      <p style="margin:60px 0;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:24px;color:rgba(35,31,28,.6)">Keine Artikel in dieser Auswahl. Setz den Filter zurück.</p>
+    </sc-if>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isPdp }}" hint-placeholder-val="{{ false }}">
+  <main style="max-width:1440px;margin:0 auto;padding:clamp(26px,3.4vw,48px) clamp(18px,4vw,56px) clamp(60px,7vw,110px)">
+    <nav aria-label="Brotkrümelnavigation" style="display:flex;flex-wrap:wrap;gap:9px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(35,31,28,.5);margin-bottom:clamp(22px,3vw,40px)">
+      <button onClick="{{ goHome }}" style="background:none;border:0;padding:0;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(35,31,28,.5)" style-hover="color:#231F1C">Start</button>
+      <span aria-hidden="true">/</span>
+      <button onClick="{{ goSchuhe }}" style="background:none;border:0;padding:0;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(35,31,28,.5)" style-hover="color:#231F1C">Schuhe</button>
+      <span aria-hidden="true">/</span>
+      <span style="color:#231F1C">{{ pdpName }}</span>
+    </nav>
+
+    <div style="display:grid;grid-template-columns:{{ pdpCols }};gap:clamp(30px,4vw,80px);align-items:start">
+      <div style="display:flex;flex-direction:{{ pdpGalleryDir }};gap:14px">
+        <div style="display:flex;flex-direction:{{ pdpRailDir }};gap:10px;flex:0 0 auto">
+          <sc-for list="{{ pdpThumbs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.pick }}" aria-label="{{ t.aria }}" style="width:{{ t.size }};height:{{ t.h }};padding:0;border:1px solid {{ t.border }};background:{{ t.stripe }};position:relative;overflow:hidden" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">
+              </button>
+          </sc-for>
+        </div>
+        <div style="flex:1 1 auto;display:flex;flex-direction:column;gap:14px">
+          <div role="img" aria-label="{{ pdpImgAlt }}" style="position:relative;aspect-ratio:4/5;background:{{ pdpMainStripe }};overflow:hidden;display:flex;align-items:flex-end;justify-content:center;padding-bottom:20px">
+          </div>
+        </div>
+      </div>
+
+      <div style="position:{{ pdpBuySticky }};top:104px;display:flex;flex-direction:column">
+        <p style="margin:0 0 12px;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(35,31,28,.55)">{{ pdpBrand }}</p>
+        <h1 style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-weight:400;font-size:clamp(30px,4vw,54px);line-height:1.04;margin:0 0 16px;text-wrap:pretty">{{ pdpName }}</h1>
+        <p style="margin:0 0 6px;font-size:19px;letter-spacing:.01em">{{ pdpPrice }}</p>
+        <p style="margin:0 0 30px;font-size:11.5px;color:rgba(35,31,28,.55)">inkl. MwSt., zzgl. <a href="#versand">Versand</a></p>
+
+        <p style="margin:0 0 12px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(35,31,28,.6)">Farbe — {{ pdpColorName }}</p>
+        <div style="display:flex;gap:10px;margin-bottom:32px">
+          <sc-for list="{{ pdpColors }}" as="c" hint-placeholder-count="3">
+            <button onClick="{{ c.pick }}" aria-label="{{ c.aria }}" aria-pressed="{{ c.active }}" style="width:30px;height:30px;border-radius:50%;background:{{ c.hex }};border:1px solid rgba(35,31,28,.25);box-shadow:{{ c.ring }};padding:0" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:4px"></button>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px">
+          <p style="margin:0;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(35,31,28,.6)">Größe</p>
+          <button onClick="{{ goSize }}" style="background:none;border:0;padding:0;font-size:11px;letter-spacing:.1em;color:var(--nuda-accent,#9E5638);border-bottom:1px solid currentColor" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:4px">Größentabelle</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:8px;margin-bottom:14px">
+          <sc-for list="{{ pdpSizes }}" as="s" hint-placeholder-count="9">
+            <button onClick="{{ s.pick }}" disabled="{{ s.disabled }}" aria-pressed="{{ s.active }}" style="background:{{ s.bg }};color:{{ s.fg }};border:1px solid {{ s.border }};padding:14px 0;font-size:13px;letter-spacing:.04em;cursor:{{ s.cursor }};text-decoration:{{ s.deco }};transition:background .2s ease,color .2s ease" style-hover="border-color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">{{ s.label }}</button>
+          </sc-for>
+        </div>
+        <p style="margin:0 0 24px;font-size:11.5px;color:{{ pdpSizeMsgColor }};min-height:17px">{{ pdpSizeMsg }}</p>
+
+        <button onClick="{{ addPdp }}" style="background:#231F1C;color:#F4F0E9;border:1px solid #231F1C;padding:19px 30px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;width:100%" style-hover="background:var(--nuda-accent,#9E5638);border-color:var(--nuda-accent,#9E5638)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:4px">In den Warenkorb</button>
+        <p style="margin:18px 0 34px;font-size:12.5px;line-height:1.7;color:rgba(35,31,28,.62)">Lieferung in 2–4 Werktagen · 30 Tage Rückgabe · Versandkostenfrei ab 100 €</p>
+
+        <div style="border-top:1px solid rgba(35,31,28,.18)">
+          <sc-for list="{{ accordions }}" as="a" hint-placeholder-count="4">
+            <div style="border-bottom:1px solid rgba(35,31,28,.18)">
+              <button onClick="{{ a.toggle }}" aria-expanded="{{ a.open }}" style="width:100%;background:none;border:0;padding:19px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#231F1C" style-hover="color:var(--nuda-accent,#9E5638)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">
+                <span>{{ a.title }}</span>
+                <span aria-hidden="true" style="font-size:17px;line-height:1;transform:{{ a.rot }};transition:transform .3s ease;display:inline-block">+</span>
+              </button>
+              <div style="display:{{ a.display }};padding:0 0 22px">
+                <sc-for list="{{ a.lines }}" as="l" hint-placeholder-count="2">
+                  <p style="margin:0 0 10px;font-size:13.5px;line-height:1.75;color:rgba(35,31,28,.72);max-width:52ch">{{ l }}</p>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:clamp(56px,7vw,110px);position:relative;border-top:1px solid rgba(35,31,28,.2)">
+      <span style="position:absolute;top:-7px;left:0;background:#F4F0E9;padding-right:20px;font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(35,31,28,.5)">Technische Daten</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:clamp(22px,3vw,44px);padding:clamp(34px,4vw,58px) 0">
+      <sc-for list="{{ specs }}" as="s" hint-placeholder-count="4">
+        <div>
+          <p style="margin:0 0 10px;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(35,31,28,.5)">{{ s.k }}</p>
+          <p style="margin:0;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:clamp(24px,2.6vw,34px);line-height:1.1">{{ s.v }}</p>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="position:relative;border-top:1px solid rgba(35,31,28,.2);margin-bottom:clamp(34px,4vw,58px)">
+      <span style="position:absolute;top:-7px;left:0;background:#F4F0E9;padding-right:20px;font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:rgba(35,31,28,.5)">Das könnte dir auch gefallen</span>
+    </div>
+    <div style="display:grid;grid-template-columns:{{ gridCols }};gap:clamp(22px,2.6vw,44px) clamp(16px,2vw,32px)">
+      <sc-for list="{{ related }}" as="p" hint-placeholder-count="3">
+        <dc-import name="ProductCard" product-id="{{ p.id }}" brand="{{ p.brand }}" product-name="{{ p.name }}" price="{{ p.priceLabel }}" img="{{ p.img }}" img2="{{ p.img2 }}" colors="{{ p.colors }}" isNew="{{ p.isNew }}" onOpen="{{ openPdp }}" hint-size="100%,470px"></dc-import>
+      </sc-for>
+    </div>
+  </main>
+  </sc-if>
+
+  <footer style="background:#231F1C;color:#F4F0E9;margin-top:clamp(0px,1vw,10px);padding:clamp(52px,6vw,96px) clamp(18px,4vw,56px) 34px">
+    <div style="max-width:1440px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:{{ footerCols }};gap:clamp(30px,4vw,60px);padding-bottom:clamp(40px,5vw,72px)">
+        <div>
+          <p style="margin:0 0 20px;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:26px;letter-spacing:.34em;text-transform:uppercase;line-height:1">{{ shopName }}</p>
+          <p style="margin:0;font-size:13px;line-height:1.8;color:rgba(244,240,233,.6);max-width:30ch">Barfußschuhe und natürlich geschnittene Kleidung. Versand nach Deutschland, Österreich und in die Schweiz.</p>
+        </div>
+        <sc-for list="{{ footerCols4 }}" as="c" hint-placeholder-count="4">
+          <div>
+            <p style="margin:0 0 20px;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(244,240,233,.5)">{{ c.title }}</p>
+            <div style="display:flex;flex-direction:column;gap:11px;align-items:flex-start">
+              <sc-for list="{{ c.links }}" as="l" hint-placeholder-count="5">
+                <a href="{{ l.href }}" style="font-size:13px;color:rgba(244,240,233,.86);letter-spacing:.02em" style-hover="color:#F4F0E9;text-decoration:underline">{{ l.label }}</a>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="border-top:1px solid rgba(244,240,233,.16);padding-top:26px;display:flex;flex-wrap:wrap;gap:22px;align-items:center;justify-content:space-between">
+        <div style="display:flex;gap:14px;align-items:center">
+          <sc-for list="{{ socials }}" as="s" hint-placeholder-count="3">
+            <a href="#" aria-label="{{ s.aria }}" style="width:32px;height:32px;border:1px solid rgba(244,240,233,.28);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:.06em;color:rgba(244,240,233,.8)" style-hover="border-color:#F4F0E9;color:#F4F0E9">{{ s.label }}</a>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ payments }}" as="p" hint-placeholder-count="5">
+            <span aria-label="{{ p.aria }}" style="border:1px solid rgba(244,240,233,.24);padding:7px 11px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,240,233,.66)">{{ p.label }}</span>
+          </sc-for>
+        </div>
+        <p style="margin:0;font-size:11px;letter-spacing:.06em;color:rgba(244,240,233,.5)">{{ copyline }}</p>
+      </div>
+    </div>
+  </footer>
+
+  <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:90;animation:nudaFade .3s ease both">
+      <div onClick="{{ closeNav }}" style="position:absolute;inset:0;background:rgba(35,31,28,.4)"></div>
+      <div role="dialog" aria-label="Navigation" style="position:absolute;top:0;left:0;bottom:0;width:min(88vw,400px);background:#F4F0E9;padding:26px 26px 34px;display:flex;flex-direction:column;animation:nudaDrawerL .42s cubic-bezier(.2,.7,.2,1) both;overflow-y:auto">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:38px">
+          <span style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:22px;letter-spacing:.34em;text-transform:uppercase">{{ shopName }}</span>
+          <button onClick="{{ closeNav }}" aria-label="Menü schließen" style="background:none;border:0;font-size:22px;line-height:1;padding:6px;color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">×</button>
+        </div>
+        <div style="display:flex;flex-direction:column;border-top:1px solid rgba(35,31,28,.16)">
+          <sc-for list="{{ drawerNav }}" as="n" hint-placeholder-count="6">
+            <button onClick="{{ n.go }}" style="background:none;border:0;border-bottom:1px solid rgba(35,31,28,.16);padding:20px 2px;text-align:left;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:26px;color:#231F1C" style-hover="color:var(--nuda-accent,#9E5638)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">{{ n.label }}</button>
+          </sc-for>
+        </div>
+        <div style="margin-top:auto;padding-top:34px;display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ geoOptions }}" as="g" hint-placeholder-count="3">
+            <button onClick="{{ g.pick }}" style="background:none;border:1px solid rgba(35,31,28,.2);padding:12px 14px;text-align:left;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:{{ g.color }}" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">{{ g.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ cartOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:95;animation:nudaFade .3s ease both">
+      <div onClick="{{ closeCart }}" style="position:absolute;inset:0;background:rgba(35,31,28,.42)"></div>
+      <aside role="dialog" aria-label="Warenkorb" style="position:absolute;top:0;right:0;bottom:0;width:min(92vw,440px);background:#F4F0E9;display:flex;flex-direction:column;animation:nudaDrawerR .42s cubic-bezier(.2,.7,.2,1) both">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:24px 26px;border-bottom:1px solid rgba(35,31,28,.16)">
+          <span style="font-size:10.5px;letter-spacing:.24em;text-transform:uppercase">Warenkorb ({{ cartCount }})</span>
+          <button onClick="{{ closeCart }}" aria-label="Warenkorb schließen" style="background:none;border:0;font-size:22px;line-height:1;padding:6px;color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">×</button>
+        </div>
+        <div style="flex:1 1 auto;overflow-y:auto;padding:8px 26px">
+          <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ true }}">
+            <p style="margin:44px 0;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:23px;line-height:1.4;color:rgba(35,31,28,.6)">Noch nichts drin. Schau bei den Neuheiten vorbei.</p>
+          </sc-if>
+          <sc-for list="{{ cartItems }}" as="i" hint-placeholder-count="0">
+            <div style="display:grid;grid-template-columns:76px 1fr auto;gap:16px;padding:20px 0;border-bottom:1px solid rgba(35,31,28,.14);align-items:start">
+              <span style="display:block;aspect-ratio:4/5;background:{{ i.thumb }}"></span>
+              <div>
+                <p style="margin:0 0 5px;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(35,31,28,.55)">{{ i.brand }}</p>
+                <p style="margin:0 0 6px;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:17px;line-height:1.25">{{ i.name }}</p>
+                <p style="margin:0 0 10px;font-size:11.5px;color:rgba(35,31,28,.6)">Größe {{ i.size }} · {{ i.qty }} ×</p>
+                <button onClick="{{ i.remove }}" style="background:none;border:0;padding:0;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(35,31,28,.5);border-bottom:1px solid rgba(35,31,28,.3)" style-hover="color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">Entfernen</button>
+              </div>
+              <p style="margin:0;font-size:13.5px;white-space:nowrap">{{ i.total }}</p>
+            </div>
+          </sc-for>
+        </div>
+        <div style="border-top:1px solid rgba(35,31,28,.18);padding:22px 26px 28px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+            <span style="font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(35,31,28,.6)">Zwischensumme</span>
+            <span style="font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:26px">{{ cartTotal }}</span>
+          </div>
+          <p style="margin:0 0 18px;font-size:11.5px;line-height:1.6;color:rgba(35,31,28,.6)">{{ shippingNote }}</p>
+          <button style="width:100%;background:#231F1C;color:#F4F0E9;border:1px solid #231F1C;padding:18px;font-size:11px;letter-spacing:.2em;text-transform:uppercase" style-hover="background:var(--nuda-accent,#9E5638);border-color:var(--nuda-accent,#9E5638)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:4px">Zur Kasse</button>
+        </div>
+      </aside>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ quickOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:98;display:flex;align-items:center;justify-content:center;padding:20px;animation:nudaFade .25s ease both">
+      <div onClick="{{ closeQuick }}" style="position:absolute;inset:0;background:rgba(35,31,28,.45)"></div>
+      <div role="dialog" aria-label="Größe wählen" style="position:relative;background:#F4F0E9;width:min(94vw,440px);padding:28px;animation:nudaRise .35s cubic-bezier(.2,.7,.2,1) both">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:24px">
+          <div>
+            <p style="margin:0 0 6px;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(35,31,28,.55)">{{ quickBrand }}</p>
+            <p style="margin:0 0 4px;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:24px;line-height:1.15">{{ quickName }}</p>
+            <p style="margin:0;font-size:13.5px;color:rgba(35,31,28,.7)">{{ quickPrice }}</p>
+          </div>
+          <button onClick="{{ closeQuick }}" aria-label="Schließen" style="background:none;border:0;font-size:22px;line-height:1;padding:4px;color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">×</button>
+        </div>
+        <p style="margin:0 0 12px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(35,31,28,.6)">Größe wählen</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:8px">
+          <sc-for list="{{ quickSizes }}" as="s" hint-placeholder-count="8">
+            <button onClick="{{ s.add }}" style="background:none;border:1px solid rgba(35,31,28,.26);padding:14px 0;font-size:13px;color:#231F1C" style-hover="background:#231F1C;color:#F4F0E9;border-color:#231F1C" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:3px">{{ s.label }}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{ quickToPdp }}" style="margin-top:22px;background:none;border:0;padding:6px 0;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#231F1C;border-bottom:1px solid rgba(35,31,28,.35)" style-focus="outline:2px solid var(--nuda-accent,#9E5638);outline-offset:4px">Alle Details ansehen</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:99;background:#231F1C;color:#F4F0E9;padding:14px 24px;font-size:11.5px;letter-spacing:.1em;animation:nudaRise .35s cubic-bezier(.2,.7,.2,1) both;max-width:calc(100vw - 40px);text-align:center">{{ toast }}</div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;shopName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;NES&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marke&quot;},&quot;displaySerif&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Cormorant Garamond&quot;,&quot;Playfair Display&quot;,&quot;Bodoni Moda&quot;,&quot;EB Garamond&quot;],&quot;default&quot;:&quot;Cormorant Garamond&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Typografie&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;clay&quot;,&quot;moss&quot;],&quot;default&quot;:&quot;clay&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Farbe&quot;}}">
+const SERIFS = {
+  'Cormorant Garamond': "'Cormorant Garamond',Georgia,serif",
+  'Playfair Display': "'Playfair Display',Georgia,serif",
+  'Bodoni Moda': "'Bodoni Moda',Didot,Georgia,serif",
+  'EB Garamond': "'EB Garamond',Garamond,Georgia,serif"
+};
+const ACCENTS = { clay: '#9E5638', moss: '#4A5A3C' };
+const C = {
+  sand: { name: 'Sand', hex: '#D8CBB4' },
+  clay: { name: 'Ton', hex: '#A9663F' },
+  ink: { name: 'Anthrazit', hex: '#3A3634' },
+  moss: { name: 'Moos', hex: '#54614A' },
+  cream: { name: 'Naturweiß', hex: '#EDE6D8' },
+  cognac: { name: 'Cognac', hex: '#8A5A34' },
+  slate: { name: 'Schiefer', hex: '#6B6E70' },
+  rust: { name: 'Rost', hex: '#96412C' }
+};
+const SHOE_SIZES = [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46];
+const KID_SIZES = [26, 27, 28, 29, 30, 31, 32, 33, 34];
+const APP_SIZES = ['XS', 'S', 'M', 'L', 'XL'];
+
+const PRODUCTS = [
+  { id: 'alba', brand: 'VEHON', name: 'Alba Sneaker', cat: 'Damen', kind: 'schuhe', price: 129, colors: [C.cream, C.sand, C.ink], img: '/shop/products/vehon-duke-cervo-front.webp', img2: '/shop/products/vehon-duke-cervo-side.webp', views: ['/shop/products/vehon-duke-cervo-front.webp', '/shop/products/vehon-duke-cervo-side.webp', '/shop/gallery/loungers-cafe.webp', '/shop/gallery/loungers-stitching.webp'], isNew: true, soldOut: [36, 45, 46] },
+  { id: 'rauh', brand: 'VEHON', name: 'Rauh Trailschuh', cat: 'Herren', kind: 'schuhe', price: 149, colors: [C.ink, C.moss], img: '/shop/products/vehon-duke-velvet-front.webp', img2: '/shop/products/vehon-duke-velvet-side.webp', views: ['/shop/products/vehon-duke-velvet-front.webp', '/shop/products/vehon-duke-velvet-side.webp', '/shop/gallery/loungers-forest.webp', '/shop/gallery/loungers-drive.webp'], isNew: true, soldOut: [36, 37] },
+  { id: 'loden', brand: 'VEHON', name: 'Loden Chelsea', cat: 'Damen', kind: 'schuhe', price: 169, colors: [C.cognac, C.ink], img: '/shop/products/vehon-prince-front.webp', img2: '/shop/products/vehon-prince-side.webp', views: ['/shop/products/vehon-prince-front.webp', '/shop/products/vehon-prince-side.webp', '/shop/gallery/loungers-rooftop.webp', '/shop/gallery/loungers-temple.webp'], isNew: false, soldOut: [46] },
+  { id: 'feld', brand: 'VEHON', name: 'Feld Halbschuh', cat: 'Herren', kind: 'schuhe', price: 139, colors: [C.sand, C.cognac, C.ink], img: '/shop/products/vehon-velluto-front.webp', img2: '/shop/products/vehon-velluto-side.webp', views: ['/shop/products/vehon-velluto-front.webp', '/shop/products/vehon-velluto-side.webp', '/shop/gallery/loungers-oldtimer.webp', '/shop/gallery/loungers-clouds.webp'], isNew: false, soldOut: [] },
+  { id: 'steg', brand: 'VEHON', name: 'Steg Sandale', cat: 'Damen', kind: 'schuhe', price: 99, colors: [C.cognac, C.sand], img: '/shop/products/loungers-bordeaux-front.webp', img2: '/shop/products/loungers-bordeaux-side.webp', views: ['/shop/products/loungers-bordeaux-front.webp', '/shop/products/loungers-bordeaux-side.webp', '/shop/gallery/loungers-bordeaux-beach.webp', '/shop/gallery/loungers-breathe.webp'], isNew: true, soldOut: [41, 42] },
+  { id: 'kiesel', brand: 'VEHON', name: 'Kiesel Kinderschuh', cat: 'Kinder', kind: 'schuhe', price: 99, colors: [C.moss, C.rust, C.slate], img: '/shop/products/loungers-city-ease-front.webp', img2: '/shop/products/loungers-city-ease-side.webp', views: ['/shop/products/loungers-city-ease-front.webp', '/shop/products/loungers-city-ease-side.webp', '/shop/gallery/loungers-airport.webp', '/shop/gallery/loungers-bangkok.webp'], isNew: true, soldOut: [26] },
+  { id: 'bach', brand: 'VEHON', name: 'Bach Wasserschuh', cat: 'Kinder', kind: 'schuhe', price: 109, colors: [C.slate, C.rust], img: '/shop/products/loungers-driver-brown-front.webp', img2: '/shop/products/loungers-driver-brown-side.webp', views: ['/shop/products/loungers-driver-brown-front.webp', '/shop/products/loungers-driver-brown-side.webp', '/shop/gallery/loungers-drive.webp', '/shop/gallery/loungers-slow-living.webp'], isNew: false, soldOut: [] },
+  { id: 'winterlauf', brand: 'VEHON', name: 'Winterlauf Stiefel', cat: 'Herren', kind: 'schuhe', price: 165, colors: [C.ink, C.cognac], img: '/shop/products/vehon-duke-cervo-front.webp', img2: '/shop/products/vehon-duke-cervo-side.webp', views: ['/shop/products/vehon-duke-cervo-front.webp', '/shop/products/vehon-duke-cervo-side.webp', '/shop/gallery/loungers-forest.webp', '/shop/gallery/loungers-imperfection.webp'], isNew: false, soldOut: [36, 37, 38] },
+  { id: 'fiume', brand: 'MONTECIARO', name: 'Fiume Pullover', cat: 'Damen', kind: 'bekleidung', price: 189, colors: [C.cream, C.clay, C.moss], img: '/shop/pully-red-front.webp', img2: '/shop/pully-red-side.webp', views: ['/shop/pully-red-front.webp', '/shop/pully-red-side.webp', '/shop/gallery/montechiaro-statement.webp', '/shop/gallery/montechiaro-detail.webp'], isNew: true, soldOut: ['XS'] },
+  { id: 'nebbia', brand: 'MONTECIARO', name: 'Nebbia Strickjacke', cat: 'Damen', kind: 'bekleidung', price: 219, colors: [C.sand, C.slate], img: '/shop/gallery/montechiaro-work.webp', img2: '/shop/gallery/montechiaro-detail.webp', views: ['/shop/gallery/montechiaro-work.webp', '/shop/gallery/montechiaro-detail.webp', '/shop/gallery/montechiaro-kitchen.webp', '/shop/gallery/montechiaro-statement.webp'], isNew: false, soldOut: [] },
+  { id: 'sasso', brand: 'MONTECIARO', name: 'Sasso Rollkragen', cat: 'Herren', kind: 'bekleidung', price: 169, colors: [C.ink, C.cream, C.moss], img: '/shop/gallery/montechiaro-kitchen.webp', img2: '/shop/gallery/montechiaro-detail.webp', views: ['/shop/gallery/montechiaro-kitchen.webp', '/shop/gallery/montechiaro-detail.webp', '/shop/gallery/montechiaro-work.webp', '/shop/gallery/montechiaro-statement.webp'], isNew: true, soldOut: ['XL'] },
+  { id: 'prato', brand: 'MONTECIARO', name: 'Prato Strickweste', cat: 'Herren', kind: 'bekleidung', price: 129, colors: [C.moss, C.sand], img: '/shop/montechiaro-editorial.webp', img2: '/shop/gallery/montechiaro-work.webp', views: ['/shop/montechiaro-editorial.webp', '/shop/gallery/montechiaro-work.webp', '/shop/gallery/montechiaro-detail.webp', '/shop/gallery/montechiaro-kitchen.webp'], isNew: false, soldOut: [] },
+  { id: 'socken', brand: 'VEHON', name: 'Merino Zehensocken, 3er', cat: 'Zubehör', kind: 'zubehoer', price: 39, colors: [C.cream, C.ink, C.sand], img: '/shop/gallery/wai-warm-sand.webp', img2: '/shop/gallery/wai-ground.webp', views: ['/shop/gallery/wai-warm-sand.webp', '/shop/gallery/wai-ground.webp', '/shop/gallery/wai-zen.webp', '/shop/gallery/wai-tea.webp'], isNew: false, soldOut: [] },
+  { id: 'pflege', brand: 'VEHON', name: 'Lederpflege Set', cat: 'Zubehör', kind: 'zubehoer', price: 34, colors: [C.sand], img: '/shop/gallery/loungers-stitching.webp', img2: '/shop/loungers-flatlay.webp', views: ['/shop/gallery/loungers-stitching.webp', '/shop/loungers-flatlay.webp', '/shop/gallery/loungers-imperfection.webp', '/shop/gallery/loungers-cafe.webp'], isNew: false, soldOut: [] }
+];
+
+const GEO = [
+  { code: 'DE', label: 'Deutschland — EUR €' },
+  { code: 'AT', label: 'Österreich — EUR €' },
+  { code: 'CH', label: 'Schweiz — CHF' }
+];
+
+const eur = (n) => n.toFixed(2).replace('.', ',') + ' €';
+
+class Component extends DCLogic {
+  state = {
+    page: 'home', pdpId: 'alba', pdpImg: 0, pdpColor: 0, pdpSize: null, pdpMsg: '',
+    navOpen: false, cartOpen: false, geoOpen: false, geo: 0, quickId: null,
+    cart: [], toast: '', newTab: 'Damen', cat: 'Alle', brand: 'Alle', sort: 'neu',
+    foot: '', sizeResult: '', sizeHint: '', email: '', newsMsg: '', newsOk: false,
+    open: { details: true, passform: false, material: false, versand: false },
+    scrolled: false, w: 1440
+  };
+
+  componentDidMount() {
+    this._onScroll = () => {
+      const s = window.scrollY > 40;
+      if (s !== this.state.scrolled) this.setState({ scrolled: s });
+    };
+    this._onResize = () => this.setState({ w: window.innerWidth });
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', this._onResize);
+    this._onResize();
+    this._reveal();
+    this._revealTimer = setTimeout(() => this._revealAll(), 2200);
+  }
+  componentDidUpdate() { this._reveal(); }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('resize', this._onResize);
+    clearTimeout(this._revealTimer);
+    clearTimeout(this._toastTimer);
+  }
+  _revealAll() {
+    document.querySelectorAll('[data-reveal]').forEach((el) => {
+      el.style.transition = 'opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1)';
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+  }
+  _reveal() {
+    const els = document.querySelectorAll('[data-reveal]:not([data-revealed])');
+    if (!els.length) return;
+    if (!('IntersectionObserver' in window)) return this._revealAll();
+    if (!this._io) {
+      this._io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const el = e.target;
+          el.setAttribute('data-revealed', '1');
+          el.style.transition = 'opacity 1s ease, transform 1s cubic-bezier(.2,.7,.2,1)';
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+          this._io.unobserve(el);
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+    }
+    els.forEach((el) => {
+      el.style.transform = 'translateY(22px)';
+      this._io.observe(el);
+    });
+  }
+
+  _toast(t) {
+    clearTimeout(this._toastTimer);
+    this.setState({ toast: t });
+    this._toastTimer = setTimeout(() => this.setState({ toast: '' }), 2600);
+  }
+  _go(page, extra) {
+    this.setState(Object.assign({ page, navOpen: false, geoOpen: false, quickId: null }, extra || {}));
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+  _sizesFor(p) {
+    if (!p) return SHOE_SIZES;
+    if (p.kind === 'bekleidung' || p.kind === 'zubehoer') return APP_SIZES;
+    if (p.cat === 'Kinder') return KID_SIZES;
+    return SHOE_SIZES;
+  }
+  _add(p, size) {
+    const key = p.id + '-' + size;
+    this.setState((s) => {
+      const cart = s.cart.slice();
+      const i = cart.findIndex((x) => x.key === key);
+      if (i > -1) cart[i] = Object.assign({}, cart[i], { qty: cart[i].qty + 1 });
+      else cart.push({ key, id: p.id, brand: p.brand, name: p.name, size, price: p.price, qty: 1 });
+      return { cart, quickId: null, cartOpen: true };
+    });
+    this._toast(p.name + ' in Größe ' + size + ' hinzugefügt');
+  }
+
+  renderVals() {
+    const st = this.state;
+    const props = this.props;
+    const shopName = props.shopName ?? 'NES';
+    const serif = SERIFS[props.displaySerif] || SERIFS['Cormorant Garamond'];
+    const accent = ACCENTS[props.accent] || ACCENTS.clay;
+    const narrow = st.w < 900;
+    const mid = st.w < 1180;
+    const solid = st.scrolled || st.page !== 'home';
+
+    const dec = (p) => Object.assign({}, p, { priceLabel: eur(p.price) });
+    const pdp = PRODUCTS.find((p) => p.id === st.pdpId) || PRODUCTS[0];
+    const quick = PRODUCTS.find((p) => p.id === st.quickId);
+    const pdpSizes = this._sizesFor(pdp);
+
+    const navDefs = [
+      ['Schuhe', () => this._go('collection', { cat: 'Alle', brand: 'Alle' })],
+      ['Bekleidung', () => this._go('collection', { cat: 'Bekleidung', brand: 'Alle' })],
+      ['Marken', () => this._go('collection', { cat: 'Alle', brand: 'MONTECIARO' })],
+      ['Über uns', () => this._toast('Über uns folgt im nächsten Schritt')]
+    ];
+
+    let filtered = PRODUCTS.filter((p) => {
+      if (st.cat === 'Bekleidung') return p.kind === 'bekleidung';
+      if (st.cat !== 'Alle' && p.cat !== st.cat) return false;
+      return true;
+    }).filter((p) => st.brand === 'Alle' || p.brand === st.brand);
+    if (st.sort === 'preis-auf') filtered = filtered.slice().sort((a, b) => a.price - b.price);
+    else if (st.sort === 'preis-ab') filtered = filtered.slice().sort((a, b) => b.price - a.price);
+    else if (st.sort === 'name') filtered = filtered.slice().sort((a, b) => a.name.localeCompare(b.name, 'de'));
+    else filtered = filtered.slice().sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+
+    const subtotal = st.cart.reduce((s, i) => s + i.price * i.qty, 0);
+    return {
+      serifStack: serif, accentHex: accent, shopName,
+      headerBg: solid ? 'rgba(244,240,233,.94)' : 'rgba(244,240,233,0)',
+      headerLine: solid ? 'rgba(35,31,28,.14)' : 'rgba(35,31,28,0)',
+      isMobile: narrow, isDesktop: !narrow,
+      isHome: st.page === 'home', isCollection: st.page === 'collection', isPdp: st.page === 'pdp',
+      navItems: navDefs.map(([label, go], i) => ({
+        label, go, display: narrow ? 'none' : 'inline-block',
+        color: '#231F1C',
+        rule: (st.page === 'collection' && i === 0) ? 'rgba(35,31,28,.5)' : 'transparent'
+      })),
+      drawerNav: navDefs.concat([['Größenberatung', () => { this._go('home'); setTimeout(() => this._toast('Größenfinder: siehe Abschnitt 05'), 300); }]]).map(([label, go]) => ({ label, go })),
+      goHome: () => this._go('home'),
+      goSchuhe: () => this._go('collection', { cat: 'Alle', brand: 'Alle' }),
+      goBekleidung: () => this._go('collection', { cat: 'Bekleidung' }),
+      goMarken: () => this._go('collection', { brand: 'MONTECIARO' }),
+      goUeber: () => this._toast('Über uns folgt im nächsten Schritt'),
+      goSize: () => this._toast('Größentabelle folgt im nächsten Schritt'),
+      openNav: () => this.setState({ navOpen: true }), closeNav: () => this.setState({ navOpen: false }),
+      openCart: () => this.setState({ cartOpen: true }), closeCart: () => this.setState({ cartOpen: false }),
+      navOpen: st.navOpen, cartOpen: st.cartOpen,
+      toggleGeo: () => this.setState((s) => ({ geoOpen: !s.geoOpen })),
+      geoOpen: st.geoOpen, geoBtnDisplay: narrow ? 'none' : 'inline-block',
+      geoLabel: GEO[st.geo].code + ' · ' + (st.geo === 2 ? 'CHF' : 'EUR'),
+      geoOptions: GEO.map((g, i) => ({ label: g.label, color: i === st.geo ? accent : '#231F1C', pick: () => this.setState({ geo: i, geoOpen: false, navOpen: false }) })),
+      cartCount: st.cart.reduce((s, i) => s + i.qty, 0),
+      cartAria: 'Warenkorb öffnen, ' + st.cart.reduce((s, i) => s + i.qty, 0) + ' Artikel',
+      cartEmpty: st.cart.length === 0,
+      cartItems: st.cart.map((i) => ({ brand: i.brand, name: i.name, thumb: "url('" + ((PRODUCTS.find((q) => q.name === i.name) || {}).img || '') + "') center/cover no-repeat", size: i.size, qty: i.qty, total: eur(i.price * i.qty), remove: () => this.setState((s) => ({ cart: s.cart.filter((x) => x.key !== i.key) })) })),
+      cartTotal: eur(subtotal),
+      shippingNote: subtotal >= 100 ? 'Versandkostenfrei · Lieferung in 2–4 Werktagen' : 'Noch ' + eur(100 - subtotal) + ' bis zum kostenfreien Versand',
+
+      storyCols: narrow ? '1fr' : '0.86fr 1fr',
+      sizeFinderCols: narrow ? '1fr' : '1fr 0.72fr',
+      newsCols: narrow ? '1fr' : '1fr 0.9fr',
+      collHeadCols: narrow ? '1fr' : '1fr 0.8fr',
+      pdpCols: mid ? '1fr' : '1.1fr 0.9fr',
+      pdpGalleryDir: narrow ? 'column-reverse' : 'row',
+      pdpRailDir: narrow ? 'row' : 'column',
+      pdpBuySticky: mid ? 'static' : 'sticky',
+      gridCols: st.w < 640 ? 'repeat(2,1fr)' : (mid ? 'repeat(2,1fr)' : 'repeat(3,1fr)'),
+      footerCols: narrow ? '1fr 1fr' : '1.3fr repeat(4,1fr)',
+      mirrorOrderText: narrow ? 2 : 1, mirrorOrderImg: narrow ? 1 : 2,
+
+      newTabs: ['Damen', 'Herren', 'Kinder'].map((t) => ({
+        label: t, active: st.newTab === t, pick: () => this.setState({ newTab: t }),
+        bg: st.newTab === t ? '#231F1C' : 'transparent', fg: st.newTab === t ? '#F4F0E9' : 'rgba(35,31,28,.7)'
+      })),
+      newProducts: PRODUCTS.filter((p) => p.cat === st.newTab).slice(0, 4).map(dec),
+      bestsellers: ['alba', 'fiume', 'rauh', 'loden', 'sasso', 'steg'].map((id) => dec(PRODUCTS.find((p) => p.id === id))),
+      openPdp: (id) => this._go('pdp', { pdpId: id, pdpImg: 0, pdpColor: 0, pdpSize: null, pdpMsg: '' }),
+      openQuick: (id) => this.setState({ quickId: id }),
+
+      brands: [
+        { name: 'Vehon', img: '/craftsmanship-wai.png', imgAlt: 'Handwerker schneidet Leder in der Werkstatt', line: 'Barfußschuhe für jeden Tag. Handgemacht in Portugal, pflanzlich gegerbtes Leder.', bg: '#E8E0D2', stripe: "url('/craftsmanship-wai.png') center/cover no-repeat", go: () => this._go('collection', { brand: 'VEHON', cat: 'Alle' }) },
+        { name: 'Monteciaro', img: '/shop/montechiaro-editorial.webp', imgAlt: 'Monteciaro Strick in Nahaufnahme', line: 'Strick aus Norditalien. Weite Schnitte, Merino und Alpaka, ohne Nähte am Schulterrand.', bg: '#E4DBCB', stripe: "url('/shop/montechiaro-editorial.webp') center/cover no-repeat", go: () => this._go('collection', { brand: 'MONTECIARO', cat: 'Alle' }) }
+      ],
+      fitFacts: [{ k: 'Sprengung', v: '0 mm' }, { k: 'Sohlenstärke', v: '4–6 mm' }, { k: 'Zehenbox', v: 'Breit' }],
+
+      footLength: st.foot,
+      setFoot: (e) => this.setState({ foot: e.target.value }),
+      calcSize: () => {
+        const v = parseFloat(String(st.foot).replace(',', '.'));
+        if (!v || v < 14 || v > 34) return this.setState({ sizeResult: '', sizeHint: '', foot: st.foot }, () => this._toast('Bitte eine Fußlänge zwischen 14 und 34 cm eingeben'));
+        const size = Math.round((v + 1.4) * 1.5);
+        this.setState({ sizeResult: 'EU ' + size, sizeHint: 'Bei ' + v.toFixed(1).replace('.', ',') + ' cm empfehlen wir Größe ' + size + '. Wenn du zwischen zwei Größen liegst, nimm die größere — Barfußschuhe brauchen vorn Luft.' });
+      },
+      sizeResult: st.sizeResult, sizeHint: st.sizeHint,
+      email: st.email,
+      setEmail: (e) => this.setState({ email: e.target.value }),
+      subscribe: () => {
+        const ok = /.+@.+\..+/.test(st.email);
+        this.setState({ newsMsg: ok ? 'Danke. Bitte bestätige die Anmeldung in der E-Mail, die wir dir geschickt haben.' : 'Bitte gib eine gültige E-Mail-Adresse ein.', newsOk: ok });
+      },
+      newsMsg: st.newsMsg, newsMsgColor: st.newsOk ? accent : 'rgba(35,31,28,.6)',
+
+      collTitle: st.cat === 'Alle' && st.brand !== 'Alle' ? st.brand : (st.cat === 'Alle' ? 'Alle Schuhe & Kleidung' : st.cat),
+      collIntro: st.brand === 'MONTECIARO' ? 'Strick aus Norditalien, weit geschnitten und in Naturtönen. Damen und Herren.' : 'Zero Drop, breite Zehenbox, dünne Sohle. Filter nach Kategorie und Marke, Größen 26 bis 46.',
+      catFilters: ['Alle', 'Damen', 'Herren', 'Kinder', 'Zubehör'].map((c) => ({
+        label: c, active: st.cat === c, pick: () => this.setState({ cat: c }),
+        bg: st.cat === c ? '#231F1C' : 'transparent', fg: st.cat === c ? '#F4F0E9' : 'rgba(35,31,28,.75)',
+        border: st.cat === c ? '#231F1C' : 'rgba(35,31,28,.24)'
+      })),
+      brandFilters: ['Alle', 'VEHON', 'MONTECIARO'].map((b) => ({
+        label: b === 'Alle' ? 'Alle Marken' : b, active: st.brand === b, pick: () => this.setState({ brand: b }),
+        fg: st.brand === b ? '#231F1C' : 'rgba(35,31,28,.5)',
+        border: st.brand === b ? '#231F1C' : 'transparent'
+      })),
+      sort: st.sort, setSort: (e) => this.setState({ sort: e.target.value }),
+      filtered: filtered.map(dec), noResults: filtered.length === 0,
+      resultCount: filtered.length + (filtered.length === 1 ? ' Artikel' : ' Artikel'),
+
+      pdpBrand: pdp.brand, pdpName: pdp.name, pdpPrice: eur(pdp.price),
+      pdpColorName: (pdp.colors[st.pdpColor] || pdp.colors[0]).name,
+      pdpImgName: pdp.img.replace(/(\d+)$/, () => String(st.pdpImg + 1).padStart(2, '0')),
+      pdpImgAlt: pdp.name + ' von ' + pdp.brand + ', Ansicht ' + (st.pdpImg + 1),
+      pdpMainStripe: "url('" + ((pdp.views ?? [pdp.img])[st.pdpImg] ?? pdp.img) + "') center/cover no-repeat",
+      pdpThumbs: [0, 1, 2, 3].map((i) => ({
+        n: String(i + 1).padStart(2, '0'), aria: 'Bild ' + (i + 1) + ' anzeigen', pick: () => this.setState({ pdpImg: i }),
+        size: narrow ? '72px' : '84px', h: narrow ? '90px' : '105px',
+        border: st.pdpImg === i ? '#231F1C' : 'rgba(35,31,28,.2)',
+        stripe: "url('" + ((pdp.views ?? [pdp.img])[i] ?? pdp.img) + "') center/cover no-repeat"
+      })),
+      pdpColors: pdp.colors.map((c, i) => ({
+        hex: c.hex, aria: 'Farbe ' + c.name, active: st.pdpColor === i,
+        ring: st.pdpColor === i ? '0 0 0 1px #F4F0E9, 0 0 0 2px #231F1C' : 'none',
+        pick: () => this.setState({ pdpColor: i })
+      })),
+      pdpSizes: pdpSizes.map((s) => {
+        const out = pdp.soldOut.indexOf(s) > -1;
+        const on = st.pdpSize === s;
+        return {
+          label: String(s), disabled: out, active: on,
+          bg: on ? '#231F1C' : 'transparent', fg: out ? 'rgba(35,31,28,.3)' : (on ? '#F4F0E9' : '#231F1C'),
+          border: on ? '#231F1C' : 'rgba(35,31,28,.24)', cursor: out ? 'not-allowed' : 'pointer',
+          deco: out ? 'line-through' : 'none',
+          pick: () => this.setState({ pdpSize: s, pdpMsg: '' })
+        };
+      }),
+      pdpSizeMsg: st.pdpMsg || (st.pdpSize ? 'Größe ' + st.pdpSize + ' — auf Lager' : 'Fällt normal aus. Bei Zwischengrößen die größere nehmen.'),
+      pdpSizeMsgColor: st.pdpMsg ? accent : 'rgba(35,31,28,.6)',
+      addPdp: () => {
+        if (!st.pdpSize) return this.setState({ pdpMsg: 'Bitte wähle zuerst eine Größe.' });
+        this._add(pdp, st.pdpSize);
+      },
+      accordions: [
+        { key: 'details', title: 'Details', lines: [pdp.name + ' ist ein alltagstauglicher Barfußschuh mit ungefütterter Innenseite und herausnehmbarer 2-mm-Einlage.', 'Verdeckte Schnürung, Fersenkappe ohne Verstärkung, Gewicht unter 240 g in Größe 42.'] },
+        { key: 'passform', title: 'Passform & Maße', lines: ['Fällt normal aus. Innenlänge Größe 42: 27,6 cm. Breiteste Stelle: 10,4 cm.', 'Zwischen zwei Größen: die größere wählen. Zehen sollen sich im Stehen frei spreizen.'] },
+        { key: 'material', title: 'Material & Pflege', lines: ['Obermaterial: pflanzlich gegerbtes Rindsleder. Futter: unbehandeltes Leinen. Sohle: 4 mm Naturkautschuk.', 'Mit feuchtem Tuch reinigen, an der Luft trocknen, zweimal pro Saison mit Lederbalsam pflegen.'] },
+        { key: 'versand', title: 'Versand & Rückgabe', lines: ['DE 2–3 Werktage, AT 3–4, CH 4–6. Versandkostenfrei ab 100 €.', '30 Tage Rückgaberecht, Rücksendung innerhalb DE kostenfrei.'] }
+      ].map((a) => ({
+        title: a.title, open: !!st.open[a.key], display: st.open[a.key] ? 'block' : 'none',
+        rot: st.open[a.key] ? 'rotate(45deg)' : 'rotate(0deg)', lines: a.lines,
+        toggle: () => this.setState((s) => ({ open: Object.assign({}, s.open, { [a.key]: !s.open[a.key] }) }))
+      })),
+      specs: [
+        { k: 'Sohlenstärke', v: '4 mm' }, { k: 'Gewicht', v: '238 g' },
+        { k: 'Sprengung', v: '0 mm' }, { k: 'Obermaterial', v: 'Rindsleder' }
+      ],
+      related: PRODUCTS.filter((p) => p.id !== pdp.id && p.kind === 'schuhe').slice(0, 3).map(dec),
+
+      quickOpen: !!quick,
+      quickBrand: quick ? quick.brand : '', quickName: quick ? quick.name : '', quickPrice: quick ? eur(quick.price) : '',
+      quickSizes: quick ? this._sizesFor(quick).filter((s) => quick.soldOut.indexOf(s) < 0).map((s) => ({ label: String(s), add: () => this._add(quick, s) })) : [],
+      closeQuick: () => this.setState({ quickId: null }),
+      quickToPdp: () => this._go('pdp', { pdpId: st.quickId, pdpImg: 0, pdpColor: 0, pdpSize: null }),
+
+      footerCols4: [
+        { title: 'Shop', links: [{ label: 'Damen', href: '#' }, { label: 'Herren', href: '#' }, { label: 'Kinder', href: '#' }, { label: 'Zubehör', href: '#' }, { label: 'Geschenkgutschein', href: '#' }] },
+        { title: 'Marken', links: [{ label: 'VEHON', href: '#' }, { label: 'MONTECIARO', href: '#' }, { label: 'Alle Marken', href: '#' }] },
+        { title: 'Service', links: [{ label: 'Größenberatung', href: '#' }, { label: 'Versand', href: '#versand' }, { label: 'Retouren', href: '#' }, { label: 'Kontakt', href: '#' }, { label: 'FAQ', href: '#' }] },
+        { title: 'Rechtliches', links: [{ label: 'Impressum', href: '#' }, { label: 'AGB', href: '#' }, { label: 'Datenschutz', href: '#' }, { label: 'Widerrufsrecht', href: '#' }, { label: 'Cookie-Einstellungen', href: '#' }] }
+      ],
+      socials: [{ label: 'IG', aria: 'Instagram' }, { label: 'PT', aria: 'Pinterest' }, { label: 'YT', aria: 'YouTube' }],
+      payments: [{ label: 'Visa', aria: 'Visa' }, { label: 'Mastercard', aria: 'Mastercard' }, { label: 'PayPal', aria: 'PayPal' }, { label: 'Klarna', aria: 'Klarna' }, { label: 'Rechnung', aria: 'Kauf auf Rechnung' }],
+      copyline: '© 2026 ' + shopName + ' GmbH · Alle Preise inkl. MwSt.',
+      toast: st.toast
+    };
+  }
+}
+
+</script>
+</body>
+</html>

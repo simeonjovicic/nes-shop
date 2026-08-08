@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<article style="display:flex;flex-direction:column;gap:14px">
+  <button onClick="{{ open }}" onMouseEnter="{{ enter }}" onMouseLeave="{{ leave }}" aria-label="{{ aria }}" style="position:relative;display:block;width:100%;padding:0;border:0;background:#E8E0D2;aspect-ratio:4/5;overflow:hidden;cursor:pointer" style-focus="outline:2px solid #9E5638;outline-offset:3px">
+    <span style="position:absolute;inset:0;background:{{ bg1 }};transition:transform 1.4s cubic-bezier(.2,.7,.2,1),opacity .7s ease;transform:{{ t1 }};opacity:{{ o1 }}"></span>
+    <span style="position:absolute;inset:0;background:{{ bg2 }};transition:transform 1.4s cubic-bezier(.2,.7,.2,1),opacity .7s ease;transform:{{ t2 }};opacity:{{ o2 }}"></span>
+    <sc-if value="{{ isNew }}" hint-placeholder-val="{{ false }}">
+      <span style="position:absolute;top:14px;left:14px;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#231F1C;border-bottom:1px solid rgba(35,31,28,.4);padding-bottom:2px">Neu</span>
+    </sc-if>
+  </button>
+
+  <div style="display:flex;flex-direction:column;gap:7px">
+    <p style="margin:0;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(35,31,28,.55)">{{ brand }}</p>
+    <button onClick="{{ open }}" style="background:none;border:0;padding:0;text-align:left;font-family:var(--nuda-serif,'Cormorant Garamond',Georgia,serif);font-size:20px;font-weight:400;color:#231F1C;line-height:1.25" style-hover="color:#9E5638" style-focus="outline:2px solid #9E5638;outline-offset:3px">{{ name }}</button>
+    <p style="margin:0;font-size:13.5px;color:rgba(35,31,28,.78);letter-spacing:.02em">{{ price }}</p>
+    <div style="display:flex;align-items:center;gap:6px;margin-top:3px" aria-label="{{ colorAria }}">
+      <sc-for list="{{ swatches }}" as="c" hint-placeholder-count="3">
+        <span title="{{ c.name }}" style="width:9px;height:9px;border-radius:50%;background:{{ c.hex }};box-shadow:0 0 0 1px rgba(35,31,28,.22)"></span>
+      </sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{ showQuick }}" hint-placeholder-val="{{ false }}">
+    <button onClick="{{ quick }}" style="margin-top:2px;align-self:flex-start;background:none;border:1px solid rgba(35,31,28,.28);padding:9px 16px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#231F1C" style-hover="border-color:#231F1C;background:#231F1C;color:#F4F0E9" style-focus="outline:2px solid #9E5638;outline-offset:3px">Größe wählen</button>
+  </sc-if>
+</article>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:330,&quot;height&quot;:520},&quot;brand&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;VEHON&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;name&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Alba Sneaker&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;price&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;129,00 €&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;img&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;/shop/products/vehon-duke-cervo-front.webp&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;img2&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;/shop/products/vehon-duke-cervo-side.webp&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;isNew&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showQuick&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;colors&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{name:string;hex:string}[]&quot;},&quot;id&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;},&quot;onOpen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(id:string)=&gt;void&quot;},&quot;onQuick&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(id:string)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  state = { hover: false };
+  renderVals() {
+    const p = this.props;
+    const h = this.state.hover && !!p.img2;
+    return {
+      brand: p.brand ?? 'VEHON',
+      name: p.productName ?? 'Produkt',
+      price: p.price ?? '0 €',
+      isNew: !!p.isNew,
+      showQuick: !!p.showQuick,
+      imgLabel: (h ? (p.img2 ?? p.img) : p.img) ?? 'product-01',
+      bg1: "url('" + (p.img ?? '') + "') center/cover no-repeat",
+      bg2: "url('" + (p.img2 ?? p.img ?? '') + "') center/cover no-repeat",
+      aria: (p.productName ?? 'Produkt') + ' von ' + (p.brand ?? '') + ' ansehen',
+      colorAria: 'Verfügbare Farben',
+      swatches: p.colors ?? [{ name: 'Sand', hex: '#D8CBB4' }],
+      t1: h ? 'scale(1.06)' : 'scale(1)',
+      o1: h ? 0 : 1,
+      t2: h ? 'scale(1.06)' : 'scale(1.04)',
+      o2: h ? 1 : 0,
+      enter: () => this.setState({ hover: true }),
+      leave: () => this.setState({ hover: false }),
+      open: () => p.onOpen && p.onOpen(p.productId),
+      quick: (e) => { e.stopPropagation(); p.onQuick && p.onQuick(p.productId); }
+    };
+  }
+}
+
+</script>
+</body>
+</html>
