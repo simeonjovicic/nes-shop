@@ -21,7 +21,7 @@
 .hero-shader-fallback {
   z-index: 0;
   inset: 0;
-  background: linear-gradient(125deg, #f5f2e9 5%, #ddd3bc 42%, #aebcb2 72%, #f5f2e9 100%);
+  background: linear-gradient(125deg, #f5f3ef 5%, #ddd9d0 42%, #b5b1a8 72%, #f5f3ef 100%);
 }
 
 .hero-shader-mesh {
@@ -39,8 +39,8 @@
   z-index: 2;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(245, 242, 233, 0.62), transparent 24%, transparent 76%, rgba(245, 242, 233, 0.62)),
-    linear-gradient(180deg, rgba(245, 242, 233, 0.62), rgba(245, 242, 233, 0.2) 45%, rgba(245, 242, 233, 0.72));
+    linear-gradient(90deg, rgba(245, 243, 239, 0.62), transparent 24%, transparent 76%, rgba(245, 243, 239, 0.62)),
+    linear-gradient(180deg, rgba(245, 243, 239, 0.62), rgba(245, 243, 239, 0.2) 45%, rgba(245, 243, 239, 0.72));
 }
 
 .hero-footprint-trail {
@@ -57,7 +57,7 @@
   top: var(--step-y);
   left: var(--step-x);
   width: clamp(20px, 1.85vw, 29px);
-  color: #17342a;
+  color: #1f1f1d;
   transform: translate(-50%, -50%) rotate(var(--step-rotation)) scale(var(--step-scale));
   transform-origin: center;
 }
@@ -111,8 +111,8 @@
 
   .hero-shader-veil {
     background:
-      linear-gradient(90deg, rgba(245, 242, 233, 0.48), transparent 22%, transparent 78%, rgba(245, 242, 233, 0.48)),
-      linear-gradient(180deg, rgba(245, 242, 233, 0.68), rgba(245, 242, 233, 0.22) 45%, rgba(245, 242, 233, 0.76));
+      linear-gradient(90deg, rgba(245, 243, 239, 0.48), transparent 22%, transparent 78%, rgba(245, 243, 239, 0.48)),
+      linear-gradient(180deg, rgba(245, 243, 239, 0.68), rgba(245, 243, 239, 0.22) 45%, rgba(245, 243, 239, 0.76));
   }
 
   .hero-footprint-trail {

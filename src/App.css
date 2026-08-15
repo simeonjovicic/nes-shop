@@ -1,16 +1,19 @@
 :root {
-  --forest: #17342a;
-  --forest-deep: #0f271f;
-  --forest-soft: #29493d;
-  --ivory: #f5f2e9;
-  --ivory-deep: #ebe6da;
-  --ivory-muted: #dfd8ca;
-  --gold: #a6813f;
-  --gold-bright: #c7a45e;
-  --ink: #171512;
-  --muted: rgba(23, 21, 18, 0.61);
-  --line: rgba(23, 21, 18, 0.13);
-  --line-light: rgba(245, 242, 233, 0.22);
+  /* charcoal — the dark ground */
+  --brand: #1f1f1d;
+  --brand-deep: #121211;
+  --brand-soft: #3a3a36;
+  /* bone — the light ground */
+  --paper: #f5f3ef;
+  --paper-deep: #eae7e1;
+  --paper-muted: #dad6ce;
+  /* warm grey — accent, rules, focus */
+  --accent: #8a857c;
+  --accent-bright: #ada79b;
+  --ink: #161614;
+  --muted: rgba(22, 22, 20, 0.61);
+  --line: rgba(22, 22, 20, 0.13);
+  --line-light: rgba(245, 243, 239, 0.22);
   --serif: "Cormorant Garamond", "Iowan Old Style", Baskerville, Georgia, serif;
   --sans: "Archivo", Arial, sans-serif;
   --announcement-height: 28px;
@@ -20,7 +23,7 @@
   --home-section-space-tight: clamp(56px, 5.5vw, 82px);
   --home-heading-gap: clamp(34px, 3.5vw, 46px);
   color: var(--ink);
-  background: var(--ivory);
+  background: var(--paper);
   font-family: var(--sans);
   font-synthesis: none;
 }
@@ -38,7 +41,7 @@ body {
   min-width: 320px;
   margin: 0;
   overflow-x: hidden;
-  background: var(--ivory);
+  background: var(--paper);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -86,7 +89,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 a:focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -96,14 +99,14 @@ img {
 }
 
 ::selection {
-  background: var(--forest);
-  color: var(--ivory);
+  background: var(--brand);
+  color: var(--paper);
 }
 
 .site-shell {
   min-height: 100vh;
   overflow: clip;
-  background: var(--ivory);
+  background: var(--paper);
 }
 
 .sr-only,
@@ -157,7 +160,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .eyebrow {
   margin: 0;
-  color: var(--gold);
+  color: var(--accent);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.28em;
@@ -166,7 +169,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .eyebrow-light {
-  color: var(--gold-bright);
+  color: var(--accent-bright);
 }
 
 /* Quoted eyebrow + italic display heading — the Glazomer section-header idiom. */
@@ -227,36 +230,36 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .button-ivory {
-  border-color: var(--ivory);
-  background: var(--ivory);
-  color: var(--forest);
+  border-color: var(--paper);
+  background: var(--paper);
+  color: var(--brand);
 }
 
 .button-ivory:hover {
-  border-color: var(--gold-bright);
-  background: var(--gold-bright);
+  border-color: var(--accent-bright);
+  background: var(--accent-bright);
 }
 
 .button-forest {
-  border-color: var(--forest);
-  background: var(--forest);
-  color: var(--ivory);
+  border-color: var(--brand);
+  background: var(--brand);
+  color: var(--paper);
 }
 
 .button-forest:hover {
-  border-color: var(--gold);
-  background: var(--gold);
+  border-color: var(--accent);
+  background: var(--accent);
 }
 
 .button-gold {
-  border-color: var(--gold-bright);
-  background: var(--gold-bright);
-  color: var(--forest-deep);
+  border-color: var(--accent-bright);
+  background: var(--accent-bright);
+  color: var(--brand-deep);
 }
 
 .button-gold:hover {
-  border-color: var(--ivory);
-  background: var(--ivory);
+  border-color: var(--paper);
+  background: var(--paper);
 }
 
 .underlined-link {
@@ -265,7 +268,7 @@ html.reveal-ready [data-reveal].is-revealed {
   gap: 12px;
   padding: 6px 0;
   border: 0;
-  border-bottom: 1px solid rgba(23, 21, 18, 0.4);
+  border-bottom: 1px solid rgba(22, 22, 20, 0.4);
   background: transparent;
   color: var(--ink);
   font-size: 10px;
@@ -276,18 +279,18 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .underlined-link:hover {
-  border-color: var(--gold);
-  color: var(--forest);
+  border-color: var(--accent);
+  color: var(--brand);
 }
 
 .underlined-link-light {
-  border-color: rgba(245, 242, 233, 0.6);
-  color: var(--ivory);
+  border-color: rgba(245, 243, 239, 0.6);
+  color: var(--paper);
 }
 
 .underlined-link-light:hover {
-  border-color: var(--gold-bright);
-  color: var(--gold-bright);
+  border-color: var(--accent-bright);
+  color: var(--accent-bright);
 }
 
 /* Header */
@@ -302,7 +305,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .site-header.is-scrolled {
-  box-shadow: 0 12px 40px rgba(16, 39, 31, 0.08);
+  box-shadow: 0 12px 40px rgba(18, 18, 17, 0.08);
 }
 
 .announcement-bar {
@@ -312,8 +315,8 @@ html.reveal-ready [data-reveal].is-revealed {
   justify-content: center;
   padding: 0 24px;
   overflow: hidden;
-  background: var(--forest-deep);
-  color: rgba(245, 242, 233, 0.82);
+  background: var(--brand-deep);
+  color: rgba(245, 243, 239, 0.82);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.22em;
@@ -330,7 +333,7 @@ html.reveal-ready [data-reveal].is-revealed {
   gap: 32px;
   padding: 0 clamp(24px, 3vw, 48px);
   border-bottom: 1px solid var(--line);
-  background: rgba(245, 242, 233, 0.94);
+  background: rgba(245, 243, 239, 0.94);
   backdrop-filter: blur(18px) saturate(1.2);
 }
 
@@ -362,7 +365,7 @@ html.reveal-ready [data-reveal].is-revealed {
   bottom: -7px;
   left: 0;
   height: 1px;
-  background: var(--gold);
+  background: var(--accent);
   content: "";
   transform: scaleX(0);
   transform-origin: right;
@@ -380,7 +383,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .legal-wordmark {
   border: 0;
   background: transparent;
-  color: var(--forest);
+  color: var(--brand);
   font-family: var(--serif);
   font-size: 29px;
   font-weight: 500;
@@ -427,8 +430,8 @@ html.reveal-ready [data-reveal].is-revealed {
   display: inline-grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--forest);
-  color: var(--ivory);
+  background: var(--brand);
+  color: var(--paper);
   font-size: 8px;
   line-height: 1;
 }
@@ -447,8 +450,8 @@ html.reveal-ready [data-reveal].is-revealed {
   min-height: min(860px, calc(100svh - var(--header-height)));
   margin-top: var(--header-height);
   overflow: hidden;
-  background: var(--ivory-deep);
-  color: var(--forest);
+  background: var(--paper-deep);
+  color: var(--brand);
   isolation: isolate;
 }
 
@@ -475,7 +478,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .shop-hero-body {
   max-width: 570px;
   margin: 28px 0 0;
-  color: rgba(23, 52, 42, 0.72);
+  color: rgba(31, 31, 29, 0.72);
   font-size: clamp(14px, 1.2vw, 17px);
   line-height: 1.7;
   text-wrap: pretty;
@@ -496,7 +499,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .shop-hero-signature span {
-  color: var(--gold-bright);
+  color: var(--accent-bright);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.22em;
@@ -517,7 +520,7 @@ html.reveal-ready [data-reveal].is-revealed {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: rgba(23, 52, 42, 0.62);
+  color: rgba(31, 31, 29, 0.62);
   font-size: 7px;
   font-weight: 600;
   letter-spacing: 0.24em;
@@ -529,7 +532,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .hero-scroll span {
   width: 46px;
   height: 1px;
-  background: var(--gold-bright);
+  background: var(--accent-bright);
 }
 
 /* Intro */
@@ -544,7 +547,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .house-intro-index {
   padding-top: 4px;
-  color: rgba(23, 21, 18, 0.42);
+  color: rgba(22, 22, 20, 0.42);
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.25em;
@@ -570,6 +573,216 @@ html.reveal-ready [data-reveal].is-revealed {
   color: var(--muted);
   font-size: 15px;
   line-height: 1.85;
+}
+
+/* Product construction — the shoe holds still while the page scrolls past it
+   and takes itself apart. The section is a tall track; the stage inside it
+   sticks for the length of that track. */
+
+.product-construction {
+  position: relative;
+  height: 320vh;
+  /* Tuned to the mid-tone of the render's studio sweep rather than taken from
+     the palette: it is what lets `darken` below swallow the backdrop whole.
+     Reads as the cool end of the monochrome, which suits the technical beat. */
+  --construction-ground: #d9d7d4;
+  background: var(--construction-ground);
+}
+
+.product-construction-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(38px, 4vw, 64px);
+  width: min(100%, 1352px);
+  margin: 0 auto;
+  padding: 0 clamp(22px, 4vw, 64px);
+}
+
+/* The sticky stage is its own stacking context, so the canvas can only blend
+   against something painted inside it — hence the band colour repeated here. */
+.product-construction-media {
+  background: var(--construction-ground);
+}
+
+.product-construction-media > canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* The renders sit on a light studio sweep. `darken` keeps the shoe and lets
+     the band swallow everything lighter than it, so nothing reads as a tile. */
+  mix-blend-mode: darken;
+}
+
+.product-construction-still {
+  display: none;
+}
+
+.product-construction-copy h2 {
+  max-width: 9em;
+  margin: 17px 0 0;
+  font-family: var(--serif);
+  font-size: clamp(38px, 4.2vw, 60px);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+  text-wrap: balance;
+}
+
+.product-construction-name {
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* All four steps share one grid cell; only the active one is lit, so the
+   column never reflows as the scroll advances. */
+.product-construction-steps {
+  display: grid;
+  min-height: 132px;
+  margin: 30px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.product-construction-steps > li {
+  position: relative;
+  grid-area: 1 / 1;
+  padding-top: 20px;
+  opacity: 0;
+  translate: 0 10px;
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.product-construction-steps > li[data-active] {
+  opacity: 1;
+  translate: 0;
+  pointer-events: auto;
+}
+
+.product-construction-figure {
+  position: absolute;
+  z-index: -1;
+  top: -18px;
+  right: 0;
+  color: var(--line);
+  font-family: var(--serif);
+  font-size: clamp(90px, 9vw, 150px);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.product-construction-index {
+  display: block;
+  color: var(--voice-accent, var(--accent));
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+}
+
+.product-construction-steps strong {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.product-construction-body {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.product-construction-action {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: 34px;
+}
+
+.product-construction-price {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+
+.product-construction[data-voice] .eyebrow {
+  color: var(--voice-accent);
+  letter-spacing: var(--voice-tracking);
+}
+
+/* No pinning where it would fight the thumb or cost mobile data, and none
+   when motion is unwelcome: one still frame, all four layers at once. */
+@media (max-width: 900px), (prefers-reduced-motion: reduce) {
+  .product-construction {
+    height: auto;
+    padding: var(--home-section-space-tight) 0;
+  }
+
+  .product-construction-stage {
+    position: static;
+    height: auto;
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .product-construction-media > canvas {
+    display: none;
+  }
+
+  .product-construction-still {
+    display: block;
+    width: 100%;
+    height: auto;
+    /* Same crop as the canvas draw call, expressed as a frame + cover. */
+    aspect-ratio: 830 / 618;
+    object-fit: cover;
+    mix-blend-mode: darken;
+  }
+
+  .product-construction-steps {
+    display: block;
+    min-height: 0;
+  }
+
+  .product-construction-steps > li {
+    opacity: 1;
+    translate: 0;
+    pointer-events: auto;
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+
+  .product-construction-steps > li:first-child {
+    border-top: 0;
+    margin-top: 0;
+  }
+
+  .product-construction-figure {
+    display: none;
+  }
+
+  .product-construction-steps strong {
+    margin-top: 8px;
+    font-size: 24px;
+  }
 }
 
 /* Section headings */
@@ -605,23 +818,25 @@ html.reveal-ready [data-reveal].is-revealed {
 
 /* Two handwritings: each brand carries its own voice inside the NES frame.
    Selecting a filter shifts the section's temperature and accent, so the pills
-   read as a change of voice rather than a plain filter. */
+   read as a change of voice rather than a plain filter. The palette is
+   monochrome, so the shift reads as temperature — cool grey against warm grey —
+   rather than as a change of hue. */
 
 [data-voice] {
-  --voice-accent: var(--gold);
-  --voice-tint: var(--ivory);
+  --voice-accent: var(--accent);
+  --voice-tint: var(--paper);
   --voice-tracking: 0.28em;
 }
 
 [data-voice="vehon"] {
-  --voice-accent: #5d7683;
-  --voice-tint: #edeeeb;
+  --voice-accent: #77797a;
+  --voice-tint: #eeefee;
   --voice-tracking: 0.34em;
 }
 
 [data-voice="montechiaro"] {
-  --voice-accent: #92382f;
-  --voice-tint: #f4ebe2;
+  --voice-accent: #8c8177;
+  --voice-tint: #f2eee7;
   --voice-tracking: 0.2em;
 }
 
@@ -686,7 +901,7 @@ html.reveal-ready [data-reveal].is-revealed {
   left: 0;
   height: 100%;
   border-radius: 999px;
-  background: var(--forest);
+  background: var(--brand);
   transition:
     transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
     width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
@@ -714,7 +929,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .filter-pill.is-active,
 .filter-pill.is-active:hover {
-  color: var(--ivory);
+  color: var(--paper);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -770,13 +985,13 @@ html.reveal-ready [data-reveal].is-revealed {
   display: block;
   overflow: hidden;
   border: 0;
-  background: #ece8df;
+  background: var(--paper-deep);
 }
 
 .product-card-montechiaro .product-media {
   background:
     radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.5), transparent 46%),
-    #e9e3d7;
+    #e4e0d8;
 }
 
 .product-image {
@@ -825,8 +1040,8 @@ html.reveal-ready [data-reveal].is-revealed {
   top: 14px;
   left: 14px;
   padding: 8px 10px;
-  background: rgba(245, 242, 233, 0.92);
-  color: var(--forest);
+  background: rgba(245, 243, 239, 0.92);
+  color: var(--brand);
   font-size: 7px;
   font-weight: 600;
   letter-spacing: 0.17em;
@@ -844,8 +1059,8 @@ html.reveal-ready [data-reveal].is-revealed {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--forest);
-  color: var(--ivory);
+  background: var(--brand);
+  color: var(--paper);
   font-family: var(--serif);
   font-size: 25px;
   font-weight: 300;
@@ -861,7 +1076,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .product-plus:hover {
-  background: var(--gold);
+  background: var(--accent);
 }
 
 .product-copy {
@@ -876,7 +1091,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .product-brand {
-  color: var(--gold);
+  color: var(--accent);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -906,7 +1121,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .product-subtitle {
   margin-top: 7px;
-  color: rgba(23, 21, 18, 0.5);
+  color: rgba(22, 22, 20, 0.5);
   font-size: 9px;
   line-height: 1.5;
 }
@@ -918,7 +1133,7 @@ html.reveal-ready [data-reveal].is-revealed {
   max-width: none;
   padding-top: var(--home-section-space);
   padding-bottom: var(--home-section-space);
-  background: var(--ivory-deep);
+  background: var(--paper-deep);
 }
 
 .brand-section-heading,
@@ -996,8 +1211,8 @@ html.reveal-ready [data-reveal].is-revealed {
   min-height: 490px;
   overflow: hidden;
   border: 0;
-  background: var(--forest);
-  color: var(--ivory);
+  background: var(--brand);
+  color: var(--paper);
   text-align: left;
   isolation: isolate;
 }
@@ -1025,14 +1240,14 @@ html.reveal-ready [data-reveal].is-revealed {
 /* Lighter than it was: the tiles sat much louder than the rest of the page. */
 .brand-world-shade {
   z-index: -2;
-  background: linear-gradient(0deg, rgba(10, 26, 20, 0.62), rgba(10, 26, 20, 0.12) 46%, transparent 68%);
+  background: linear-gradient(0deg, rgba(14, 14, 13, 0.62), rgba(14, 14, 13, 0.12) 46%, transparent 68%);
 }
 
 .brand-world-index {
   position: absolute;
   top: 25px;
   left: 27px;
-  color: rgba(245, 242, 233, 0.72);
+  color: rgba(245, 243, 239, 0.72);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -1061,7 +1276,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .brand-world-copy > span:not(.brand-world-link) {
   max-width: 370px;
   margin-top: 12px;
-  color: rgba(245, 242, 233, 0.72);
+  color: rgba(245, 243, 239, 0.72);
   font-size: 12px;
   line-height: 1.55;
 }
@@ -1072,7 +1287,7 @@ html.reveal-ready [data-reveal].is-revealed {
   gap: 11px;
   margin-top: 22px;
   padding-bottom: 5px;
-  border-bottom: 1px solid rgba(245, 242, 233, 0.55);
+  border-bottom: 1px solid rgba(245, 243, 239, 0.55);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -1086,9 +1301,9 @@ html.reveal-ready [data-reveal].is-revealed {
 .brand-world-gradient {
   z-index: -3;
   background:
-    radial-gradient(circle at 20% 18%, rgba(200, 162, 94, 0.46), transparent 26%),
-    radial-gradient(circle at 76% 70%, rgba(111, 133, 121, 0.82), transparent 36%),
-    linear-gradient(135deg, #ece5d7, #b5b9aa 48%, #29493d);
+    radial-gradient(circle at 20% 18%, rgba(173, 167, 155, 0.46), transparent 26%),
+    radial-gradient(circle at 76% 70%, rgba(126, 123, 116, 0.82), transparent 36%),
+    linear-gradient(135deg, #e8e5df, #b8b4ab 48%, var(--brand-soft));
   transition: transform 1s ease;
 }
 
@@ -1107,7 +1322,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .shoppable-look {
   padding: var(--home-section-space-tight) clamp(22px, 4vw, 64px);
-  background: #ddd5c7;
+  background: #d7d3cb;
 }
 
 .shoppable-look-inner {
@@ -1115,7 +1330,7 @@ html.reveal-ready [data-reveal].is-revealed {
   width: min(100%, 1352px);
   margin: 0 auto;
   overflow: hidden;
-  background: #d9d0c2;
+  background: #d1cdc4;
 }
 
 .shoppable-look-media {
@@ -1139,7 +1354,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .shoppable-look-wash {
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(245, 242, 233, 0.3), rgba(245, 242, 233, 0.08) 42%, transparent 62%);
+  background: linear-gradient(90deg, rgba(245, 243, 239, 0.3), rgba(245, 243, 239, 0.08) 42%, transparent 62%);
 }
 
 .shoppable-look-copy {
@@ -1164,7 +1379,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .shoppable-look-copy > p:not(.eyebrow) {
   max-width: 360px;
   margin: 20px 0 0;
-  color: rgba(23, 21, 18, 0.66);
+  color: rgba(22, 22, 20, 0.66);
   font-size: 13px;
   line-height: 1.7;
 }
@@ -1174,7 +1389,7 @@ html.reveal-ready [data-reveal].is-revealed {
   align-items: center;
   gap: 11px;
   margin-top: 27px;
-  color: rgba(23, 21, 18, 0.67);
+  color: rgba(22, 22, 20, 0.67);
   font-size: 7px;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -1186,10 +1401,10 @@ html.reveal-ready [data-reveal].is-revealed {
   width: 8px;
   height: 8px;
   flex: 0 0 auto;
-  border: 2px solid var(--ivory);
+  border: 2px solid var(--paper);
   border-radius: 50%;
-  background: var(--forest);
-  box-shadow: 0 0 0 1px rgba(23, 52, 42, 0.45);
+  background: var(--brand);
+  box-shadow: 0 0 0 1px rgba(31, 31, 29, 0.45);
 }
 
 .shoppable-hotspot {
@@ -1200,7 +1415,7 @@ html.reveal-ready [data-reveal].is-revealed {
   gap: 12px;
   border: 0;
   background: transparent;
-  color: var(--forest);
+  color: var(--brand);
   transform: translate(-17px, -50%);
 }
 
@@ -1219,17 +1434,17 @@ html.reveal-ready [data-reveal].is-revealed {
   width: 34px;
   height: 34px;
   flex: 0 0 auto;
-  border: 1px solid rgba(245, 242, 233, 0.82);
+  border: 1px solid rgba(245, 243, 239, 0.82);
   border-radius: 50%;
-  background: rgba(23, 52, 42, 0.93);
-  box-shadow: 0 5px 20px rgba(15, 39, 31, 0.24);
+  background: rgba(31, 31, 29, 0.93);
+  box-shadow: 0 5px 20px rgba(18, 18, 17, 0.24);
   transition: background 0.25s ease, transform 0.3s ease;
 }
 
 .shoppable-hotspot-marker::before {
   position: absolute;
   inset: -7px;
-  border: 1px solid rgba(245, 242, 233, 0.6);
+  border: 1px solid rgba(245, 243, 239, 0.6);
   border-radius: inherit;
   content: "";
   animation: shoppable-hotspot-pulse 2.8s ease-out infinite;
@@ -1242,7 +1457,7 @@ html.reveal-ready [data-reveal].is-revealed {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--ivory);
+  background: var(--paper);
   content: "";
   transform: translate(-50%, -50%);
 }
@@ -1253,9 +1468,9 @@ html.reveal-ready [data-reveal].is-revealed {
   grid-template-columns: 1fr auto;
   gap: 5px 14px;
   padding: 12px 14px 13px;
-  border: 1px solid rgba(23, 21, 18, 0.12);
-  background: rgba(245, 242, 233, 0.95);
-  box-shadow: 0 10px 30px rgba(23, 21, 18, 0.12);
+  border: 1px solid rgba(22, 22, 20, 0.12);
+  background: rgba(245, 243, 239, 0.95);
+  box-shadow: 0 10px 30px rgba(22, 22, 20, 0.12);
   opacity: 0;
   text-align: left;
   transform: translateX(-7px);
@@ -1265,7 +1480,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .shoppable-hotspot-product > span:first-child {
   grid-column: 1 / -1;
-  color: var(--gold);
+  color: var(--accent);
   font-size: 7px;
   font-weight: 600;
   letter-spacing: 0.16em;
@@ -1287,7 +1502,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .shoppable-hotspot:hover .shoppable-hotspot-marker,
 .shoppable-hotspot:focus-visible .shoppable-hotspot-marker {
-  background: var(--gold);
+  background: var(--accent);
   transform: scale(1.08);
 }
 
@@ -1316,8 +1531,8 @@ html.reveal-ready [data-reveal].is-revealed {
   position: relative;
   min-height: min(700px, 80svh);
   overflow: hidden;
-  background: #27110d;
-  color: var(--ivory);
+  background: #1a1a18;
+  color: var(--paper);
 }
 
 .editorial-feature > img,
@@ -1334,7 +1549,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .editorial-feature-overlay {
-  background: linear-gradient(90deg, rgba(18, 14, 9, 0.8), rgba(18, 14, 9, 0.26) 52%, transparent 78%);
+  background: linear-gradient(90deg, rgba(22, 22, 20, 0.8), rgba(22, 22, 20, 0.26) 52%, transparent 78%);
 }
 
 .editorial-feature-copy {
@@ -1358,7 +1573,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .editorial-feature-copy > p:not(.eyebrow) {
   max-width: 500px;
   margin: 20px 0 0;
-  color: rgba(245, 242, 233, 0.74);
+  color: rgba(245, 243, 239, 0.74);
   font-size: 14px;
   line-height: 1.75;
 }
@@ -1372,7 +1587,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .standard-section {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  background: var(--ivory-deep);
+  background: var(--paper-deep);
 }
 
 .standard-copy {
@@ -1422,7 +1637,7 @@ html.reveal-ready [data-reveal].is-revealed {
   position: relative;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  background: var(--ivory-deep);
+  background: var(--paper-deep);
 }
 
 .principle-stage::after {
@@ -1430,7 +1645,7 @@ html.reveal-ready [data-reveal].is-revealed {
   position: absolute;
   inset: auto 0 0;
   height: 42%;
-  background: linear-gradient(to top, rgba(15, 39, 31, 0.6), transparent);
+  background: linear-gradient(to top, rgba(18, 18, 17, 0.6), transparent);
   pointer-events: none;
 }
 
@@ -1457,7 +1672,7 @@ html.reveal-ready [data-reveal].is-revealed {
   bottom: clamp(16px, 2.2vw, 30px);
   left: clamp(20px, 2.6vw, 34px);
   z-index: 1;
-  color: var(--ivory);
+  color: var(--paper);
   font-family: var(--serif);
   font-size: clamp(52px, 6.5vw, 88px);
   font-style: italic;
@@ -1490,7 +1705,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .principle-index {
   padding-top: 10px;
-  color: var(--gold);
+  color: var(--accent);
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -1508,7 +1723,7 @@ html.reveal-ready [data-reveal].is-revealed {
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.08;
-  color: rgba(23, 21, 18, 0.4);
+  color: rgba(22, 22, 20, 0.4);
   transition: color 0.45s ease;
 }
 
@@ -1574,7 +1789,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .service-strip {
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  background: var(--ivory);
+  background: var(--paper);
 }
 
 .service-strip-inner {
@@ -1605,7 +1820,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .service-card:hover {
-  background: var(--ivory-deep);
+  background: var(--paper-deep);
 }
 
 .service-card-copy {
@@ -1615,7 +1830,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .service-card-index {
   padding-top: 5px;
   display: block;
-  color: var(--gold);
+  color: var(--accent);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.15em;
@@ -1643,8 +1858,8 @@ html.reveal-ready [data-reveal].is-revealed {
   gap: 10px;
   margin-top: 12px;
   padding-bottom: 3px;
-  border-bottom: 1px solid rgba(23, 21, 18, 0.25);
-  color: var(--forest);
+  border-bottom: 1px solid rgba(22, 22, 20, 0.25);
+  color: var(--brand);
   font-size: 7px;
   font-weight: 600;
   letter-spacing: 0.16em;
@@ -1665,8 +1880,8 @@ html.reveal-ready [data-reveal].is-revealed {
   align-items: end;
   gap: clamp(32px, 5vw, 72px);
   padding: var(--home-section-space-tight) clamp(24px, 5vw, 78px);
-  background: var(--forest);
-  color: var(--ivory);
+  background: var(--brand);
+  color: var(--paper);
 }
 
 .trade-band h2 {
@@ -1682,7 +1897,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .trade-band > p {
   max-width: 420px;
   margin: 0;
-  color: rgba(245, 242, 233, 0.64);
+  color: rgba(245, 243, 239, 0.64);
   font-size: 13px;
   line-height: 1.7;
 }
@@ -1693,8 +1908,8 @@ html.reveal-ready [data-reveal].is-revealed {
   align-items: end;
   gap: clamp(45px, 7vw, 105px);
   padding: var(--home-section-space) clamp(24px, 6vw, 96px);
-  background: var(--forest-deep);
-  color: var(--ivory);
+  background: var(--brand-deep);
+  color: var(--paper);
 }
 
 .newsletter-section h2 {
@@ -1710,7 +1925,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .newsletter-section > div > p:last-child {
   max-width: 500px;
   margin: 19px 0 0;
-  color: rgba(245, 242, 233, 0.58);
+  color: rgba(245, 243, 239, 0.58);
   font-size: 13px;
   line-height: 1.7;
 }
@@ -1718,7 +1933,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .newsletter-section form > div {
   display: grid;
   grid-template-columns: 1fr auto;
-  border-bottom: 1px solid rgba(245, 242, 233, 0.42);
+  border-bottom: 1px solid rgba(245, 243, 239, 0.42);
 }
 
 .newsletter-section input {
@@ -1727,13 +1942,13 @@ html.reveal-ready [data-reveal].is-revealed {
   padding: 0 5px;
   border: 0;
   background: transparent;
-  color: var(--ivory);
+  color: var(--paper);
   font-size: 14px;
   outline: none;
 }
 
 .newsletter-section input::placeholder {
-  color: rgba(245, 242, 233, 0.42);
+  color: rgba(245, 243, 239, 0.42);
 }
 
 .newsletter-section form > div > button {
@@ -1743,7 +1958,7 @@ html.reveal-ready [data-reveal].is-revealed {
   padding: 0 5px 0 30px;
   border: 0;
   background: transparent;
-  color: var(--gold-bright);
+  color: var(--accent-bright);
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.17em;
@@ -1753,20 +1968,20 @@ html.reveal-ready [data-reveal].is-revealed {
 .newsletter-message {
   min-height: 18px;
   margin: 12px 0 0;
-  color: #e6b8a4;
+  color: #cfc9bd;
   font-size: 10px;
 }
 
 .newsletter-privacy {
   margin: 7px 0 0;
-  color: rgba(245, 242, 233, 0.36);
+  color: rgba(245, 243, 239, 0.36);
   font-size: 8px;
   line-height: 1.6;
 }
 
 .newsletter-privacy button {
   border: 0;
-  border-bottom: 1px solid rgba(245, 242, 233, 0.35);
+  border-bottom: 1px solid rgba(245, 243, 239, 0.35);
   background: transparent;
   color: inherit;
   font-size: inherit;
@@ -1775,7 +1990,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .newsletter-success {
   align-self: center;
   margin: 0;
-  color: var(--gold-bright);
+  color: var(--accent-bright);
   font-family: var(--serif);
   font-size: 32px;
 }
@@ -1822,7 +2037,7 @@ html.reveal-ready [data-reveal].is-revealed {
   left: 0;
   width: 53px;
   height: 1px;
-  background: var(--gold);
+  background: var(--accent);
   content: "";
 }
 
@@ -1861,7 +2076,7 @@ html.reveal-ready [data-reveal].is-revealed {
   padding: 0 17px;
   border: 1px solid var(--line);
   background: transparent;
-  color: rgba(23, 21, 18, 0.62);
+  color: rgba(22, 22, 20, 0.62);
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -1871,9 +2086,9 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .catalog-tabs button:hover,
 .catalog-tabs button.is-active {
-  border-color: var(--forest);
-  background: var(--forest);
-  color: var(--ivory);
+  border-color: var(--brand);
+  background: var(--brand);
+  color: var(--paper);
 }
 
 .catalog-toolbar {
@@ -1897,7 +2112,7 @@ html.reveal-ready [data-reveal].is-revealed {
   width: 18px;
   flex: 0 0 auto;
   fill: none;
-  stroke: var(--forest);
+  stroke: var(--brand);
   stroke-width: 1.35;
 }
 
@@ -1912,11 +2127,11 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .catalog-search input::placeholder {
-  color: rgba(23, 21, 18, 0.4);
+  color: rgba(22, 22, 20, 0.4);
 }
 
 .catalog-count {
-  color: rgba(23, 21, 18, 0.5);
+  color: rgba(22, 22, 20, 0.5);
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -1930,7 +2145,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .catalog-sort > span {
-  color: rgba(23, 21, 18, 0.46);
+  color: rgba(22, 22, 20, 0.46);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -2043,7 +2258,7 @@ html.reveal-ready [data-reveal].is-revealed {
   aspect-ratio: 3 / 2;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: var(--ivory-deep);
+  background: var(--paper-deep);
 }
 
 .catalog-lineup-media img {
@@ -2062,8 +2277,8 @@ html.reveal-ready [data-reveal].is-revealed {
   width: 34px;
   height: 34px;
   place-items: center;
-  background: rgba(245, 242, 233, 0.92);
-  color: var(--forest);
+  background: rgba(245, 243, 239, 0.92);
+  color: var(--brand);
   font-size: 7px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -2079,7 +2294,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .catalog-lineup-meta {
-  color: var(--gold);
+  color: var(--accent);
   font-size: 7px;
   font-weight: 700;
   letter-spacing: 0.15em;
@@ -2101,7 +2316,7 @@ html.reveal-ready [data-reveal].is-revealed {
   gap: 9px;
   margin-top: auto;
   padding-top: 22px;
-  color: var(--forest);
+  color: var(--brand);
   font-size: 7px;
   font-weight: 700;
   letter-spacing: 0.15em;
@@ -2122,7 +2337,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .catalog-lineup-card:focus-visible {
-  outline: 2px solid var(--forest);
+  outline: 2px solid var(--brand);
   outline-offset: 5px;
 }
 
@@ -2176,7 +2391,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .gallery-item img {
   width: 100%;
   height: auto;
-  background: var(--ivory-deep);
+  background: var(--paper-deep);
 }
 
 .gallery-item figcaption {
@@ -2185,7 +2400,7 @@ html.reveal-ready [data-reveal].is-revealed {
   justify-content: flex-end;
   gap: 20px;
   margin-top: 12px;
-  color: rgba(23, 21, 18, 0.52);
+  color: rgba(22, 22, 20, 0.52);
   font-size: 7px;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -2201,7 +2416,7 @@ html.reveal-ready [data-reveal].is-revealed {
   display: grid;
   place-items: center;
   padding: 24px;
-  background: rgba(9, 22, 17, 0.72);
+  background: rgba(12, 12, 11, 0.72);
   backdrop-filter: blur(10px);
   animation: backdrop-in 0.3s both ease;
 }
@@ -2213,8 +2428,8 @@ html.reveal-ready [data-reveal].is-revealed {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(380px, 0.72fr);
   overflow: hidden;
-  background: var(--ivory);
-  box-shadow: 0 35px 100px rgba(7, 19, 14, 0.28);
+  background: var(--paper);
+  box-shadow: 0 35px 100px rgba(10, 10, 9, 0.28);
   animation: modal-rise 0.5s both cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -2229,8 +2444,8 @@ html.reveal-ready [data-reveal].is-revealed {
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 50%;
-  background: rgba(245, 242, 233, 0.92);
-  color: var(--forest);
+  background: rgba(245, 243, 239, 0.92);
+  color: var(--brand);
   backdrop-filter: blur(10px);
 }
 
@@ -2253,7 +2468,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .product-detail-image {
   min-height: 700px;
   overflow: hidden;
-  background: #ece8df;
+  background: var(--paper-deep);
 }
 
 .product-detail-image img {
@@ -2278,7 +2493,7 @@ html.reveal-ready [data-reveal].is-revealed {
   margin-bottom: 65px;
   border: 0;
   background: transparent;
-  color: rgba(23, 21, 18, 0.54);
+  color: rgba(22, 22, 20, 0.54);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.13em;
@@ -2347,9 +2562,9 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .size-grid button:hover,
 .size-grid button.is-active {
-  border-color: var(--forest);
-  background: var(--forest);
-  color: var(--ivory);
+  border-color: var(--brand);
+  background: var(--brand);
+  color: var(--paper);
 }
 
 .add-to-bag,
@@ -2358,9 +2573,9 @@ html.reveal-ready [data-reveal].is-revealed {
   width: 100%;
   min-height: 58px;
   margin-top: 18px;
-  border: 1px solid var(--forest);
-  background: var(--forest);
-  color: var(--ivory);
+  border: 1px solid var(--brand);
+  background: var(--brand);
+  color: var(--paper);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.16em;
@@ -2371,15 +2586,15 @@ html.reveal-ready [data-reveal].is-revealed {
 .add-to-bag:hover,
 .checkout-button:hover,
 .trade-submit:hover {
-  border-color: var(--gold);
-  background: var(--gold);
+  border-color: var(--accent);
+  background: var(--accent);
 }
 
 .add-to-bag:disabled,
 .trade-submit:disabled {
-  border-color: rgba(23, 21, 18, 0.12);
-  background: rgba(23, 21, 18, 0.08);
-  color: rgba(23, 21, 18, 0.36);
+  border-color: rgba(22, 22, 20, 0.12);
+  background: rgba(22, 22, 20, 0.08);
+  color: rgba(22, 22, 20, 0.36);
   cursor: not-allowed;
 }
 
@@ -2405,7 +2620,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .detail-facts dt {
-  color: rgba(23, 21, 18, 0.45);
+  color: rgba(22, 22, 20, 0.45);
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -2429,7 +2644,7 @@ html.reveal-ready [data-reveal].is-revealed {
   inset: 0;
   width: 100%;
   border: 0;
-  background: rgba(9, 22, 17, 0.58);
+  background: rgba(12, 12, 11, 0.58);
   backdrop-filter: blur(5px);
   animation: backdrop-in 0.25s both ease;
 }
@@ -2442,8 +2657,8 @@ html.reveal-ready [data-reveal].is-revealed {
   width: min(500px, 100%);
   display: flex;
   flex-direction: column;
-  background: var(--ivory);
-  box-shadow: -30px 0 90px rgba(7, 19, 14, 0.22);
+  background: var(--paper);
+  box-shadow: -30px 0 90px rgba(10, 10, 9, 0.22);
   animation: drawer-in 0.45s both cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -2512,7 +2727,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .bag-item-image {
   height: 132px;
   overflow: hidden;
-  background: #ece8df;
+  background: var(--paper-deep);
 }
 
 .bag-item-image img {
@@ -2522,7 +2737,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .bag-item-copy > span {
-  color: var(--gold);
+  color: var(--accent);
   font-size: 7px;
   font-weight: 600;
   letter-spacing: 0.16em;
@@ -2569,7 +2784,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .bag-footer {
   padding: 26px 30px 30px;
   border-top: 1px solid var(--line);
-  background: var(--ivory-deep);
+  background: var(--paper-deep);
 }
 
 .bag-total {
@@ -2600,7 +2815,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .checkout-message {
   min-height: 13px;
-  color: var(--forest) !important;
+  color: var(--brand) !important;
   text-align: center;
 }
 
@@ -2612,7 +2827,7 @@ html.reveal-ready [data-reveal].is-revealed {
   max-height: 92vh;
   overflow-y: auto;
   padding: clamp(45px, 6vw, 78px);
-  background: var(--ivory);
+  background: var(--paper);
   animation: modal-rise 0.45s both cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -2678,7 +2893,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .trade-fields input:focus,
 .trade-fields textarea:focus {
-  border-color: var(--gold);
+  border-color: var(--accent);
 }
 
 .trade-field-wide {
@@ -2697,7 +2912,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .trade-consent input {
   margin-top: 2px;
-  accent-color: var(--forest);
+  accent-color: var(--brand);
 }
 
 .trade-consent button {
@@ -2743,7 +2958,7 @@ html.reveal-ready [data-reveal].is-revealed {
   inset: 0;
   overflow-y: auto;
   padding: 32px;
-  background: var(--ivory);
+  background: var(--paper);
   animation: backdrop-in 0.3s both ease;
 }
 
@@ -2757,7 +2972,7 @@ html.reveal-ready [data-reveal].is-revealed {
   gap: 10px;
   border: 0;
   background: transparent;
-  color: var(--forest);
+  color: var(--brand);
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.15em;
@@ -2811,8 +3026,8 @@ html.reveal-ready [data-reveal].is-revealed {
 .legal-note {
   margin: 35px 0 0;
   padding: 20px;
-  border: 1px solid rgba(166, 129, 63, 0.35);
-  color: #74613d;
+  border: 1px solid rgba(138, 133, 124, 0.35);
+  color: #6f6a61;
   font-size: 10px;
   line-height: 1.7;
 }
@@ -2822,7 +3037,7 @@ html.reveal-ready [data-reveal].is-revealed {
 .site-footer {
   padding: clamp(70px, 8vw, 110px) clamp(24px, 5vw, 78px) 28px;
   border-top: 1px solid var(--line);
-  background: var(--ivory);
+  background: var(--paper);
 }
 
 .footer-main {
@@ -2852,7 +3067,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .footer-column h3 {
   margin: 0 0 12px;
-  color: var(--gold);
+  color: var(--accent);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -2862,13 +3077,13 @@ html.reveal-ready [data-reveal].is-revealed {
 .footer-column button {
   border: 0;
   background: transparent;
-  color: rgba(23, 21, 18, 0.66);
+  color: rgba(22, 22, 20, 0.66);
   font-size: 11px;
   transition: color 0.2s ease;
 }
 
 .footer-column button:hover {
-  color: var(--gold);
+  color: var(--accent);
 }
 
 .footer-bottom {
@@ -2878,7 +3093,7 @@ html.reveal-ready [data-reveal].is-revealed {
   margin-top: 85px;
   padding-top: 24px;
   border-top: 1px solid var(--line);
-  color: rgba(23, 21, 18, 0.42);
+  color: rgba(22, 22, 20, 0.42);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -2896,8 +3111,8 @@ html.reveal-ready [data-reveal].is-revealed {
   align-items: center;
   gap: 10px;
   padding: 15px 20px;
-  background: var(--forest);
-  color: var(--ivory);
+  background: var(--brand);
+  color: var(--paper);
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -2914,7 +3129,7 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .shop-toast span {
-  color: var(--gold-bright);
+  color: var(--accent-bright);
 }
 
 /* Motion */
@@ -3056,7 +3271,7 @@ html.reveal-ready [data-reveal].is-revealed {
     flex-direction: column;
     justify-content: space-between;
     padding: 48px 23px 30px;
-    background: var(--ivory);
+    background: var(--paper);
     animation: backdrop-in 0.25s both ease;
   }
 
@@ -3439,8 +3654,8 @@ html.reveal-ready [data-reveal].is-revealed {
     left: auto;
     width: 100%;
     padding: 32px 25px 31px;
-    background: var(--forest);
-    color: var(--ivory);
+    background: var(--brand);
+    color: var(--paper);
   }
 
   .shoppable-look-copy h2 {
@@ -3451,13 +3666,13 @@ html.reveal-ready [data-reveal].is-revealed {
 
   .shoppable-look-copy > p:not(.eyebrow) {
     margin-top: 16px;
-    color: rgba(245, 242, 233, 0.7);
+    color: rgba(245, 243, 239, 0.7);
     font-size: 12px;
   }
 
   .shoppable-look-copy .eyebrow,
   .shoppable-look-hint {
-    color: rgba(245, 242, 233, 0.64);
+    color: rgba(245, 243, 239, 0.64);
   }
 
   .shoppable-look-hint {
@@ -3490,7 +3705,7 @@ html.reveal-ready [data-reveal].is-revealed {
   }
 
   .editorial-feature-overlay {
-    background: linear-gradient(0deg, rgba(18, 14, 9, 0.87), rgba(18, 14, 9, 0.04) 78%);
+    background: linear-gradient(0deg, rgba(22, 22, 20, 0.87), rgba(22, 22, 20, 0.04) 78%);
   }
 
   .editorial-feature-copy {
@@ -3585,7 +3800,7 @@ html.reveal-ready [data-reveal].is-revealed {
     height: 52px;
     justify-content: space-between;
     padding: 0 4px;
-    border-top: 1px solid rgba(245, 242, 233, 0.18);
+    border-top: 1px solid rgba(245, 243, 239, 0.18);
   }
 
   .catalog-intro {

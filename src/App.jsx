@@ -240,6 +240,18 @@ const GALLERY_IMAGES = [
 
 const FEATURED_IDS = [1, 5, 12, 7];
 
+// The spotlight leads into the product grid with a single shoe, scrubbed apart
+// layer by layer as you scroll. The frames are a rendered exploded view, not
+// catalogue photography — see SEQUENCE_DIR for the source set.
+const SPOTLIGHT_ID = 1;
+const SEQUENCE_DIR = "/shop/sequence/wai-home";
+const SEQUENCE_FRAMES = 69;
+const SEQUENCE_STILL = `${SEQUENCE_DIR}/still.jpg`;
+// Frames are 1100x618; the shoe never leaves x 190-1020 across the sequence,
+// so everything outside that is empty backdrop.
+const SOURCE_HEIGHT = 618;
+const SOURCE_CROP = { x: 190, width: 830 };
+
 // One image per principle, in the order of copy.standard.points.
 // montechiaro-detail carries baked-in campaign type along its bottom edge, so
 // it is anchored to the top and cropped by the stage's 4:5 frame.
@@ -265,6 +277,20 @@ const COPY = {
       label: "Das NES Prinzip",
       title: "Weniger suchen. Besser auswählen.",
       text: "NES bringt eigenständige Marken an einen Ort — kuratiert nach Komfort, Material und einer Form, die auch morgen noch richtig wirkt.",
+    },
+    spotlight: {
+      label: "Im Fokus",
+      title: "Vier Schichten. Ein Schritt.",
+      cta: "Produkt ansehen",
+      alt: "Explosionsdarstellung des WAI Home: Obermaterial, Innensohle, Fußbett und Laufsohle",
+      // TODO fachlich prüfen: Schichtbezeichnungen sind rein anatomisch benannt,
+      // die Zusätze stammen aus den Produktdaten. Keine Leistungsangaben.
+      steps: [
+        { index: "01", title: "Obermaterial", body: "IVIVI Barefoot Textile" },
+        { index: "02", title: "Innensohle", body: "Perforiert" },
+        { index: "03", title: "Fußbett", body: "Herausnehmbar" },
+        { index: "04", title: "Laufsohle", body: "Barefoot-Konstruktion" },
+      ],
     },
     featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", all: "Alle Produkte", filterAll: "Alle" },
     brands: { label: "Die Marken", title: "Ein Haus. Zwei Handschriften.", open: "Kollektion ansehen" },
@@ -344,6 +370,18 @@ const COPY = {
       campaign: "Vehon / WAI · Feel Shoes",
     },
     intro: { label: "The NES principle", title: "Search less. Choose better.", text: "NES brings distinct brands together in one place — curated for comfort, material and forms that will still feel right tomorrow." },
+    spotlight: {
+      label: "In focus",
+      title: "Four layers. One step.",
+      cta: "View product",
+      alt: "Exploded view of the WAI Home: upper, insole, footbed and outsole",
+      steps: [
+        { index: "01", title: "Upper", body: "IVIVI Barefoot Textile" },
+        { index: "02", title: "Insole", body: "Perforated" },
+        { index: "03", title: "Footbed", body: "Removable" },
+        { index: "04", title: "Outsole", body: "Barefoot construction" },
+      ],
+    },
     featured: { label: "New in the house", title: "Selected for now.", all: "View all products", filterAll: "All" },
     brands: { label: "The brands", title: "One house. Two signatures.", open: "View collection" },
     look: {
@@ -897,6 +935,148 @@ function Header({ route, copy, language, bagCount, scrolled, mobileOpen, onToggl
   );
 }
 
+/* The shoe holds still while the page scrolls past it and takes itself apart.
+   The frame index is driven imperatively onto the canvas rather than through
+   state — only the step (0-3) re-renders, and that happens four times. */
+function ProductConstruction({ copy, language, onOpen }) {
+  const product = PRODUCTS.find((item) => item.id === SPOTLIGHT_ID);
+  const trackRef = useRef(null);
+  const canvasRef = useRef(null);
+  const imagesRef = useRef([]);
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    const canvas = canvasRef.current;
+    if (!track || !canvas) return undefined;
+    // Below 900px and under reduced motion the section falls back to the still,
+    // so there is nothing to scrub and nothing to download.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+    if (window.matchMedia("(max-width: 900px)").matches) return undefined;
+
+    const context = canvas.getContext("2d");
+    let raf = 0;
+    let lastFrame = -1;
+
+    const draw = (index) => {
+      const images = imagesRef.current;
+      if (!images.length) return;
+      // Fall back to the nearest decoded frame so a fast scroll past a
+      // half-loaded sequence never leaves an empty canvas.
+      let candidate = index;
+      while (candidate >= 0 && !images[candidate]?.complete) candidate -= 1;
+      if (candidate < 0 || candidate === lastFrame) return;
+      lastFrame = candidate;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      // The renders leave a wide margin of empty sweep either side of the shoe.
+      // Cropping here rather than in the files keeps the assets untouched and
+      // lets the subject fill the stage.
+      context.drawImage(
+        images[candidate],
+        SOURCE_CROP.x, 0, SOURCE_CROP.width, SOURCE_HEIGHT,
+        0, 0, canvas.width, canvas.height,
+      );
+    };
+
+    const update = () => {
+      raf = 0;
+      const rect = track.getBoundingClientRect();
+      const travel = rect.height - window.innerHeight;
+      const progress = travel <= 0 ? 0 : Math.min(1, Math.max(0, -rect.top / travel));
+      draw(Math.round(progress * (SEQUENCE_FRAMES - 1)));
+      setStep(Math.min(3, Math.floor(progress * 4)));
+    };
+
+    // The section sits barely below the fold, so a generous rootMargin would
+    // mean "on page load". Keep it tight and mark the frames low priority so
+    // they queue behind the hero rather than competing with it.
+    const preload = () => {
+      if (imagesRef.current.length) return;
+      imagesRef.current = Array.from({ length: SEQUENCE_FRAMES }, (_, index) => {
+        const image = new Image();
+        image.decoding = "async";
+        image.fetchPriority = "low";
+        image.src = `${SEQUENCE_DIR}/frame-${String(index).padStart(3, "0")}.jpg`;
+        // Paint as soon as anything arrives, so a reader who has stopped
+        // moving still gets the shoe instead of bare ground.
+        image.onload = () => {
+          if (lastFrame < 0) update();
+        };
+        return image;
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => entries.some((entry) => entry.isIntersecting) && preload(),
+      { rootMargin: "150px 0px" },
+    );
+    observer.observe(track);
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+
+    return () => {
+      observer.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  if (!product) return null;
+
+  return (
+    <section
+      className="product-construction"
+      id="spotlight"
+      aria-labelledby="construction-title"
+      data-voice={product.brandId}
+      ref={trackRef}
+    >
+      <div className="product-construction-stage">
+        <div className="product-construction-media">
+          <canvas ref={canvasRef} width={SOURCE_CROP.width} height={SOURCE_HEIGHT} aria-hidden="true" />
+          <img
+            className="product-construction-still"
+            src={SEQUENCE_STILL}
+            alt={copy.spotlight.alt}
+            width="900"
+            height="506"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div className="product-construction-copy">
+          <p className="eyebrow eyebrow-quoted">{copy.spotlight.label}</p>
+          <h2 id="construction-title" className="display-italic">{copy.spotlight.title}</h2>
+          <p className="product-construction-name">{product.brand} · {product.name}</p>
+          <ol className="product-construction-steps">
+            {copy.spotlight.steps.map((item, index) => (
+              <li key={item.index} data-active={index === step ? "" : undefined}>
+                <span className="product-construction-figure" aria-hidden="true">{item.index}</span>
+                <span className="product-construction-index">{item.index}</span>
+                <strong>{item.title}</strong>
+                <span className="product-construction-body">{item.body}</span>
+              </li>
+            ))}
+          </ol>
+          <div className="product-construction-action">
+            <span className="product-construction-price">{formatPrice(product.price, language)}</span>
+            <button className="button button-forest" type="button" onClick={() => onOpen(product.id)}>
+              {copy.spotlight.cta}<ArrowIcon />
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ShoppableLook({ copy, language, onOpen }) {
   const hotspots = [
     { product: PRODUCTS.find((product) => product.id === 12), className: "shoppable-hotspot-pullover" },
@@ -977,6 +1157,8 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onServic
           <p>{copy.intro.text}</p>
         </div>
       </section>
+
+      <ProductConstruction copy={copy} language={language} onOpen={onOpen} />
 
       <section className="featured-section section-pad" id="featured" data-voice={featuredFilter}>
         <SectionHeading label={copy.featured.label} title={copy.featured.title} />

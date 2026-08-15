@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import "./shaders-hero-section.css";
 
 const NES_SHADER_COLORS = [
-  "#f5f2e9",
-  "#d8cfb9",
-  "#a6813f",
-  "#6f8579",
-  "#24473a",
-  "#f5f2e9",
+  "#f5f3ef",
+  "#d6d2c9",
+  "#8a857c",
+  "#6e6b64",
+  "#33332f",
+  "#f5f3ef",
 ];
 
 const WEBGL_OPTIONS = {
