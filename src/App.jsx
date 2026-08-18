@@ -238,7 +238,56 @@ const GALLERY_IMAGES = [
   { src: "/shop/gallery/wai-stone-lounge.webp", brand: "WAI" },
 ];
 
-const FEATURED_IDS = [1, 5, 12, 7];
+const FEATURED_IDS = [1, 12];
+
+// The homepage leads with product show-off photography and crossfades into
+// its connected model image on hover. Shop and detail views keep their
+// original product photography throughout.
+const FEATURED_MEDIA = {
+  1: {
+    image: "/shop/featured/wai-home-floating-sage-v5.webp",
+    hoverImage: "/shop/featured/wai-home-model-seated-denim-v6.webp",
+    fit: "cover",
+  },
+  12: {
+    image: "/shop/featured/pully-rosso-model-v4.webp",
+    hoverImage: "/shop/featured/pully-rosso-showoff-v4.webp",
+    fit: "cover",
+  },
+};
+
+const IMAGE_VARIANT_GROUPS = [
+  {
+    id: "wai-home",
+    title: "WAI Home",
+    variants: [
+      { label: "Original · Floating Front", src: "/wai_front.jpeg", fit: "contain" },
+      { label: "Original · Rückansicht", src: "/wai_behind.jpeg", fit: "contain" },
+      { label: "Editorial · V1", src: "/shop/featured/wai-home-editorial-v1.webp" },
+      { label: "Model · V2", src: "/shop/featured/wai-home-model-v2.webp" },
+      { label: "Model · V3", src: "/shop/featured/wai-home-model-v3.webp" },
+      { label: "Model · V4", src: "/shop/featured/wai-home-model-v4.webp" },
+      { label: "Model frontal · V5", src: "/shop/featured/wai-home-model-v5.webp" },
+      { label: "Show-off hell · V2", src: "/shop/featured/wai-home-showoff-v2.webp" },
+      { label: "Show-off dunkel · V4", src: "/shop/featured/wai-home-showoff-v4.webp" },
+      { label: "Floating Salbei · V5", src: "/shop/featured/wai-home-floating-sage-v5.webp", active: "main" },
+      { label: "Model sitzend Denim · V6", src: "/shop/featured/wai-home-model-seated-denim-v6.webp", active: "hover" },
+    ],
+  },
+  {
+    id: "pully-rosso",
+    title: "Pully Rosso",
+    variants: [
+      { label: "Original · Front", src: "/shop/pully-red-front.webp", fit: "contain" },
+      { label: "Original · Seite", src: "/shop/pully-red-side.webp", fit: "contain" },
+      { label: "Editorial · V1", src: "/shop/featured/pully-rosso-editorial-v1.webp" },
+      { label: "Model · V3", src: "/shop/featured/pully-rosso-model-v3.webp" },
+      { label: "Model · V4", src: "/shop/featured/pully-rosso-model-v4.webp", active: "main" },
+      { label: "Show-off hell · V2", src: "/shop/featured/pully-rosso-showoff-v2.webp" },
+      { label: "Show-off dunkel · V4", src: "/shop/featured/pully-rosso-showoff-v4.webp", active: "hover" },
+    ],
+  },
+];
 
 // The spotlight leads into the product grid with a single shoe, scrubbed apart
 // layer by layer as you scroll. The frames are a rendered exploded view, not
@@ -1125,12 +1174,6 @@ function ShoppableLook({ copy, language, onOpen }) {
 
 function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onService, onPrivacy }) {
   const featured = FEATURED_IDS.map((id) => PRODUCTS.find((product) => product.id === id)).filter(Boolean);
-  const [featuredFilter, setFeaturedFilter] = useState("all");
-  const featuredFilters = [
-    { id: "all", label: copy.featured.filterAll },
-    ...BRAND_WORLDS.filter((brand) => featured.some((product) => product.brandId === brand.id)).map((brand) => ({ id: brand.id, label: brand.name })),
-  ];
-  const visibleFeatured = featuredFilter === "all" ? featured : featured.filter((product) => product.brandId === featuredFilter);
   return (
     <main className="home-page">
       <section className="shop-hero" aria-labelledby="hero-title">
@@ -1160,14 +1203,15 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onServic
 
       <ProductConstruction copy={copy} language={language} onOpen={onOpen} />
 
-      <section className="featured-section section-pad" id="featured" data-voice={featuredFilter}>
+      <section className="featured-section section-pad" id="featured">
         <SectionHeading label={copy.featured.label} title={copy.featured.title} />
-        <FilterPills options={featuredFilters} active={featuredFilter} onChange={setFeaturedFilter} label={copy.featured.title} />
-        <div className="product-grid product-grid-featured">
-          {visibleFeatured.map((product, productIndex) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={onOpen} revealDelay={`${productIndex * 70}ms`} />)}
+        <div className={`product-grid product-grid-featured${featured.length === 2 ? " product-grid-featured-pair" : ""}`}>
+          {featured.map((product, productIndex) => <ProductCard key={product.id} product={product} media={FEATURED_MEDIA[product.id]} copy={copy} language={language} onOpen={onOpen} revealDelay={`${productIndex * 70}ms`} />)}
         </div>
         <SectionAction label={copy.featured.all} onAction={() => onShop("all")} />
       </section>
+
+      <ImageVariantReview language={language} />
 
       <section className="brand-section section-pad" id="brands">
         <div className="brand-section-heading" data-reveal>
@@ -1380,6 +1424,56 @@ function SectionAction({ label, onAction }) {
   return <div className="section-action" data-reveal><button className="underlined-link" type="button" onClick={onAction}>{label}<ArrowIcon /></button></div>;
 }
 
+function ImageVariantReview({ language }) {
+  const isGerman = language === "de";
+
+  return (
+    <section className="variant-review-section" id="image-variants" aria-labelledby="variant-review-title">
+      <div className="variant-review-inner">
+        <div className="variant-review-heading" data-reveal>
+          <p className="eyebrow eyebrow-quoted">{isGerman ? "Bildauswahl" : "Image selection"}</p>
+          <h2 id="variant-review-title" className="display-italic">{isGerman ? "Alle gespeicherten Varianten." : "Every saved variant."}</h2>
+          <p>{isGerman ? "Sag mir einfach Produkt und Nummer – zum Beispiel WAI 09 oder Pully 05." : "Just tell me the product and number — for example WAI 09 or Pully 05."}</p>
+        </div>
+
+        <div className="variant-review-groups">
+          {IMAGE_VARIANT_GROUPS.map((group) => (
+            <section className="variant-review-group" key={group.id} aria-labelledby={`${group.id}-variants-title`}>
+              <div className="variant-review-group-heading">
+                <h3 id={`${group.id}-variants-title`}>{group.title}</h3>
+                <span>{group.variants.length} {isGerman ? "Varianten" : "variants"}</span>
+              </div>
+              <div className="variant-review-grid">
+                {group.variants.map((variant, variantIndex) => {
+                  const code = `${group.id === "wai-home" ? "WAI" : "PULLY"} ${String(variantIndex + 1).padStart(2, "0")}`;
+                  const filename = variant.src.split("/").pop();
+                  const activeLabel = variant.active === "main"
+                    ? (isGerman ? "Aktuell · Hauptbild" : "Current · Main")
+                    : (isGerman ? "Aktuell · Hover" : "Current · Hover");
+
+                  return (
+                    <figure className="variant-review-card" key={variant.src} data-reveal style={{ "--reveal-delay": `${(variantIndex % 4) * 55}ms` }}>
+                      <div className={`variant-review-media${variant.fit === "contain" ? " is-contain" : ""}`}>
+                        <img src={variant.src} alt={`${group.title}: ${variant.label}`} loading="lazy" decoding="async" />
+                        {variant.active ? <span className="variant-review-active">{activeLabel}</span> : null}
+                      </div>
+                      <figcaption>
+                        <span>{code}</span>
+                        <strong>{variant.label}</strong>
+                        <small>{filename}</small>
+                      </figcaption>
+                    </figure>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FilterPills({ options, active, onChange, label }) {
   const listRef = useRef(null);
   const [indicator, setIndicator] = useState(null);
@@ -1425,13 +1519,17 @@ function FilterPills({ options, active, onChange, label }) {
   );
 }
 
-function ProductCard({ product, copy, language, onOpen, revealDelay }) {
+function ProductCard({ product, media, copy, language, onOpen, revealDelay }) {
+  const cardImage = media?.image ?? product.image;
+  const cardHoverImage = media?.hoverImage ?? product.hoverImage;
+  const cardFit = media?.fit ?? product.fit;
+
   return (
     <article className={`product-card product-card-${product.brandId}`} data-reveal style={revealDelay ? { "--reveal-delay": revealDelay } : undefined}>
-      <button className={`product-media product-fit-${product.fit}`} type="button" onClick={() => onOpen(product.id)} aria-label={`${product.name} ${copy.product.view}`}>
+      <button className={`product-media product-fit-${cardFit}`} type="button" onClick={() => onOpen(product.id)} aria-label={`${product.name} ${copy.product.view}`}>
         {product.tag && <span className="product-tag">{localize(product.tag, language)}</span>}
-        <img className="product-image product-image-main" src={product.image} alt={product.name} loading="lazy" decoding="async" />
-        <img className="product-image product-image-hover" src={product.hoverImage} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        <img className="product-image product-image-main" src={cardImage} alt={product.name} loading="lazy" decoding="async" />
+        <img className="product-image product-image-hover" src={cardHoverImage} alt="" aria-hidden="true" loading="lazy" decoding="async" />
         <span className="product-plus" aria-hidden="true">+</span>
       </button>
       <button className="product-copy" type="button" onClick={() => onOpen(product.id)}>
