@@ -1206,6 +1206,18 @@ function ShoppableLook({ copy, language, onOpen }) {
 
 function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onTrade, onService, onPrivacy }) {
   const [previewProduct, setPreviewProduct] = useState(null);
+  const featuredGroups = [
+    {
+      id: "knitwear",
+      title: language === "de" ? "Pullover" : "Knitwear",
+      products: featuredProducts.filter((product) => product.category === "knitwear"),
+    },
+    {
+      id: "shoes-accessories",
+      title: language === "de" ? "Schuhe & Accessoires" : "Shoes & accessories",
+      products: featuredProducts.filter((product) => product.category !== "knitwear"),
+    },
+  ];
   return (
     <main className="home-page">
       <section className="shop-hero" aria-labelledby="hero-title">
@@ -1241,18 +1253,26 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onTra
             <p className="eyebrow">{copy.featured.label}</p>
             <h2 id="featured-title">{copy.featured.title}</h2>
           </div>
-          <div className="featured-grid" aria-labelledby="featured-title">
-            {featuredProducts.map((product) => (
-              <FeaturedProductCard
-                key={product.id}
-                product={product}
-                language={language}
-                onOpen={onOpen}
-                onPreview={setPreviewProduct}
-                onQuickAdd={onQuickAdd}
-              />
-            ))}
-          </div>
+          {featuredGroups.map((group) => (
+            <div className="featured-group" key={group.id}>
+              <div className="featured-group-heading">
+                <h3 id={`featured-${group.id}-title`}>{group.title}</h3>
+                <span aria-hidden="true">{String(group.products.length).padStart(2, "0")}</span>
+              </div>
+              <div className={`featured-grid featured-grid-${group.id}`} aria-labelledby={`featured-${group.id}-title`}>
+                {group.products.map((product) => (
+                  <FeaturedProductCard
+                    key={product.id}
+                    product={product}
+                    language={language}
+                    onOpen={onOpen}
+                    onPreview={setPreviewProduct}
+                    onQuickAdd={onQuickAdd}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
           <SectionAction label={copy.featured.all} onAction={() => onShop("all")} />
         </div>
       </section>
