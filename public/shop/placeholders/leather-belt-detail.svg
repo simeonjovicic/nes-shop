@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img" aria-label="Neutraler Detailplatzhalter für Ledergürtel">
+  <rect width="800" height="1000" fill="#dad6ce"/>
+  <g transform="rotate(-24 400 500)">
+    <rect x="-100" y="420" width="1000" height="160" rx="28" fill="#1f1f1d"/>
+    <path d="M0 438h800M0 562h800" stroke="#3a3a36" stroke-width="5"/>
+    <rect x="314" y="374" width="200" height="252" rx="28" fill="none" stroke="#8a857c" stroke-width="28"/>
+    <path d="M407 500h149" stroke="#8a857c" stroke-width="20" stroke-linecap="round"/>
+  </g>
+</svg>

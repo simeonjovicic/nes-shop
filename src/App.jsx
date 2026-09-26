@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ShaderBackground } from "./components/ui/shaders-hero-section";
+import { featuredProducts } from "./featuredProducts";
 import "./App.css";
 
 const PRODUCTS = [
@@ -16,7 +17,7 @@ const PRODUCTS = [
     image: "/wai_front.jpeg",
     hoverImage: "/wai_behind.jpeg",
     tag: { de: "Signature", en: "Signature" },
-    fit: "cover",
+    fit: "contain",
     sizes: ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45"],
     description: {
       de: "Ein leichter Feel Shoe für Zuhause, das Studio und alle Momente dazwischen. Flexibel, atmungsaktiv und bewusst reduziert konstruiert.",
@@ -80,26 +81,6 @@ const PRODUCTS = [
     description: {
       de: "Ein entspannter Slip-on für ruhige Innenräume, kurze Wege und Tage, an denen Komfort selbstverständlich sein soll.",
       en: "A relaxed slip-on for calm interiors, short walks and days when comfort should feel effortless.",
-    },
-  },
-  {
-    id: 5,
-    brand: "Vehon",
-    brandId: "vehon",
-    name: "Duke Cervo",
-    subtitle: { de: "Mocassino", en: "Moccasin" },
-    price: 289,
-    color: { de: "Nero", en: "Nero" },
-    material: "Cervo Leather",
-    category: { de: "Mocassini", en: "Moccasins" },
-    image: "/shop/products/vehon-duke-cervo-front.webp",
-    hoverImage: "/shop/products/vehon-duke-cervo-side.webp",
-    tag: { de: "Handgemacht", en: "Handmade" },
-    fit: "cover",
-    sizes: ["39", "40", "41", "42", "43", "44", "45", "46"],
-    description: {
-      de: "Der Duke aus genarbtem Cervo-Leder wird von Hand in Italien gefertigt. Ein Mocassino, der vom Wohnraum aufs Boot und durch den ganzen Tag trägt.",
-      en: "The Duke in grained Cervo leather is handmade in Italy. A moccasin designed to move from home to deck and through the entire day.",
     },
   },
   {
@@ -180,6 +161,106 @@ const PRODUCTS = [
       en: "Heavy jacquard knit with sculptural texture, a straight fit and ribbed trims. An Italian statement piece with composure.",
     },
   },
+  {
+    id: 13,
+    brand: "Montechiaro",
+    brandId: "montechiaro",
+    name: "Pully Orange",
+    subtitle: { de: "Signature Knit Pullover", en: "Signature knit pullover" },
+    price: 219,
+    color: { de: "Orange", en: "Orange" },
+    material: "Jacquard Knit",
+    category: { de: "Strick", en: "Knitwear" },
+    image: "/shop/products/pully-orange/front.png",
+    hoverImage: "/shop/products/pully-orange/side.png",
+    gallery: [
+      { src: "/shop/products/pully-orange/front.png", fit: "contain" },
+      { src: "/shop/products/pully-orange/side.png", fit: "contain" },
+      { src: "/shop/products/pully-orange/model.jpg", fit: "cover" },
+      { src: "/shop/products/pully-orange/texture.jpg", fit: "cover" },
+    ],
+    tag: { de: "Neu", en: "New" },
+    fit: "contain",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    description: {
+      de: "Strukturierter Jacquard-Strick mit markanten Farb- und Musterbahnen, geradem Schnitt und gerippten Bündchen.",
+      en: "Textured jacquard knit with vivid colour and pattern panels, a straight fit and ribbed trims.",
+    },
+  },
+  {
+    id: 14,
+    brand: "Montechiaro",
+    brandId: "montechiaro",
+    name: "Pully Dark",
+    subtitle: { de: "Signature Knit Pullover", en: "Signature knit pullover" },
+    price: 219,
+    color: { de: "Dark Multicolor", en: "Dark multicolour" },
+    material: "Jacquard Knit",
+    category: { de: "Strick", en: "Knitwear" },
+    image: "/shop/products/pully-dark/front.png",
+    hoverImage: "/shop/products/pully-dark/side.png",
+    gallery: [
+      { src: "/shop/products/pully-dark/front.png", fit: "contain" },
+      { src: "/shop/products/pully-dark/side.png", fit: "contain" },
+      { src: "/shop/products/pully-dark/detail.jpg", fit: "cover" },
+    ],
+    tag: { de: "Neu", en: "New" },
+    fit: "contain",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    description: {
+      de: "Dunkler Jacquard-Strick mit ausdrucksstarken Farb- und Musterbahnen, geradem Schnitt und gerippten Bündchen.",
+      en: "Dark jacquard knit with vivid colour and pattern panels, a straight fit and ribbed trims.",
+    },
+  },
+  {
+    id: 15,
+    brand: "Montechiaro",
+    brandId: "montechiaro",
+    name: "Pully Blue",
+    subtitle: { de: "Signature Knit Pullover", en: "Signature knit pullover" },
+    price: 219,
+    color: { de: "Blue", en: "Blue" },
+    material: "Jacquard Knit",
+    category: { de: "Strick", en: "Knitwear" },
+    image: "/shop/products/pully-blue/front.png",
+    hoverImage: "/shop/products/pully-blue/side.png",
+    gallery: [
+      { src: "/shop/products/pully-blue/front.png", fit: "contain" },
+      { src: "/shop/products/pully-blue/side.png", fit: "contain" },
+      { src: "/shop/products/pully-blue/detail.jpg", fit: "cover" },
+    ],
+    tag: { de: "Neu", en: "New" },
+    fit: "contain",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    description: {
+      de: "Jacquard-Strick in verschiedenen Blautönen mit reliefartigem Muster, geradem Schnitt und gerippten Bündchen.",
+      en: "Jacquard knit in layered blue tones with a raised pattern, straight fit and ribbed trims.",
+    },
+  },
+  {
+    id: 16,
+    brand: "Montechiaro",
+    brandId: "montechiaro",
+    name: "Pully Dark Blue",
+    subtitle: { de: "Signature Knit Pullover", en: "Signature knit pullover" },
+    price: 219,
+    color: { de: "Dark Blue", en: "Dark blue" },
+    material: "Jacquard Knit",
+    category: { de: "Strick", en: "Knitwear" },
+    image: "/shop/products/pully-dark-blue/front.png",
+    hoverImage: "/shop/products/pully-dark-blue/side.png",
+    gallery: [
+      { src: "/shop/products/pully-dark-blue/front.png", fit: "contain" },
+      { src: "/shop/products/pully-dark-blue/side.png", fit: "contain" },
+    ],
+    tag: { de: "Neu", en: "New" },
+    fit: "contain",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    description: {
+      de: "Dunkelblauer Jacquard-Strick mit kontrastierenden Musterbahnen, geradem Schnitt und gerippten Bündchen.",
+      en: "Dark blue jacquard knit with contrasting pattern panels, a straight fit and ribbed trims.",
+    },
+  },
 ];
 
 const BRAND_WORLDS = [
@@ -236,57 +317,6 @@ const GALLERY_IMAGES = [
   { src: "/shop/gallery/wai-curtain.webp", brand: "WAI" },
   { src: "/shop/gallery/wai-warm-sand.webp", brand: "WAI" },
   { src: "/shop/gallery/wai-stone-lounge.webp", brand: "WAI" },
-];
-
-const FEATURED_IDS = [1, 12];
-
-// The homepage leads with product show-off photography and crossfades into
-// its connected model image on hover. Shop and detail views keep their
-// original product photography throughout.
-const FEATURED_MEDIA = {
-  1: {
-    image: "/shop/featured/wai-home-floating-sage-v5.webp",
-    hoverImage: "/shop/featured/wai-home-model-seated-denim-v6.webp",
-    fit: "cover",
-  },
-  12: {
-    image: "/shop/featured/pully-rosso-model-v4.webp",
-    hoverImage: "/shop/featured/pully-rosso-showoff-v4.webp",
-    fit: "cover",
-  },
-};
-
-const IMAGE_VARIANT_GROUPS = [
-  {
-    id: "wai-home",
-    title: "WAI Home",
-    variants: [
-      { label: "Original · Floating Front", src: "/wai_front.jpeg", fit: "contain" },
-      { label: "Original · Rückansicht", src: "/wai_behind.jpeg", fit: "contain" },
-      { label: "Editorial · V1", src: "/shop/featured/wai-home-editorial-v1.webp" },
-      { label: "Model · V2", src: "/shop/featured/wai-home-model-v2.webp" },
-      { label: "Model · V3", src: "/shop/featured/wai-home-model-v3.webp" },
-      { label: "Model · V4", src: "/shop/featured/wai-home-model-v4.webp" },
-      { label: "Model frontal · V5", src: "/shop/featured/wai-home-model-v5.webp" },
-      { label: "Show-off hell · V2", src: "/shop/featured/wai-home-showoff-v2.webp" },
-      { label: "Show-off dunkel · V4", src: "/shop/featured/wai-home-showoff-v4.webp" },
-      { label: "Floating Salbei · V5", src: "/shop/featured/wai-home-floating-sage-v5.webp", active: "main" },
-      { label: "Model sitzend Denim · V6", src: "/shop/featured/wai-home-model-seated-denim-v6.webp", active: "hover" },
-    ],
-  },
-  {
-    id: "pully-rosso",
-    title: "Pully Rosso",
-    variants: [
-      { label: "Original · Front", src: "/shop/pully-red-front.webp", fit: "contain" },
-      { label: "Original · Seite", src: "/shop/pully-red-side.webp", fit: "contain" },
-      { label: "Editorial · V1", src: "/shop/featured/pully-rosso-editorial-v1.webp" },
-      { label: "Model · V3", src: "/shop/featured/pully-rosso-model-v3.webp" },
-      { label: "Model · V4", src: "/shop/featured/pully-rosso-model-v4.webp", active: "main" },
-      { label: "Show-off hell · V2", src: "/shop/featured/pully-rosso-showoff-v2.webp" },
-      { label: "Show-off dunkel · V4", src: "/shop/featured/pully-rosso-showoff-v4.webp", active: "hover" },
-    ],
-  },
 ];
 
 // The spotlight leads into the product grid with a single shoe, scrubbed apart
@@ -838,6 +868,7 @@ export default function App() {
           onShop={navigateShop}
           onGallery={navigateGallery}
           onOpen={openProduct}
+          onQuickAdd={addToBag}
           onTrade={() => setTradeOpen(true)}
           onService={setServiceOpen}
           onPrivacy={() => setLegalOpen("privacy")}
@@ -1025,6 +1056,7 @@ function ProductConstruction({ copy, language, onOpen }) {
         SOURCE_CROP.x, 0, SOURCE_CROP.width, SOURCE_HEIGHT,
         0, 0, canvas.width, canvas.height,
       );
+      canvas.classList.add("is-ready");
     };
 
     const update = () => {
@@ -1096,7 +1128,7 @@ function ProductConstruction({ copy, language, onOpen }) {
             alt={copy.spotlight.alt}
             width="900"
             height="506"
-            loading="lazy"
+            loading="eager"
             decoding="async"
           />
         </div>
@@ -1172,8 +1204,8 @@ function ShoppableLook({ copy, language, onOpen }) {
   );
 }
 
-function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onService, onPrivacy }) {
-  const featured = FEATURED_IDS.map((id) => PRODUCTS.find((product) => product.id === id)).filter(Boolean);
+function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onTrade, onService, onPrivacy }) {
+  const [previewProduct, setPreviewProduct] = useState(null);
   return (
     <main className="home-page">
       <section className="shop-hero" aria-labelledby="hero-title">
@@ -1188,7 +1220,7 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onServic
             </div>
           </div>
           <div className="shop-hero-signature"><span>NES / 01</span><p>{copy.hero.campaign}</p></div>
-          <a className="hero-scroll" href="#featured" aria-label={copy.featured.title}><span />Scroll</a>
+          <a className="hero-scroll" href="#spotlight" aria-label={copy.spotlight.title}><span />Scroll</a>
         </ShaderBackground>
       </section>
 
@@ -1204,14 +1236,28 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onTrade, onServic
       <ProductConstruction copy={copy} language={language} onOpen={onOpen} />
 
       <section className="featured-section section-pad" id="featured">
-        <SectionHeading label={copy.featured.label} title={copy.featured.title} />
-        <div className={`product-grid product-grid-featured${featured.length === 2 ? " product-grid-featured-pair" : ""}`}>
-          {featured.map((product, productIndex) => <ProductCard key={product.id} product={product} media={FEATURED_MEDIA[product.id]} copy={copy} language={language} onOpen={onOpen} revealDelay={`${productIndex * 70}ms`} />)}
+        <div className="featured-inner">
+          <div className="featured-heading" data-reveal>
+            <p className="eyebrow">{copy.featured.label}</p>
+            <h2 id="featured-title">{copy.featured.title}</h2>
+          </div>
+          <div className="featured-grid" aria-labelledby="featured-title">
+            {featuredProducts.map((product) => (
+              <FeaturedProductCard
+                key={product.id}
+                product={product}
+                language={language}
+                onOpen={onOpen}
+                onPreview={setPreviewProduct}
+                onQuickAdd={onQuickAdd}
+              />
+            ))}
+          </div>
+          <SectionAction label={copy.featured.all} onAction={() => onShop("all")} />
         </div>
-        <SectionAction label={copy.featured.all} onAction={() => onShop("all")} />
       </section>
 
-      <ImageVariantReview language={language} />
+      {previewProduct && <FeaturedPlaceholderPreview product={previewProduct} language={language} onClose={() => setPreviewProduct(null)} />}
 
       <section className="brand-section section-pad" id="brands">
         <div className="brand-section-heading" data-reveal>
@@ -1424,56 +1470,6 @@ function SectionAction({ label, onAction }) {
   return <div className="section-action" data-reveal><button className="underlined-link" type="button" onClick={onAction}>{label}<ArrowIcon /></button></div>;
 }
 
-function ImageVariantReview({ language }) {
-  const isGerman = language === "de";
-
-  return (
-    <section className="variant-review-section" id="image-variants" aria-labelledby="variant-review-title">
-      <div className="variant-review-inner">
-        <div className="variant-review-heading" data-reveal>
-          <p className="eyebrow eyebrow-quoted">{isGerman ? "Bildauswahl" : "Image selection"}</p>
-          <h2 id="variant-review-title" className="display-italic">{isGerman ? "Alle gespeicherten Varianten." : "Every saved variant."}</h2>
-          <p>{isGerman ? "Sag mir einfach Produkt und Nummer – zum Beispiel WAI 09 oder Pully 05." : "Just tell me the product and number — for example WAI 09 or Pully 05."}</p>
-        </div>
-
-        <div className="variant-review-groups">
-          {IMAGE_VARIANT_GROUPS.map((group) => (
-            <section className="variant-review-group" key={group.id} aria-labelledby={`${group.id}-variants-title`}>
-              <div className="variant-review-group-heading">
-                <h3 id={`${group.id}-variants-title`}>{group.title}</h3>
-                <span>{group.variants.length} {isGerman ? "Varianten" : "variants"}</span>
-              </div>
-              <div className="variant-review-grid">
-                {group.variants.map((variant, variantIndex) => {
-                  const code = `${group.id === "wai-home" ? "WAI" : "PULLY"} ${String(variantIndex + 1).padStart(2, "0")}`;
-                  const filename = variant.src.split("/").pop();
-                  const activeLabel = variant.active === "main"
-                    ? (isGerman ? "Aktuell · Hauptbild" : "Current · Main")
-                    : (isGerman ? "Aktuell · Hover" : "Current · Hover");
-
-                  return (
-                    <figure className="variant-review-card" key={variant.src} data-reveal style={{ "--reveal-delay": `${(variantIndex % 4) * 55}ms` }}>
-                      <div className={`variant-review-media${variant.fit === "contain" ? " is-contain" : ""}`}>
-                        <img src={variant.src} alt={`${group.title}: ${variant.label}`} loading="lazy" decoding="async" />
-                        {variant.active ? <span className="variant-review-active">{activeLabel}</span> : null}
-                      </div>
-                      <figcaption>
-                        <span>{code}</span>
-                        <strong>{variant.label}</strong>
-                        <small>{filename}</small>
-                      </figcaption>
-                    </figure>
-                  );
-                })}
-              </div>
-            </section>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function FilterPills({ options, active, onChange, label }) {
   const listRef = useRef(null);
   const [indicator, setIndicator] = useState(null);
@@ -1519,6 +1515,177 @@ function FilterPills({ options, active, onChange, label }) {
   );
 }
 
+function FeaturedProductCard({ product, language, onOpen, onPreview, onQuickAdd }) {
+  const [colorIndex, setColorIndex] = useState(0);
+  const [mainLoaded, setMainLoaded] = useState(false);
+  const [hoverLoaded, setHoverLoaded] = useState(false);
+  const [favorite, setFavorite] = useState(false);
+  const [mobileSizesOpen, setMobileSizesOpen] = useState(false);
+  const [notice, setNotice] = useState("");
+  const isGerman = language === "de";
+  const color = product.colors[colorIndex];
+  const mainImage = color.image === product.images[0].src
+    ? product.images[0]
+    : { src: color.image, width: color.width, height: color.height };
+  const secondImage = color.hoverImage
+    ? { src: color.hoverImage, width: color.hoverWidth, height: color.hoverHeight }
+    : product.images[1];
+
+  useEffect(() => {
+    if (!notice) return undefined;
+    const timeout = window.setTimeout(() => setNotice(""), 2800);
+    return () => window.clearTimeout(timeout);
+  }, [notice]);
+
+  const openProduct = (event) => {
+    event.preventDefault();
+    if (product.sourceProductId) onOpen(product.sourceProductId);
+    else onPreview(product);
+  };
+
+  const quickAdd = (event, size) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setMobileSizesOpen(false);
+    if (product.sourceProductId) onQuickAdd(product.sourceProductId, size.label);
+    else setNotice(isGerman ? "Platzhalter – noch nicht bestellbar" : "Preview item – not yet available");
+  };
+
+  return (
+    <article className="featured-card" data-category={product.category} onKeyDown={(event) => event.key === "Escape" && setMobileSizesOpen(false)}>
+      <div className={`featured-card-media${mainLoaded ? " is-loaded" : ""}${hoverLoaded ? " is-hover-loaded" : ""}`}>
+        <span className="featured-card-skeleton" aria-hidden="true" />
+        <img
+          className="featured-card-image featured-card-image-main"
+          key={mainImage.src}
+          src={mainImage.src}
+          width={mainImage.width}
+          height={mainImage.height}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setMainLoaded(true)}
+          onError={() => setMainLoaded(true)}
+        />
+        <img
+          className="featured-card-image featured-card-image-hover"
+          key={secondImage.src}
+          src={secondImage.src}
+          width={secondImage.width}
+          height={secondImage.height}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setHoverLoaded(true)}
+          onError={() => setHoverLoaded(false)}
+        />
+        {product.badge && <span className="featured-card-badge">{product.badge}</span>}
+        <button
+          className={`featured-card-wishlist${favorite ? " is-active" : ""}`}
+          type="button"
+          aria-label={favorite
+            ? (isGerman ? `${product.name} von der Merkliste entfernen` : `Remove ${product.name} from wishlist`)
+            : (isGerman ? `${product.name} zur Merkliste hinzufügen` : `Add ${product.name} to wishlist`)}
+          aria-pressed={favorite}
+          onClick={(event) => { event.preventDefault(); event.stopPropagation(); setFavorite((value) => !value); }}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3 4.1 12.9a5.1 5.1 0 0 1 7.2-7.2l.7.7.7-.7a5.1 5.1 0 0 1 7.2 7.2Z" /></svg>
+        </button>
+        <div className={`featured-card-quick-add${mobileSizesOpen ? " is-open" : ""}`}>
+          <span>{isGerman ? "Größe wählen" : "Select size"}</span>
+          <div className="featured-card-sizes">
+            {product.sizes.map((size) => (
+              <button
+                key={size.label}
+                type="button"
+                disabled={!size.available}
+                aria-label={`${product.name}, ${isGerman ? "Größe" : "size"} ${size.label}${size.available ? "" : (isGerman ? ", ausverkauft" : ", sold out")}`}
+                onClick={(event) => quickAdd(event, size)}
+              >{size.label}</button>
+            ))}
+          </div>
+        </div>
+        <button
+          className="featured-card-mobile-add"
+          type="button"
+          aria-label={`${product.name}: ${isGerman ? "Größe wählen" : "select size"}`}
+          aria-expanded={mobileSizesOpen}
+          onClick={(event) => { event.preventDefault(); event.stopPropagation(); setMobileSizesOpen((value) => !value); }}
+        >{mobileSizesOpen ? "×" : "+"}</button>
+      </div>
+      <div className="featured-card-info">
+        <a className="featured-card-link" href={`/shop?product=${product.slug}`} onClick={openProduct} aria-label={`${product.brand} ${product.name}, ${formatPrice(product.price, language)}`}>
+          <span className="featured-card-brand">{product.brand}</span>
+          <span className="featured-card-title-row">
+            <strong>{product.name}</strong>
+            <span className="featured-card-prices">
+              {product.compareAtPrice && <s>{formatPrice(product.compareAtPrice, language)}</s>}
+              <span className={product.compareAtPrice ? "is-sale" : ""}>{formatPrice(product.price, language)}</span>
+            </span>
+          </span>
+          <span className="featured-card-subtitle">{product.subtitle}</span>
+        </a>
+        <div className="featured-card-swatches" role="group" aria-label={`${product.name}: ${isGerman ? "Farben" : "colours"}`}>
+          {product.colors.map((variant, index) => (
+            <button
+              key={variant.name}
+              className={index === colorIndex ? "is-active" : ""}
+              type="button"
+              style={{ "--swatch-color": variant.hex }}
+              aria-label={`${variant.name} ${isGerman ? "anzeigen" : "show"}`}
+              aria-pressed={index === colorIndex}
+              title={variant.name}
+              onClick={(event) => { event.preventDefault(); event.stopPropagation(); if (index !== colorIndex) { setMainLoaded(false); setHoverLoaded(false); setColorIndex(index); } }}
+            ><span /></button>
+          ))}
+          <span className="featured-card-color-name">{color.name}</span>
+        </div>
+        <span className="featured-card-notice" role="status">{notice}</span>
+      </div>
+    </article>
+  );
+}
+
+function FeaturedPlaceholderPreview({ product, language, onClose }) {
+  const closeRef = useRef(null);
+  const dialogRef = useRef(null);
+  useEffect(() => {
+    const previousFocus = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") onClose();
+      if (event.key === "Tab") {
+        event.preventDefault();
+        closeRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus?.();
+    };
+  }, [onClose]);
+
+  return (
+    <div className="modal-backdrop featured-preview-backdrop" role="presentation" onMouseDown={onClose}>
+      <div ref={dialogRef} className="featured-preview" role="dialog" aria-modal="true" aria-labelledby="featured-preview-title" onMouseDown={(event) => event.stopPropagation()}>
+        <button ref={closeRef} className="overlay-close" type="button" onClick={onClose} aria-label={language === "de" ? "Schließen" : "Close"}><CloseIcon /></button>
+        <div className="featured-preview-image"><img src={product.images[0].src} width={product.images[0].width} height={product.images[0].height} alt={product.name} /></div>
+        <div className="featured-preview-copy">
+          <p className="eyebrow">{product.brand}</p>
+          <h2 id="featured-preview-title">{product.name}</h2>
+          <p>{product.subtitle}</p>
+          <strong>{formatPrice(product.price, language)}</strong>
+          <p>{language === "de" ? "Platzhalterprodukt · Details und Verfügbarkeit folgen." : "Preview product · Details and availability to follow."}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ProductCard({ product, media, copy, language, onOpen, revealDelay }) {
   const cardImage = media?.image ?? product.image;
   const cardHoverImage = media?.hoverImage ?? product.hoverImage;
@@ -1542,13 +1709,21 @@ function ProductCard({ product, media, copy, language, onOpen, revealDelay }) {
 }
 
 function ProductDetail({ product, copy, language, selectedSize, onSelectSize, onClose, onAdvice, onAdd }) {
+  const images = product.gallery ?? [
+    { src: product.image, fit: product.fit },
+    { src: product.hoverImage, fit: product.fit },
+  ];
+
   return (
     <div className="modal-backdrop product-backdrop" role="presentation" onMouseDown={onClose}>
       <div className="product-detail" role="dialog" aria-modal="true" aria-labelledby="product-detail-title" onMouseDown={(event) => event.stopPropagation()}>
         <button className="overlay-close" type="button" onClick={onClose} aria-label={copy.nav.close}><CloseIcon /></button>
-        <div className={`product-detail-gallery product-card-${product.brandId}`}>
-          <div className={`product-detail-image product-fit-${product.fit}`}><img src={product.image} alt={product.name} /></div>
-          <div className={`product-detail-image product-fit-${product.fit}`}><img src={product.hoverImage} alt={`${product.name}, second view`} /></div>
+        <div className={`product-detail-gallery product-card-${product.brandId}${images.length > 2 ? " has-extra-images" : ""}`}>
+          {images.map((image, index) => (
+            <div className={`product-detail-image product-fit-${image.fit}`} key={image.src}>
+              <img src={image.src} alt={`${product.name}, ${index + 1}`} loading={index > 1 ? "lazy" : "eager"} />
+            </div>
+          ))}
         </div>
         <div className="product-detail-copy">
           <button className="detail-back" type="button" onClick={onClose}><span aria-hidden="true">←</span>{copy.product.back}</button>

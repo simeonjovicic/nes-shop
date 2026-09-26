@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img" aria-label="Neutraler Platzhalter für Ledergürtel">
+  <rect width="800" height="1000" fill="#dad6ce"/>
+  <ellipse cx="399" cy="740" rx="254" ry="28" fill="#dad6ce"/>
+  <path d="M154 572c0-137 109-244 246-244s246 107 246 244c0 113-85 201-198 201-95 0-168-68-168-158 0-71 54-124 122-124 54 0 94 39 94 88 0 34-26 59-59 59" fill="none" stroke="#1f1f1d" stroke-width="70" stroke-linecap="round"/>
+  <path d="M154 572c0-137 109-244 246-244s246 107 246 244" fill="none" stroke="#3a3a36" stroke-width="4"/>
+  <rect x="388" y="562" width="120" height="98" rx="12" fill="none" stroke="#8a857c" stroke-width="22" transform="rotate(-18 448 611)"/>
+  <path d="M414 615l66-20" stroke="#8a857c" stroke-width="14" stroke-linecap="round"/>
+</svg>
