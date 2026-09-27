@@ -6,6 +6,7 @@ import { MAX_QUANTITY, getProductSlug, normalizeBag, normalizeWishlist, readStor
 import { useDialogFocus } from "./useDialogFocus";
 import "./App.css";
 import "./shop-polish.css";
+import "./product-page.css";
 
 const BRAND_WORLDS = [
   {
@@ -115,8 +116,8 @@ const COPY = {
         { index: "04", title: "Laufsohle", body: "Barefoot-Konstruktion" },
       ],
     },
-    featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", all: "Alle Produkte", filterAll: "Alle" },
-    brands: { label: "Die Marken", title: "Ein Haus. Zwei Handschriften.", open: "Kollektion ansehen" },
+    featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", intro: "Strick mit Charakter. Schuhe für jeden Tag.", all: "Alle Produkte", filterAll: "Alle" },
+    brands: { label: "Die Marken", title: "Entdecke unsere Marken.", open: "Kollektion ansehen" },
     look: {
       label: "NES / Shop the look",
       title: "Ein Look. Zwei Handschriften.",
@@ -167,6 +168,7 @@ const COPY = {
       },
     },
     product: { view: "ansehen", chooseSize: "Größe wählen", guide: "Größenberatung", add: "In den Warenkorb", chooseFirst: "Bitte Größe wählen", back: "Zurück zur Kollektion", material: "Material", color: "Farbe", delivery: "Versand", deliveryValue: "Auf Anfrage", returns: "Rückgabe", returnsValue: "14 Tage", added: "Zum Warenkorb hinzugefügt" },
+    productPage: { home: "Startseite", collection: "Kollektion", previous: "Vorheriges Bild", next: "Nächstes Bild", view: "Ansicht", images: "Weitere Ansichten", details: "Im Detail", story: "Material und Form.", more: "Mehr entdecken.", trust: [["quality", "Ausgewählte Qualität", "Mit Blick für Material"], ["delivery", "Versand", "Persönlich bestätigt"], ["returns", "14 Tage Rückgabe", "Fragen? Wir helfen."]] },
     bag: { title: "Warenkorb", empty: "Ihr Warenkorb ist leer.", shop: "Zum Shop", size: "Größe", subtotal: "Zwischensumme", note: "Fragen Sie Ihre Auswahl unverbindlich an. Wir bestätigen Verfügbarkeit, Versand und Gesamtpreis persönlich.", checkout: "Auswahl anfragen", continue: "Weiter stöbern", remove: "Entfernen", increase: "Menge erhöhen", decrease: "Menge verringern" },
     newsletter: { label: "Notes from the house", title: "Neue Modelle, Materialien und Geschichten.", body: "Ein ruhiges Update, wenn es etwas Neues zu entdecken gibt.", placeholder: "Ihre E-Mail-Adresse", submit: "Eintragen", loading: "Wird eingetragen…", success: "Bitte prüfen Sie Ihr Postfach.", invalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein.", error: "Das hat leider nicht funktioniert. Bitte versuchen Sie es erneut.", privacy: "Mit Ihrer Anmeldung stimmen Sie dem Newsletter zu. Jederzeit widerrufbar.", privacyLink: "Datenschutz" },
     services: [["01", "Kuratierte Auswahl", "Nur Marken, die zum NES Maßstab passen.", "Kollektion ansehen"], ["02", "14 Tage Rückgabe", "Fragen zu Rückgabe, Versand oder Bestellung? Wir helfen.", "Service anfragen"], ["03", "Persönliche Beratung", "Hilfe bei Modell, Material und Größe.", "Beratung starten"]],
@@ -210,8 +212,8 @@ const COPY = {
         { index: "04", title: "Outsole", body: "Barefoot construction" },
       ],
     },
-    featured: { label: "New in the house", title: "Selected for now.", all: "View all products", filterAll: "All" },
-    brands: { label: "The brands", title: "One house. Two signatures.", open: "View collection" },
+    featured: { label: "New in the house", title: "Selected for now.", intro: "Knitwear with character. Shoes for every day.", all: "View all products", filterAll: "All" },
+    brands: { label: "The brands", title: "Discover our brands.", open: "View collection" },
     look: {
       label: "NES / Shop the look",
       title: "One look. Two signatures.",
@@ -262,6 +264,7 @@ const COPY = {
       },
     },
     product: { view: "view", chooseSize: "Choose size", guide: "Size guide", add: "Add to bag", chooseFirst: "Please choose a size", back: "Back to collection", material: "Material", color: "Colour", delivery: "Delivery", deliveryValue: "On enquiry", returns: "Returns", returnsValue: "14 days", added: "Added to your bag" },
+    productPage: { home: "Home", collection: "Collection", previous: "Previous image", next: "Next image", view: "View", images: "Further views", details: "In detail", story: "Material and form.", more: "Discover more.", trust: [["quality", "Selected quality", "Considered materials"], ["delivery", "Delivery", "Personally confirmed"], ["returns", "14-day returns", "Questions? We can help."]] },
     bag: { title: "Bag", empty: "Your bag is empty.", shop: "Go to shop", size: "Size", subtotal: "Subtotal", note: "Enquire about your selection with no obligation. We will personally confirm availability, delivery and the total price.", checkout: "Enquire about selection", continue: "Continue browsing", remove: "Remove", increase: "Increase quantity", decrease: "Decrease quantity" },
     newsletter: { label: "Notes from the house", title: "New models, materials and stories.", body: "A considered update whenever there is something new to discover.", placeholder: "Your email address", submit: "Join the list", loading: "Joining…", success: "Please check your inbox.", invalid: "Please enter a valid email address.", error: "Something went wrong. Please try again.", privacy: "By joining, you consent to the newsletter. Unsubscribe at any time.", privacyLink: "Privacy" },
     services: [["01", "Curated selection", "Only brands that meet the NES standard.", "View collection"], ["02", "14-day returns", "Questions about returns, shipping or an order? We can help.", "Ask service"], ["03", "Personal advice", "Help with style, material and sizing.", "Start consultation"]],
@@ -344,7 +347,8 @@ function getInitialLanguage() {
 }
 
 function productFromLocation() {
-  const slug = new URLSearchParams(window.location.search).get("product");
+  const slug = window.location.pathname.match(/^\/products\/([^/]+)\/?$/)?.[1]
+    ?? new URLSearchParams(window.location.search).get("product");
   return PRODUCTS.find((product) => getProductSlug(product) === slug)?.id ?? null;
 }
 
@@ -353,6 +357,7 @@ function savedFromLocation() {
 }
 
 function routeFromLocation() {
+  if (window.location.pathname.startsWith("/products/") || new URLSearchParams(window.location.search).has("product")) return "product";
   if (window.location.pathname.startsWith("/shop")) return "shop";
   if (window.location.pathname.startsWith("/brands")) return "brands";
   if (window.location.pathname.startsWith("/gallery")) return "gallery";
@@ -378,7 +383,6 @@ export default function App() {
   const [wishlist, setWishlist] = useState(() => normalizeWishlist(readStored("nes-wishlist", []), PRODUCTS));
   const [savedOnly, setSavedOnly] = useState(savedFromLocation);
   const [serviceContext, setServiceContext] = useState(null);
-  const productReturnUrl = useRef(null);
   const [selectedSize, setSelectedSize] = useState("");
   const [bag, setBag] = useState(getInitialBag);
   const [bagOpen, setBagOpen] = useState(false);
@@ -393,18 +397,17 @@ export default function App() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 18);
-    const handlePopState = () => {
+    const handlePopState = (event) => {
       setRoute(routeFromLocation());
       setFilter(filterFromLocation());
       setSavedOnly(savedFromLocation());
       setActiveProductId(productFromLocation());
       setSelectedSize("");
-      productReturnUrl.current = null;
       setBagOpen(false);
       setMobileOpen(false);
       setTradeOpen(false);
       setServiceOpen(null);
-      window.scrollTo(0, 0);
+      window.requestAnimationFrame(() => window.scrollTo({ top: event.state?.scrollY ?? 0, behavior: "instant" }));
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -413,6 +416,13 @@ export default function App() {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("popstate", handlePopState);
     };
+  }, []);
+
+  useEffect(() => {
+    const legacySlug = new URLSearchParams(window.location.search).get("product");
+    if (legacySlug && productFromLocation()) {
+      window.history.replaceState(window.history.state, "", `/products/${legacySlug}`);
+    }
   }, []);
 
   useEffect(() => {
@@ -490,14 +500,14 @@ export default function App() {
   }, [wishlist]);
 
   useEffect(() => {
-    const locked = Boolean(activeProductId || bagOpen || mobileOpen || tradeOpen || serviceOpen || legalOpen);
+    const locked = Boolean(bagOpen || mobileOpen || tradeOpen || serviceOpen || legalOpen);
     if (!locked) return undefined;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = previous;
     };
-  }, [activeProductId, bagOpen, mobileOpen, tradeOpen, serviceOpen, legalOpen]);
+  }, [bagOpen, mobileOpen, tradeOpen, serviceOpen, legalOpen]);
 
   useEffect(() => {
     const handleEscape = (event) => {
@@ -506,17 +516,11 @@ export default function App() {
       else if (serviceOpen) setServiceOpen(null);
       else if (tradeOpen) setTradeOpen(false);
       else if (bagOpen) setBagOpen(false);
-      else if (activeProductId) {
-        setActiveProductId(null);
-        const url = new URL(window.location.href);
-        url.searchParams.delete("product");
-        window.history.replaceState({}, "", productReturnUrl.current || `${url.pathname}${url.search}${url.hash}`);
-        productReturnUrl.current = null;
-      } else setMobileOpen(false);
+      else setMobileOpen(false);
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [legalOpen, serviceOpen, tradeOpen, bagOpen, activeProductId]);
+  }, [legalOpen, serviceOpen, tradeOpen, bagOpen]);
 
   useEffect(() => {
     if (!toast) return undefined;
@@ -540,6 +544,19 @@ export default function App() {
   }, [filter, search, sort, language, savedOnly, wishlist]);
 
   const activeProduct = PRODUCTS.find((product) => product.id === activeProductId) || null;
+
+  useEffect(() => {
+    const description = document.querySelector('meta[name="description"]');
+    if (route === "product" && activeProduct) {
+      document.title = `${activeProduct.name} | ${activeProduct.brand} | NES`;
+      description?.setAttribute("content", localize(activeProduct.description, language));
+    } else {
+      document.title = "NES — Curated Footwear & Everyday Pieces";
+      description?.setAttribute("content", language === "de"
+        ? "Kuratierte Schuhe und charakterstarker Strick von NES. Entdecken Sie ausgewählte Marken, Materialien und Design."
+        : "Curated footwear and distinctive knitwear from NES. Discover selected brands, materials and design.");
+    }
+  }, [route, activeProduct, language]);
   const bagCount = bag.reduce((sum, item) => sum + item.qty, 0);
   const bagTotal = bag.reduce((sum, item) => {
     const product = PRODUCTS.find((candidate) => candidate.id === item.productId);
@@ -601,23 +618,17 @@ export default function App() {
     window.setTimeout(() => document.getElementById("catalog-search")?.focus(), 80);
   }
 
-  function closeProduct() {
-    setActiveProductId(null);
-    const url = new URL(window.location.href);
-    url.searchParams.delete("product");
-    window.history.replaceState({}, "", productReturnUrl.current || `${url.pathname}${url.search}${url.hash}`);
-    productReturnUrl.current = null;
-  }
-
   function openProduct(productId) {
     const product = PRODUCTS.find((item) => item.id === productId);
     if (!product) return;
+    if (route !== "product") {
+      window.history.replaceState({ ...window.history.state, scrollY: window.scrollY }, "", window.location.href);
+    }
     setSelectedSize("");
     setActiveProductId(productId);
-    const url = new URL(window.location.href);
-    if (!url.searchParams.has("product")) productReturnUrl.current = `${url.pathname}${url.search}${url.hash}`;
-    url.searchParams.set("product", getProductSlug(product));
-    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+    setRoute("product");
+    window.history.pushState({}, "", `/products/${getProductSlug(product)}`);
+    window.scrollTo({ top: 0, behavior: "instant" });
   }
 
   function toggleFavorite(productId) {
@@ -643,7 +654,6 @@ export default function App() {
       if (existingIndex === -1) return [...current, { productId, size, qty: 1 }];
       return current.map((item, index) => index === existingIndex ? { ...item, qty: Math.min(MAX_QUANTITY, item.qty + 1) } : item);
     });
-    if (activeProductId) closeProduct();
     setToast(copy.product.added);
     setBagOpen(true);
   }
@@ -674,7 +684,28 @@ export default function App() {
         onBag={() => setBagOpen(true)}
       />
 
-      {route === "home" ? (
+      {route === "product" ? (
+        activeProduct ? (
+          <ProductPage
+            key={activeProduct.id}
+            product={activeProduct}
+            copy={copy}
+            language={language}
+            selectedSize={selectedSize}
+            onSelectSize={setSelectedSize}
+            onHome={navigateHome}
+            onShop={navigateShop}
+            onAdvice={() => openService("advice", activeProduct)}
+            onAdd={() => selectedSize && addToBag(activeProduct.id, selectedSize)}
+            favorite={wishlist.includes(activeProduct.id)}
+            onToggleFavorite={() => toggleFavorite(activeProduct.id)}
+            onVariant={openProduct}
+            onOpen={openProduct}
+            wishlist={wishlist}
+            onToggleRelatedFavorite={toggleFavorite}
+          />
+        ) : <main className="pdp-not-found"><h1>{language === "de" ? "Produkt nicht gefunden." : "Product not found."}</h1><button className="underlined-link" type="button" onClick={() => navigateShop()}>{copy.product.back}<ArrowIcon /></button></main>
+      ) : route === "home" ? (
         <HomePage
           copy={copy}
           language={language}
@@ -720,26 +751,6 @@ export default function App() {
         onService={openService}
         onLegal={setLegalOpen}
       />
-
-      {activeProduct && (
-        <ProductDetail
-          key={activeProduct.id}
-          product={activeProduct}
-          favorite={wishlist.includes(activeProduct.id)}
-          onToggleFavorite={() => toggleFavorite(activeProduct.id)}
-          onVariant={openProduct}
-          copy={copy}
-          language={language}
-          selectedSize={selectedSize}
-          onSelectSize={setSelectedSize}
-          onClose={closeProduct}
-          onAdvice={() => {
-            closeProduct();
-            openService("advice", activeProduct);
-          }}
-          onAdd={() => selectedSize && addToBag(activeProduct.id, selectedSize)}
-        />
-      )}
 
       {bagOpen && (
         <BagDrawer
@@ -1076,13 +1087,19 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, wishl
       <section className="featured-section section-pad" id="featured">
         <div className="featured-inner">
           <div className="featured-heading" data-reveal>
-            <p className="eyebrow">{copy.featured.label}</p>
-            <h2 id="featured-title">{copy.featured.title}</h2>
+            <div>
+              <p className="eyebrow">{copy.featured.label}</p>
+              <h2 id="featured-title">{copy.featured.title}</h2>
+            </div>
+            <p className="featured-intro">{copy.featured.intro}</p>
           </div>
-          {featuredGroups.map((group) => (
+          {featuredGroups.map((group, groupIndex) => (
             <div className="featured-group" key={group.id}>
               <div className="featured-group-heading">
-                <h3 id={`featured-${group.id}-title`}>{group.title}</h3>
+                <div>
+                  <span className="featured-group-index">0{groupIndex + 1} / 0{featuredGroups.length}</span>
+                  <h3 id={`featured-${group.id}-title`}>{group.title}</h3>
+                </div>
                 <span aria-hidden="true">{String(group.products.length).padStart(2, "0")}</span>
               </div>
               <div className={`featured-grid featured-grid-${group.id}`} aria-labelledby={`featured-${group.id}-title`}>
@@ -1451,7 +1468,7 @@ function FeaturedProductCard({ product, language, onOpen, onQuickAdd, wishlist, 
         >{mobileSizesOpen ? "×" : "+"}</button>
       </div>
       <div className="featured-card-info">
-        <a className="featured-card-link" href={`/shop?product=${getProductSlug(selectedProduct)}`} onClick={openProduct} aria-label={`${product.brand} ${selectedProduct.name}, ${formatPrice(product.price, language)}`}>
+        <a className="featured-card-link" href={`/products/${getProductSlug(selectedProduct)}`} onClick={openProduct} aria-label={`${product.brand} ${selectedProduct.name}, ${formatPrice(product.price, language)}`}>
           <span className="featured-card-brand">{product.brand}</span>
           <span className="featured-card-title-row">
             <strong>{selectedProduct.name}</strong>
@@ -1460,23 +1477,24 @@ function FeaturedProductCard({ product, language, onOpen, onQuickAdd, wishlist, 
               <span className={product.compareAtPrice ? "is-sale" : ""}>{formatPrice(product.price, language)}</span>
             </span>
           </span>
-          <span className="featured-card-subtitle">{product.subtitle}</span>
         </a>
-        <div className="featured-card-swatches" role="group" aria-label={`${selectedProduct.name}: ${isGerman ? "Farben" : "colours"}`}>
-          {product.colors.map((variant, index) => (
-            <button
-              key={variant.name}
-              className={index === colorIndex ? "is-active" : ""}
-              type="button"
-              style={{ "--swatch-color": variant.hex }}
-              aria-label={`${variant.name} ${isGerman ? "anzeigen" : "show"}`}
-              aria-pressed={index === colorIndex}
-              title={variant.name}
-              onClick={(event) => { event.preventDefault(); event.stopPropagation(); if (index !== colorIndex) { setMainLoaded(false); setHoverLoaded(false); setColorIndex(index); } }}
-            ><span /></button>
-          ))}
-          <span className="featured-card-color-name">{color.name}</span>
-        </div>
+        {product.colors.length > 1 && (
+          <div className="featured-card-swatches" role="group" aria-label={`${selectedProduct.name}: ${isGerman ? "Farben" : "colours"}`}>
+            {product.colors.map((variant, index) => (
+              <button
+                key={variant.name}
+                className={index === colorIndex ? "is-active" : ""}
+                type="button"
+                style={{ "--swatch-color": variant.hex }}
+                aria-label={`${variant.name} ${isGerman ? "anzeigen" : "show"}`}
+                aria-pressed={index === colorIndex}
+                title={variant.name}
+                onClick={(event) => { event.preventDefault(); event.stopPropagation(); if (index !== colorIndex) { setMainLoaded(false); setHoverLoaded(false); setColorIndex(index); } }}
+              ><span /></button>
+            ))}
+            <span className="featured-card-color-name">{color.name}</span>
+          </div>
+        )}
       </div>
     </article>
   );
@@ -1498,7 +1516,7 @@ function ProductCard({ product, media, copy, language, onOpen, revealDelay, favo
     event.preventDefault();
     onOpen(product.id);
   };
-  const href = `/shop?product=${getProductSlug(product)}`;
+  const href = `/products/${getProductSlug(product)}`;
 
   return (
     <article className={`product-card product-card-${product.brandId}`} data-reveal style={revealDelay ? { "--reveal-delay": revealDelay } : undefined}>
@@ -1520,50 +1538,115 @@ function ProductCard({ product, media, copy, language, onOpen, revealDelay, favo
   );
 }
 
-function ProductDetail({ product, copy, language, selectedSize, onSelectSize, onClose, onAdvice, onAdd, favorite, onToggleFavorite, onVariant }) {
-  const dialogRef = useDialogFocus();
+function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHome, onShop, onAdvice, onAdd, favorite, onToggleFavorite, onVariant, onOpen, wishlist, onToggleRelatedFavorite }) {
   const [imageIndex, setImageIndex] = useState(0);
+  const touchStartX = useRef(null);
   const images = product.gallery ?? [
-    { src: product.image, fit: product.fit },
-    { src: product.hoverImage, fit: product.fit },
+    { src: product.image, fit: product.brandId === "vehon" ? "cover" : product.fit },
+    { src: product.hoverImage, fit: product.brandId === "vehon" ? "cover" : product.fit },
   ];
   const image = images[imageIndex];
-  const variants = product.brandId === "montechiaro" ? PRODUCTS.filter((item) => item.brandId === "montechiaro") : [];
-  const imageLabel = language === "de" ? "Ansicht" : "View";
+  const variants = product.brandId === "montechiaro" ? PRODUCTS.filter((item) => item.brandId === "montechiaro") : [product];
+  const related = PRODUCTS.filter((item) => item.id !== product.id && item.brandId === product.brandId).slice(0, 3);
+  const brandNote = BRAND_WORLDS.find((brand) => brand.id === product.brandId)?.note;
+  const sizeOptions = product.sizes.map((size) => typeof size === "string" ? { label: size, available: true } : size);
   const moveImage = (delta) => setImageIndex((index) => (index + delta + images.length) % images.length);
+  const followLink = (event, navigate) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    navigate();
+  };
 
   return (
-    <div className="modal-backdrop product-backdrop" role="presentation" onMouseDown={onClose}>
-      <div ref={dialogRef} tabIndex={-1} className="product-detail" role="dialog" aria-modal="true" aria-labelledby="product-detail-title" onMouseDown={(event) => event.stopPropagation()}>
-        <button className="overlay-close" type="button" onClick={onClose} aria-label={copy.nav.close}><CloseIcon /></button>
-        <div className={`product-detail-gallery product-gallery-interactive product-card-${product.brandId}`}>
-          <div className={`product-detail-image product-fit-${image.fit}`}>
-            <img key={image.src} src={image.src} alt={`${product.name} · ${localize(product.color, language)} · ${imageLabel} ${imageIndex + 1}`} />
-            <div className="gallery-pagination">
-              <button type="button" onClick={() => moveImage(-1)} aria-label={language === "de" ? "Vorheriges Bild" : "Previous image"}>←</button>
-              <span aria-live="polite">{String(imageIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}</span>
-              <button type="button" onClick={() => moveImage(1)} aria-label={language === "de" ? "Nächstes Bild" : "Next image"}>→</button>
+    <main className="pdp-page" aria-labelledby="product-detail-title">
+      <section className="pdp-hero">
+        <div
+          className="pdp-media"
+          tabIndex={0}
+          aria-label={`${product.name}: ${copy.productPage.view} ${imageIndex + 1} / ${images.length}`}
+          onKeyDown={(event) => { if (event.key === "ArrowLeft") moveImage(-1); if (event.key === "ArrowRight") moveImage(1); }}
+          onTouchStart={(event) => { touchStartX.current = event.touches[0].clientX; }}
+          onTouchEnd={(event) => { if (touchStartX.current !== null) { const distance = event.changedTouches[0].clientX - touchStartX.current; if (Math.abs(distance) > 45) moveImage(distance < 0 ? 1 : -1); touchStartX.current = null; } }}
+        >
+          <img
+            key={image.src}
+            className={image.fit === "contain" ? "pdp-media-cutout" : ""}
+            src={image.src}
+            alt={`${product.name}, ${localize(product.color, language)} — ${copy.productPage.view} ${imageIndex + 1}`}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
+          {images.length > 1 && <div className="pdp-gallery-controls">
+            <button type="button" onClick={() => moveImage(-1)} aria-label={copy.productPage.previous}>←</button>
+            <span aria-live="polite">{String(imageIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}</span>
+            <button type="button" onClick={() => moveImage(1)} aria-label={copy.productPage.next}>→</button>
+          </div>}
+        </div>
+
+        <div className="pdp-info">
+          <div className="pdp-info-inner">
+            <nav className="pdp-breadcrumb" aria-label="Breadcrumb">
+              <a href="/" onClick={(event) => followLink(event, () => onHome())}>{copy.productPage.home}</a><span aria-hidden="true">/</span>
+              <a href="/shop" onClick={(event) => followLink(event, () => onShop("all"))}>{copy.productPage.collection}</a><span aria-hidden="true">/</span>
+              <span aria-current="page">{product.name}</span>
+            </nav>
+            <p className="pdp-category">{product.brand} / {localize(product.category, language)}</p>
+            <h1 id="product-detail-title">{product.name}</h1>
+            <p className="pdp-subtitle">{localize(product.subtitle, language)}</p>
+            <div className="pdp-price-row">
+              <p>{formatPrice(product.price, language)}</p>
+              <FavoriteButton product={product} favorite={favorite} language={language} onToggle={onToggleFavorite} className="detail-save" />
             </div>
-          </div>
-          <div className="gallery-thumbnails" role="group" aria-label={language === "de" ? "Produktbilder" : "Product images"}>
-            {images.map((item, index) => <button key={item.src} type="button" className={index === imageIndex ? "is-active" : ""} aria-pressed={index === imageIndex} aria-label={`${imageLabel} ${index + 1}`} onClick={() => setImageIndex(index)}><img src={item.src} alt="" loading="lazy" /></button>)}
+            <p className="pdp-description">{localize(product.description, language)}</p>
+
+            <div className="pdp-variants">
+              <p>{copy.product.color} <strong>{localize(product.color, language)}</strong></p>
+              <div className="pdp-variant-list" role="group" aria-label={copy.product.color}>
+                {variants.map((variant) => <button type="button" key={variant.id} aria-label={`${localize(variant.color, language)} — ${variant.name}`} aria-pressed={variant.id === product.id} className={variant.id === product.id ? "is-active" : ""} onClick={() => variant.id !== product.id && onVariant(variant.id)}><img src={variant.image} alt="" loading="lazy" decoding="async" /></button>)}
+              </div>
+            </div>
+
+            <div className="pdp-size-picker">
+              <div><span>{copy.product.chooseSize}</span><button type="button" onClick={onAdvice}>{copy.product.guide}</button></div>
+              <div className="pdp-size-grid" role="group" aria-label={copy.product.chooseSize}>
+                {sizeOptions.map((size) => <button className={selectedSize === size.label ? "is-active" : ""} aria-pressed={selectedSize === size.label} aria-label={`${copy.product.chooseSize}: ${size.label}`} type="button" key={size.label} disabled={!size.available} onClick={() => onSelectSize(size.label)}>{size.label}</button>)}
+              </div>
+            </div>
+
+            <button className="pdp-add" type="button" disabled={!selectedSize} onClick={onAdd}><span>{selectedSize ? copy.product.add : copy.product.chooseFirst}</span><span aria-hidden="true">→</span></button>
+            <ul className="pdp-trust">
+              {copy.productPage.trust.map(([icon, title, detail]) => <li key={icon}><PdpTrustIcon kind={icon} /><span><strong>{title}</strong><small>{detail}</small></span></li>)}
+            </ul>
+            <dl className="pdp-facts">
+              <div><dt>{copy.product.material}</dt><dd>{product.material}</dd></div>
+              <div><dt>{copy.product.color}</dt><dd>{localize(product.color, language)}</dd></div>
+              <div><dt>{copy.product.delivery}</dt><dd>{copy.product.deliveryValue}</dd></div>
+            </dl>
           </div>
         </div>
-        <div className="product-detail-copy">
-          <button className="detail-back" type="button" onClick={onClose}><span aria-hidden="true">←</span>{copy.product.back}</button>
-          <p className="eyebrow">{product.brand} / {localize(product.category, language)}</p>
-          <h2 id="product-detail-title">{product.name}</h2>
-          <p className="detail-subtitle">{localize(product.subtitle, language)}</p>
-          <div className="detail-price-row"><p className="detail-price">{formatPrice(product.price, language)}</p><FavoriteButton product={product} favorite={favorite} language={language} onToggle={onToggleFavorite} className="detail-save" /></div>
-          {variants.length > 1 && <div className="detail-variants"><p>{copy.product.color} <strong>{localize(product.color, language)}</strong></p><div role="group" aria-label={copy.product.color}>{variants.map((variant) => <button type="button" key={variant.id} aria-label={localize(variant.color, language)} aria-pressed={variant.id === product.id} className={variant.id === product.id ? "is-active" : ""} onClick={() => variant.id !== product.id && onVariant(variant.id)}><img src={variant.image} alt="" loading="lazy" /></button>)}</div></div>}
-          <div className="size-picker"><div><span>{copy.product.chooseSize}</span><button type="button" onClick={onAdvice}>{copy.product.guide}</button></div><div className="size-grid" role="group" aria-label={copy.product.chooseSize}>{product.sizes.map((size) => <button className={selectedSize === size ? "is-active" : ""} aria-pressed={selectedSize === size} type="button" key={size} onClick={() => onSelectSize(size)}>{size}</button>)}</div></div>
-          <button className="add-to-bag" type="button" disabled={!selectedSize} onClick={onAdd}>{selectedSize ? `${copy.product.add} · ${selectedSize}` : copy.product.chooseFirst}</button>
-          <p className="detail-description">{localize(product.description, language)}</p>
-          <dl className="detail-facts"><div><dt>{copy.product.material}</dt><dd>{product.material}</dd></div><div><dt>{copy.product.color}</dt><dd>{localize(product.color, language)}</dd></div><div><dt>{copy.product.delivery}</dt><dd>{copy.product.deliveryValue}</dd></div><div><dt>{copy.product.returns}</dt><dd>{copy.product.returnsValue}</dd></div></dl>
-        </div>
-      </div>
-    </div>
+      </section>
+
+      <section className="pdp-editorial" aria-labelledby="pdp-story-title">
+        <div className="pdp-editorial-heading"><span>NES / {copy.productPage.details}</span><h2 id="pdp-story-title">{copy.productPage.story}</h2><p>{brandNote ? localize(brandNote, language) : localize(product.description, language)}</p></div>
+        {images.length > 1 && <div className={`pdp-extra-images${images.length === 2 ? " is-single" : ""}`} aria-label={copy.productPage.images}>
+          {images.slice(1).map((item, index) => <figure key={item.src} className={item.fit === "contain" ? "is-cutout" : ""}><img src={item.src} alt={`${product.name} — ${copy.productPage.view} ${index + 2}`} loading="lazy" decoding="async" /><figcaption>{String(index + 2).padStart(2, "0")} / {String(images.length).padStart(2, "0")}</figcaption></figure>)}
+        </div>}
+        <div className="pdp-material-note"><span>{copy.product.material}</span><p>{product.material}</p></div>
+      </section>
+
+      {related.length > 0 && <section className="pdp-related" aria-labelledby="pdp-related-title">
+        <div className="pdp-related-heading"><span>NES / {copy.productPage.collection}</span><h2 id="pdp-related-title">{copy.productPage.more}</h2></div>
+        <div className="pdp-related-grid">{related.map((item) => <ProductCard key={item.id} product={item} copy={copy} language={language} onOpen={onOpen} favorite={wishlist.includes(item.id)} onToggleFavorite={() => onToggleRelatedFavorite(item.id)} />)}</div>
+      </section>}
+    </main>
   );
+}
+
+function PdpTrustIcon({ kind }) {
+  if (kind === "quality") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 7 4v8l-7 8-7-8V6zM8.5 12l2.5 2.5 4.5-5" /></svg>;
+  if (kind === "delivery") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6h12v11H2zM14 9h4l4 4v4h-8zM6 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm12 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" /></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V3m0 5h5M4 8a9 9 0 1 1-1 8" /></svg>;
 }
 
 function BagDrawer({ bag, total, copy, language, onClose, onUpdate, onRemove, onShop, onEnquire }) {
