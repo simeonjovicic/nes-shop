@@ -5,7 +5,8 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'design/**']),
+  // Exported design previews include generated third-party support code.
+  globalIgnores(['dist', 'design/**', 'public/design/**']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [

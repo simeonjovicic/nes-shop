@@ -1,5 +1,6 @@
-// Homepage placeholders. Replace this array with approved product records when
-// inventory, prices, variants and product routes are available.
+import { PRODUCTS } from "./products";
+
+// Homepage photography and colour choices; product details come from the catalogue.
 const image = (src, width, height) => ({ src, width, height });
 
 export const featuredProducts = [
@@ -9,12 +10,10 @@ export const featuredProducts = [
     brand: "WAI by Vehon",
     name: "WAI Home",
     subtitle: "Indoor Feel Shoe",
-    price: 169,
-    badge: "Neu",
+    badge: { de: "Neu", en: "New" },
     category: "shoes",
     images: [image("/wai_front.jpeg", 768, 1376), image("/wai_behind.jpeg", 768, 1376)],
     colors: [{ name: "Indigo", hex: "#354b69", image: "/wai_front.jpeg" }],
-    sizes: ["39", "40", "41", "42", "43"].map((label) => ({ label, available: label !== "39" })),
     slug: "wai-home",
   },
   {
@@ -23,15 +22,12 @@ export const featuredProducts = [
     brand: "Montechiaro",
     name: "Pully Rosso",
     subtitle: "Signature Jacquard Knit",
-    price: 219,
-    badge: "Limitiert",
     category: "knitwear",
     images: [image("/shop/pully-red-front.webp", 1535, 2144), image("/shop/pully-red-side.webp", 1536, 2614)],
     colors: [
-      { name: "Rosso", hex: "#743b40", image: "/shop/pully-red-front.webp" },
-      { name: "Orange", hex: "#bf8a34", image: "/shop/products/pully-orange/front.png", width: 1122, height: 1402, hoverImage: "/shop/products/pully-orange/side.png", hoverWidth: 1122, hoverHeight: 1402 },
+      { sourceProductId: 12, name: "Rosso", hex: "#743b40", image: "/shop/pully-red-front.webp" },
+      { sourceProductId: 13, name: "Orange", hex: "#bf8a34", image: "/shop/products/pully-orange/front.webp", width: 1122, height: 1402, hoverImage: "/shop/products/pully-orange/side.webp", hoverWidth: 1122, hoverHeight: 1402 },
     ],
-    sizes: ["S", "M", "L", "XL"].map((label) => ({ label, available: label !== "XL" })),
     slug: "pully-rosso",
   },
   {
@@ -40,25 +36,10 @@ export const featuredProducts = [
     brand: "Vehon",
     name: "Prince Loafer",
     subtitle: "3D Knit Loafer",
-    price: 259,
     category: "shoes",
     images: [image("/shop/products/vehon-prince-front.webp", 1086, 1448), image("/shop/products/vehon-prince-side.webp", 1086, 1448)],
     colors: [{ name: "Nero", hex: "#1f1f1d", image: "/shop/products/vehon-prince-front.webp" }],
-    sizes: ["39", "40", "41", "42", "43"].map((label) => ({ label, available: label !== "41" })),
     slug: "prince-loafer",
-  },
-  {
-    id: "leather-belt",
-    brand: "NES Studio",
-    name: "Leather Belt",
-    subtitle: "Smooth Leather · Nero",
-    price: 119,
-    badge: "Neu",
-    category: "accessories",
-    images: [image("/shop/placeholders/leather-belt.svg", 800, 1000), image("/shop/placeholders/leather-belt-detail.svg", 800, 1000)],
-    colors: [{ name: "Nero", hex: "#1f1f1d", image: "/shop/placeholders/leather-belt.svg" }],
-    sizes: ["85", "90", "95", "100"].map((label) => ({ label, available: label !== "85" })),
-    slug: "leather-belt",
   },
   {
     id: "pully-dark-blue",
@@ -66,12 +47,10 @@ export const featuredProducts = [
     brand: "Montechiaro",
     name: "Pully Dark Blue",
     subtitle: "Signature Jacquard Knit",
-    price: 219,
-    badge: "Neu",
+    badge: { de: "Neu", en: "New" },
     category: "knitwear",
-    images: [image("/shop/products/pully-dark-blue/front.png", 1122, 1402), image("/shop/products/pully-dark-blue/side.png", 1122, 1402)],
-    colors: [{ name: "Dark Blue", hex: "#202c4e", image: "/shop/products/pully-dark-blue/front.png" }],
-    sizes: ["S", "M", "L", "XL"].map((label) => ({ label, available: label !== "XL" })),
+    images: [image("/shop/products/pully-dark-blue/front.webp", 1122, 1402), image("/shop/products/pully-dark-blue/side.webp", 1122, 1402)],
+    colors: [{ name: "Dark Blue", hex: "#202c4e", image: "/shop/products/pully-dark-blue/front.webp" }],
     slug: "pully-dark-blue",
   },
   {
@@ -80,14 +59,12 @@ export const featuredProducts = [
     brand: "Montechiaro",
     name: "Pully Orange",
     subtitle: "Signature Jacquard Knit",
-    price: 219,
     category: "knitwear",
-    images: [image("/shop/products/pully-orange/front.png", 1122, 1402), image("/shop/products/pully-orange/side.png", 1122, 1402)],
+    images: [image("/shop/products/pully-orange/front.webp", 1122, 1402), image("/shop/products/pully-orange/side.webp", 1122, 1402)],
     colors: [
-      { name: "Orange", hex: "#bf8a34", image: "/shop/products/pully-orange/front.png" },
-      { name: "Rosso", hex: "#743b40", image: "/shop/pully-red-front.webp", width: 1535, height: 2144, hoverImage: "/shop/pully-red-side.webp", hoverWidth: 1536, hoverHeight: 2614 },
+      { sourceProductId: 13, name: "Orange", hex: "#bf8a34", image: "/shop/products/pully-orange/front.webp" },
+      { sourceProductId: 12, name: "Rosso", hex: "#743b40", image: "/shop/pully-red-front.webp", width: 1535, height: 2144, hoverImage: "/shop/pully-red-side.webp", hoverWidth: 1536, hoverHeight: 2614 },
     ],
-    sizes: ["S", "M", "L", "XL"].map((label) => ({ label, available: label !== "S" })),
     slug: "pully-orange",
   },
   {
@@ -96,12 +73,10 @@ export const featuredProducts = [
     brand: "Montechiaro",
     name: "Pully Dark",
     subtitle: "Signature Jacquard Knit",
-    price: 219,
-    badge: "Neu",
+    badge: { de: "Neu", en: "New" },
     category: "knitwear",
-    images: [image("/shop/products/pully-dark/front.png", 1122, 1402), image("/shop/products/pully-dark/side.png", 1122, 1402)],
-    colors: [{ name: "Dark Multicolor", hex: "#1f1f1d", image: "/shop/products/pully-dark/front.png" }],
-    sizes: ["S", "M", "L", "XL"].map((label) => ({ label, available: label !== "XL" })),
+    images: [image("/shop/products/pully-dark/front.webp", 1122, 1402), image("/shop/products/pully-dark/side.webp", 1122, 1402)],
+    colors: [{ name: "Dark Multicolor", hex: "#1f1f1d", image: "/shop/products/pully-dark/front.webp" }],
     slug: "pully-dark",
   },
   {
@@ -110,12 +85,13 @@ export const featuredProducts = [
     brand: "Montechiaro",
     name: "Pully Blue",
     subtitle: "Signature Jacquard Knit",
-    price: 219,
-    badge: "Neu",
+    badge: { de: "Neu", en: "New" },
     category: "knitwear",
-    images: [image("/shop/products/pully-blue/front.png", 1122, 1402), image("/shop/products/pully-blue/side.png", 1122, 1402)],
-    colors: [{ name: "Blue", hex: "#354b69", image: "/shop/products/pully-blue/front.png" }],
-    sizes: ["S", "M", "L", "XL"].map((label) => ({ label, available: label !== "S" })),
+    images: [image("/shop/products/pully-blue/front.webp", 1122, 1402), image("/shop/products/pully-blue/side.webp", 1122, 1402)],
+    colors: [{ name: "Blue", hex: "#354b69", image: "/shop/products/pully-blue/front.webp" }],
     slug: "pully-blue",
   },
-];
+].map((featured) => {
+  const product = PRODUCTS.find((item) => item.id === featured.sourceProductId);
+  return { ...featured, name: product.name, price: product.price, sizes: product.sizes };
+});

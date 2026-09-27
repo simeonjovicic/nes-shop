@@ -4,6 +4,18 @@ The NES store (formerly Soleform) — the house that sells the Vehon WAI feel sh
 
 Start it with `npm install` and `npm run dev`.
 
+Product records live in `src/products.js`; homepage photography and colour choices
+live in `src/featuredProducts.js`. Product previews can be shared with
+`/shop?product=pully-orange`. The bag and wishlist are saved on the current device.
+
+The bag's “Auswahl anfragen” action sends a non-binding selection enquiry through
+the existing `/api/inquiry` Pages Function. It includes the selected products,
+colours, sizes and quantities; it does not place an order or take payment.
+Vite serves the frontend only. Live enquiry delivery requires the Cloudflare
+bindings described in [CLOUDFLARE_NEWSLETTER_SETUP.md](./CLOUDFLARE_NEWSLETTER_SETUP.md).
+
+Run `npm run lint`, `npm test` and `npm run build` to validate changes.
+
 ---
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
