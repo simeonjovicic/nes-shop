@@ -1,0 +1,203 @@
+/* Complete collection, using the existing NES palette and type. */
+.catalog-page .catalog-intro.section-pad,
+.catalog-page .catalog.section-pad {
+  width: min(100%, 1640px);
+  padding-right: clamp(22px, 4vw, 72px);
+  padding-left: clamp(22px, 4vw, 72px);
+}
+
+.catalog-page .catalog-intro {
+  min-height: clamp(320px, 33vw, 490px);
+  grid-template-columns: minmax(0, 1.35fr) minmax(240px, 0.65fr);
+  align-items: end;
+  padding-top: clamp(76px, 8vw, 140px);
+  padding-bottom: clamp(55px, 6vw, 94px);
+}
+
+.catalog-page .catalog-intro h1 {
+  max-width: none;
+  margin-top: 23px;
+  font-size: clamp(70px, 9vw, 136px);
+  line-height: 0.84;
+}
+
+.catalog-intro-period { color: var(--accent); }
+
+.catalog-page .catalog-intro-summary {
+  display: flex;
+  min-height: 104px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 0;
+}
+
+.catalog-page .catalog-intro-summary p {
+  color: var(--brand-soft);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.catalog-intro-index,
+.catalog-collection-index,
+.catalog-collection-aside span {
+  color: var(--brand-soft);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.catalog-page .catalog.section-pad {
+  padding-top: 28px;
+  padding-bottom: clamp(105px, 11vw, 170px);
+}
+
+.catalog-page .catalog-tabs { gap: 0; padding: 0 0 23px; }
+
+.catalog-page .catalog-tabs button {
+  min-height: 44px;
+  padding: 0 clamp(14px, 2vw, 27px);
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--brand-soft);
+  font-size: 11px;
+}
+
+.catalog-page .catalog-tabs button:first-child { padding-left: 0; }
+
+.catalog-page .catalog-tabs button:hover,
+.catalog-page .catalog-tabs button.is-active {
+  border-color: var(--brand);
+  background: transparent;
+  color: var(--brand);
+}
+
+.catalog-page .catalog-tabs button.is-active { border-bottom-width: 2px; }
+
+.catalog-page .catalog-tabs button:focus-visible,
+.catalog-page .catalog-search:focus-within,
+.catalog-page .catalog-sort:focus-within,
+.catalog-page .product-card a:focus-visible,
+.catalog-page .product-card button:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+}
+
+.catalog-page .catalog-toolbar {
+  grid-template-columns: minmax(230px, 1fr) auto auto;
+  gap: clamp(18px, 4vw, 56px);
+  padding: 16px 0;
+  border-top: 0;
+}
+
+.catalog-page .catalog-search input { font-size: 13px; }
+.catalog-page .catalog-count { color: var(--brand-soft); font-size: 10px; }
+.catalog-page .catalog-sort > span { color: var(--brand-soft); font-size: 10px; }
+.catalog-page .catalog-sort select { font-size: 11px; }
+
+.catalog-collection {
+  padding-top: clamp(54px, 6vw, 92px);
+}
+
+.catalog-collection + .catalog-collection {
+  margin-top: clamp(48px, 5vw, 80px);
+  border-top: 1px solid var(--line);
+}
+
+.catalog-collection-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 28px;
+  margin-bottom: clamp(28px, 3vw, 44px);
+}
+
+.catalog-collection-index { margin: 0 0 13px; }
+
+.catalog-collection-head h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(50px, 5.5vw, 78px);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.catalog-collection-aside {
+  min-width: 240px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 22px;
+  padding-bottom: 3px;
+}
+
+.catalog-collection-aside p {
+  max-width: 225px;
+  margin: 0;
+  color: var(--brand-soft);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.catalog-collection-aside span { white-space: nowrap; }
+
+.catalog-page .catalog-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(44px, 4.5vw, 68px) clamp(14px, 2vw, 30px);
+}
+
+.catalog-page .catalog-saved-grid { padding-top: 54px; }
+.catalog-page .product-media { background: var(--paper-deep); }
+.catalog-page .product-card-montechiaro .product-media { background: var(--paper-deep); }
+.catalog-page .product-fit-contain .product-image { padding: 8%; }
+.catalog-page .product-copy { padding-top: 17px; }
+.catalog-page .product-brand { color: var(--brand-soft); font-size: 10px; }
+.catalog-page .product-title-row { gap: 12px; margin-top: 8px; }
+.catalog-page .product-title-row strong { font-size: clamp(25px, 2.3vw, 32px); font-weight: 400; line-height: 1; }
+.catalog-page .product-title-row > span { font-size: 12px; white-space: nowrap; }
+.catalog-page .product-subtitle { color: var(--brand-soft); font-size: 11px; }
+.catalog-page .featured-card-swatches { margin-top: 13px; }
+
+@media (max-width: 1050px) {
+  .catalog-page .catalog-intro { gap: 45px; }
+  .catalog-page .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .catalog-collection-aside { min-width: 0; flex-direction: column; align-items: end; }
+}
+
+@media (max-width: 700px) {
+  .catalog-page .catalog-intro {
+    min-height: 0;
+    display: block;
+    padding-top: 62px;
+    padding-bottom: 52px;
+  }
+  .catalog-page .catalog-intro h1 { font-size: clamp(60px, 17vw, 88px); }
+  .catalog-page .catalog-intro-summary { min-height: 0; margin-top: 30px; padding-left: 0; }
+  .catalog-page .catalog-intro-summary::before { display: none; }
+  .catalog-intro-index { display: none; }
+  .catalog-page .catalog.section-pad { padding-top: 20px; }
+  .catalog-page .catalog-tabs { margin-right: -22px; padding-right: 22px; }
+  .catalog-page .catalog-tabs button { min-height: 42px; padding: 0 16px; }
+  .catalog-page .catalog-toolbar { grid-template-columns: minmax(0, 1fr) auto; gap: 7px 14px; }
+  .catalog-page .catalog-search { grid-column: 1 / -1; }
+  .catalog-page .catalog-sort select { max-width: 155px; }
+  .catalog-collection { padding-top: 58px; }
+  .catalog-collection + .catalog-collection { margin-top: 60px; }
+  .catalog-collection-head { display: block; margin-bottom: 26px; }
+  .catalog-collection-head h2 { font-size: clamp(47px, 12vw, 63px); }
+  .catalog-collection-aside { align-items: start; gap: 10px; margin-top: 18px; }
+  .catalog-page .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 10px; }
+  .catalog-page .product-copy { padding: 12px 0 0; }
+  .catalog-page .product-title-row { display: block; }
+  .catalog-page .product-title-row strong { display: block; font-size: clamp(22px, 6vw, 27px); }
+  .catalog-page .product-title-row > span { display: block; margin-top: 5px; }
+  .catalog-page .product-brand { font-size: 9px; }
+  .catalog-page .product-subtitle { font-size: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalog-page .product-image,
+  .catalog-page .catalog-tabs button { transition: none; }
+}

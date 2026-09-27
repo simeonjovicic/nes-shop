@@ -54,7 +54,10 @@ export const featuredProducts = [
     badge: { de: "Neu", en: "New" },
     category: "knitwear",
     images: [image("/shop/products/pully-dark-blue/front.webp", 1122, 1402), image("/shop/products/pully-dark-blue/side.webp", 1122, 1402)],
-    colors: [{ name: "Dark Blue", hex: "#202c4e", image: "/shop/products/pully-dark-blue/front.webp" }],
+    colors: [
+      { sourceProductId: 16, name: "Dark Blue", hex: "#202c4e", image: "/shop/products/pully-dark-blue/front.webp" },
+      { sourceProductId: 15, name: "Blue", hex: "#526e91", image: "/shop/products/pully-blue/front.webp", width: 1122, height: 1402, hoverImage: "/shop/products/pully-blue/side.webp", hoverWidth: 1122, hoverHeight: 1402 },
+    ],
     slug: "pully-dark-blue",
   },
   {

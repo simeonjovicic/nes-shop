@@ -7,6 +7,8 @@ import { useDialogFocus } from "./useDialogFocus";
 import "./App.css";
 import "./shop-polish.css";
 import "./product-page.css";
+import "./featured-showcase.css";
+import "./catalog-page.css";
 
 const BRAND_WORLDS = [
   {
@@ -116,7 +118,7 @@ const COPY = {
         { index: "04", title: "Laufsohle", body: "Barefoot-Konstruktion" },
       ],
     },
-    featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", intro: "Strick mit Charakter. Schuhe für jeden Tag.", all: "Alle Produkte", filterAll: "Alle" },
+    featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", knitTitle: ["Signature", "Pullys"], knitText: "Markante Muster. Hochwertiger Strick. Gemacht, um aufzufallen.", shoeTitle: ["Feel", "Shoes"], shoeText: "Leichte Formen. Natürliche Bewegung. Für jeden Tag.", shopNow: "Jetzt entdecken" },
     brands: { label: "Die Marken", title: "Entdecke unsere Marken.", open: "Kollektion ansehen" },
     look: {
       label: "NES / Shop the look",
@@ -212,7 +214,7 @@ const COPY = {
         { index: "04", title: "Outsole", body: "Barefoot construction" },
       ],
     },
-    featured: { label: "New in the house", title: "Selected for now.", intro: "Knitwear with character. Shoes for every day.", all: "View all products", filterAll: "All" },
+    featured: { label: "New in the house", title: "Selected for now.", knitTitle: ["Signature", "Pullys"], knitText: "Bold patterns. Premium knitwear. Made to stand out.", shoeTitle: ["Feel", "Shoes"], shoeText: "Light forms. Natural movement. Made for every day.", shopNow: "Shop now" },
     brands: { label: "The brands", title: "Discover our brands.", open: "View collection" },
     look: {
       label: "NES / Shop the look",
@@ -367,7 +369,7 @@ function routeFromLocation() {
 
 function filterFromLocation() {
   const requested = new URLSearchParams(window.location.search).get("brand");
-  return BRAND_WORLDS.some((brand) => brand.id === requested) ? requested : "all";
+  return ["wai", "vehon", "vehon-models", "montechiaro"].includes(requested) ? requested : "all";
 }
 
 function getInitialBag() {
@@ -541,7 +543,11 @@ export default function App() {
   const visibleProducts = useMemo(() => {
     const query = search.trim().toLowerCase();
     const matches = PRODUCTS.filter((product) => {
-      const matchesBrand = filter === "all" || product.brandId === filter;
+      const matchesBrand = filter === "all"
+        || (filter === "wai" && Boolean(product.familyId))
+        || (filter === "vehon-models" && product.brand === "Vehon")
+        || (filter === "vehon" && product.brandId === "vehon")
+        || (filter === "montechiaro" && product.brandId === "montechiaro");
       const haystack = `${product.brand} ${product.name} ${product.sku || ""} ${localize(product.subtitle, language)} ${localize(product.color, language)} ${localize(product.category, language)} ${product.material}`.toLowerCase();
       return matchesBrand && (savedOnly ? wishlist.includes(product.id) : !product.catalogHidden) && (!query || haystack.includes(query));
     });
@@ -560,6 +566,11 @@ export default function App() {
     if (route === "product" && activeProduct) {
       document.title = `${activeProduct.name} | ${activeProduct.brand} | NES`;
       description?.setAttribute("content", localize(activeProduct.description, language));
+    } else if (route === "shop") {
+      document.title = language === "de" ? "Alle Produkte | NES Shop" : "All products | NES Shop";
+      description?.setAttribute("content", language === "de"
+        ? "Alle Modelle von WAI by Vehon, Vehon und Montechiaro entdecken. Schuhe und Strick in einer kuratierten Übersicht."
+        : "Explore every style from WAI by Vehon, Vehon and Montechiaro. Curated footwear and knitwear in one collection.");
     } else {
       document.title = "NES — Curated Footwear & Everyday Pieces";
       description?.setAttribute("content", language === "de"
@@ -1054,13 +1065,19 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, wishl
   const featuredGroups = [
     {
       id: "knitwear",
-      title: language === "de" ? "Pullover" : "Knitwear",
-      products: featuredProducts.filter((product) => product.category === "knitwear"),
+      label: "MONTECHIARO",
+      title: copy.featured.knitTitle,
+      description: copy.featured.knitText,
+      brand: "montechiaro",
+      products: ["pully-rosso", "pully-dark-blue", "pully-orange"].map((id) => featuredProducts.find((product) => product.id === id)),
     },
     {
       id: "shoes-accessories",
-      title: language === "de" ? "Schuhe" : "Footwear",
-      products: featuredProducts.filter((product) => product.category !== "knitwear"),
+      label: "WAI BY VEHON",
+      title: copy.featured.shoeTitle,
+      description: copy.featured.shoeText,
+      brand: "wai",
+      products: ["wai-mocassin", "wai-slip-on", "wai-high"].map((id) => featuredProducts.find((product) => product.id === id)),
     },
   ];
   return (
@@ -1094,21 +1111,14 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, wishl
 
       <section className="featured-section section-pad" id="featured">
         <div className="featured-inner">
-          <div className="featured-heading" data-reveal>
-            <div>
-              <p className="eyebrow">{copy.featured.label}</p>
-              <h2 id="featured-title">{copy.featured.title}</h2>
-            </div>
-            <p className="featured-intro">{copy.featured.intro}</p>
-          </div>
-          {featuredGroups.map((group, groupIndex) => (
+          <h2 id="featured-title" className="sr-only">{copy.featured.title}</h2>
+          {featuredGroups.map((group) => (
             <div className="featured-group" id={`featured-${group.id}`} key={group.id}>
               <div className="featured-group-heading">
-                <div>
-                  <span className="featured-group-index">0{groupIndex + 1} / 0{featuredGroups.length}</span>
-                  <h3 id={`featured-${group.id}-title`}>{group.title}</h3>
-                </div>
-                <span aria-hidden="true">{String(group.products.length).padStart(2, "0")}</span>
+                <p className="featured-group-label">{group.label}</p>
+                <h3 id={`featured-${group.id}-title`}>{group.title.map((line) => <span key={line}>{line}</span>)}</h3>
+                <p className="featured-group-description">{group.description}</p>
+                <button className="featured-group-cta" type="button" onClick={() => onShop(group.brand)}>{copy.featured.shopNow}</button>
               </div>
               <div className={`featured-grid featured-grid-${group.id}`} aria-labelledby={`featured-${group.id}-title`}>
                 {group.products.map((product) => (
@@ -1125,7 +1135,6 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, wishl
               </div>
             </div>
           ))}
-          <SectionAction label={copy.featured.all} onAction={() => onShop("all")} />
         </div>
       </section>
 
@@ -1241,20 +1250,36 @@ function CatalogLineups({ copy, onSelect }) {
 }
 
 function ShopPage({ copy, language, products, filter, search, sort, savedOnly, wishlist, onToggleFavorite, onFilter, onSearch, onSort, onOpen, onShowAll, onService }) {
+  const collections = [
+    { id: "wai", name: "WAI by Vehon", kind: language === "de" ? "Feel Shoes" : "Feel shoes", note: language === "de" ? "Leichte Formen, flexible Materialien und Platz für Bewegung." : "Light forms, flexible materials and room to move.", matches: (product) => Boolean(product.familyId) },
+    { id: "vehon-models", name: "Vehon", kind: language === "de" ? "Schuhe" : "Footwear", note: language === "de" ? "Italienische Formen, ausgewählt für den Alltag." : "Italian silhouettes selected for everyday wear.", matches: (product) => product.brand === "Vehon" },
+    { id: "montechiaro", name: "Montechiaro", kind: language === "de" ? "Strick" : "Knitwear", note: language === "de" ? "Jacquard-Strick mit Farbe, Struktur und Charakter." : "Jacquard knitwear with colour, texture and character.", matches: (product) => product.brandId === "montechiaro" },
+  ];
+  const tabs = [
+    { id: "all", label: copy.shop.all },
+    { id: "vehon", label: language === "de" ? "Schuhe" : "Footwear" },
+    { id: "wai", label: "WAI" },
+    { id: "vehon-models", label: "Vehon" },
+    { id: "montechiaro", label: "Montechiaro" },
+  ];
+  const sections = savedOnly ? [] : collections
+    .map((collection) => ({ ...collection, products: products.filter(collection.matches) }))
+    .filter((collection) => collection.products.length > 0);
+  const renderCard = (product, index) => <ProductCard key={product.id} product={product} wishlist={wishlist} onToggleFavorite={onToggleFavorite} copy={copy} language={language} onOpen={onOpen} revealDelay={`${Math.min(index, 5) * 45}ms`} />;
+
   return (
     <main className="catalog-page">
       <section className="catalog-intro section-pad">
         <div className="catalog-intro-heading">
           <p className="eyebrow">{copy.shop.breadcrumb}</p>
-          <h1>{savedOnly ? copy.shop.savedTitle : copy.shop.title}</h1>
+          <h1>{savedOnly ? copy.shop.savedTitle : copy.shop.title}<span className="catalog-intro-period">.</span></h1>
         </div>
-        <div className="catalog-intro-summary"><p>{savedOnly ? copy.shop.savedIntro : copy.shop.intro}</p></div>
+        <div className="catalog-intro-summary"><p>{savedOnly ? copy.shop.savedIntro : copy.shop.intro}</p><span className="catalog-intro-index">NES / {language === "de" ? "ALLE MODELLE" : "ALL STYLES"}</span></div>
       </section>
       <section className="catalog section-pad" aria-label={copy.shop.title}>
         <div className="catalog-controls">
-          <div className="catalog-tabs" role="group" aria-label={copy.brands.label}>
-            <button className={filter === "all" ? "is-active" : ""} aria-pressed={filter === "all"} type="button" onClick={() => onFilter("all")}>{copy.shop.all}</button>
-            {BRAND_WORLDS.map((brand) => <button className={filter === brand.id ? "is-active" : ""} aria-pressed={filter === brand.id} type="button" onClick={() => onFilter(brand.id)} key={brand.id}>{brand.name}</button>)}
+          <div className="catalog-tabs" role="group" aria-label={language === "de" ? "Produkte filtern" : "Filter products"}>
+            {tabs.map((tab) => <button className={filter === tab.id ? "is-active" : ""} aria-pressed={filter === tab.id} type="button" onClick={() => onFilter(tab.id)} key={tab.id}>{tab.label}</button>)}
           </div>
           <div className="catalog-toolbar">
             <label className="catalog-search" htmlFor="catalog-search"><SearchIcon /><span className="sr-only">{copy.shop.searchLabel}</span><input id="catalog-search" type="search" value={search} onChange={(event) => onSearch(event.target.value)} placeholder={copy.shop.searchPlaceholder} /></label>
@@ -1263,7 +1288,16 @@ function ShopPage({ copy, language, products, filter, search, sort, savedOnly, w
           </div>
         </div>
         {products.length > 0 ? (
-          <div className="product-grid catalog-grid">{products.map((product, productIndex) => <ProductCard key={product.id} product={product} wishlist={wishlist} onToggleFavorite={onToggleFavorite} copy={copy} language={language} onOpen={onOpen} revealDelay={`${Math.min(productIndex, 7) * 55}ms`} />)}</div>
+          savedOnly ? <div className="product-grid catalog-grid catalog-saved-grid">{products.map(renderCard)}</div> :
+            <div className="catalog-collections">
+              {sections.map((collection, sectionIndex) => <section className="catalog-collection" key={collection.id} aria-labelledby={`catalog-${collection.id}`}>
+                <div className="catalog-collection-head">
+                  <div><p className="catalog-collection-index">{String(sectionIndex + 1).padStart(2, "0")} / {collection.kind}</p><h2 id={`catalog-${collection.id}`}>{collection.name}</h2></div>
+                  <div className="catalog-collection-aside"><p>{collection.note}</p><span>{String(collection.products.length).padStart(2, "0")} {collection.products.length === 1 ? copy.shop.product : copy.shop.products}</span></div>
+                </div>
+                <div className="product-grid catalog-grid">{collection.products.map(renderCard)}</div>
+              </section>)}
+            </div>
         ) : (
           <div className="catalog-empty">
             <h2>{savedOnly && wishlist.length === 0 ? copy.shop.savedEmpty : copy.shop.noResults}</h2>
@@ -1415,7 +1449,7 @@ function FeaturedProductCard({ product, language, onOpen, onQuickAdd, wishlist, 
   };
 
   return (
-    <article className="featured-card" data-category={product.category} data-family={product.familyId} onKeyDown={(event) => event.key === "Escape" && setMobileSizesOpen(false)}>
+    <article className="featured-card" data-category={product.category} data-family={product.familyId} data-cutout={mainImage.src.includes("cutout") ? "true" : undefined} onKeyDown={(event) => event.key === "Escape" && setMobileSizesOpen(false)}>
       <div className={`featured-card-media${mainLoaded ? " is-loaded" : ""}${hoverLoaded ? " is-hover-loaded" : ""}`}>
         <span className="featured-card-skeleton" aria-hidden="true" />
         <img
