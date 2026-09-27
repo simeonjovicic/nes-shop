@@ -1,6 +1,9 @@
+import { WAI_PRODUCTS } from "./waiProducts.js";
+
 export const PRODUCTS = [
   {
     id: 1,
+    catalogHidden: true,
     brand: "WAI by Vehon",
     brandId: "vehon",
     name: "WAI Home",
@@ -21,6 +24,7 @@ export const PRODUCTS = [
   },
   {
     id: 2,
+    catalogHidden: true,
     brand: "WAI by Vehon",
     brandId: "vehon",
     name: "WAI Travel",
@@ -41,6 +45,7 @@ export const PRODUCTS = [
   },
   {
     id: 3,
+    catalogHidden: true,
     brand: "WAI by Vehon",
     brandId: "vehon",
     name: "WAI Flex",
@@ -61,6 +66,7 @@ export const PRODUCTS = [
   },
   {
     id: 4,
+    catalogHidden: true,
     brand: "WAI by Vehon",
     brandId: "vehon",
     name: "WAI Lounge",
@@ -256,4 +262,5 @@ export const PRODUCTS = [
       en: "Dark blue jacquard knit with contrasting pattern panels, a straight fit and ribbed trims.",
     },
   },
+  ...WAI_PRODUCTS,
 ];

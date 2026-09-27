@@ -1008,6 +1008,8 @@ html.reveal-ready [data-reveal].is-revealed {
   line-height: 1.65;
 }
 
+.featured-group { scroll-margin-top: calc(var(--header-height) + 24px); }
+
 .featured-group + .featured-group {
   margin-top: clamp(72px, 8vw, 112px);
 }
@@ -1064,10 +1066,13 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .featured-grid-shoes-accessories {
-  width: calc((100% - 2 * var(--featured-grid-gap)) / 3 * 2 + var(--featured-grid-gap));
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   margin-inline: auto;
 }
+
+.featured-grid-shoes-accessories .featured-card { grid-column: span 2; }
+.featured-grid-shoes-accessories .featured-card:last-child:nth-child(3n + 1) { grid-column: 3 / span 2; }
 
 .featured-section .section-action {
   margin-top: clamp(56px, 6vw, 82px);
@@ -1109,11 +1114,6 @@ html.reveal-ready [data-reveal].is-revealed {
   object-fit: contain;
   opacity: 0;
   transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.featured-card[data-category="shoes"] .featured-card-image {
-  filter: brightness(1.18) contrast(1.1);
-  mix-blend-mode: multiply;
 }
 
 .featured-card[data-category="knitwear"] .featured-card-image {
@@ -1320,14 +1320,15 @@ html.reveal-ready [data-reveal].is-revealed {
   position: relative;
   z-index: 3;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 5px;
   margin-top: 12px;
 }
 
 .featured-card-swatches button {
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   display: grid;
   place-items: center;
   border: 1px solid transparent;
@@ -1348,7 +1349,9 @@ html.reveal-ready [data-reveal].is-revealed {
 }
 
 .featured-card-color-name {
-  margin-left: 3px;
+  flex-basis: 100%;
+  order: -1;
+  margin-bottom: 3px;
   color: var(--brand-soft);
   font-size: 10px;
 }
@@ -1414,6 +1417,8 @@ html.reveal-ready [data-reveal].is-revealed {
     margin-inline: auto;
   }
   .featured-grid-knitwear .featured-card,
+  .featured-grid-shoes-accessories .featured-card,
+  .featured-grid-shoes-accessories .featured-card:last-child:nth-child(3n + 1),
   .featured-grid-knitwear .featured-card:nth-child(4),
   .featured-grid-knitwear .featured-card:nth-child(5) {
     grid-column: auto;
@@ -1558,12 +1563,12 @@ html.reveal-ready [data-reveal].is-revealed {
   opacity: 0;
 }
 
-.product-media:hover .product-image-main {
+.product-media.has-hover:hover .product-image-main {
   opacity: 0;
   transform: scale(1.025);
 }
 
-.product-media:hover .product-image-hover {
+.product-media.has-hover:hover .product-image-hover {
   opacity: 1;
   transform: scale(1.025);
 }

@@ -1,7 +1,41 @@
 export const MAX_QUANTITY = 99;
 
 export function getProductSlug(product) {
-  return product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return product.slug || product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+export function groupProductFamilies(products) {
+  const groups = new Map();
+  for (const product of products) {
+    const key = product.familyId || product.id;
+    if (!groups.has(key) || product.familyDefault) groups.set(key, product);
+  }
+  return [...groups.values()];
+}
+
+export function getProductVariants(product, products) {
+  if (product.familyId) return products.filter((item) => item.familyId === product.familyId);
+  return product.brandId === "montechiaro" ? products.filter((item) => item.brandId === "montechiaro") : [product];
+}
+
+export function getLinePrice(product, quantity = 1) {
+  return Number.isFinite(product?.price) ? product.price * quantity : null;
+}
+
+export function getBagTotal(bag, products) {
+  let total = 0;
+  for (const item of bag) {
+    const price = getLinePrice(products.find((product) => product.id === item.productId), item.qty);
+    if (price === null) return null;
+    total += price;
+  }
+  return total;
+}
+
+export function compareProductPrices(a, b, descending = false) {
+  if (!Number.isFinite(a.price)) return Number.isFinite(b.price) ? 1 : 0;
+  if (!Number.isFinite(b.price)) return -1;
+  return descending ? b.price - a.price : a.price - b.price;
 }
 
 export function readStored(key, fallback) {

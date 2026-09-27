@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WAI NILS – Aktueller Schuhbestand</title>
+<style>
+:root {
+  --bluegrey:#aebed0;
+  --yellow:#ffdd64;
+  --yellow-strong:#fff200;
+  --green:#b8d394;
+  --line:#161616;
+  --muted:#666;
+  --bg:#f3f4f6;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:#111; font-family:Arial,Helvetica,sans-serif; }
+.wrapper { max-width:1280px; margin:28px auto; padding:0 18px 40px; }
+.hero { background:#fff; border:2px solid var(--line); padding:22px 24px; margin-bottom:20px; box-shadow:0 8px 24px rgba(0,0,0,.08); }
+h1 { margin:0 0 8px; font-size:30px; }
+.lead { margin:0; color:#333; line-height:1.45; }
+.stats { display:grid; grid-template-columns:repeat(4,minmax(150px,1fr)); gap:12px; margin-top:18px; }
+.stat { border:1px solid #bbb; background:#fafafa; padding:12px 14px; }
+.stat strong { display:block; font-size:25px; } .stat span { color:var(--muted); font-size:13px; }
+.notice { margin-top:15px; padding:12px 14px; background:#fff8cc; border-left:5px solid #e4c700; line-height:1.45; }
+.section { background:#fff; margin:22px 0; border:2px solid var(--line); box-shadow:0 8px 24px rgba(0,0,0,.08); overflow:hidden; }
+.section-title { background:var(--bluegrey); padding:12px 14px; font-size:24px; font-weight:800; text-transform:uppercase; border-bottom:2px solid var(--line); }
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; table-layout:fixed; }
+th,td { border:1px solid var(--line); padding:7px 6px; vertical-align:middle; }
+th { background:var(--yellow); text-align:center; font-size:11px; text-transform:uppercase; }
+th.code-h { width:115px; } th.desc-h { width:210px; } th.unit-h { width:42px; } th.photo-h { width:72px; } th.size-h { width:56px; } th.total-h { width:68px; } th.pdf-h { width:66px; } th.diff-h { width:58px; }
+td { font-size:13px; }
+td.code { font-weight:700; } td.description { font-weight:600; } td.unit,td.num,td.total,td.pdf-total,td.diff { text-align:center; }
+td.photo { padding:2px; text-align:center; background:#f0f0f0; } td.photo img { width:66px; height:66px; object-fit:contain; display:block; margin:auto; }
+td.total { font-weight:800; background:#f8f8f8; } td.pdf-total { color:#555; background:#f3f3f3; } td.diff { font-weight:800; }
+.diff.neg { color:#a61b1b; } .diff.pos { color:#0c6b35; } .diff.zero { color:#555; }
+.note { margin-top:4px; font-size:9px; line-height:1.2; color:#5f5f5f; font-weight:400; }
+tfoot td { font-weight:800; background:var(--yellow-strong); font-size:14px; } tfoot td.grand { background:var(--green); font-size:16px; }
+.legend { padding:10px 14px 14px; color:#555; font-size:12px; line-height:1.4; }
+.missing { background:#fff; border:2px solid var(--line); box-shadow:0 8px 24px rgba(0,0,0,.08); }
+.missing-head { background:#dfdfdf; padding:12px 14px; border-bottom:2px solid var(--line); } .missing-head h2 { margin:0; font-size:22px; } .missing-head p { margin:6px 0 0; color:#444; }
+.missing-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:14px; }
+.missing-card { border:1px solid #aaa; display:grid; grid-template-columns:92px 1fr; min-height:112px; background:#fafafa; }
+.missing-card img { width:92px; height:110px; object-fit:contain; background:#eee; } .missing-card div { padding:10px; } .missing-card strong,.missing-card span,.missing-card small { display:block; } .missing-card span { margin:5px 0; font-size:12px; } .missing-card small { color:#555; line-height:1.35; }
+.footer { margin-top:16px; color:#555; font-size:12px; text-align:center; }
+@media (max-width:850px) { .stats { grid-template-columns:repeat(2,1fr); } .missing-grid { grid-template-columns:1fr; } .wrapper { padding:0 8px 24px; margin-top:8px; } }
+@media print {
+  @page { size:A4 landscape; margin:8mm; }
+  body { background:#fff; } .wrapper { max-width:none; margin:0; padding:0; } .hero,.section,.missing { box-shadow:none; } .hero { margin-bottom:6mm; }
+  .section { break-after:page; margin:0; } .missing { break-before:page; }
+  th,td { padding:3px; } td { font-size:9px; } th { font-size:8px; } td.photo img { width:42px; height:42px; }
+  .section-title { font-size:18px; padding:7px 10px; } .legend { font-size:9px; }
+  .missing-grid { grid-template-columns:repeat(3,1fr); }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <header class="hero">
+    <h1>WAI NILS – Aktueller Schuhbestand</h1>
+    <p class="lead">Aktuelle Größenwerte aus den erfassten Screenshots, abgeglichen mit den beiden PDF-Bestandslisten. Produktfotos und Produktbeschreibungen stammen aus den PDFs.</p>
+    <div class="stats">
+      <div class="stat"><strong>1.111</strong><span>Paar aktuell</span></div>
+      <div class="stat"><strong>26</strong><span>eindeutige Produktcodes</span></div>
+      <div class="stat"><strong>572</strong><span>Active / Sport</span></div>
+      <div class="stat"><strong>539</strong><span>Lifestyle</span></div>
+    </div>
+    <div class="notice"><strong>Datenabgleich:</strong> Die PDFs enthalten zusammen 1.624 Paar. Der aktuelle erfasste Bestand liegt bei 1.111 Paar. Drei doppelte Produktcodes wurden für diese Liste zusammengeführt: SSABLK1, LOWGYN4 und LLANVG3. Die Spalte „Differenz“ zeigt <em>aktueller Gesamtbestand minus PDF-Gesamtbestand</em>.</div>
+  </header>
+
+  <section class="section">
+    <div class="section-title">WAI Collection / Active – Low Outsole</div>
+    <div class="table-wrap"><table>
+      <thead><tr><th class="code-h">Code</th><th class="desc-h">Beschreibung</th><th class="unit-h">U.M.</th><th class="photo-h">Produkt</th><th class="size-h">36/37</th><th class="size-h">38/39</th><th class="size-h">40/41</th><th class="size-h">42/43</th><th class="size-h">44/45</th><th class="size-h">46/47</th><th class="total-h">Aktuell</th><th class="pdf-h">PDF</th><th class="diff-h">Diff.</th></tr></thead>
+      <tbody><tr>
+          <td class="code">SSABLK1<div class="note">2 aktuelle Datensätze zusammengeführt</div></td>
+          <td class="description">SPORT LOW BLACK</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SSABLK1"></td>
+          <td class="num">17</td><td class="num">23</td><td class="num">24</td><td class="num">5</td><td class="num">22</td><td class="num">12</td>
+          <td class="total">103</td>
+          <td class="pdf-total">123</td>
+          <td class="diff neg">-20</td>
+        </tr>
+<tr>
+          <td class="code">SSABLK7</td>
+          <td class="description">SPORT SOFT LOW BLACK</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SSABLK7"></td>
+          <td class="num">4</td><td class="num">6</td><td class="num">6</td><td class="num">4</td><td class="num">11</td><td class="num">3</td>
+          <td class="total">34</td>
+          <td class="pdf-total">74</td>
+          <td class="diff neg">-40</td>
+        </tr>
+<tr>
+          <td class="code">SSAPRM7</td>
+          <td class="description">SPORT SOFT LOW PRIMULA</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SSAPRM7"></td>
+          <td class="num">2</td><td class="num">6</td><td class="num">10</td><td class="num">34</td><td class="num">8</td><td class="num">3</td>
+          <td class="total">63</td>
+          <td class="pdf-total">96</td>
+          <td class="diff neg">-33</td>
+        </tr>
+<tr>
+          <td class="code">SLABLK1</td>
+          <td class="description">SPORT HIGH BLACK</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SLABLK1"></td>
+          <td class="num">0</td><td class="num">6</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">0</td>
+          <td class="total">7</td>
+          <td class="pdf-total">2</td>
+          <td class="diff pos">+5</td>
+        </tr>
+<tr>
+          <td class="code">SLABLK7</td>
+          <td class="description">SPORT SOFT HIGH BLACK</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SLABLK7"></td>
+          <td class="num">12</td><td class="num">33</td><td class="num">9</td><td class="num">31</td><td class="num">7</td><td class="num">2</td>
+          <td class="total">94</td>
+          <td class="pdf-total">97</td>
+          <td class="diff neg">-3</td>
+        </tr>
+<tr>
+          <td class="code">SLAPRM7</td>
+          <td class="description">SPORT SOFT HIGH PRIMULA</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SLAPRM7"></td>
+          <td class="num">3</td><td class="num">8</td><td class="num">13</td><td class="num">32</td><td class="num">10</td><td class="num">2</td>
+          <td class="total">68</td>
+          <td class="pdf-total">113</td>
+          <td class="diff neg">-45</td>
+        </tr>
+<tr>
+          <td class="code">SLAG012</td>
+          <td class="description">SPORT HIGH GR. DEEP BLUE</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SLAG012"></td>
+          <td class="num">0</td><td class="num">2</td><td class="num">0</td><td class="num">2</td><td class="num">0</td><td class="num">1</td>
+          <td class="total">5</td>
+          <td class="pdf-total">53</td>
+          <td class="diff neg">-48</td>
+        </tr>
+<tr>
+          <td class="code">SLAG022</td>
+          <td class="description">SPORT HIGH GR. SMASH</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SLAG022"></td>
+          <td class="num">2</td><td class="num">14</td><td class="num">1</td><td class="num">18</td><td class="num">0</td><td class="num">0</td>
+          <td class="total">35</td>
+          <td class="pdf-total">43</td>
+          <td class="diff neg">-8</td>
+        </tr>
+<tr>
+          <td class="code">SLAG042<div class="note">Im aktuellen Datensatz als SLAGA042 geschrieben</div></td>
+          <td class="description">SPORT HIGH GR. MANDALA</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SLAG042"></td>
+          <td class="num">2</td><td class="num">15</td><td class="num">5</td><td class="num">21</td><td class="num">0</td><td class="num">0</td>
+          <td class="total">43</td>
+          <td class="pdf-total">50</td>
+          <td class="diff neg">-7</td>
+        </tr>
+<tr>
+          <td class="code">SLAG052</td>
+          <td class="description">SPORT HIGH GR. CAMO</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SLAG052"></td>
+          <td class="num">0</td><td class="num">11</td><td class="num">3</td><td class="num">4</td><td class="num">0</td><td class="num">5</td>
+          <td class="total">23</td>
+          <td class="pdf-total">27</td>
+          <td class="diff neg">-4</td>
+        </tr>
+<tr>
+          <td class="code">SOAG012</td>
+          <td class="description">SPORT SLIP ON GR. DEEP BLUE</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SOAG012"></td>
+          <td class="num">0</td><td class="num">14</td><td class="num">3</td><td class="num">8</td><td class="num">1</td><td class="num">0</td>
+          <td class="total">26</td>
+          <td class="pdf-total">28</td>
+          <td class="diff neg">-2</td>
+        </tr>
+<tr>
+          <td class="code">SOAG052</td>
+          <td class="description">SPORT SLIP ON GR. CAMO</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SOAG052"></td>
+          <td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">11</td><td class="num">14</td><td class="num">1</td>
+          <td class="total">28</td>
+          <td class="pdf-total">32</td>
+          <td class="diff neg">-4</td>
+        </tr>
+<tr>
+          <td class="code">SOAG062</td>
+          <td class="description">SPORT SLIP ON GR. YELLOW PDP</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SOAG062"></td>
+          <td class="num">0</td><td class="num">4</td><td class="num">0</td><td class="num">8</td><td class="num">3</td><td class="num">1</td>
+          <td class="total">16</td>
+          <td class="pdf-total">21</td>
+          <td class="diff neg">-5</td>
+        </tr>
+<tr>
+          <td class="code">SOAG072</td>
+          <td class="description">SPORT SLIP ON GR. RED PASSION</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="SOAG072"></td>
+          <td class="num">0</td><td class="num">3</td><td class="num">3</td><td class="num">16</td><td class="num">3</td><td class="num">2</td>
+          <td class="total">27</td>
+          <td class="pdf-total">31</td>
+          <td class="diff neg">-4</td>
+        </tr></tbody>
+      <tfoot><tr><td colspan="10" style="text-align:right">TOTAL AKTUELL</td><td class="grand">572</td><td>889</td><td>-317</td></tr></tfoot>
+    </table></div>
+    <div class="legend">Aktuelle Werte nach Größe. Das im PDF geführte Modell SSAG014 ist nicht in den aktuellen Daten enthalten und erscheint daher nur im Abschnitt „Nicht vorhanden“.</div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">WAI Collection / Lifestyle – Low Outsole</div>
+    <div class="table-wrap"><table>
+      <thead><tr><th class="code-h">Code</th><th class="desc-h">Beschreibung</th><th class="unit-h">U.M.</th><th class="photo-h">Produkt</th><th class="size-h">36/37</th><th class="size-h">38/39</th><th class="size-h">40/41</th><th class="size-h">42/43</th><th class="size-h">44/45</th><th class="size-h">46/47</th><th class="total-h">Aktuell</th><th class="pdf-h">PDF</th><th class="diff-h">Diff.</th></tr></thead>
+      <tbody><tr>
+          <td class="code">LMAG032</td>
+          <td class="description">LIFESTYLE MOCASSIN GR. BLACK PDP</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LMAG032"></td>
+          <td class="num">15</td><td class="num">0</td><td class="num">2</td><td class="num">10</td><td class="num">6</td><td class="num">4</td>
+          <td class="total">37</td>
+          <td class="pdf-total">79</td>
+          <td class="diff neg">-42</td>
+        </tr>
+<tr>
+          <td class="code">LMAG052</td>
+          <td class="description">LIFESTYLE MOCASSIN GR. CAMO</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LMAG052"></td>
+          <td class="num">3</td><td class="num">8</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td class="num">1</td>
+          <td class="total">18</td>
+          <td class="pdf-total">16</td>
+          <td class="diff pos">+2</td>
+        </tr>
+<tr>
+          <td class="code">LMANVG3</td>
+          <td class="description">LIFESTYLE MOCASSIN COTTON</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LMANVG3"></td>
+          <td class="num">5</td><td class="num">9</td><td class="num">6</td><td class="num">0</td><td class="num">0</td><td class="num">0</td>
+          <td class="total">20</td>
+          <td class="pdf-total">24</td>
+          <td class="diff neg">-4</td>
+        </tr>
+<tr>
+          <td class="code">LMAOLV6</td>
+          <td class="description">LIFESTYLE MOCASSIN SCHOELLER</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LMAOLV6"></td>
+          <td class="num">5</td><td class="num">13</td><td class="num">0</td><td class="num">10</td><td class="num">6</td><td class="num">4</td>
+          <td class="total">38</td>
+          <td class="pdf-total">51</td>
+          <td class="diff neg">-13</td>
+        </tr>
+<tr>
+          <td class="code">LMADNM5</td>
+          <td class="description">LIFESTYLE MOCASSIN DENIM</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LMADNM5"></td>
+          <td class="num">5</td><td class="num">11</td><td class="num">4</td><td class="num">16</td><td class="num">15</td><td class="num">6</td>
+          <td class="total">57</td>
+          <td class="pdf-total">63</td>
+          <td class="diff neg">-6</td>
+        </tr>
+<tr>
+          <td class="code">LMWGYN4</td>
+          <td class="description">LIFESTYLE MOCASSIN WOOL</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LMWGYN4"></td>
+          <td class="num">2</td><td class="num">4</td><td class="num">1</td><td class="num">13</td><td class="num">18</td><td class="num">7</td>
+          <td class="total">45</td>
+          <td class="pdf-total">39</td>
+          <td class="diff pos">+6</td>
+        </tr>
+<tr>
+          <td class="code">LMWPDP8<div class="note">Im PDF als LMWPDP bezeichnet</div></td>
+          <td class="description">LIFESTYLE MOCASSIN WOOL PDP</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LMWPDP8"></td>
+          <td class="num">4</td><td class="num">4</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">0</td>
+          <td class="total">14</td>
+          <td class="pdf-total">14</td>
+          <td class="diff zero">+0</td>
+        </tr>
+<tr>
+          <td class="code">LOANVG3</td>
+          <td class="description">LIFESTYLE SLIP ON COTTON</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LOANVG3"></td>
+          <td class="num">0</td><td class="num">8</td><td class="num">1</td><td class="num">13</td><td class="num">12</td><td class="num">8</td>
+          <td class="total">42</td>
+          <td class="pdf-total">44</td>
+          <td class="diff neg">-2</td>
+        </tr>
+<tr>
+          <td class="code">LOWGYN4<div class="note">2 aktuelle Datensätze zusammengeführt</div></td>
+          <td class="description">LIFESTYLE SLIP ON WOOL</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LOWGYN4"></td>
+          <td class="num">4</td><td class="num">3</td><td class="num">5</td><td class="num">9</td><td class="num">9</td><td class="num">1</td>
+          <td class="total">31</td>
+          <td class="pdf-total">31</td>
+          <td class="diff zero">+0</td>
+        </tr>
+<tr>
+          <td class="code">LLANVG3<div class="note">2 aktuelle Datensätze zusammengeführt</div></td>
+          <td class="description">LIFESTYLE HIGH COTTON</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LLANVG3"></td>
+          <td class="num">8</td><td class="num">16</td><td class="num">14</td><td class="num">39</td><td class="num">22</td><td class="num">5</td>
+          <td class="total">104</td>
+          <td class="pdf-total">106</td>
+          <td class="diff neg">-2</td>
+        </tr>
+<tr>
+          <td class="code">LLWGYN4</td>
+          <td class="description">LIFESTYLE HIGH WOOL</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LLWGYN4"></td>
+          <td class="num">8</td><td class="num">10</td><td class="num">8</td><td class="num">11</td><td class="num">11</td><td class="num">2</td>
+          <td class="total">50</td>
+          <td class="pdf-total">50</td>
+          <td class="diff zero">+0</td>
+        </tr>
+<tr>
+          <td class="code">LLWPDP8</td>
+          <td class="description">LIFESTYLE HIGH WOOL PDP</td>
+          <td class="unit">PA</td>
+          <td class="photo"><img src="[EMBEDDED IMAGE]" alt="LLWPDP8"></td>
+          <td class="num">6</td><td class="num">14</td><td class="num">6</td><td class="num">26</td><td class="num">19</td><td class="num">12</td>
+          <td class="total">83</td>
+          <td class="pdf-total">84</td>
+          <td class="diff neg">-1</td>
+        </tr></tbody>
+      <tfoot><tr><td colspan="10" style="text-align:right">TOTAL AKTUELL</td><td class="grand">539</td><td>735</td><td>-196</td></tr></tfoot>
+    </table></div>
+    <div class="legend">LMWPDP8 wurde mit dem PDF-Modell LMWPDP abgeglichen. Die Produktbezeichnung und das Produktfoto stimmen überein; nur der Code ist in den aktuellen Daten um die Endziffer „8“ erweitert.</div>
+  </section>
+
+  <section class="missing">
+    <div class="missing-head"><h2>Produkte aus den PDFs, die in den aktuellen Daten fehlen</h2><p>9 Produktcodes mit insgesamt 233 Paar laut PDF.</p></div>
+    <div class="missing-grid"><div class="missing-card">
+          <img src="[EMBEDDED IMAGE]" alt="SSAG014">
+          <div><strong>SSAG014</strong><span>SPORT LOW KID</span><small>PDF-Bestand: 99 Paar<br>36/37: 7, 38/39: 14, 40/41: 28, 42/43: 28, 44/45: 22, 46/47: 0</small></div>
+        </div>
+<div class="missing-card">
+          <img src="[EMBEDDED IMAGE]" alt="LMAVL01">
+          <div><strong>LMAVL01</strong><span>LIFESTYLE MOCASSIN VELVET VERDE/SEQUOIA</span><small>PDF-Bestand: 22 Paar<br>36/37: 3, 38/39: 0, 40/41: 1, 42/43: 9, 44/45: 7, 46/47: 2</small></div>
+        </div>
+<div class="missing-card">
+          <img src="[EMBEDDED IMAGE]" alt="LMAVL02">
+          <div><strong>LMAVL02</strong><span>LIFESTYLE MOCASSIN VELVET BLUE SCURO</span><small>PDF-Bestand: 8 Paar<br>36/37: 0, 38/39: 0, 40/41: 1, 42/43: 2, 44/45: 4, 46/47: 1</small></div>
+        </div>
+<div class="missing-card">
+          <img src="[EMBEDDED IMAGE]" alt="LMAVL04">
+          <div><strong>LMAVL04</strong><span>LIFESTYLE MOCASSIN VELVET GIALLO/MIRRA</span><small>PDF-Bestand: 7 Paar<br>36/37: 2, 38/39: 0, 40/41: 1, 42/43: 4, 44/45: 0, 46/47: 0</small></div>
+        </div>
+<div class="missing-card">
+          <img src="[EMBEDDED IMAGE]" alt="LMAVL05">
+          <div><strong>LMAVL05</strong><span>LIFESTYLE MOCASSIN VELVET NERO</span><small>PDF-Bestand: 22 Paar<br>36/37: 6, 38/39: 0, 40/41: 10, 42/43: 3, 44/45: 3, 46/47: 0</small></div>
+        </div>
+<div class="missing-card">
+          <img src="[EMBEDDED IMAGE]" alt="LMAVL07">
+          <div><strong>LMAVL07</strong><span>LIFESTYLE MOCASSIN VELVET BLU ELET./COUTURIER</span><small>PDF-Bestand: 3 Paar<br>36/37: 0, 38/39: 0, 40/41: 2, 42/43: 0, 44/45: 1, 46/47: 0</small></div>
+        </div>
+<div class="missing-card">
+          <img src="[EMBEDDED IMAGE]" alt="LMAVL15">
+          <div><strong>LMAVL15</strong><span>LIFESTYLE MOCASSIN VELVET CILIEGIA/CLASS</span><small>PDF-Bestand: 1 Paar<br>36/37: 0, 38/39: 1, 40/41: 0, 42/43: 0, 44/45: 0, 46/47: 0</small></div>
+        </div>
+<div class="missing-card">
+          <img src="[EMBEDDED IMAGE]" alt="LMWVL12">
+          <div><strong>LMWVL12</strong><span>LIFESTYLE MOCASSIN VELVET DENIM/ATLANTIDE</span><small>PDF-Bestand: 32 Paar<br>36/37: 7, 38/39: 1, 40/41: 7, 42/43: 3, 44/45: 13, 46/47: 1</small></div>
+        </div>
+<div class="missing-card">
+          <img src="[EMBEDDED IMAGE]" alt="LMWVL16">
+          <div><strong>LMWVL16</strong><span>LIFESTYLE MOCASSIN VELVET ARAGOSTA/CINAMMON</span><small>PDF-Bestand: 39 Paar<br>36/37: 0, 38/39: 0, 40/41: 2, 42/43: 14, 44/45: 20, 46/47: 3</small></div>
+        </div></div>
+  </section>
+  <div class="footer">Erstellt aus den aktuellen Bestands-Screenshots und den PDFs „WAI NILS ACTIVE LOW OUTSOLE“ sowie „WAI NILS LIFESTYLE LOW OUTSOLE“.</div>
+</div>
+</body>
+</html>

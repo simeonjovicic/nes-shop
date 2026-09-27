@@ -1,0 +1,360 @@
+[
+  {
+    "code": "SSABLK1",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-104d49ec-d8fd-40c0-a321-c9a248ada96c.png",
+    "asset": "public/shop/products/wai/ssablk1-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 208228
+  },
+  {
+    "code": "SSABLK7",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-28ffa488-205e-4eaf-bebc-da0084864e75.png",
+    "asset": "public/shop/products/wai/ssablk7-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 251432
+  },
+  {
+    "code": "SSAPRM7",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-985fceb1-8b4b-4255-ad3a-343c219073da.png",
+    "asset": "public/shop/products/wai/ssaprm7-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 232832
+  },
+  {
+    "code": "SLABLK1",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-184c848d-9b81-45ae-950f-befde954a309.png",
+    "referenceNotes": "Plain smooth matte black fine stretch textile, NOT the textured mesh of the Soft model. Slim ankle shaft, simple angled open top, unobtrusive black toe panel, barely visible thin sole.",
+    "asset": "public/shop/products/wai/slablk1-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 180728
+  },
+  {
+    "code": "SLABLK7",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-a6ec78b0-d430-4da7-9d72-4fb452e7eb6e.png",
+    "referenceNotes": "All-black Soft model with a subtle fine horizontal wavy mesh weave on the front, smooth black rear panel, black toe cap. The shaft edge is a single thin textile edge, not a thick ribbed cuff.",
+    "asset": "public/shop/products/wai/slablk7-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 210880
+  },
+  {
+    "code": "SLAPRM7",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-7e3e8c1c-3406-4d2b-83a2-12800ec8373b.png",
+    "referenceNotes": "Bright magenta/primula front with the fine horizontal wavy mesh texture of the Soft model. Smooth black rear strip and heel, black toe cap. Do not add a thick cuff.",
+    "asset": "public/shop/products/wai/slaprm7-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 246342
+  },
+  {
+    "code": "SLAG012",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-0028c18b-e0ef-41ab-b250-0a725f359dda.png",
+    "referenceNotes": "Deep azure blue fine smooth fabric front and shaft; curved transverse seam where the ankle meets the instep. Smooth black rear panel and black toe cap. Match the reference blue rather than interpreting the color name.",
+    "asset": "public/shop/products/wai/slag012-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 260670
+  },
+  {
+    "code": "SLAG022",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-d6190558-6425-45a8-be68-badb5fccec1b.png",
+    "asset": "public/shop/products/wai/slag022-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 253528
+  },
+  {
+    "code": "SLAG042",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-29b7d9e1-8c15-44e2-95f6-7138e71bdd93.png",
+    "referenceNotes": "Thin smooth white textile printed with overlapping fine BLUE SPIROGRAPH rosettes, not lace or embroidery. Preserve the major rosettes and their fine line density. Smooth black heel/rear panel and black toe cap. Remove the unrelated cropped logo fragment in the top right background.",
+    "asset": "public/shop/products/wai/slag042-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 375804
+  },
+  {
+    "code": "SLAG052",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-d4f24d9f-0dee-404c-be19-eff4f30f5d9f.png",
+    "referenceNotes": "Thin smooth printed fabric with large FACETED TRIANGULAR polygon shapes in sage, mint, muted forest green and blue-green. This is geometric camo, not irregular camouflage blobs. Preserve the triangle scale and arrangement, black rear panel and toe cap, and tiny red outsole edge only where visible.",
+    "asset": "public/shop/products/wai/slag052-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 291580
+  },
+  {
+    "code": "SOAG012",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-6beb555a-92da-4310-857c-136d2452be76.png",
+    "referenceNotes": "Low open slip-on with a smooth vivid azure/cobalt blue front panel, black rear/heel and black toe cap. No moccasin strap, no extra seams or lace. Remove the white display last.",
+    "asset": "public/shop/products/wai/soag012-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 222300
+  },
+  {
+    "code": "SOAG052",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-9ffdb1be-1c59-49b3-bca9-2eb14a09c785.png",
+    "referenceNotes": "Low slip-on with a green geometric polygon/triangle print at the exact scale of the source. Smooth fabric, black rear/heel and toe cap. No moccasin strap. Remove the white last.",
+    "asset": "public/shop/products/wai/soag052-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 242034
+  },
+  {
+    "code": "SOAG062",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-6766f717-674d-48fa-9566-fb0e3d4e8401.png",
+    "referenceNotes": "Low slip-on with sharp LIME GREEN and WHITE houndstooth printed on thin smooth fabric. The reference color is lime green, even though the catalog calls it Yellow. Black heel and toe cap. No moccasin strap. Remove the white last.",
+    "asset": "public/shop/products/wai/soag062-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 260916
+  },
+  {
+    "code": "SOAG072",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-76ca6401-66de-41e8-8ad9-b52820ad6cdb.png",
+    "referenceNotes": "Low slip-on with bright red front fabric, smooth fine weave, black heel/rear and toe cap. No moccasin strap. Remove the white last.",
+    "asset": "public/shop/products/wai/soag072-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 237162
+  },
+  {
+    "code": "LMAG032",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-e1981cf8-5128-4645-a3c8-723d27c8d49f.png",
+    "referenceNotes": "Extremely thin fabric moccasin with a LARGE dark navy/near-black and white houndstooth print. Deep V opening, flat BLACK textile penny strap with narrow slit, simple stitched apron outline. Black rear heel panel. The pattern is much larger and sharper than the Wool PDP model. Remove the white last.",
+    "asset": "public/shop/products/wai/lmag032-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 242246
+  },
+  {
+    "code": "LMAG052",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-d9d8bea8-cbfe-4026-85d8-e477e4832d37.png",
+    "referenceNotes": "Extremely thin fabric moccasin with muted green geometric polygon/triangle print, V opening, flat matching printed textile strap with thin slit, stitched apron outline. Black rear heel panel. Remove the white last.",
+    "asset": "public/shop/products/wai/lmag052-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 296096
+  },
+  {
+    "code": "LMANVG3",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-279030ca-bccb-4ce4-b160-898d13066df4.png",
+    "referenceNotes": "Dark navy plain finely woven cotton moccasin, V opening, two horizontal cut/stitch lines forming a thin matching fabric strap and simple apron seam. Slight muted greenish thread is visible on the strap. No thick edge or leather welt. Black rear heel panel. Remove the white last.",
+    "asset": "public/shop/products/wai/lmanvg3-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 257776
+  },
+  {
+    "code": "LMAOLV6",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-327f3298-25b1-42d2-9d38-a0959aa8bc39.png",
+    "referenceNotes": "Muted olive gray, almost taupe-gray, very fine smooth technical textile moccasin with V opening, subtle matching flat strap slit and subtle apron seam. Black rear heel panel. No coarse knit, no leather texture. Remove the white last.",
+    "asset": "public/shop/products/wai/lmaolv6-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 197096
+  },
+  {
+    "code": "LMADNM5",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-8affff9c-dc2c-433a-a0aa-22dec2a11b6e.png",
+    "asset": "public/shop/products/wai/lmadnm5-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 322852
+  },
+  {
+    "code": "LMWGYN4",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-cb703b30-1ffa-4fd6-a1f7-949f30af98c7.png",
+    "referenceNotes": "Heather gray fine lightweight wool CLOTH moccasin, not bulky boiled wool or chunky knitted felt. V opening, extremely flat matching fabric strap detail and subtle apron seam, black rear heel panel. Remove the white last.",
+    "asset": "public/shop/products/wai/lmwgyn4-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 282002
+  },
+  {
+    "code": "LMWPDP8",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-c9d908eb-19d2-463d-bc37-99366288ccf9.png",
+    "referenceNotes": "Black/white finely textured wool houndstooth cloth moccasin. V opening, extremely flat matching patterned cloth strap and subtle apron seam, black rear heel panel. Preserve the fuzzy textile pattern at reference scale without thickening it. Remove the white last and unrelated cropped logo in the upper right.",
+    "asset": "public/shop/products/wai/lmwpdp8-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 249178
+  },
+  {
+    "code": "LOANVG3",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-fb808621-9295-447b-a485-93d1552b2436.png",
+    "referenceNotes": "Low slip-on with simple deep navy cotton fabric front, black heel/rear and toe cap. Fine subtle cotton weave, no moccasin strap. Remove the white last.",
+    "asset": "public/shop/products/wai/loanvg3-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 229390
+  },
+  {
+    "code": "LOWGYN4",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-c2e30294-97b1-41f4-8f27-05d91e9f8280.png",
+    "referenceNotes": "Low slip-on with simple heather-gray thin wool cloth front, black heel/rear and toe cap. Fine light wool fabric, not thick felt, no moccasin strap. Remove the white last.",
+    "asset": "public/shop/products/wai/lowgyn4-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 262424
+  },
+  {
+    "code": "LLANVG3",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-06f1dfb9-a07c-4a58-8dd8-8a0b176c0929.png",
+    "referenceNotes": "Slim ankle-high textile foot covering, deep navy finely woven cotton front and shaft, curved transverse ankle seam, black rear heel panel and toe cap. Delicate single-layer opening with no padded/ribbed cuff. Remove unrelated cropped logo outside product.",
+    "asset": "public/shop/products/wai/llanvg3-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 284920
+  },
+  {
+    "code": "LLWGYN4",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-8886dc2d-05eb-44e2-b76e-82ca310bbca7.png",
+    "referenceNotes": "Slim ankle-high textile foot covering in heather-gray lightweight wool cloth, black rear heel panel and toe cap. The textile is thin cloth despite the wool label. Delicate single-layer open shaft edge, no padded/ribbed cuff.",
+    "asset": "public/shop/products/wai/llwgyn4-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 275700
+  },
+  {
+    "code": "LLWPDP8",
+    "path": "/Users/simeon/.codex/generated_images/01a0de98-0cf9-7711-b643-4717efd97d9d/exec-c7f5521c-4587-4eda-9589-d3b3f581cbe9.png",
+    "asset": "public/shop/products/wai/llwpdp8-cutout-v1.webp",
+    "width": 1122,
+    "height": 1402,
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "bytes": 272494
+  }
+]

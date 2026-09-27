@@ -1,0 +1,236 @@
+[
+  {
+    "index": 1,
+    "code": "SSABLK1",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT LOW BLACK",
+    "source": "wai-stock-reference/01-SSABLK1.png",
+    "asset": "/shop/products/wai/ssablk1-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 2,
+    "code": "SSABLK7",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT SOFT LOW BLACK",
+    "source": "wai-stock-reference/02-SSABLK7.png",
+    "asset": "/shop/products/wai/ssablk7-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 3,
+    "code": "SSAPRM7",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT SOFT LOW PRIMULA",
+    "source": "wai-stock-reference/03-SSAPRM7.png",
+    "asset": "/shop/products/wai/ssaprm7-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 4,
+    "code": "SLABLK1",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT HIGH BLACK",
+    "source": "wai-stock-reference/04-SLABLK1.png",
+    "asset": "/shop/products/wai/slablk1-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 5,
+    "code": "SLABLK7",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT SOFT HIGH BLACK",
+    "source": "wai-stock-reference/05-SLABLK7.png",
+    "asset": "/shop/products/wai/slablk7-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 6,
+    "code": "SLAPRM7",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT SOFT HIGH PRIMULA",
+    "source": "wai-stock-reference/06-SLAPRM7.png",
+    "asset": "/shop/products/wai/slaprm7-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 7,
+    "code": "SLAG012",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT HIGH GR. DEEP BLUE",
+    "source": "wai-stock-reference/07-SLAG012.png",
+    "asset": "/shop/products/wai/slag012-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 8,
+    "code": "SLAG022",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT HIGH GR. SMASH",
+    "source": "wai-stock-reference/08-SLAG022.png",
+    "asset": "/shop/products/wai/slag022-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 9,
+    "code": "SLAG042",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT HIGH GR. MANDALA",
+    "source": "wai-stock-reference/09-SLAG042.png",
+    "asset": "/shop/products/wai/slag042-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 10,
+    "code": "SLAG052",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT HIGH GR. CAMO",
+    "source": "wai-stock-reference/10-SLAG052.png",
+    "asset": "/shop/products/wai/slag052-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 11,
+    "code": "SOAG012",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT SLIP ON GR. DEEP BLUE",
+    "source": "wai-stock-reference/11-SOAG012.png",
+    "asset": "/shop/products/wai/soag012-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 12,
+    "code": "SOAG052",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT SLIP ON GR. CAMO",
+    "source": "wai-stock-reference/12-SOAG052.png",
+    "asset": "/shop/products/wai/soag052-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 13,
+    "code": "SOAG062",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT SLIP ON GR. YELLOW PDP",
+    "source": "wai-stock-reference/13-SOAG062.png",
+    "asset": "/shop/products/wai/soag062-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 14,
+    "code": "SOAG072",
+    "section": "WAI Collection / Active \u2013 Low Outsole",
+    "description": "SPORT SLIP ON GR. RED PASSION",
+    "source": "wai-stock-reference/14-SOAG072.png",
+    "asset": "/shop/products/wai/soag072-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 15,
+    "code": "LMAG032",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE MOCASSIN GR. BLACK PDP",
+    "source": "wai-stock-reference/15-LMAG032.png",
+    "asset": "/shop/products/wai/lmag032-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 16,
+    "code": "LMAG052",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE MOCASSIN GR. CAMO",
+    "source": "wai-stock-reference/16-LMAG052.png",
+    "asset": "/shop/products/wai/lmag052-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 17,
+    "code": "LMANVG3",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE MOCASSIN COTTON",
+    "source": "wai-stock-reference/17-LMANVG3.png",
+    "asset": "/shop/products/wai/lmanvg3-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 18,
+    "code": "LMAOLV6",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE MOCASSIN SCHOELLER",
+    "source": "wai-stock-reference/18-LMAOLV6.png",
+    "asset": "/shop/products/wai/lmaolv6-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 19,
+    "code": "LMADNM5",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE MOCASSIN DENIM",
+    "source": "wai-stock-reference/19-LMADNM5.png",
+    "asset": "/shop/products/wai/lmadnm5-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 20,
+    "code": "LMWGYN4",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE MOCASSIN WOOL",
+    "source": "wai-stock-reference/20-LMWGYN4.png",
+    "asset": "/shop/products/wai/lmwgyn4-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 21,
+    "code": "LMWPDP8",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE MOCASSIN WOOL PDP",
+    "source": "wai-stock-reference/21-LMWPDP8.png",
+    "asset": "/shop/products/wai/lmwpdp8-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 22,
+    "code": "LOANVG3",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE SLIP ON COTTON",
+    "source": "wai-stock-reference/22-LOANVG3.png",
+    "asset": "/shop/products/wai/loanvg3-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 23,
+    "code": "LOWGYN4",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE SLIP ON WOOL",
+    "source": "wai-stock-reference/23-LOWGYN4.png",
+    "asset": "/shop/products/wai/lowgyn4-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 24,
+    "code": "LLANVG3",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE HIGH COTTON",
+    "source": "wai-stock-reference/24-LLANVG3.png",
+    "asset": "/shop/products/wai/llanvg3-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 25,
+    "code": "LLWGYN4",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE HIGH WOOL",
+    "source": "wai-stock-reference/25-LLWGYN4.png",
+    "asset": "/shop/products/wai/llwgyn4-cutout-v1.webp",
+    "status": "ready"
+  },
+  {
+    "index": 26,
+    "code": "LLWPDP8",
+    "section": "WAI Collection / Lifestyle \u2013 Low Outsole",
+    "description": "LIFESTYLE HIGH WOOL PDP",
+    "source": "wai-stock-reference/26-LLWPDP8.png",
+    "asset": "/shop/products/wai/llwpdp8-cutout-v1.webp",
+    "status": "ready"
+  }
+]

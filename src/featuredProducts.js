@@ -1,21 +1,25 @@
 import { PRODUCTS } from "./products";
+import { WAI_FAMILIES } from "./waiProducts";
 
 // Homepage photography and colour choices; product details come from the catalogue.
 const image = (src, width, height) => ({ src, width, height });
 
+const waiFeatured = WAI_FAMILIES.map((family) => {
+  const variants = PRODUCTS.filter((product) => product.familyId === family.id);
+  const product = variants.find((variant) => variant.familyDefault);
+  return {
+    id: family.id, sourceProductId: product.id, brand: product.brand,
+    name: family.name, category: "shoes", familyId: family.id,
+    images: [image(product.image, 1122, 1402)],
+    colors: [product, ...variants.filter((variant) => variant.id !== product.id)].map((variant) => ({
+      sourceProductId: variant.id, name: variant.color.de, hex: variant.hex, swatch: variant.swatch,
+      image: variant.image, width: 1122, height: 1402,
+    })),
+  };
+});
+
 export const featuredProducts = [
-  {
-    id: "wai-home",
-    sourceProductId: 1,
-    brand: "WAI by Vehon",
-    name: "WAI Home",
-    subtitle: "Indoor Feel Shoe",
-    badge: { de: "Neu", en: "New" },
-    category: "shoes",
-    images: [image("/wai_front.jpeg", 768, 1376), image("/wai_behind.jpeg", 768, 1376)],
-    colors: [{ name: "Indigo", hex: "#354b69", image: "/wai_front.jpeg" }],
-    slug: "wai-home",
-  },
+  ...waiFeatured,
   {
     id: "pully-rosso",
     sourceProductId: 12,
@@ -37,8 +41,8 @@ export const featuredProducts = [
     name: "Prince Loafer",
     subtitle: "3D Knit Loafer",
     category: "shoes",
-    images: [image("/shop/products/vehon-prince-front.webp", 1086, 1448), image("/shop/products/vehon-prince-side.webp", 1086, 1448)],
-    colors: [{ name: "Nero", hex: "#1f1f1d", image: "/shop/products/vehon-prince-front.webp" }],
+    images: [image("/shop/products/prince-loafer-cutout-front-v1.webp", 1122, 1402), image("/shop/products/prince-loafer-cutout-side-v1.webp", 1122, 1402)],
+    colors: [{ name: "Nero", hex: "#1f1f1d", image: "/shop/products/prince-loafer-cutout-front-v1.webp" }],
     slug: "prince-loafer",
   },
   {
