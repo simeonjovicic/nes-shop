@@ -9,8 +9,43 @@ import "./shop-polish.css";
 import "./product-page.css";
 import "./featured-showcase.css";
 import "./catalog-page.css";
-import { BRANDS, getBrandForProduct, brandIdFromPath } from "./brands.js";
-import { BrandCards, BrandsPage, BrandDetailPage, AboutPage, MaterialStudy } from "./BrandExperience.jsx";
+
+const BRAND_WORLDS = [
+  {
+    id: "vehon",
+    index: "01",
+    name: "Vehon / WAI",
+    category: { de: "Feel Shoes & Mocassini", en: "Feel shoes & moccasins" },
+    note: {
+      de: "Natürliche Bewegung trifft italienische Form.",
+      en: "Natural movement meets Italian form.",
+    },
+    image: "/shop/hero-wai-sunset.webp",
+    position: "58% center",
+    className: "brand-world-wide",
+  },
+  {
+    id: "montechiaro",
+    index: "02",
+    name: "Montechiaro",
+    category: { de: "Italian Knitwear", en: "Italian knitwear" },
+    note: {
+      de: "Dressed down. Never plain.",
+      en: "Dressed down. Never plain.",
+    },
+    // This frame carries campaign type down its right-hand side. The tile is
+    // taller than it is wide, so the landscape crop keeps only the left third —
+    // the model — and leaves the burnt-in headline out of frame.
+    image: "/shop/montechiaro-editorial.webp",
+    position: "15% center",
+    className: "brand-world-wide brand-world-dark",
+  },
+];
+
+const CATALOG_LINEUPS = [
+  { id: "wai", index: "01", filter: "vehon", image: "/shop/collections/wai-lineup-v1.webp" },
+  { id: "vehon", index: "02", filter: "vehon", image: "/shop/collections/vehon-lineup-v1.webp" },
+];
 
 const GALLERY_IMAGES = [
   { src: "/shop/gallery/wai-ground.webp", brand: "WAI" },
@@ -31,39 +66,67 @@ const GALLERY_IMAGES = [
   { src: "/shop/gallery/wai-stone-lounge.webp", brand: "WAI" },
 ];
 
-// Material, form and combinations from the existing shop image library.
+// The spotlight leads into the product grid with a single shoe, scrubbed apart
+// layer by layer as you scroll. The frames are a rendered exploded view, not
+// catalogue photography — see SEQUENCE_DIR for the source set.
+const SPOTLIGHT_ID = 1;
+const SEQUENCE_DIR = "/shop/sequence/wai-home";
+const SEQUENCE_FRAMES = 69;
+const SEQUENCE_STILL = `${SEQUENCE_DIR}/still.jpg`;
+// Frames are 1100x618; the shoe never leaves x 190-1020 across the sequence,
+// so everything outside that is empty backdrop.
+const SOURCE_HEIGHT = 618;
+const SOURCE_CROP = { x: 190, width: 830 };
+
+// One image per principle, in the order of copy.standard.points.
+// montechiaro-detail carries baked-in campaign type along its bottom edge, so
+// it is anchored to the top and cropped by the stage's 4:5 frame.
 const PRINCIPLE_MEDIA = [
-  { src: "/shop/gallery/wai-home-step.webp", position: "center" },
-  { src: "/shop/products/pully-orange/texture.jpg", position: "center" },
-  { src: "/shop/editorial/nes-shoppable-look-v1.webp", position: "57% center" },
+  { src: "/shop/gallery/montechiaro-detail.webp", position: "center top" },
+  { src: "/craftsmanship-wai.png", position: "62% center" },
+  { src: "/shop/gallery/wai-ground.webp", position: "center center" },
 ];
 
 const COPY = {
   de: {
-    announcement: "Natürliches Gefühl. Eigener Stil. Ausgewählt von NES.",
+    announcement: "Ausgewählte Marken · natürliche Bewegung · gutes Design",
     nav: { shop: "Shop", new: "Neu", brands: "Marken", about: "Über NES", search: "Suche", bag: "Warenkorb", saved: "Merkliste", menu: "Menü", close: "Schließen" },
     hero: {
-      eyebrow: "NES / Schuhe & Strick",
-      title: ["Barfußgefühl.", "Mit Charakter."],
-      body: "Textile Feel Shoes, klare Loafer und Strick mit Ausdruck. Ausgewählt für Menschen, die sich natürlich bewegen und ihren eigenen Stil tragen.",
-      primary: "Auswahl entdecken",
+      eyebrow: "Curated footwear & everyday pieces",
+      title: "Natürlich bewegen. Besser ankommen.",
+      body: "Ausgewählte Marken für Komfort, Handwerk und modernes Design — für jeden Schritt im Alltag.",
+      primary: "Kollektion entdecken",
       secondary: "Unsere Marken",
-      campaign: "WAI · Vehon · Montechiaro",
+      campaign: "Vehon / WAI · Feel Shoes",
     },
     intro: {
-      label: "Die Idee hinter NES",
-      title: "Gutes Gefühl. Gute Form.",
-      text: "Barfußschuhe können sich natürlich anfühlen und gut aussehen. Mit dieser Überzeugung führt NES leichte Feel Shoes, klare Loafer und charakterstarken Strick zusammen.",
+      label: "Das NES Prinzip",
+      title: "Weniger suchen. Besser auswählen.",
+      text: "NES bringt eigenständige Marken an einen Ort — kuratiert nach Komfort, Material und einer Form, die auch morgen noch richtig wirkt.",
+    },
+    spotlight: {
+      label: "Im Fokus",
+      title: "Vier Schichten. Ein Schritt.",
+      cta: "Produkt ansehen",
+      alt: "Explosionsdarstellung des WAI Home: Obermaterial, Innensohle, Fußbett und Laufsohle",
+      // TODO fachlich prüfen: Schichtbezeichnungen sind rein anatomisch benannt,
+      // die Zusätze stammen aus den Produktdaten. Keine Leistungsangaben.
+      steps: [
+        { index: "01", title: "Obermaterial", body: "IVIVI Barefoot Textile" },
+        { index: "02", title: "Innensohle", body: "Perforiert" },
+        { index: "03", title: "Fußbett", body: "Herausnehmbar" },
+        { index: "04", title: "Laufsohle", body: "Barefoot-Konstruktion" },
+      ],
     },
     featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", knitTitle: ["Signature", "Pullys"], knitText: "Markante Muster. Hochwertiger Strick. Gemacht, um aufzufallen.", shoeTitle: ["Feel", "Shoes"], shoeText: "Leichte Formen. Natürliche Bewegung. Für jeden Tag.", shopNow: "Jetzt entdecken" },
-    brands: { label: "Die Marken bei NES", title: "Drei Handschriften. Ein Haus.", body: "Jede Marke hat ihren eigenen Ausdruck. Gemeinsam entsteht eine Auswahl, die sich leicht kombinieren lässt." },
+    brands: { label: "Die Marken", title: "Entdecke unsere Marken.", open: "Kollektion ansehen" },
     look: {
-      label: "NES / Die Auswahl zum Look",
+      label: "NES / Shop the look",
       title: "Ein Look. Zwei Handschriften.",
-      body: "Ausdrucksstarker Strick, eine ruhige Hose und leichte Feel Shoes. Entdecken Sie unsere Auswahl zum Look.",
-      hint: "Punkte antippen und die Auswahl entdecken",
+      body: "Montechiaro-Strick trifft WAI Feel Shoe. Entdecken Sie die markierten Produkte direkt im Bild.",
+      hint: "Punkte antippen und Produkt ansehen",
       open: "Produkt ansehen",
-      alt: "Look mit rotem Montechiaro-Strick und blauen WAI Feel Shoes",
+      alt: "Model im Pully Rosso von Montechiaro und blauen WAI Home Feel Shoes",
     },
     gallery: { label: "NES / Bildarchiv", title: "Bewegung in Bildern.", intro: "Weitere Motive aus Alltag, Reise, Material und Ruhe — gesammelt als visuelles Archiv der Kollektionen.", aria: "Visuelles Archiv", imageAlt: "Editorialaufnahme von" },
     editorial: {
@@ -73,7 +136,7 @@ const COPY = {
       cta: "Weitere Bilder ansehen",
       alt: "Flexibler Feel Shoe in einem ruhigen Wohnraum",
     },
-    standard: { label: "Der NES Blick", title: "Gefühl. Form. Zusammenspiel.", body: "Unsere Auswahl beginnt beim Tragegefühl. Dazu kommen ein eigenständiger Ausdruck und die Frage, wie sich die Stücke miteinander kombinieren lassen.", points: [["01", "Gefühl", "Leichte Stoffe und Formen für natürliche Bewegung."], ["02", "Form", "Material, Muster und Silhouetten mit Charakter."], ["03", "Zusammenspiel", "Ruhige Schuhe und markanter Strick in einem Look."]], cta: "Die Auswahl entdecken" },
+    standard: { label: "Der NES Maßstab", title: "Gute Dinge beginnen beim Material.", body: "Wir wählen Marken, deren Komfort konstruiert, nicht behauptet wird. Präzise Materialien, durchdachte Sohlen und Handwerk, das man im Alltag spürt.", points: [["01", "Material", "Texturen mit Funktion und Charakter."], ["02", "Handwerk", "Präzise Konstruktion statt kurzlebiger Effekte."], ["03", "Bewegung", "Formen, die den Alltag begleiten."]], cta: "Das Sortiment entdecken" },
     trade: { label: "Für Händler & Marken", title: "Interesse an unseren Kollektionen?", body: "Sortiment, Konditionen oder ein persönlicher Termin — wir sprechen gerne mit Ihnen.", cta: "Partneranfrage" },
     shop: {
       breadcrumb: "NES / Shop",
@@ -96,6 +159,15 @@ const COPY = {
       savedIntro: "Lieblingsstücke sammeln, vergleichen und in Ruhe entscheiden. Ihre Auswahl bleibt auf diesem Gerät gespeichert.",
       savedEmpty: "Platz für Ihre Lieblingsstücke.",
       savedEmptyBody: "Tippen Sie auf das Herz an einem Produkt, um es hier zu speichern.",
+      lineups: {
+        label: "NES / Markenkatalog",
+        title: "Zwei Linien. Neun Modelle.",
+        intro: "WAI und Vehon — jeweils als vollständige Kollektion.",
+        items: {
+          wai: { meta: "06 Modelle · 26 Varianten", title: "WAI by Vehon", body: "Sechs leichte Schuhformen mit unterschiedlichen Farben und Stoffen.", cta: "WAI ansehen" },
+          vehon: { meta: "03 Modelle · Made in Italy", title: "Vehon", body: "Mocassini, Velvet und Tech-knit in drei eigenständigen Konstruktionen.", cta: "Vehon ansehen" },
+        },
+      },
     },
     product: { view: "ansehen", chooseSize: "Größe wählen", guide: "Größenberatung", add: "In den Warenkorb", chooseFirst: "Bitte Größe wählen", back: "Zurück zur Kollektion", material: "Material", color: "Farbe", delivery: "Versand", deliveryValue: "Auf Anfrage", returns: "Rückgabe", returnsValue: "14 Tage", added: "Zum Warenkorb hinzugefügt" },
     productPage: { home: "Startseite", collection: "Kollektion", previous: "Vorheriges Bild", next: "Nächstes Bild", view: "Ansicht", images: "Weitere Ansichten", details: "Im Detail", story: "Material und Form.", more: "Mehr entdecken.", trust: [["quality", "Ausgewählte Qualität", "Mit Blick für Material"], ["delivery", "Versand", "Persönlich bestätigt"], ["returns", "14 Tage Rückgabe", "Fragen? Wir helfen."]] },
@@ -115,30 +187,42 @@ const COPY = {
       returns: { eyebrow: "NES / Service", title: "Rückgabe & Versand", body: "Sie möchten etwas zurückgeben oder haben eine Frage zu Versand oder Bestellung? Schreiben Sie uns kurz – idealerweise mit Ihrer Bestellnummer.", detail: "Bestellnummer (optional)", submit: "Service anfragen", successTitle: "Wir kümmern uns darum.", successBody: "Ihre Anfrage ist angekommen. Wir melden uns mit den nächsten Schritten zurück." },
     },
     tradeForm: { title: "Partner werden", body: "Erzählen Sie uns kurz, worum es geht. Wir melden uns persönlich zurück.", name: "Name", company: "Unternehmen", email: "E-Mail", message: "Nachricht", consent: "Ich stimme der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage zu.", submit: "Anfrage senden", sending: "Wird gesendet…", successTitle: "Vielen Dank.", successBody: "Ihre Anfrage ist angekommen. Wir melden uns in Kürze.", invalid: "Bitte füllen Sie Name, E-Mail und Zustimmung aus.", error: "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut." },
-    footer: { about: "Barfußgefühl und eigener Stil. Schuhe und Strick, ausgewählt von NES.", collections: "Kollektionen", service: "Service", advice: "Persönliche Beratung", returns: "Rückgabe & Versand", house: "Das Haus", contact: "Kontakt & Händler", privacy: "Datenschutz", imprint: "Impressum", country: "Deutschland / EUR" },
+    footer: { about: "Ein kuratiertes Haus für Schuhe, Strick und Dinge, die sich gut anfühlen.", collections: "Kollektionen", service: "Service", advice: "Persönliche Beratung", returns: "Rückgabe & Versand", house: "Das Haus", contact: "Kontakt & Händler", privacy: "Datenschutz", imprint: "Impressum", country: "Deutschland / EUR" },
     legalBack: "Zurück",
   },
   en: {
-    announcement: "Natural feeling. Personal style. Selected by NES.",
+    announcement: "Selected brands · natural movement · considered design",
     nav: { shop: "Shop", new: "New", brands: "Brands", about: "About NES", search: "Search", bag: "Bag", saved: "Wishlist", menu: "Menu", close: "Close" },
     hero: {
-      eyebrow: "NES / Footwear & knitwear",
-      title: ["Barefoot feeling.", "With character."],
-      body: "Textile feel shoes, clean loafers and expressive knitwear. Selected for people who move naturally and dress in their own way.",
-      primary: "Explore the selection",
+      eyebrow: "Curated footwear & everyday pieces",
+      title: "Move naturally. Arrive better.",
+      body: "Selected brands for comfort, craft and modern design — made for every step of everyday life.",
+      primary: "Discover the collection",
       secondary: "Our brands",
-      campaign: "WAI · Vehon · Montechiaro",
+      campaign: "Vehon / WAI · Feel Shoes",
     },
-    intro: { label: "The idea behind NES", title: "Good feeling. Good form.", text: "Barefoot shoes can feel natural and look good. With this belief, NES brings together light feel shoes, clean loafers and knitwear with character." },
+    intro: { label: "The NES principle", title: "Search less. Choose better.", text: "NES brings distinct brands together in one place — curated for comfort, material and forms that will still feel right tomorrow." },
+    spotlight: {
+      label: "In focus",
+      title: "Four layers. One step.",
+      cta: "View product",
+      alt: "Exploded view of the WAI Home: upper, insole, footbed and outsole",
+      steps: [
+        { index: "01", title: "Upper", body: "IVIVI Barefoot Textile" },
+        { index: "02", title: "Insole", body: "Perforated" },
+        { index: "03", title: "Footbed", body: "Removable" },
+        { index: "04", title: "Outsole", body: "Barefoot construction" },
+      ],
+    },
     featured: { label: "New in the house", title: "Selected for now.", knitTitle: ["Signature", "Pullys"], knitText: "Bold patterns. Premium knitwear. Made to stand out.", shoeTitle: ["Feel", "Shoes"], shoeText: "Light forms. Natural movement. Made for every day.", shopNow: "Shop now" },
-    brands: { label: "The brands at NES", title: "Three signatures. One house.", body: "Each brand has its own expression. Together, they make a selection that feels natural to combine." },
+    brands: { label: "The brands", title: "Discover our brands.", open: "View collection" },
     look: {
-      label: "NES / A selection for the look",
+      label: "NES / Shop the look",
       title: "One look. Two signatures.",
-      body: "Expressive knitwear, quiet trousers and light feel shoes. Discover our selection for the look.",
-      hint: "Tap a point to explore the selection",
+      body: "Montechiaro knitwear meets the WAI feel shoe. Discover the marked products directly in the image.",
+      hint: "Tap a point to view the product",
       open: "View product",
-      alt: "A look with red Montechiaro knitwear and blue WAI feel shoes",
+      alt: "Model wearing the Montechiaro Pully Rosso and blue WAI Home feel shoes",
     },
     gallery: { label: "NES / Image archive", title: "Movement in pictures.", intro: "More scenes from everyday life, travel, material and quiet moments — collected as a visual archive of the collections.", aria: "Visual archive", imageAlt: "Editorial image by" },
     editorial: {
@@ -148,7 +232,7 @@ const COPY = {
       cta: "View more images",
       alt: "A flexible feel shoe in a calm living space",
     },
-    standard: { label: "The NES perspective", title: "Feeling. Form. Together.", body: "Our selection starts with how a piece feels to wear. We look for an individual expression and consider how the pieces work together.", points: [["01", "Feeling", "Light textiles and shapes for natural movement."], ["02", "Form", "Materials, patterns and silhouettes with character."], ["03", "Together", "Quiet shoes and expressive knitwear in one look."]], cta: "Explore the selection" },
+    standard: { label: "The NES standard", title: "Good things begin with material.", body: "We select brands whose comfort is constructed, not claimed. Precise materials, considered soles and craft you can feel every day.", points: [["01", "Material", "Textures with function and character."], ["02", "Craft", "Precise construction over short-lived effects."], ["03", "Movement", "Forms designed to accompany everyday life."]], cta: "Discover the collection" },
     trade: { label: "For retailers & brands", title: "Interested in our collections?", body: "Range, terms or a personal appointment — we would be happy to talk.", cta: "Partner enquiry" },
     shop: {
       breadcrumb: "NES / Shop",
@@ -171,6 +255,15 @@ const COPY = {
       savedIntro: "Save your favourites, compare and take your time. Your selection stays on this device.",
       savedEmpty: "A place for your favourites.",
       savedEmptyBody: "Tap the heart on a product to save it here.",
+      lineups: {
+        label: "NES / Brand catalogue",
+        title: "Two lines. Nine models.",
+        intro: "WAI and Vehon — each shown as a complete collection.",
+        items: {
+          wai: { meta: "06 styles · 26 variations", title: "WAI by Vehon", body: "Six lightweight styles in a choice of colours and fabrics.", cta: "View WAI" },
+          vehon: { meta: "03 models · Made in Italy", title: "Vehon", body: "Moccasins, velvet and technical knit across three distinct constructions.", cta: "View Vehon" },
+        },
+      },
     },
     product: { view: "view", chooseSize: "Choose size", guide: "Size guide", add: "Add to bag", chooseFirst: "Please choose a size", back: "Back to collection", material: "Material", color: "Colour", delivery: "Delivery", deliveryValue: "On enquiry", returns: "Returns", returnsValue: "14 days", added: "Added to your bag" },
     productPage: { home: "Home", collection: "Collection", previous: "Previous image", next: "Next image", view: "View", images: "Further views", details: "In detail", story: "Material and form.", more: "Discover more.", trust: [["quality", "Selected quality", "Considered materials"], ["delivery", "Delivery", "Personally confirmed"], ["returns", "14-day returns", "Questions? We can help."]] },
@@ -190,7 +283,7 @@ const COPY = {
       returns: { eyebrow: "NES / Service", title: "Returns & shipping", body: "Would you like to return an item or ask about shipping or an order? Send us a short note, ideally including your order number.", detail: "Order number (optional)", submit: "Ask service", successTitle: "We are on it.", successBody: "Your enquiry has arrived. We will reply with the next steps." },
     },
     tradeForm: { title: "Become a partner", body: "Tell us briefly what you are looking for. We will get back to you personally.", name: "Name", company: "Company", email: "Email", message: "Message", consent: "I consent to my details being processed to handle this enquiry.", submit: "Send enquiry", sending: "Sending…", successTitle: "Thank you.", successBody: "Your enquiry has arrived. We will be in touch shortly.", invalid: "Please complete your name, email and consent.", error: "The enquiry could not be sent. Please try again." },
-    footer: { about: "Barefoot feeling and personal style. Footwear and knitwear, selected by NES.", collections: "Collections", service: "Service", advice: "Personal advice", returns: "Returns & shipping", house: "The house", contact: "Contact & wholesale", privacy: "Privacy", imprint: "Legal notice", country: "Germany / EUR" },
+    footer: { about: "A curated house for shoes, knitwear and things that simply feel good.", collections: "Collections", service: "Service", advice: "Personal advice", returns: "Returns & shipping", house: "The house", contact: "Contact & wholesale", privacy: "Privacy", imprint: "Legal notice", country: "Germany / EUR" },
     legalBack: "Back",
   },
 };
@@ -271,7 +364,6 @@ function routeFromLocation() {
   if (window.location.pathname.startsWith("/shop")) return "shop";
   if (window.location.pathname.startsWith("/brands")) return "brands";
   if (window.location.pathname.startsWith("/gallery")) return "gallery";
-  if (window.location.pathname === "/about" || window.location.pathname === "/about/") return "about";
   return "home";
 }
 
@@ -287,7 +379,6 @@ function getInitialBag() {
 export default function App() {
   const [language, setLanguage] = useState(getInitialLanguage);
   const [route, setRoute] = useState(routeFromLocation);
-  const [activeBrandId, setActiveBrandId] = useState(() => brandIdFromPath(window.location.pathname));
   const [filter, setFilter] = useState(filterFromLocation);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("featured");
@@ -311,7 +402,6 @@ export default function App() {
     const handleScroll = () => setScrolled(window.scrollY > 18);
     const handlePopState = (event) => {
       setRoute(routeFromLocation());
-      setActiveBrandId(brandIdFromPath(window.location.pathname));
       setFilter(filterFromLocation());
       setSavedOnly(savedFromLocation());
       setActiveProductId(productFromLocation());
@@ -470,31 +560,24 @@ export default function App() {
   }, [filter, search, sort, language, savedOnly, wishlist]);
 
   const activeProduct = PRODUCTS.find((product) => product.id === activeProductId) || null;
-  const activeBrand = BRANDS.find(brand => brand.id === activeBrandId);
 
   useEffect(() => {
     const description = document.querySelector('meta[name="description"]');
     if (route === "product" && activeProduct) {
       document.title = `${activeProduct.name} | ${activeProduct.brand} | NES`;
       description?.setAttribute("content", localize(activeProduct.description, language));
-    } else if (route === "brands") {
-      document.title = activeBrand ? `${activeBrand.name} | NES` : `${language === "de" ? "Unsere Marken" : "Our brands"} | NES`;
-      description?.setAttribute("content", activeBrand ? activeBrand[language].intro : copy.brands.body);
-    } else if (route === "about") {
-      document.title = `${copy.nav.about} | NES`;
-      description?.setAttribute("content", copy.intro.text);
     } else if (route === "shop") {
       document.title = language === "de" ? "Alle Produkte | NES Shop" : "All products | NES Shop";
       description?.setAttribute("content", language === "de"
         ? "Alle Modelle von WAI by Vehon, Vehon und Montechiaro entdecken. Schuhe und Strick in einer kuratierten Übersicht."
         : "Explore every style from WAI by Vehon, Vehon and Montechiaro. Curated footwear and knitwear in one collection.");
     } else {
-      document.title = language === "de" ? "NES — Barfußgefühl. Mit Charakter." : "NES — Barefoot feeling. With character.";
+      document.title = "NES — Curated Footwear & Everyday Pieces";
       description?.setAttribute("content", language === "de"
         ? "Kuratierte Schuhe und charakterstarker Strick von NES. Entdecken Sie ausgewählte Marken, Materialien und Design."
         : "Curated footwear and distinctive knitwear from NES. Discover selected brands, materials and design.");
     }
-  }, [route, activeProduct, activeBrand, language, copy]);
+  }, [route, activeProduct, language]);
   const bagCount = bag.reduce((sum, item) => sum + item.qty, 0);
   const bagTotal = getBagTotal(bag, PRODUCTS);
 
@@ -523,23 +606,12 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function navigateBrands(brandId = null) {
-    window.history.replaceState({ ...window.history.state, scrollY: window.scrollY }, "", window.location.href);
+  function navigateBrands() {
     setRoute("brands");
-    setActiveBrandId(brandId);
     setMobileOpen(false);
     setActiveProductId(null);
-    window.history.pushState({}, "", brandId ? `/brands/${brandId}` : "/brands");
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }
-
-  function navigateAbout() {
-    window.history.replaceState({ ...window.history.state, scrollY: window.scrollY }, "", window.location.href);
-    setRoute("about");
-    setMobileOpen(false);
-    setActiveProductId(null);
-    window.history.pushState({}, "", "/about");
-    window.scrollTo({ top: 0, behavior: "instant" });
+    window.history.pushState({}, "", "/brands");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function navigateGallery() {
@@ -626,8 +698,7 @@ export default function App() {
         onLanguage={() => setLanguage((value) => value === "de" ? "en" : "de")}
         onHome={navigateHome}
         onShop={navigateShop}
-        onBrands={() => navigateBrands()}
-        onAbout={navigateAbout}
+        onBrands={navigateBrands}
         onSearch={focusSearch}
         onBag={() => setBagOpen(true)}
       />
@@ -651,7 +722,6 @@ export default function App() {
             onOpen={openProduct}
             wishlist={wishlist}
             onToggleRelatedFavorite={toggleFavorite}
-            onBrand={navigateBrands}
           />
         ) : <main className="pdp-not-found"><h1>{language === "de" ? "Produkt nicht gefunden." : "Product not found."}</h1><button className="underlined-link" type="button" onClick={() => navigateShop()}>{copy.product.back}<ArrowIcon /></button></main>
       ) : route === "home" ? (
@@ -662,8 +732,6 @@ export default function App() {
           onGallery={navigateGallery}
           onOpen={openProduct}
           onQuickAdd={addToBag}
-          onBrand={navigateBrands}
-          onAbout={navigateAbout}
           wishlist={wishlist}
           onToggleFavorite={toggleFavorite}
           onTrade={() => setTradeOpen(true)}
@@ -671,10 +739,7 @@ export default function App() {
           onPrivacy={() => setLegalOpen("privacy")}
         />
       ) : route === "brands" ? (
-        activeBrandId ? <BrandDetailPage key={activeBrandId} brand={activeBrand} language={language} onBrand={navigateBrands} onBrands={navigateBrands} onShop={navigateShop} renderProduct={(product) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={openProduct} wishlist={wishlist} onToggleFavorite={toggleFavorite} />} />
-          : <BrandsPage language={language} onBrand={navigateBrands} onAbout={navigateAbout} />
-      ) : route === "about" ? (
-        <AboutPage language={language} onBrand={navigateBrands} onShop={navigateShop} onAdvice={() => openService("advice")} />
+        <BrandsPage copy={copy} onShop={navigateShop} onService={openService} />
       ) : route === "gallery" ? (
         <GalleryPage copy={copy} onShop={navigateShop} onService={openService} />
       ) : (
@@ -694,16 +759,13 @@ export default function App() {
           onOpen={openProduct}
           onShowAll={resetCatalog}
           onService={openService}
-          onBrand={navigateBrands}
         />
       )}
 
       <Footer
         copy={copy}
-        language={language}
-        onAbout={navigateAbout}
-        onBrand={navigateBrands}
         onHome={navigateHome}
+        onShop={navigateShop}
         onTrade={() => setTradeOpen(true)}
         onService={openService}
         onLegal={setLegalOpen}
@@ -769,7 +831,7 @@ export default function App() {
   );
 }
 
-function Header({ route, copy, language, bagCount, wishlistCount, onWishlist, scrolled, mobileOpen, onToggleMobile, onLanguage, onHome, onShop, onBrands, onAbout, onSearch, onBag }) {
+function Header({ route, copy, language, bagCount, wishlistCount, onWishlist, scrolled, mobileOpen, onToggleMobile, onLanguage, onHome, onShop, onBrands, onSearch, onBag }) {
   return (
     <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="announcement-bar"><span>{copy.announcement}</span></div>
@@ -781,7 +843,7 @@ function Header({ route, copy, language, bagCount, wishlistCount, onWishlist, sc
         </div>
         <button className="header-wordmark" type="button" onClick={() => onHome()} aria-label="NES home">NES</button>
         <div className="nav-cluster nav-cluster-right">
-          <button type="button" onClick={onAbout} aria-current={route === "about" ? "page" : undefined}>{copy.nav.about}</button>
+          <button type="button" onClick={() => onHome("standard")}>{copy.nav.about}</button>
           <button className="language-button" type="button" onClick={onLanguage} aria-label={language === "de" ? "Switch to English" : "Auf Deutsch wechseln"}>{language.toUpperCase()}</button>
           <button className="icon-button" type="button" onClick={onSearch} aria-label={copy.nav.search}><SearchIcon /></button>
           <button className="icon-button wishlist-nav" type="button" onClick={onWishlist} aria-label={`${copy.nav.saved}: ${wishlistCount}`}><HeartIcon />{wishlistCount > 0 && <span>{wishlistCount}</span>}</button>
@@ -798,7 +860,7 @@ function Header({ route, copy, language, bagCount, wishlistCount, onWishlist, sc
             <button type="button" onClick={() => onShop("all")}>{copy.nav.shop}<ArrowIcon /></button>
             <button type="button" onClick={onWishlist}>{copy.nav.saved} ({wishlistCount})<HeartIcon /></button>
             <button type="button" onClick={onBrands}>{copy.nav.brands}<ArrowIcon /></button>
-            <button type="button" onClick={onAbout}>{copy.nav.about}<ArrowIcon /></button>
+            <button type="button" onClick={() => onHome("standard")}>{copy.nav.about}<ArrowIcon /></button>
           </div>
           <div className="mobile-menu-meta">
             <button type="button" onClick={onSearch}><SearchIcon />{copy.nav.search}</button>
@@ -810,10 +872,153 @@ function Header({ route, copy, language, bagCount, wishlistCount, onWishlist, sc
   );
 }
 
+/* The shoe holds still while the page scrolls past it and takes itself apart.
+   The frame index is driven imperatively onto the canvas rather than through
+   state — only the step (0-3) re-renders, and that happens four times. */
+function ProductConstruction({ copy, language, onOpen }) {
+  const product = PRODUCTS.find((item) => item.id === SPOTLIGHT_ID);
+  const trackRef = useRef(null);
+  const canvasRef = useRef(null);
+  const imagesRef = useRef([]);
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    const canvas = canvasRef.current;
+    if (!track || !canvas) return undefined;
+    // Below 900px and under reduced motion the section falls back to the still,
+    // so there is nothing to scrub and nothing to download.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+    if (window.matchMedia("(max-width: 900px)").matches) return undefined;
+
+    const context = canvas.getContext("2d");
+    let raf = 0;
+    let lastFrame = -1;
+
+    const draw = (index) => {
+      const images = imagesRef.current;
+      if (!images.length) return;
+      // Fall back to the nearest decoded frame so a fast scroll past a
+      // half-loaded sequence never leaves an empty canvas.
+      let candidate = index;
+      while (candidate >= 0 && !images[candidate]?.complete) candidate -= 1;
+      if (candidate < 0 || candidate === lastFrame) return;
+      lastFrame = candidate;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      // The renders leave a wide margin of empty sweep either side of the shoe.
+      // Cropping here rather than in the files keeps the assets untouched and
+      // lets the subject fill the stage.
+      context.drawImage(
+        images[candidate],
+        SOURCE_CROP.x, 0, SOURCE_CROP.width, SOURCE_HEIGHT,
+        0, 0, canvas.width, canvas.height,
+      );
+      canvas.classList.add("is-ready");
+    };
+
+    const update = () => {
+      raf = 0;
+      const rect = track.getBoundingClientRect();
+      const travel = rect.height - window.innerHeight;
+      const progress = travel <= 0 ? 0 : Math.min(1, Math.max(0, -rect.top / travel));
+      draw(Math.round(progress * (SEQUENCE_FRAMES - 1)));
+      setStep(Math.min(3, Math.floor(progress * 4)));
+    };
+
+    // The section sits barely below the fold, so a generous rootMargin would
+    // mean "on page load". Keep it tight and mark the frames low priority so
+    // they queue behind the hero rather than competing with it.
+    const preload = () => {
+      if (imagesRef.current.length) return;
+      imagesRef.current = Array.from({ length: SEQUENCE_FRAMES }, (_, index) => {
+        const image = new Image();
+        image.decoding = "async";
+        image.fetchPriority = "low";
+        image.src = `${SEQUENCE_DIR}/frame-${String(index).padStart(3, "0")}.jpg`;
+        // Paint as soon as anything arrives, so a reader who has stopped
+        // moving still gets the shoe instead of bare ground.
+        image.onload = () => {
+          if (lastFrame < 0) update();
+        };
+        return image;
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => entries.some((entry) => entry.isIntersecting) && preload(),
+      { rootMargin: "150px 0px" },
+    );
+    observer.observe(track);
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+
+    return () => {
+      observer.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  if (!product) return null;
+
+  return (
+    <section
+      className="product-construction"
+      id="spotlight"
+      aria-labelledby="construction-title"
+      data-voice={product.brandId}
+      ref={trackRef}
+    >
+      <div className="product-construction-stage">
+        <div className="product-construction-media">
+          <canvas ref={canvasRef} width={SOURCE_CROP.width} height={SOURCE_HEIGHT} aria-hidden="true" />
+          <img
+            className="product-construction-still"
+            src={SEQUENCE_STILL}
+            alt={copy.spotlight.alt}
+            width="900"
+            height="506"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+        <div className="product-construction-copy">
+          <p className="eyebrow eyebrow-quoted">{copy.spotlight.label}</p>
+          <h2 id="construction-title" className="display-italic">{copy.spotlight.title}</h2>
+          <p className="product-construction-name">{product.brand} · {product.name}</p>
+          <ol className="product-construction-steps">
+            {copy.spotlight.steps.map((item, index) => (
+              <li key={item.index} data-active={index === step ? "" : undefined}>
+                <span className="product-construction-figure" aria-hidden="true">{item.index}</span>
+                <span className="product-construction-index">{item.index}</span>
+                <strong>{item.title}</strong>
+                <span className="product-construction-body">{item.body}</span>
+              </li>
+            ))}
+          </ol>
+          <div className="product-construction-action">
+            <span className="product-construction-price">{formatPrice(product.price, language)}</span>
+            <button className="button button-forest" type="button" onClick={() => onOpen(product.id)}>
+              {copy.spotlight.cta}<ArrowIcon />
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ShoppableLook({ copy, language, onOpen }) {
   const hotspots = [
     { product: PRODUCTS.find((product) => product.id === 12), className: "shoppable-hotspot-pullover" },
-    { product: PRODUCTS.find((product) => product.id === 119), className: "shoppable-hotspot-shoe" },
+    { product: PRODUCTS.find((product) => product.id === 1), className: "shoppable-hotspot-shoe" },
   ].filter(({ product }) => product);
 
   return (
@@ -856,7 +1061,7 @@ function ShoppableLook({ copy, language, onOpen }) {
   );
 }
 
-function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onBrand, onAbout, wishlist, onToggleFavorite, onTrade, onService, onPrivacy }) {
+function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, wishlist, onToggleFavorite, onTrade, onService, onPrivacy }) {
   const featuredGroups = [
     {
       id: "knitwear",
@@ -881,19 +1086,15 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onBra
         <ShaderBackground>
           <div className="shop-hero-copy">
             <p className="eyebrow">{copy.hero.eyebrow}</p>
-            <h1 id="hero-title"><span>{copy.hero.title[0]}</span><em>{copy.hero.title[1]}</em></h1>
+            <h1 id="hero-title">{copy.hero.title}</h1>
             <p className="shop-hero-body">{copy.hero.body}</p>
             <div className="shop-hero-actions">
               <button className="button button-forest" type="button" onClick={() => onShop("all")}>{copy.hero.primary}<ArrowIcon /></button>
               <a className="underlined-link" href="#brands">{copy.hero.secondary}</a>
             </div>
           </div>
-          <figure className="hero-house-image">
-            <img src="/shop/editorial/nes-shoppable-look-v1.webp" alt={copy.look.alt} width="1536" height="1024" fetchPriority="high" decoding="async" />
-            <figcaption><span>NES / 01</span><span>Montechiaro × WAI</span></figcaption>
-          </figure>
           <div className="shop-hero-signature"><span>NES / 01</span><p>{copy.hero.campaign}</p></div>
-          <a className="hero-scroll" href="#spotlight" aria-label={language === "de" ? "WAI und seine Materialien entdecken" : "Explore WAI and its materials"}><span />Scroll</a>
+          <a className="hero-scroll" href="#spotlight" aria-label={copy.spotlight.title}><span />Scroll</a>
         </ShaderBackground>
       </section>
 
@@ -903,11 +1104,10 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onBra
           <p className="eyebrow eyebrow-quoted">{copy.intro.label}</p>
           <h2 className="display-italic">{copy.intro.title}</h2>
           <p>{copy.intro.text}</p>
-          <a className="story-link" href="/about" onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onAbout(); }}>{copy.nav.about}<ArrowIcon /></a>
         </div>
       </section>
 
-      <MaterialStudy language={language} onOpen={onOpen} onBrand={onBrand} />
+      <ProductConstruction copy={copy} language={language} onOpen={onOpen} />
 
       <section className="featured-section section-pad" id="featured">
         <div className="featured-inner">
@@ -939,8 +1139,25 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onBra
       </section>
 
       <section className="brand-section section-pad" id="brands">
-        <div className="home-brand-intro"><div><p className="eyebrow">{copy.brands.label}</p><h2>{copy.brands.title}</h2></div><p>{copy.brands.body}</p></div>
-        <BrandCards language={language} onBrand={onBrand} />
+        <div className="brand-section-heading" data-reveal>
+          <p className="eyebrow eyebrow-quoted">{copy.brands.label}</p>
+          <h2 className="display-italic">{copy.brands.title}</h2>
+        </div>
+        <div className="brand-world-grid brand-world-grid-home">
+          {BRAND_WORLDS.map((brand, brandIndex) => (
+            <button className={`brand-world ${brand.className}`} type="button" key={brand.id} onClick={() => onShop(brand.id)} data-voice={brand.id} data-reveal="clip" style={{ "--reveal-delay": `${brandIndex * 90}ms` }}>
+              {brand.image ? <img src={brand.image} alt="" aria-hidden="true" loading="lazy" style={{ objectPosition: brand.position }} /> : <span className="brand-world-gradient" aria-hidden="true" />}
+              <span className="brand-world-shade" aria-hidden="true" />
+              {brand.logo && <img className="brand-world-logo" src={brand.logo} alt={brand.name} loading="lazy" />}
+              <span className="brand-world-index">{String(brandIndex + 1).padStart(2, "0")} / {localize(brand.category, language)}</span>
+              <span className="brand-world-copy">
+                {!brand.logo && <strong>{brand.name}</strong>}
+                <span>{localize(brand.note, language)}</span>
+                <span className="brand-world-link">{copy.brands.open}<ArrowIcon /></span>
+              </span>
+            </button>
+          ))}
+        </div>
       </section>
 
       <ShoppableLook copy={copy} language={language} onOpen={onOpen} />
@@ -991,7 +1208,48 @@ function GalleryPage({ copy, onShop, onService }) {
   );
 }
 
-function ShopPage({ copy, language, products, filter, search, sort, savedOnly, wishlist, onToggleFavorite, onFilter, onSearch, onSort, onOpen, onShowAll, onService, onBrand }) {
+function BrandsPage({ copy, onShop, onService }) {
+  return (
+    <main className="lineups-page">
+      <CatalogLineups copy={copy.shop.lineups} onSelect={onShop} />
+      <ServiceStrip copy={copy} onShop={onShop} onService={onService} />
+    </main>
+  );
+}
+
+function CatalogLineups({ copy, onSelect }) {
+  return (
+    <section className="catalog-lineups section-pad" aria-labelledby="catalog-lineups-title">
+      <header className="catalog-lineups-heading">
+        <div>
+          <p className="eyebrow">{copy.label}</p>
+          <h2 id="catalog-lineups-title">{copy.title}</h2>
+        </div>
+        <p>{copy.intro}</p>
+      </header>
+      <div className="catalog-lineup-grid">
+        {CATALOG_LINEUPS.map((lineup) => {
+          const item = copy.items[lineup.id];
+          return (
+            <button className={`catalog-lineup-card catalog-lineup-${lineup.id}`} type="button" onClick={() => onSelect(lineup.filter)} key={lineup.id}>
+              <span className="catalog-lineup-media">
+                <img src={lineup.image} alt={`${item.title} — ${item.meta}`} loading="lazy" decoding="async" />
+                <span className="catalog-lineup-index" aria-hidden="true">{lineup.index}</span>
+              </span>
+              <span className="catalog-lineup-copy">
+                <span className="catalog-lineup-meta">{item.meta}</span>
+                <strong>{item.title}</strong>
+                <span className="catalog-lineup-link">{item.cta}<ArrowIcon /></span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function ShopPage({ copy, language, products, filter, search, sort, savedOnly, wishlist, onToggleFavorite, onFilter, onSearch, onSort, onOpen, onShowAll, onService }) {
   const collections = [
     { id: "wai", name: "WAI by Vehon", kind: language === "de" ? "Feel Shoes" : "Feel shoes", note: language === "de" ? "Leichte Formen, flexible Materialien und Platz für Bewegung." : "Light forms, flexible materials and room to move.", matches: (product) => Boolean(product.familyId) },
     { id: "vehon-models", name: "Vehon", kind: language === "de" ? "Schuhe" : "Footwear", note: language === "de" ? "Italienische Formen, ausgewählt für den Alltag." : "Italian silhouettes selected for everyday wear.", matches: (product) => product.brand === "Vehon" },
@@ -1034,7 +1292,7 @@ function ShopPage({ copy, language, products, filter, search, sort, savedOnly, w
             <div className="catalog-collections">
               {sections.map((collection, sectionIndex) => <section className="catalog-collection" key={collection.id} aria-labelledby={`catalog-${collection.id}`}>
                 <div className="catalog-collection-head">
-                  <div><p className="catalog-collection-index">{String(sectionIndex + 1).padStart(2, "0")} / {collection.kind}</p><h2 id={`catalog-${collection.id}`}>{collection.name}</h2><a className="story-link catalog-brand-story" href={`/brands/${collection.id === "vehon-models" ? "vehon" : collection.id}`} onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onBrand(collection.id === "vehon-models" ? "vehon" : collection.id); }}>{language === "de" ? "Die Marke entdecken" : "Discover the brand"}<ArrowIcon /></a></div>
+                  <div><p className="catalog-collection-index">{String(sectionIndex + 1).padStart(2, "0")} / {collection.kind}</p><h2 id={`catalog-${collection.id}`}>{collection.name}</h2></div>
                   <div className="catalog-collection-aside"><p>{collection.note}</p><span>{String(collection.products.length).padStart(2, "0")} {collection.products.length === 1 ? copy.shop.product : copy.shop.products}</span></div>
                 </div>
                 <div className="product-grid catalog-grid">{collection.products.map(renderCard)}</div>
@@ -1329,7 +1587,7 @@ function ProductCard({ product: initialProduct, media, copy, language, onOpen, r
   );
 }
 
-function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHome, onShop, onAdvice, onAdd, favorite, onToggleFavorite, onVariant, onOpen, wishlist, onToggleRelatedFavorite, onBrand }) {
+function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHome, onShop, onAdvice, onAdd, favorite, onToggleFavorite, onVariant, onOpen, wishlist, onToggleRelatedFavorite }) {
   const [imageIndex, setImageIndex] = useState(0);
   const touchStartX = useRef(null);
   const images = product.gallery ?? [
@@ -1339,8 +1597,7 @@ function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHo
   const image = images[imageIndex];
   const variants = getProductVariants(product, PRODUCTS);
   const related = groupProductFamilies(PRODUCTS.filter((item) => !item.catalogHidden && item.id !== product.id && (!product.familyId || item.familyId !== product.familyId) && item.brandId === product.brandId)).slice(0, 3);
-  const brand = getBrandForProduct(product);
-  const brandNote = brand?.[language].story;
+  const brandNote = BRAND_WORLDS.find((brand) => brand.id === product.brandId)?.note;
   const sizeOptions = product.sizeOptions ?? product.sizes.map((size) => typeof size === "string" ? { label: size, available: true } : size);
   const moveImage = (delta) => setImageIndex((index) => (index + delta + images.length) % images.length);
   const followLink = (event, navigate) => {
@@ -1383,7 +1640,7 @@ function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHo
               <a href="/shop" onClick={(event) => followLink(event, () => onShop("all"))}>{copy.productPage.collection}</a><span aria-hidden="true">/</span>
               <span aria-current="page">{product.name}</span>
             </nav>
-            <p className="pdp-category">{brand ? <a className="pdp-brand-link" href={`/brands/${brand.id}`} onClick={(event) => followLink(event, () => onBrand(brand.id))}>{product.brand}<ArrowIcon /></a> : product.brand} / {localize(product.category, language)}</p>
+            <p className="pdp-category">{product.brand} / {localize(product.category, language)}</p>
             <h1 id="product-detail-title">{product.name}</h1>
             <p className="pdp-subtitle">{localize(product.subtitle, language)}</p>
             <div className="pdp-price-row">
@@ -1420,12 +1677,11 @@ function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHo
       </section>
 
       <section className="pdp-editorial" aria-labelledby="pdp-story-title">
-        <div className="pdp-editorial-heading"><span>NES / {copy.productPage.details}</span><h2 id="pdp-story-title">{copy.productPage.story}</h2><p>{brandNote || localize(product.description, language)}</p></div>
+        <div className="pdp-editorial-heading"><span>NES / {copy.productPage.details}</span><h2 id="pdp-story-title">{copy.productPage.story}</h2><p>{brandNote ? localize(brandNote, language) : localize(product.description, language)}</p></div>
         {images.length > 1 && <div className={`pdp-extra-images${images.length === 2 ? " is-single" : ""}`} aria-label={copy.productPage.images}>
           {images.slice(1).map((item, index) => <figure key={item.src} className={item.fit === "contain" ? "is-cutout" : ""}><img src={item.src} alt={`${product.name} — ${copy.productPage.view} ${index + 2}`} loading="lazy" decoding="async" /><figcaption>{String(index + 2).padStart(2, "0")} / {String(images.length).padStart(2, "0")}</figcaption></figure>)}
         </div>}
         <div className="pdp-material-note"><span>{copy.product.material}</span><p>{localize(product.materialLabel || product.material, language)}</p></div>
-        {brand && <a className="story-link pdp-brand-story-link" href={`/brands/${brand.id}`} onClick={(event) => followLink(event, () => onBrand(brand.id))}>{language === "de" ? `Mehr über ${brand.name}` : `More about ${brand.name}`}<ArrowIcon /></a>}
       </section>
 
       {related.length > 0 && <section className="pdp-related" aria-labelledby="pdp-related-title">
@@ -1665,16 +1921,16 @@ function LegalModal({ kind, language, copy, onClose }) {
   );
 }
 
-function Footer({ copy, language, onHome, onBrand, onAbout, onTrade, onService, onLegal }) {
+function Footer({ copy, onHome, onShop, onTrade, onService, onLegal }) {
   return (
     <footer className="site-footer">
       <div className="footer-main">
         <div className="footer-brand"><button className="footer-wordmark" type="button" onClick={() => onHome()}>NES</button><p>{copy.footer.about}</p></div>
-        <div className="footer-column"><h3>{copy.footer.collections}</h3>{BRANDS.map(brand => <a className="footer-brand-link" key={brand.id} href={`/brands/${brand.id}`} onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onBrand(brand.id); }}>{brand.name}</a>)}</div>
+        <div className="footer-column"><h3>{copy.footer.collections}</h3><button type="button" onClick={() => onShop("vehon")}>Vehon / WAI</button><button type="button" onClick={() => onShop("montechiaro")}>Montechiaro</button></div>
         <div className="footer-column"><h3>{copy.footer.service}</h3><button type="button" onClick={() => onService("advice")}>{copy.footer.advice}</button><button type="button" onClick={() => onService("returns")}>{copy.footer.returns}</button></div>
-        <div className="footer-column"><h3>{copy.footer.house}</h3><button type="button" onClick={onAbout}>{copy.nav.about}</button><button type="button" onClick={onTrade}>{copy.footer.contact}</button><button type="button" onClick={() => onLegal("privacy")}>{copy.footer.privacy}</button><button type="button" onClick={() => onLegal("imprint")}>{copy.footer.imprint}</button></div>
+        <div className="footer-column"><h3>{copy.footer.house}</h3><button type="button" onClick={() => onHome("standard")}>{copy.nav.about}</button><button type="button" onClick={onTrade}>{copy.footer.contact}</button><button type="button" onClick={() => onLegal("privacy")}>{copy.footer.privacy}</button><button type="button" onClick={() => onLegal("imprint")}>{copy.footer.imprint}</button></div>
       </div>
-      <div className="footer-bottom"><span>© 2026 NES</span><span>{language === "de" ? "Barfußgefühl. Mit Charakter." : "Barefoot feeling. With character."}</span><span>{copy.footer.country}</span></div>
+      <div className="footer-bottom"><span>© 2026 NES</span><span>Natural · Everyday · Selected</span><span>{copy.footer.country}</span></div>
     </footer>
   );
 }
