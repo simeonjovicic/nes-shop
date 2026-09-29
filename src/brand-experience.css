@@ -111,14 +111,11 @@
 .shop-hero .shop-hero-signature span { color: var(--brand-soft); }
 .footer-brand-link { font-size: 11px; color: rgba(22,22,20,.66); }
 .footer-brand-link:hover { color: var(--ink); }
-.shop-hero .shop-hero-copy { left: 5vw; bottom: 19%; width: 49%; }
-.shop-hero h1 { font-size: clamp(61px, 6.5vw, 98px); }
+.shop-hero .shop-hero-copy { left: 6vw; bottom: 21%; width: min(760px, 64%); }
+.shop-hero h1 { font-size: clamp(64px, 7.6vw, 112px); }
 .shop-hero .shop-hero-body { max-width: 43ch; }
-.hero-house-image { position: absolute; top: 9%; bottom: 14%; right: 5vw; width: 35%; margin: 0; }
-.hero-house-image img { height: calc(100% - 27px); object-fit: cover; object-position: 57% center; }
-.hero-house-image figcaption { display: flex; justify-content: space-between; padding-top: 13px; font-size: 9px; letter-spacing: .09em; }
 .shop-hero .hero-scroll { display: none; }
-.shop-hero .shop-hero-signature { left: 5vw; right: auto; bottom: 32px; text-align: left; }
+.shop-hero .shop-hero-signature { left: 6vw; right: auto; bottom: 32px; text-align: left; }
 .shop-hero .shop-hero-signature > span { display: none; }
 .catalog-brand-story { margin-top: 16px; font-size: 11px; }
 
@@ -135,7 +132,7 @@
 @media (max-width: 760px) {
   .shop-hero { min-height: 0; height: auto; padding: 0; }
   .shop-hero .shader-background { position: relative; }
-  .shop-hero .hero-shader-foreground { position: relative; display: flex; flex-direction: column; align-items: stretch; padding: 44px 22px 30px; }
+  .shop-hero .hero-shader-foreground { position: relative; display: flex; flex-direction: column; align-items: stretch; justify-content: flex-end; min-height: min(780px, calc(100svh - var(--header-height))); padding: 240px 22px 42px; }
   .shop-hero .shop-hero-copy { position: relative; left: auto; bottom: auto; width: 100%; }
   .shop-hero h1 { font-size: clamp(52px, 10vw, 75px); }
   .shop-hero .shop-hero-body { margin-top: 22px; max-width: 46ch; }
@@ -143,8 +140,6 @@
   .shop-hero .shop-hero-actions .button { width: auto; min-width: 0; padding-inline: 18px; flex-shrink: 0; }
   .shop-hero .shop-hero-actions > * { white-space: nowrap; }
   .shop-hero .shop-hero-actions .underlined-link { align-self: center; }
-  .hero-house-image { position: relative; inset: auto; width: 100%; margin-top: 36px; }
-  .hero-house-image img { height: auto; aspect-ratio: 5 / 4; object-position: center; }
   .shop-hero .shop-hero-signature { display: none; }
   .brand-directory-intro { padding-top: 45px; padding-bottom: 40px; }
   .brand-directory-heading { grid-template-columns: 1fr; gap: 25px; }

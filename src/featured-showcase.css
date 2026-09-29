@@ -1,6 +1,6 @@
 /* Homepage previews: one quiet brand story beside three selected models. */
 .featured-section.section-pad {
-  padding: clamp(84px, 8vw, 132px) clamp(24px, 4vw, 64px);
+  padding: clamp(40px, 4vw, 64px) clamp(24px, 4vw, 64px);
 }
 
 .featured-section .featured-inner {
@@ -15,14 +15,14 @@
 }
 
 .featured-section .featured-group + .featured-group {
-  margin-top: clamp(96px, 11vw, 160px);
+  margin-top: clamp(72px, 7vw, 104px);
 }
 
 .featured-section .featured-group-heading {
   display: block;
   align-self: start;
   margin: 0;
-  padding: clamp(72px, 7vw, 110px) 0 0;
+  padding: 24px 0 0;
   border: 0;
 }
 
@@ -82,7 +82,7 @@
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: clamp(14px, 1.5vw, 24px);
   margin: 0;
-  padding-top: 31px;
+  padding-top: 20px;
   border-top: 1px solid var(--line);
 }
 
@@ -169,7 +169,7 @@
 @media (max-width: 900px) {
   .featured-section .featured-group {
     grid-template-columns: 1fr;
-    gap: 38px;
+    gap: 24px;
   }
 
   .featured-section .featured-group-heading h3 span {
@@ -191,11 +191,11 @@
 
 @media (max-width: 700px) {
   .featured-section.section-pad {
-    padding: 76px 0 88px;
+    padding: 36px 0 40px;
   }
 
   .featured-section .featured-group + .featured-group {
-    margin-top: 94px;
+    margin-top: 64px;
   }
 
   .featured-section .featured-group {
@@ -203,7 +203,7 @@
   }
 
   .featured-section .featured-group-heading {
-    margin: 0 22px 32px;
+    margin: 0 22px 20px;
   }
 
   .featured-group-label {

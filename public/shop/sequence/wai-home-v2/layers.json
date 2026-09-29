@@ -1,0 +1,50 @@
+{
+  "width": 1254,
+  "height": 1254,
+  "components": [
+    {
+      "id": 1,
+      "count": 341716,
+      "minX": 38,
+      "maxX": 1230,
+      "minY": 88,
+      "maxY": 633,
+      "top": 86,
+      "width": 1254,
+      "height": 550
+    },
+    {
+      "id": 91,
+      "count": 109366,
+      "minX": 43,
+      "maxX": 1225,
+      "minY": 630,
+      "maxY": 818,
+      "top": 628,
+      "width": 1254,
+      "height": 193
+    },
+    {
+      "id": 104,
+      "count": 163175,
+      "minX": 39,
+      "maxX": 1231,
+      "minY": 803,
+      "maxY": 1019,
+      "top": 801,
+      "width": 1254,
+      "height": 221
+    },
+    {
+      "id": 143,
+      "count": 144860,
+      "minX": 38,
+      "maxX": 1231,
+      "minY": 1023,
+      "maxY": 1213,
+      "top": 1021,
+      "width": 1254,
+      "height": 195
+    }
+  ]
+}

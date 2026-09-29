@@ -4,13 +4,15 @@ import { featuredProducts } from "./featuredProducts";
 import { PRODUCTS } from "./products";
 import { MAX_QUANTITY, getProductSlug, getProductVariants, groupProductFamilies, getLinePrice, getBagTotal, compareProductPrices, normalizeBag, normalizeWishlist, readStored, writeStored } from "./shopState";
 import { useDialogFocus } from "./useDialogFocus";
+import { ProductSequence } from "./ProductSequence";
+import { usePageNavigation } from "./usePageNavigation";
 import "./App.css";
 import "./shop-polish.css";
 import "./product-page.css";
 import "./featured-showcase.css";
 import "./catalog-page.css";
 import { BRANDS, getBrandForProduct, brandIdFromPath } from "./brands.js";
-import { BrandCards, BrandsPage, BrandDetailPage, AboutPage, MaterialStudy } from "./BrandExperience.jsx";
+import { BrandCards, BrandsPage, BrandDetailPage, AboutPage } from "./BrandExperience.jsx";
 
 const GALLERY_IMAGES = [
   { src: "/shop/gallery/wai-ground.webp", brand: "WAI" },
@@ -34,7 +36,7 @@ const GALLERY_IMAGES = [
 // Material, form and combinations from the existing shop image library.
 const PRINCIPLE_MEDIA = [
   { src: "/shop/gallery/wai-home-step.webp", position: "center" },
-  { src: "/shop/products/pully-orange/texture.jpg", position: "center" },
+  { src: "/shop/gallery/montechiaro-detail.webp", position: "center top", texture: true },
   { src: "/shop/editorial/nes-shoppable-look-v1.webp", position: "57% center" },
 ];
 
@@ -256,27 +258,23 @@ function getInitialLanguage() {
   }
 }
 
-function productFromLocation() {
-  const slug = window.location.pathname.match(/^\/products\/([^/]+)\/?$/)?.[1]
-    ?? new URLSearchParams(window.location.search).get("product");
+function productFromLocation(url) {
+  const slug = url.pathname.match(/^\/products\/([^/]+)\/?$/)?.[1]
+    ?? url.searchParams.get("product");
   return PRODUCTS.find((product) => getProductSlug(product) === slug)?.id ?? null;
 }
 
-function savedFromLocation() {
-  return new URLSearchParams(window.location.search).get("saved") === "1";
-}
-
-function routeFromLocation() {
-  if (window.location.pathname.startsWith("/products/") || new URLSearchParams(window.location.search).has("product")) return "product";
-  if (window.location.pathname.startsWith("/shop")) return "shop";
-  if (window.location.pathname.startsWith("/brands")) return "brands";
-  if (window.location.pathname.startsWith("/gallery")) return "gallery";
-  if (window.location.pathname === "/about" || window.location.pathname === "/about/") return "about";
+function routeFromLocation(url) {
+  if (url.pathname.startsWith("/products/") || url.searchParams.has("product")) return "product";
+  if (url.pathname.startsWith("/shop")) return "shop";
+  if (url.pathname.startsWith("/brands")) return "brands";
+  if (url.pathname.startsWith("/gallery")) return "gallery";
+  if (url.pathname === "/about" || url.pathname === "/about/") return "about";
   return "home";
 }
 
-function filterFromLocation() {
-  const requested = new URLSearchParams(window.location.search).get("brand");
+function filterFromLocation(url) {
+  const requested = url.searchParams.get("brand");
   return ["wai", "vehon", "vehon-models", "montechiaro"].includes(requested) ? requested : "all";
 }
 
@@ -286,14 +284,17 @@ function getInitialBag() {
 
 export default function App() {
   const [language, setLanguage] = useState(getInitialLanguage);
-  const [route, setRoute] = useState(routeFromLocation);
-  const [activeBrandId, setActiveBrandId] = useState(() => brandIdFromPath(window.location.pathname));
-  const [filter, setFilter] = useState(filterFromLocation);
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("featured");
-  const [activeProductId, setActiveProductId] = useState(productFromLocation);
+  const [pageHref, navigate] = usePageNavigation();
+  const pageUrl = new URL(pageHref);
+  const route = routeFromLocation(pageUrl);
+  const activeBrandId = brandIdFromPath(pageUrl.pathname);
+  const filter = filterFromLocation(pageUrl);
+  const search = pageUrl.searchParams.get("q") ?? "";
+  const requestedSort = pageUrl.searchParams.get("sort");
+  const sort = ["price-asc", "price-desc", "name"].includes(requestedSort) ? requestedSort : "featured";
+  const activeProductId = productFromLocation(pageUrl);
+  const savedOnly = pageUrl.searchParams.get("saved") === "1";
   const [wishlist, setWishlist] = useState(() => normalizeWishlist(readStored("nes-wishlist", []), PRODUCTS));
-  const [savedOnly, setSavedOnly] = useState(savedFromLocation);
   const [serviceContext, setServiceContext] = useState(null);
   const [selectedSize, setSelectedSize] = useState("");
   const [bag, setBag] = useState(getInitialBag);
@@ -309,18 +310,13 @@ export default function App() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 18);
-    const handlePopState = (event) => {
-      setRoute(routeFromLocation());
-      setActiveBrandId(brandIdFromPath(window.location.pathname));
-      setFilter(filterFromLocation());
-      setSavedOnly(savedFromLocation());
-      setActiveProductId(productFromLocation());
+    const handlePopState = () => {
       setSelectedSize("");
       setBagOpen(false);
       setMobileOpen(false);
       setTradeOpen(false);
       setServiceOpen(null);
-      window.requestAnimationFrame(() => window.scrollTo({ top: event.state?.scrollY ?? 0, behavior: "instant" }));
+      setLegalOpen(null);
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -333,18 +329,9 @@ export default function App() {
 
   useEffect(() => {
     const legacySlug = new URLSearchParams(window.location.search).get("product");
-    if (legacySlug && productFromLocation()) {
+    if (legacySlug && productFromLocation(new URL(window.location.href))) {
       window.history.replaceState(window.history.state, "", `/products/${legacySlug}`);
     }
-  }, []);
-
-  useEffect(() => {
-    const sectionId = window.location.hash.slice(1);
-    if (!sectionId) return undefined;
-    const frame = window.requestAnimationFrame(() => {
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: "instant" });
-    });
-    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
@@ -465,7 +452,8 @@ export default function App() {
       if (sort === "price-asc") return compareProductPrices(a, b);
       if (sort === "price-desc") return compareProductPrices(a, b, true);
       if (sort === "name") return a.name.localeCompare(b.name);
-      return a.id - b.id;
+      const categoryOrder = (product) => product.familyId ? 0 : product.brand === "Vehon" ? 1 : 2;
+      return categoryOrder(a) - categoryOrder(b) || a.id - b.id;
     });
   }, [filter, search, sort, language, savedOnly, wishlist]);
 
@@ -499,63 +487,38 @@ export default function App() {
   const bagTotal = getBagTotal(bag, PRODUCTS);
 
   function navigateHome(section) {
-    setRoute("home");
     setMobileOpen(false);
-    setActiveProductId(null);
-    window.history.pushState({}, "", "/");
-    window.setTimeout(() => {
-      if (section) document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
-      else window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 30);
+    navigate(section ? `/#${section}` : "/");
   }
 
   function navigateShop(brand = "all", saved = false) {
-    setSavedOnly(saved);
-    setRoute("shop");
-    setFilter(brand);
-    setSearch("");
     setMobileOpen(false);
-    setActiveProductId(null);
     const query = new URLSearchParams();
     if (brand !== "all") query.set("brand", brand);
     if (saved) query.set("saved", "1");
-    window.history.pushState({}, "", `/shop${query.size ? `?${query}` : ""}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate(`/shop${query.size ? `?${query}` : ""}`);
   }
 
   function navigateBrands(brandId = null) {
-    window.history.replaceState({ ...window.history.state, scrollY: window.scrollY }, "", window.location.href);
-    setRoute("brands");
-    setActiveBrandId(brandId);
     setMobileOpen(false);
-    setActiveProductId(null);
-    window.history.pushState({}, "", brandId ? `/brands/${brandId}` : "/brands");
-    window.scrollTo({ top: 0, behavior: "instant" });
+    navigate(brandId ? `/brands/${brandId}` : "/brands");
   }
 
   function navigateAbout() {
-    window.history.replaceState({ ...window.history.state, scrollY: window.scrollY }, "", window.location.href);
-    setRoute("about");
     setMobileOpen(false);
-    setActiveProductId(null);
-    window.history.pushState({}, "", "/about");
-    window.scrollTo({ top: 0, behavior: "instant" });
+    navigate("/about");
   }
 
   function navigateGallery() {
-    setRoute("gallery");
     setMobileOpen(false);
-    setActiveProductId(null);
-    window.history.pushState({}, "", "/gallery");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate("/gallery");
   }
 
-  function updateFilter(brand) {
-    setFilter(brand);
-    const url = new URL(window.location.href);
-    if (brand === "all") url.searchParams.delete("brand");
-    else url.searchParams.set("brand", brand);
-    window.history.replaceState({}, "", `${url.pathname}${url.search}`);
+  function updateCatalog(key, value, defaultValue = "") {
+    const url = new URL(pageHref);
+    if (value === defaultValue) url.searchParams.delete(key);
+    else url.searchParams.set(key, value);
+    navigate(`${url.pathname}${url.search}`, { replace: true, preserveScroll: true });
   }
 
   function focusSearch() {
@@ -568,14 +531,8 @@ export default function App() {
     const product = PRODUCTS.find((item) => item.id === productId);
     if (!product) return;
     const changingVariant = route === "product" && activeProduct?.familyId && activeProduct.familyId === product.familyId;
-    if (route !== "product") {
-      window.history.replaceState({ ...window.history.state, scrollY: window.scrollY }, "", window.location.href);
-    }
     setSelectedSize("");
-    setActiveProductId(productId);
-    setRoute("product");
-    window.history.pushState({}, "", `/products/${getProductSlug(product)}`);
-    if (!changingVariant) window.scrollTo({ top: 0, behavior: "instant" });
+    navigate(`/products/${getProductSlug(product)}`, { preserveScroll: Boolean(changingVariant) });
   }
 
   function toggleFavorite(productId) {
@@ -588,8 +545,6 @@ export default function App() {
   }
 
   function resetCatalog() {
-    setSearch("");
-    setSort("featured");
     navigateShop();
   }
 
@@ -660,6 +615,7 @@ export default function App() {
           language={language}
           onShop={navigateShop}
           onGallery={navigateGallery}
+          onHome={navigateHome}
           onOpen={openProduct}
           onQuickAdd={addToBag}
           onBrand={navigateBrands}
@@ -688,13 +644,12 @@ export default function App() {
           savedOnly={savedOnly}
           wishlist={wishlist}
           onToggleFavorite={toggleFavorite}
-          onFilter={updateFilter}
-          onSearch={setSearch}
-          onSort={setSort}
+          onFilter={(brand) => updateCatalog("brand", brand, "all")}
+          onSearch={(query) => updateCatalog("q", query)}
+          onSort={(value) => updateCatalog("sort", value, "featured")}
           onOpen={openProduct}
           onShowAll={resetCatalog}
           onService={openService}
-          onBrand={navigateBrands}
         />
       )}
 
@@ -856,16 +811,8 @@ function ShoppableLook({ copy, language, onOpen }) {
   );
 }
 
-function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onBrand, onAbout, wishlist, onToggleFavorite, onTrade, onService, onPrivacy }) {
+function HomePage({ copy, language, onShop, onGallery, onHome, onOpen, onQuickAdd, onBrand, onAbout, wishlist, onToggleFavorite, onTrade, onService, onPrivacy }) {
   const featuredGroups = [
-    {
-      id: "knitwear",
-      label: "MONTECHIARO",
-      title: copy.featured.knitTitle,
-      description: copy.featured.knitText,
-      brand: "montechiaro",
-      products: ["pully-rosso", "pully-dark-blue", "pully-orange"].map((id) => featuredProducts.find((product) => product.id === id)),
-    },
     {
       id: "shoes-accessories",
       label: "WAI BY VEHON",
@@ -873,6 +820,14 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onBra
       description: copy.featured.shoeText,
       brand: "wai",
       products: ["wai-mocassin", "wai-slip-on", "wai-high"].map((id) => featuredProducts.find((product) => product.id === id)),
+    },
+    {
+      id: "knitwear",
+      label: "MONTECHIARO",
+      title: copy.featured.knitTitle,
+      description: copy.featured.knitText,
+      brand: "montechiaro",
+      products: ["pully-rosso", "pully-dark-blue", "pully-orange"].map((id) => featuredProducts.find((product) => product.id === id)),
     },
   ];
   return (
@@ -885,29 +840,15 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onBra
             <p className="shop-hero-body">{copy.hero.body}</p>
             <div className="shop-hero-actions">
               <button className="button button-forest" type="button" onClick={() => onShop("all")}>{copy.hero.primary}<ArrowIcon /></button>
-              <a className="underlined-link" href="#brands">{copy.hero.secondary}</a>
+              <a className="underlined-link" href="#brands" onClick={(event) => { event.preventDefault(); onHome("brands"); }}>{copy.hero.secondary}</a>
             </div>
           </div>
-          <figure className="hero-house-image">
-            <img src="/shop/editorial/nes-shoppable-look-v1.webp" alt={copy.look.alt} width="1536" height="1024" fetchPriority="high" decoding="async" />
-            <figcaption><span>NES / 01</span><span>Montechiaro × WAI</span></figcaption>
-          </figure>
           <div className="shop-hero-signature"><span>NES / 01</span><p>{copy.hero.campaign}</p></div>
-          <a className="hero-scroll" href="#spotlight" aria-label={language === "de" ? "WAI und seine Materialien entdecken" : "Explore WAI and its materials"}><span />Scroll</a>
+          <a className="hero-scroll" href="#spotlight" onClick={(event) => { event.preventDefault(); onHome("spotlight"); }} aria-label={language === "de" ? "WAI beim Scrollen entdecken" : "Explore WAI as you scroll"}><span />Scroll</a>
         </ShaderBackground>
       </section>
 
-      <section className="house-intro section-pad">
-        <div className="house-intro-index" data-reveal>NES<br />CURATED<br />HOUSE</div>
-        <div className="house-intro-copy" data-reveal style={{ "--reveal-delay": "80ms" }}>
-          <p className="eyebrow eyebrow-quoted">{copy.intro.label}</p>
-          <h2 className="display-italic">{copy.intro.title}</h2>
-          <p>{copy.intro.text}</p>
-          <a className="story-link" href="/about" onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onAbout(); }}>{copy.nav.about}<ArrowIcon /></a>
-        </div>
-      </section>
-
-      <MaterialStudy language={language} onOpen={onOpen} onBrand={onBrand} />
+      <ProductSequence language={language} onShop={onShop} />
 
       <section className="featured-section section-pad" id="featured">
         <div className="featured-inner">
@@ -920,7 +861,7 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onBra
                 <p className="featured-group-description">{group.description}</p>
                 <button className="featured-group-cta" type="button" onClick={() => onShop(group.brand)}>{copy.featured.shopNow}</button>
               </div>
-              <div className={`featured-grid featured-grid-${group.id}`} aria-labelledby={`featured-${group.id}-title`}>
+              <div className={`featured-grid featured-grid-${group.id}`} data-scroll-key={`featured-${group.id}`} aria-labelledby={`featured-${group.id}-title`}>
                 {group.products.map((product) => (
                   <FeaturedProductCard
                     key={product.id}
@@ -935,6 +876,16 @@ function HomePage({ copy, language, onShop, onGallery, onOpen, onQuickAdd, onBra
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="house-intro section-pad">
+        <div className="house-intro-index" data-reveal>NES<br />CURATED<br />HOUSE</div>
+        <div className="house-intro-copy" data-reveal style={{ "--reveal-delay": "80ms" }}>
+          <p className="eyebrow eyebrow-quoted">{copy.intro.label}</p>
+          <h2 className="display-italic">{copy.intro.title}</h2>
+          <p>{copy.intro.text}</p>
+          <a className="story-link" href="/about" onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onAbout(); }}>{copy.nav.about}<ArrowIcon /></a>
         </div>
       </section>
 
@@ -991,22 +942,14 @@ function GalleryPage({ copy, onShop, onService }) {
   );
 }
 
-function ShopPage({ copy, language, products, filter, search, sort, savedOnly, wishlist, onToggleFavorite, onFilter, onSearch, onSort, onOpen, onShowAll, onService, onBrand }) {
-  const collections = [
-    { id: "wai", name: "WAI by Vehon", kind: language === "de" ? "Feel Shoes" : "Feel shoes", note: language === "de" ? "Leichte Formen, flexible Materialien und Platz für Bewegung." : "Light forms, flexible materials and room to move.", matches: (product) => Boolean(product.familyId) },
-    { id: "vehon-models", name: "Vehon", kind: language === "de" ? "Schuhe" : "Footwear", note: language === "de" ? "Italienische Formen, ausgewählt für den Alltag." : "Italian silhouettes selected for everyday wear.", matches: (product) => product.brand === "Vehon" },
-    { id: "montechiaro", name: "Montechiaro", kind: language === "de" ? "Strick" : "Knitwear", note: language === "de" ? "Jacquard-Strick mit Farbe, Struktur und Charakter." : "Jacquard knitwear with colour, texture and character.", matches: (product) => product.brandId === "montechiaro" },
-  ];
+function ShopPage({ copy, language, products, filter, search, sort, savedOnly, wishlist, onToggleFavorite, onFilter, onSearch, onSort, onOpen, onShowAll, onService }) {
   const tabs = [
-    { id: "all", label: copy.shop.all },
-    { id: "vehon", label: language === "de" ? "Schuhe" : "Footwear" },
-    { id: "wai", label: "WAI" },
-    { id: "vehon-models", label: "Vehon" },
-    { id: "montechiaro", label: "Montechiaro" },
+    { id: "all", label: language === "de" ? "Alle Produkte" : "All products" },
+    { id: "vehon", label: language === "de" ? "Alle Schuhe" : "All footwear" },
+    { id: "wai", label: "WAI · Feel Shoes" },
+    { id: "vehon-models", label: "Vehon · Loafer" },
+    { id: "montechiaro", label: language === "de" ? "Montechiaro · Strick" : "Montechiaro · Knitwear" },
   ];
-  const sections = savedOnly ? [] : collections
-    .map((collection) => ({ ...collection, products: products.filter(collection.matches) }))
-    .filter((collection) => collection.products.length > 0);
   const renderCard = (product, index) => <ProductCard key={product.id} product={product} wishlist={wishlist} onToggleFavorite={onToggleFavorite} copy={copy} language={language} onOpen={onOpen} revealDelay={`${Math.min(index, 5) * 45}ms`} />;
 
   return (
@@ -1016,7 +959,7 @@ function ShopPage({ copy, language, products, filter, search, sort, savedOnly, w
           <p className="eyebrow">{copy.shop.breadcrumb}</p>
           <h1>{savedOnly ? copy.shop.savedTitle : copy.shop.title}<span className="catalog-intro-period">.</span></h1>
         </div>
-        <div className="catalog-intro-summary"><p>{savedOnly ? copy.shop.savedIntro : copy.shop.intro}</p><span className="catalog-intro-index">NES / {language === "de" ? "ALLE MODELLE" : "ALL STYLES"}</span></div>
+        <div className="catalog-intro-summary"><p>{savedOnly ? copy.shop.savedIntro : copy.shop.intro}</p></div>
       </section>
       <section className="catalog section-pad" aria-label={copy.shop.title}>
         <div className="catalog-controls">
@@ -1030,16 +973,7 @@ function ShopPage({ copy, language, products, filter, search, sort, savedOnly, w
           </div>
         </div>
         {products.length > 0 ? (
-          savedOnly ? <div className="product-grid catalog-grid catalog-saved-grid">{products.map(renderCard)}</div> :
-            <div className="catalog-collections">
-              {sections.map((collection, sectionIndex) => <section className="catalog-collection" key={collection.id} aria-labelledby={`catalog-${collection.id}`}>
-                <div className="catalog-collection-head">
-                  <div><p className="catalog-collection-index">{String(sectionIndex + 1).padStart(2, "0")} / {collection.kind}</p><h2 id={`catalog-${collection.id}`}>{collection.name}</h2><a className="story-link catalog-brand-story" href={`/brands/${collection.id === "vehon-models" ? "vehon" : collection.id}`} onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onBrand(collection.id === "vehon-models" ? "vehon" : collection.id); }}>{language === "de" ? "Die Marke entdecken" : "Discover the brand"}<ArrowIcon /></a></div>
-                  <div className="catalog-collection-aside"><p>{collection.note}</p><span>{String(collection.products.length).padStart(2, "0")} {collection.products.length === 1 ? copy.shop.product : copy.shop.products}</span></div>
-                </div>
-                <div className="product-grid catalog-grid">{collection.products.map(renderCard)}</div>
-              </section>)}
-            </div>
+          <div className="product-grid catalog-grid">{products.map(renderCard)}</div>
         ) : (
           <div className="catalog-empty">
             <h2>{savedOnly && wishlist.length === 0 ? copy.shop.savedEmpty : copy.shop.noResults}</h2>
@@ -1059,22 +993,67 @@ function SectionHeading({ label, title }) {
 
 function StandardSection({ copy, onShop }) {
   const [active, setActive] = useState(0);
+  const trackRef = useRef(null);
+  const studyRef = useRef(null);
   const points = copy.standard.points;
+  const staticMedia = "(prefers-reduced-motion: reduce), (max-height: 650px)";
+
+  useEffect(() => {
+    const track = trackRef.current;
+    const study = studyRef.current;
+    const media = window.matchMedia(staticMedia);
+    let raf;
+    const update = () => {
+      raf = undefined;
+      if (media.matches) return;
+      const top = Number.parseFloat(getComputedStyle(study).top) || 0;
+      const travel = Math.max(1, track.offsetHeight - study.offsetHeight);
+      const progress = Math.max(0, Math.min(1, (top - track.getBoundingClientRect().top) / travel));
+      track.dataset.progress = progress.toFixed(4);
+      setActive(Math.min(2, Math.floor(progress * 3)));
+    };
+    const schedule = () => { if (!raf && !media.matches) raf = requestAnimationFrame(update); };
+    const onPreference = () => { cancelAnimationFrame(raf); raf = undefined; update(); };
+    const resize = new ResizeObserver(schedule);
+    resize.observe(track);
+    resize.observe(study);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    media.addEventListener("change", onPreference);
+    update();
+    return () => {
+      cancelAnimationFrame(raf);
+      resize.disconnect();
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      media.removeEventListener("change", onPreference);
+    };
+  }, [staticMedia]);
+
+  const selectPoint = (index) => {
+    setActive(index);
+    if (window.matchMedia(staticMedia).matches) return;
+    const track = trackRef.current, study = studyRef.current;
+    const top = Number.parseFloat(getComputedStyle(study).top) || 0;
+    const position = track.getBoundingClientRect().top + window.scrollY - top;
+    window.scrollTo({ top: position + ((index + 0.15) / 3) * (track.offsetHeight - study.offsetHeight), behavior: "smooth" });
+  };
 
   return (
-    <section className="standard-section" id="standard">
+    <section className="standard-section" id="standard" aria-labelledby="standard-title">
       <div className="standard-copy">
         <div className="standard-head" data-reveal>
-          <div><p className="eyebrow eyebrow-quoted">{copy.standard.label}</p><h2 className="display-italic">{copy.standard.title}</h2></div>
+          <div><p className="eyebrow eyebrow-quoted">{copy.standard.label}</p><h2 className="display-italic" id="standard-title">{copy.standard.title}</h2></div>
           <p className="standard-body">{copy.standard.body}</p>
         </div>
-
-        <div className="principle-study" data-reveal>
+      </div>
+      <div className="standard-scroll" ref={trackRef}>
+        <div className="principle-study" ref={studyRef}>
           {/* Decorative — every principle's meaning lives in the list beside it. */}
           <div className="principle-stage" aria-hidden="true">
             {points.map(([index], pointIndex) => (
               <img
-                className={`principle-stage-image${pointIndex === active ? " is-active" : ""}`}
+                className={`principle-stage-image${PRINCIPLE_MEDIA[pointIndex].texture ? " principle-stage-texture" : ""}${pointIndex === active ? " is-active" : ""}`}
                 key={index}
                 src={PRINCIPLE_MEDIA[pointIndex].src}
                 alt=""
@@ -1086,16 +1065,15 @@ function StandardSection({ copy, onShop }) {
             <span className="principle-stage-index">{points[active][0]}</span>
           </div>
 
-          <ul className="principle-list">
+          <div className="principle-controls">
+            <ul className="principle-list">
             {points.map(([index, title, body], pointIndex) => (
               <li className="principle-item" key={index}>
                 <button
                   className={`principle${pointIndex === active ? " is-active" : ""}`}
                   type="button"
                   aria-pressed={pointIndex === active}
-                  onClick={() => setActive(pointIndex)}
-                  onMouseEnter={() => setActive(pointIndex)}
-                  onFocus={() => setActive(pointIndex)}
+                  onClick={() => selectPoint(pointIndex)}
                 >
                   <span className="principle-index">{index}</span>
                   <strong>{title}</strong>
@@ -1103,10 +1081,10 @@ function StandardSection({ copy, onShop }) {
                 </button>
               </li>
             ))}
-          </ul>
+            </ul>
+            <button className="button button-forest" type="button" onClick={() => onShop("all")}>{copy.standard.cta}<ArrowIcon /></button>
+          </div>
         </div>
-
-        <button className="button button-forest" type="button" onClick={() => onShop("all")}>{copy.standard.cta}<ArrowIcon /></button>
       </div>
     </section>
   );

@@ -581,32 +581,38 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .product-construction {
   position: relative;
-  height: 320vh;
-  /* Tuned to the mid-tone of the render's studio sweep rather than taken from
-     the palette: it is what lets `darken` below swallow the backdrop whole.
-     Reads as the cool end of the monochrome, which suits the technical beat. */
-  --construction-ground: #d9d7d4;
+  height: 290svh;
+  scroll-margin-top: var(--header-height);
+  --construction-ground: #e7e4de;
   background: var(--construction-ground);
 }
 
 .product-construction-stage {
   position: sticky;
-  top: 0;
-  height: 100vh;
+  top: var(--header-height);
+  height: calc(100svh - var(--header-height));
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
   align-items: center;
-  gap: clamp(38px, 4vw, 64px);
-  width: min(100%, 1352px);
+  gap: 0;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 clamp(22px, 4vw, 64px);
+  padding: 0;
 }
 
-/* The sticky stage is its own stacking context, so the canvas can only blend
-   against something painted inside it — hence the band colour repeated here. */
+/* Transparent product layers share the section background without a picture border. */
 .product-construction-media {
   position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
   background: var(--construction-ground);
+}
+
+.product-construction-copy {
+  min-width: 0;
+  padding: 32px clamp(28px, 5vw, 88px) 32px clamp(28px, 4vw, 72px);
 }
 
 .product-construction-media > canvas {
@@ -614,19 +620,16 @@ html.reveal-ready [data-reveal].is-revealed {
   z-index: 1;
   display: block;
   width: 100%;
-  height: auto;
-  /* The renders sit on a light studio sweep. `darken` keeps the shoe and lets
-     the band swallow everything lighter than it, so nothing reads as a tile. */
-  mix-blend-mode: darken;
+  height: 100%;
 }
 
 .product-construction-still {
+  display: block;
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  mix-blend-mode: darken;
+  padding: 2%;
 }
 
 .product-construction-media > canvas.is-ready + .product-construction-still {
@@ -669,6 +672,7 @@ html.reveal-ready [data-reveal].is-revealed {
   grid-area: 1 / 1;
   padding-top: 20px;
   opacity: 0;
+  visibility: hidden;
   translate: 0 10px;
   transition:
     opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
@@ -678,20 +682,9 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .product-construction-steps > li[data-active] {
   opacity: 1;
+  visibility: visible;
   translate: 0;
   pointer-events: auto;
-}
-
-.product-construction-figure {
-  position: absolute;
-  z-index: -1;
-  top: -18px;
-  right: 0;
-  color: var(--line);
-  font-family: var(--serif);
-  font-size: clamp(90px, 9vw, 150px);
-  font-weight: 400;
-  line-height: 1;
 }
 
 .product-construction-index {
@@ -739,66 +732,47 @@ html.reveal-ready [data-reveal].is-revealed {
   letter-spacing: var(--voice-tracking);
 }
 
-/* No pinning where it would fight the thumb or cost mobile data, and none
-   when motion is unwelcome: one still frame, all four layers at once. */
-@media (max-width: 900px), (prefers-reduced-motion: reduce) {
-  .product-construction {
-    height: auto;
-    padding: var(--home-section-space-tight) 0;
-  }
+/* The complete generated artwork is also the static and loading fallback. */
+.product-construction-still img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
-  .product-construction-stage {
-    position: static;
-    height: auto;
-    grid-template-columns: 1fr;
-    gap: 34px;
-  }
+.product-construction-progress { margin-top: 28px; max-width: 280px; }
+.product-construction-progress > span { color: var(--muted); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
+.product-construction-progress > i { display: block; height: 1px; margin-top: 12px; background: var(--line); }
+.product-construction-progress > i::before { content: ""; display: block; height: 100%; background: var(--brand); transform-origin: left; transform: scaleX(var(--sequence-progress, 0)); }
 
-  .product-construction-media > canvas {
-    display: none;
-  }
+@media (max-width: 900px) {
+  .product-construction { height: 250svh; }
+  .product-construction-stage { grid-template-columns: 1fr; align-content: center; gap: 12px; padding-block: 20px; }
+  .product-construction-media { width: min(100%, 520px); height: clamp(180px, calc(100svh - var(--header-height) - 390px), 410px); margin-inline: auto; }
+  .product-construction-copy { width: min(100%, 514px); margin-inline: auto; padding: 0 22px; }
+  .product-construction-copy .eyebrow { margin: 0; font-size: 9px; }
+  .product-construction-copy h2 { max-width: 13em; margin-top: 10px; font-size: clamp(30px, 6vw, 44px); }
+  .product-construction-name { margin-top: 12px; font-size: 8px; }
+  .product-construction-steps { min-height: 106px; margin-top: 18px; }
+  .product-construction-steps > li { padding-top: 12px; }
+  .product-construction-steps strong { margin-top: 8px; font-size: 24px; }
+  .product-construction-body { margin-top: 6px; font-size: 12px; }
+  .product-construction-action { margin-top: 16px; }
+  .product-construction-action .button { min-height: 44px; }
+  .product-construction-progress { margin-top: 16px; }
+}
 
-  .product-construction-still {
-    position: static;
-    width: 100%;
-    height: auto;
-    /* Same crop as the canvas draw call, expressed as a frame + cover. */
-    aspect-ratio: 830 / 618;
-    object-fit: cover;
-    mix-blend-mode: darken;
-  }
-
-  .product-construction-media > canvas.is-ready + .product-construction-still {
-    visibility: visible;
-  }
-
-  .product-construction-steps {
-    display: block;
-    min-height: 0;
-  }
-
-  .product-construction-steps > li {
-    opacity: 1;
-    translate: 0;
-    pointer-events: auto;
-    border-top: 1px solid var(--line);
-    padding-top: 16px;
-    margin-top: 16px;
-  }
-
-  .product-construction-steps > li:first-child {
-    border-top: 0;
-    margin-top: 0;
-  }
-
-  .product-construction-figure {
-    display: none;
-  }
-
-  .product-construction-steps strong {
-    margin-top: 8px;
-    font-size: 24px;
-  }
+@media (prefers-reduced-motion: reduce), (max-height: 600px) {
+  .product-construction { height: auto; padding: 44px 0; }
+  .product-construction-stage { position: static; height: auto; }
+  .product-construction-media > canvas { display: none; }
+  .product-construction-media { height: auto; }
+  .product-construction-still { position: static; width: 100%; height: auto; aspect-ratio: 1; }
+  .product-construction-media > canvas.is-ready + .product-construction-still { visibility: visible; }
+  .product-construction-steps { display: block; min-height: 0; }
+  .product-construction-steps > li { opacity: 1; visibility: visible; translate: 0; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+  .product-construction-steps > li:first-child { border-top: 0; margin-top: 0; }
+  .product-construction-progress { display: none; }
+  .product-construction-steps strong { margin-top: 8px; font-size: 24px; }
 }
 
 /* Section headings */
@@ -2124,6 +2098,7 @@ html.reveal-ready [data-reveal].is-revealed {
 /* Standard */
 
 .standard-section {
+  scroll-margin-top: var(--header-height);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   background: var(--paper-deep);
@@ -2161,20 +2136,31 @@ html.reveal-ready [data-reveal].is-revealed {
   line-height: 1.75;
 }
 
-/* Material study — the three principles drive one large image. */
+/* The three principles advance with the sticky image as the page scrolls. */
+
+.standard-scroll {
+  height: 240svh;
+  position: relative;
+}
 
 .principle-study {
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100svh - var(--header-height));
+  width: min(100%, 1480px);
+  padding: 32px clamp(22px, 4vw, 64px);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: clamp(38px, 5vw, 86px);
-  margin-top: clamp(50px, 5vw, 78px);
+  margin: 0 auto;
   text-align: left;
 }
 
 .principle-stage {
   position: relative;
-  aspect-ratio: 4 / 5;
+  height: 100%;
+  min-height: 0;
   overflow: hidden;
   background: var(--paper-deep);
 }
@@ -2204,6 +2190,12 @@ html.reveal-ready [data-reveal].is-revealed {
 .principle-stage-image.is-active {
   opacity: 1;
   scale: 1;
+}
+
+/* Frame only the textile in the campaign image; its embedded caption stays outside the crop. */
+.principle-stage-image.principle-stage-texture {
+  height: 145%;
+  object-position: center top;
 }
 
 .principle-stage-index {
@@ -2266,7 +2258,6 @@ html.reveal-ready [data-reveal].is-revealed {
   transition: color 0.45s ease;
 }
 
-.principle:hover strong,
 .principle.is-active strong {
   color: var(--ink);
 }
@@ -2297,30 +2288,33 @@ html.reveal-ready [data-reveal].is-revealed {
   opacity: 1;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .principle-stage-image,
-  .principle-body {
-    transition: none;
-  }
-}
-
 @media (max-width: 900px) {
   .principle-study {
     grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
+    grid-template-rows: minmax(160px, 1fr) auto;
+    gap: 20px;
+    padding: 20px 22px;
   }
 
-  .principle-stage {
-    aspect-ratio: 3 / 2;
-  }
+  .principle-stage-index { font-size: 46px; bottom: 18px; }
+  .principle-controls .principle { padding: 15px 0; }
+  .principle-controls .principle strong { font-size: 26px; }
+  .principle-controls .button { margin-top: 22px; min-height: 44px; }
 }
 
-.standard-copy .button {
+.principle-controls .button {
   display: flex;
   width: fit-content;
-  margin-top: 36px;
-  margin-right: auto;
-  margin-left: auto;
+  margin-top: 32px;
+}
+
+@media (prefers-reduced-motion: reduce), (max-height: 650px) {
+  .standard-scroll { height: auto; }
+  .principle-study { position: static; height: auto; }
+  .principle-stage { height: auto; min-height: 300px; aspect-ratio: 4 / 5; }
+  .principle-stage-image { transition: none !important; scale: 1; }
+  .principle-body { grid-template-rows: 1fr; margin-top: 11px; opacity: 1; transition: none !important; }
+  .principle strong { color: var(--ink); }
 }
 
 /* Service, trade and newsletter */
@@ -4255,10 +4249,6 @@ html.reveal-ready [data-reveal].is-revealed {
 
   .standard-body {
     margin: 0;
-  }
-
-  .principle-study {
-    margin-top: 40px;
   }
 
   .principle {

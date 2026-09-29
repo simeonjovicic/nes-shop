@@ -9,69 +9,35 @@
   overflow: hidden;
   padding: inherit;
   text-align: inherit;
+  background: #e4ddcf;
 }
 
 .hero-shader-fallback,
-.hero-shader-mesh,
+.hero-sand-canvas,
 .hero-shader-veil {
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
 .hero-shader-fallback {
   z-index: 0;
-  inset: 0;
-  background: linear-gradient(125deg, #f5f3ef 5%, #ddd9d0 42%, #b5b1a8 72%, #f5f3ef 100%);
+  background:
+    radial-gradient(ellipse at 74% 20%, #f0e9db99, transparent 60%),
+    repeating-linear-gradient(155deg, #c5bba722 0, #e6ddcd22 2px, #f0e8d822 5px, #c5bba722 9px),
+    linear-gradient(130deg, #e9e3d7, #d4c9b5 65%, #e9e1d2);
 }
 
-.hero-shader-mesh {
-  z-index: 1;
-  inset: -8%;
-  width: 116%;
-  height: 116%;
-  opacity: 0.62;
-  filter: saturate(0.68) contrast(0.86) brightness(1.08);
-  transform: translate3d(0, calc(var(--hero-progress) * -18px), 0) scale(1.04);
-  will-change: transform;
-}
+.hero-sand-canvas { z-index: 1; opacity: 0; }
+.hero-sand-canvas[data-ready="true"] { opacity: 1; }
 
 .hero-shader-veil {
   z-index: 2;
-  inset: 0;
   background:
-    linear-gradient(90deg, rgba(245, 243, 239, 0.62), transparent 24%, transparent 76%, rgba(245, 243, 239, 0.62)),
-    linear-gradient(180deg, rgba(245, 243, 239, 0.62), rgba(245, 243, 239, 0.2) 45%, rgba(245, 243, 239, 0.72));
-}
-
-.hero-footprint-trail {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  --footprint-opacity: 0.16;
-}
-
-.footstep {
-  position: absolute;
-  top: var(--step-y);
-  left: var(--step-x);
-  width: clamp(20px, 1.85vw, 29px);
-  color: #1f1f1d;
-  transform: translate(-50%, -50%) rotate(var(--step-rotation)) scale(var(--step-scale));
-  transform-origin: center;
-}
-
-.footstep svg {
-  display: block;
-  width: 100%;
-  fill: currentColor;
-  opacity: 0;
-  transform-origin: center;
-}
-
-.site-shell.is-ready .footstep svg {
-  animation: footprint-pass 6.5s var(--step-delay) infinite cubic-bezier(0.22, 1, 0.36, 1);
+    linear-gradient(90deg, #f5f3efc9 0%, #f5f3ef80 33%, #f5f3ef0a 62%, transparent 100%),
+    linear-gradient(180deg, #f5f3ef12 70%, #f5f3ef40 100%);
 }
 
 .hero-shader-foreground {
@@ -81,55 +47,8 @@
   padding: inherit;
 }
 
-@keyframes footprint-pass {
-  0%, 2% {
-    opacity: 0;
-    filter: blur(1.5px);
-    transform: translateY(5px) scale(0.92);
-  }
-
-  6%, 21% {
-    opacity: var(--footprint-opacity);
-    filter: blur(0);
-    transform: translateY(0) scale(1);
-  }
-
-  32%, 100% {
-    opacity: 0;
-    filter: blur(0.8px);
-    transform: translateY(-2px) scale(1.01);
-  }
-}
-
-@media (max-width: 720px) {
-  .hero-shader-mesh {
-    inset: -5%;
-    width: 110%;
-    height: 110%;
-    opacity: 0.54;
-  }
-
+@media (max-width: 760px) {
   .hero-shader-veil {
-    background:
-      linear-gradient(90deg, rgba(245, 243, 239, 0.48), transparent 22%, transparent 78%, rgba(245, 243, 239, 0.48)),
-      linear-gradient(180deg, rgba(245, 243, 239, 0.68), rgba(245, 243, 239, 0.22) 45%, rgba(245, 243, 239, 0.76));
-  }
-
-  .hero-footprint-trail {
-    --footprint-opacity: 0.095;
-  }
-
-  .footstep {
-    width: clamp(17px, 5vw, 21px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-shader-mesh {
-    transform: scale(1.04);
-  }
-
-  .hero-footprint-trail {
-    display: none;
+    background: linear-gradient(180deg, #f5f3ef00 8%, #f5f3ef30 27%, #f5f3efd9 57%, #f5f3eff2 100%);
   }
 }

@@ -29,13 +29,13 @@ export const BRANDS = [
   },
   {
     id: "vehon", name: "Vehon", signature: "Mocassini & Loafers", filter: "vehon-models", index: "02",
-    hero: "/shop/products/vehon-prince-front.webp", position: "center",
+    hero: "/shop/featured/prince-loafer-editorial-v1.webp", position: "center 58%",
     detail: "/shop/products/vehon-duke-velvet-side.webp", detailPosition: "center",
     previewIds: [7, 6, 8],
     de: {
       category: "Loafer, Mocassini & Pantofole", title: "Form mit Gelassenheit.",
       intro: "Klare Silhouetten, dunkle Töne und Materialien mit Tiefe. Vehon verbindet die Form des Loafers mit Strick und Velvet.",
-      imageAlt: "Schwarzer Prince Loafer von Vehon mit gestricktem Obermaterial", detailAlt: "Seitliche Ansicht des Vehon Duke Velvet",
+      imageAlt: "Schwarze Vehon Prince Loafer mit grauer Hose auf einer hellen Steintreppe", detailAlt: "Seitliche Ansicht des Vehon Duke Velvet",
       storyTitle: "Ein leiser Auftritt.",
       story: "Beim Prince zeichnet das gestrickte Obermaterial die Form. Beim Duke und beim Velluto bestimmt Velvet die Oberfläche. Drei Modelle, deren Charakter sich beim genaueren Hinsehen zeigt.",
       reason: "Vehon ergänzt unsere Auswahl um klare, zurückhaltende Formen. Die dunklen Materialien lassen sich mit den Farben und Mustern von Montechiaro kombinieren.",
@@ -45,7 +45,7 @@ export const BRANDS = [
     en: {
       category: "Loafers, moccasins & slippers", title: "Shape with composure.",
       intro: "Clean silhouettes, dark tones and materials with depth. Vehon brings knit and velvet to the familiar loafer form.",
-      imageAlt: "Black Vehon Prince loafer with a knitted upper", detailAlt: "Side view of the Vehon Duke Velvet",
+      imageAlt: "Black Vehon Prince loafers worn with grey trousers on pale stone steps", detailAlt: "Side view of the Vehon Duke Velvet",
       storyTitle: "A quiet presence.",
       story: "On the Prince, the knitted upper defines the shape. On the Duke and Velluto, velvet gives the surface its character. Three styles that reward a closer look.",
       reason: "Vehon brings clean, understated shapes to our selection. Its dark materials sit easily alongside Montechiaro’s colours and patterns.",

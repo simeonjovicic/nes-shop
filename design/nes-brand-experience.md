@@ -15,11 +15,11 @@ The headline is **Barfußgefühl. Mit Charakter.** / **Barefoot feeling. With ch
 
 ## Product representation
 
-The former four-layer WAI animation had unverified construction labels and linked to a legacy product. It is replaced in the homepage by a three-choice material study using current WAI product images and matching SKU links. Original animation assets remain in the repository.
+The scroll-controlled WAI presentation sits directly below the homepage hero. Following the user’s correction that the real product is an extremely thin textile foot covering, it now animates three transparent layers: the soft denim upper, a thin textile sheet and a thin outsole. The thick foam layer, rigid leather heel and pull loop from the previous illustration are removed. The new artwork uses the current Denim Mocassin cutout and original catalogue photograph as product references. It preserves the same textures at every scroll position. This is an artistic reconstruction, not verified engineering imagery; the copy uses neutral visual descriptions. Its CTA opens the current WAI catalogue. Reduced motion and short viewports use the complete static artwork. `src/ProductSequence.jsx` owns loading and scroll position; `src/shoeSequence.js` draws the layers. Previous assets remain unchanged. See [the current asset record and generation prompt](wai-sequence-v3.md).
 
 The look's shoe link now points to the current Denim Mocassin and retains the price-on-request behaviour. The copy presents the items as a selection for the look, since the editorial image is not an exact reference photograph of the new SKU.
 
-All imagery comes from the existing image library, including the previously generated product cutouts. No authentic try-on video or founder photography was created. Additional photography can be added when supplied.
+Other imagery comes from the existing image library, including the previously generated product cutouts. No authentic try-on video or founder photography was created. Additional photography can be added when supplied.
 
 ## Validation
 
