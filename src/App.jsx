@@ -14,6 +14,8 @@ import "./catalog-page.css";
 import { BRANDS, getBrandForProduct, brandIdFromPath } from "./brands.js";
 import { BrandCards, BrandsPage, BrandDetailPage, AboutPage } from "./BrandExperience.jsx";
 import { KnitQuality } from "./KnitQuality.jsx";
+import { SocietyInvitation } from "./SocietyInvitation.jsx";
+import { CheckoutPreview } from "./CheckoutPreview.jsx";
 
 const GALLERY_IMAGES = [
   { src: "/shop/gallery/wai-ground.webp", brand: "WAI" },
@@ -300,10 +302,13 @@ export default function App() {
   const [selectedSize, setSelectedSize] = useState("");
   const [bag, setBag] = useState(getInitialBag);
   const [bagOpen, setBagOpen] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(() => new URL(window.location.href).searchParams.get("checkout") === "preview");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [tradeOpen, setTradeOpen] = useState(false);
   const [serviceOpen, setServiceOpen] = useState(null);
   const [legalOpen, setLegalOpen] = useState(null);
+  const [societyOpen, setSocietyOpen] = useState(() => new URL(window.location.href).searchParams.get("society") === "preview");
+  const societySeen = useRef(false);
   const [scrolled, setScrolled] = useState(false);
   const [toast, setToast] = useState("");
 
@@ -314,10 +319,12 @@ export default function App() {
     const handlePopState = () => {
       setSelectedSize("");
       setBagOpen(false);
+      setCheckoutOpen(false);
       setMobileOpen(false);
       setTradeOpen(false);
       setServiceOpen(null);
       setLegalOpen(null);
+      setSocietyOpen(false);
     };
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -410,19 +417,36 @@ export default function App() {
   }, [wishlist]);
 
   useEffect(() => {
-    const locked = Boolean(bagOpen || mobileOpen || tradeOpen || serviceOpen || legalOpen);
+    if (societyOpen) {
+      societySeen.current = true;
+      try { window.sessionStorage.setItem("nes-society-preview-seen", "1"); } catch { /* The in-memory flag still prevents repeat invitations. */ }
+      return undefined;
+    }
+    if (route !== "home" || societySeen.current || bagOpen || checkoutOpen || mobileOpen || tradeOpen || serviceOpen || legalOpen) return undefined;
+    try { if (window.sessionStorage.getItem("nes-society-preview-seen")) return undefined; } catch { /* Storage is optional. */ }
+    const timeout = window.setTimeout(() => {
+      if (document.visibilityState !== "visible" || document.activeElement?.matches("input, textarea, select, [contenteditable]")) return;
+      setSocietyOpen(true);
+    }, 12000);
+    return () => window.clearTimeout(timeout);
+  }, [route, societyOpen, bagOpen, checkoutOpen, mobileOpen, tradeOpen, serviceOpen, legalOpen]);
+
+  useEffect(() => {
+    const locked = Boolean(bagOpen || checkoutOpen || mobileOpen || tradeOpen || serviceOpen || legalOpen || societyOpen);
     if (!locked) return undefined;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = previous;
     };
-  }, [bagOpen, mobileOpen, tradeOpen, serviceOpen, legalOpen]);
+  }, [bagOpen, checkoutOpen, mobileOpen, tradeOpen, serviceOpen, legalOpen, societyOpen]);
 
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key !== "Escape") return;
-      if (legalOpen) setLegalOpen(null);
+      if (societyOpen) setSocietyOpen(false);
+      else if (checkoutOpen) setCheckoutOpen(false);
+      else if (legalOpen) setLegalOpen(null);
       else if (serviceOpen) setServiceOpen(null);
       else if (tradeOpen) setTradeOpen(false);
       else if (bagOpen) setBagOpen(false);
@@ -430,7 +454,7 @@ export default function App() {
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [legalOpen, serviceOpen, tradeOpen, bagOpen]);
+  }, [legalOpen, serviceOpen, tradeOpen, bagOpen, societyOpen, checkoutOpen]);
 
   useEffect(() => {
     if (!toast) return undefined;
@@ -663,6 +687,7 @@ export default function App() {
         onTrade={() => setTradeOpen(true)}
         onService={openService}
         onLegal={setLegalOpen}
+        onSociety={() => setSocietyOpen(true)}
       />
 
       {bagOpen && (
@@ -674,6 +699,10 @@ export default function App() {
           onClose={() => setBagOpen(false)}
           onUpdate={updateBagItem}
           onRemove={(index) => setBag((current) => current.filter((_, itemIndex) => itemIndex !== index))}
+          onCheckout={() => {
+            setBagOpen(false);
+            setCheckoutOpen(true);
+          }}
           onEnquire={() => {
             setBagOpen(false);
             setServiceContext({ bag });
@@ -685,6 +714,13 @@ export default function App() {
           }}
         />
       )}
+
+      {checkoutOpen && <CheckoutPreview
+        bag={bag}
+        language={language}
+        onClose={() => setCheckoutOpen(false)}
+        onBack={() => { setCheckoutOpen(false); setBagOpen(true); }}
+      />}
 
       {tradeOpen && (
         <TradeModal
@@ -719,6 +755,8 @@ export default function App() {
           onClose={() => setLegalOpen(null)}
         />
       )}
+
+      {societyOpen && <SocietyInvitation language={language} onClose={() => setSocietyOpen(false)} />}
 
       <div className="sr-only" role="status" aria-live="polite">{toast}</div>
     </div>
@@ -1423,7 +1461,7 @@ function PdpTrustIcon({ kind }) {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V3m0 5h5M4 8a9 9 0 1 1-1 8" /></svg>;
 }
 
-function BagDrawer({ bag, total, copy, language, onClose, onUpdate, onRemove, onShop, onEnquire }) {
+function BagDrawer({ bag, total, copy, language, onClose, onUpdate, onRemove, onShop, onEnquire, onCheckout }) {
   const dialogRef = useDialogFocus();
   return (
     <div className="drawer-layer">
@@ -1448,7 +1486,7 @@ function BagDrawer({ bag, total, copy, language, onClose, onUpdate, onRemove, on
             );
           })}
         </div>
-        {bag.length > 0 && <div className="bag-footer"><div className="bag-total" aria-live="polite"><span>{copy.bag.subtotal}</span><strong>{formatPrice(total, language)}</strong></div><p>{copy.bag.note}</p><button className="checkout-button" type="button" onClick={onEnquire}>{copy.bag.checkout}<ArrowIcon /></button><button className="bag-continue" type="button" onClick={onClose}>{copy.bag.continue}</button></div>}
+        {bag.length > 0 && <div className="bag-footer"><div className="bag-total" aria-live="polite"><span>{copy.bag.subtotal}</span><strong>{formatPrice(total, language)}</strong></div><p>{language === "de" ? "Entdecken Sie unseren neuen Checkout als visuelle Vorschau." : "Explore our new checkout in a visual preview."}</p><button className="checkout-button bag-checkout-preview" type="button" onClick={onCheckout}><span>{language === "de" ? "Zum Checkout" : "Checkout"}<small>Demo</small></span><ArrowIcon /></button><button className="bag-enquire" type="button" onClick={onEnquire}>{copy.bag.checkout}<ArrowIcon /></button><button className="bag-continue" type="button" onClick={onClose}>{copy.bag.continue}</button></div>}
       </aside>
     </div>
   );
@@ -1646,14 +1684,14 @@ function LegalModal({ kind, language, copy, onClose }) {
   );
 }
 
-function Footer({ copy, language, onHome, onBrand, onAbout, onTrade, onService, onLegal }) {
+function Footer({ copy, language, onHome, onBrand, onAbout, onTrade, onService, onLegal, onSociety }) {
   return (
     <footer className="site-footer">
       <div className="footer-main">
         <div className="footer-brand"><button className="footer-wordmark" type="button" onClick={() => onHome()}>NES</button><p>{copy.footer.about}</p></div>
         <div className="footer-column"><h3>{copy.footer.collections}</h3>{BRANDS.map(brand => <a className="footer-brand-link" key={brand.id} href={`/brands/${brand.id}`} onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onBrand(brand.id); }}>{brand.name}</a>)}</div>
         <div className="footer-column"><h3>{copy.footer.service}</h3><button type="button" onClick={() => onService("advice")}>{copy.footer.advice}</button><button type="button" onClick={() => onService("returns")}>{copy.footer.returns}</button></div>
-        <div className="footer-column"><h3>{copy.footer.house}</h3><button type="button" onClick={onAbout}>{copy.nav.about}</button><button type="button" onClick={onTrade}>{copy.footer.contact}</button><button type="button" onClick={() => onLegal("privacy")}>{copy.footer.privacy}</button><button type="button" onClick={() => onLegal("imprint")}>{copy.footer.imprint}</button></div>
+        <div className="footer-column"><h3>{copy.footer.house}</h3><button type="button" onClick={onAbout}>{copy.nav.about}</button><button type="button" onClick={onSociety}>NES Society</button><button type="button" onClick={onTrade}>{copy.footer.contact}</button><button type="button" onClick={() => onLegal("privacy")}>{copy.footer.privacy}</button><button type="button" onClick={() => onLegal("imprint")}>{copy.footer.imprint}</button></div>
       </div>
       <div className="footer-bottom"><span>© 2026 NES</span><span>{language === "de" ? "Barfußgefühl. Mit Charakter." : "Barefoot feeling. With character."}</span><span>{copy.footer.country}</span></div>
     </footer>
