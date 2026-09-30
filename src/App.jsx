@@ -13,6 +13,7 @@ import "./featured-showcase.css";
 import "./catalog-page.css";
 import { BRANDS, getBrandForProduct, brandIdFromPath } from "./brands.js";
 import { BrandCards, BrandsPage, BrandDetailPage, AboutPage } from "./BrandExperience.jsx";
+import { KnitQuality } from "./KnitQuality.jsx";
 
 const GALLERY_IMAGES = [
   { src: "/shop/gallery/wai-ground.webp", brand: "WAI" },
@@ -58,7 +59,7 @@ const COPY = {
       text: "Barfußschuhe können sich natürlich anfühlen und gut aussehen. Mit dieser Überzeugung führt NES leichte Feel Shoes, klare Loafer und charakterstarken Strick zusammen.",
     },
     featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", knitTitle: ["Signature", "Pullys"], knitText: "Markante Muster. Hochwertiger Strick. Gemacht, um aufzufallen.", shoeTitle: ["Feel", "Shoes"], shoeText: "Leichte Formen. Natürliche Bewegung. Für jeden Tag.", shopNow: "Jetzt entdecken" },
-    brands: { label: "Die Marken bei NES", title: "Drei Handschriften. Ein Haus.", body: "Jede Marke hat ihren eigenen Ausdruck. Gemeinsam entsteht eine Auswahl, die sich leicht kombinieren lässt." },
+    brands: { label: "Die Marken bei NES", title: "Drei Handschriften.", titleAccent: "Ein Haus.", body: "Jede Marke hat ihren eigenen Ausdruck. Gemeinsam entsteht eine Auswahl, die sich leicht kombinieren lässt." },
     look: {
       label: "NES / Die Auswahl zum Look",
       title: "Ein Look. Zwei Handschriften.",
@@ -133,7 +134,7 @@ const COPY = {
     },
     intro: { label: "The idea behind NES", title: "Good feeling. Good form.", text: "Barefoot shoes can feel natural and look good. With this belief, NES brings together light feel shoes, clean loafers and knitwear with character." },
     featured: { label: "New in the house", title: "Selected for now.", knitTitle: ["Signature", "Pullys"], knitText: "Bold patterns. Premium knitwear. Made to stand out.", shoeTitle: ["Feel", "Shoes"], shoeText: "Light forms. Natural movement. Made for every day.", shopNow: "Shop now" },
-    brands: { label: "The brands at NES", title: "Three signatures. One house.", body: "Each brand has its own expression. Together, they make a selection that feels natural to combine." },
+    brands: { label: "The brands at NES", title: "Three signatures.", titleAccent: "One house.", body: "Each brand has its own expression. Together, they make a selection that feels natural to combine." },
     look: {
       label: "NES / A selection for the look",
       title: "One look. Two signatures.",
@@ -889,8 +890,8 @@ function HomePage({ copy, language, onShop, onGallery, onHome, onOpen, onQuickAd
         </div>
       </section>
 
-      <section className="brand-section section-pad" id="brands">
-        <div className="home-brand-intro"><div><p className="eyebrow">{copy.brands.label}</p><h2>{copy.brands.title}</h2></div><p>{copy.brands.body}</p></div>
+      <section className="brand-section section-pad" id="brands" aria-labelledby="home-brands-title">
+        <div className="home-brand-intro"><div><p className="eyebrow">{copy.brands.label}</p><h2 id="home-brands-title"><span>{copy.brands.title}</span>{" "}<em>{copy.brands.titleAccent}</em></h2></div><p>{copy.brands.body}</p></div>
         <BrandCards language={language} onBrand={onBrand} />
       </section>
 
@@ -916,6 +917,8 @@ function HomePage({ copy, language, onShop, onGallery, onHome, onOpen, onQuickAd
         <p data-reveal style={{ "--reveal-delay": "70ms" }}>{copy.trade.body}</p>
         <button className="button button-gold" type="button" onClick={onTrade} data-reveal style={{ "--reveal-delay": "140ms" }}>{copy.trade.cta}<ArrowIcon /></button>
       </section>
+
+      <KnitQuality language={language} onShop={onShop} />
 
       <Newsletter copy={copy} language={language} onPrivacy={onPrivacy} />
     </main>

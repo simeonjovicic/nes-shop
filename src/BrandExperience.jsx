@@ -20,7 +20,7 @@ export function BrandCards({ language, onBrand }) {
   return <div className="house-brand-grid">{BRANDS.map(brand => {
     const text = brand[language];
     return <StoryLink className={`house-brand-card house-brand-${brand.id}`} href={`/brands/${brand.id}`} onNavigate={() => onBrand(brand.id)} key={brand.id}>
-      <div className="house-brand-image"><img src={brand.hero} alt={text.imageAlt} loading="lazy" decoding="async" style={{ objectPosition: brand.position }} /><span className="house-brand-number">{brand.index} / NES</span></div>
+      <div className="house-brand-image"><img src={brand.cardImage ?? brand.hero} alt={text.cardAlt ?? text.imageAlt} loading="lazy" decoding="async" style={{ objectPosition: brand.cardPosition ?? brand.position }} /><span className="house-brand-number">{brand.index} / NES</span></div>
       <div className="house-brand-label"><div><h3>{brand.name}</h3><span>{brand.signature}</span></div><Arrow /></div>
       <p>{text.title}</p>
     </StoryLink>;

@@ -4,12 +4,14 @@ export const BRANDS = [
   {
     id: "wai", name: "WAI", signature: "by Vehon", filter: "wai", index: "01",
     hero: "/shop/gallery/wai-ground.webp", position: "center",
+    cardImage: "/shop/gallery/wai-stone-lounge.webp", cardPosition: "20% center",
     detail: "/shop/gallery/wai-home-step.webp", detailPosition: "center",
     previewIds: [119, 123, 126],
     de: {
       category: "Textile Feel Shoes", title: "Wenig Schuh. Viel Gefühl.",
       intro: "Sehr dünner Stoff, eine flache, flexible Sohle und sechs unterschiedliche Formen. WAI bringt Leichtigkeit in den Alltag.",
       imageAlt: "Blauer WAI Feel Shoe am Fuß auf einem Stein", detailAlt: "WAI Feel Shoes in einem lichtdurchfluteten Innenraum",
+      cardAlt: "Blaue WAI Feel Shoes auf einer dunklen Holzbank neben einer Steinschale",
       storyTitle: "Der Stoff gibt den Ton an.",
       story: "Denim, Baumwolle, Wolltextil oder feiner Stretch: Bei WAI verändert das Material den Ausdruck. Die leichte Konstruktion bleibt der gemeinsame Gedanke — vom flachen Mocassin bis zur knöchelhohen Form.",
       reason: "Wir mögen die Verbindung aus vertrauten Schuhformen und einer ungewöhnlich leichten Konstruktion. Zu markantem Strick setzt WAI einen ruhigen, unkomplizierten Gegenpol.",
@@ -20,6 +22,7 @@ export const BRANDS = [
       category: "Textile feel shoes", title: "Less shoe. More feeling.",
       intro: "Very thin fabric, a flat, flexible sole and six distinct shapes. WAI brings lightness to the everyday.",
       imageAlt: "Blue WAI feel shoe worn on a stone", detailAlt: "WAI feel shoes in a sunlit interior",
+      cardAlt: "Blue WAI feel shoes on a dark wooden bench beside a stone bowl",
       storyTitle: "Let the fabric speak.",
       story: "Denim, cotton, wool textile or fine stretch: each material gives WAI a different expression. A light construction connects them all, from the low moccasin to the ankle-high shape.",
       reason: "We like the pairing of familiar shoe shapes and an unusually light construction. Alongside expressive knitwear, WAI brings a quiet, easy balance.",
