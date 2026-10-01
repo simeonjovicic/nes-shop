@@ -1,5 +1,9 @@
 .checkout-dialog {
   --checkout-green: #4b5540;
+  /* Explicit so the sheet keeps its place once it becomes non-modal for the exit transition. */
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
   width: min(940px, calc(100vw - 48px));
   max-width: none;
   max-height: calc(100dvh - 48px);

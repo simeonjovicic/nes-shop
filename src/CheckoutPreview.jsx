@@ -128,6 +128,9 @@ export function CheckoutPreview({ bag, language, onClose, onBack }) {
     const mobile = window.matchMedia("(max-width: 700px)").matches;
     dialog.style.setProperty("--sheet-y", mobile ? `${dialog.offsetHeight + 24}px` : "16px");
     dialog.style.setProperty("--sheet-backdrop-opacity", "0");
+    // Drop modality right away: a modal dialog keeps the page inert for the whole exit transition.
+    dialog.close();
+    dialog.show();
     setSheetPhase("leaving");
     closeTimerRef.current = window.setTimeout(action, 320);
   }
