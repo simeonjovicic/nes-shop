@@ -1,0 +1,57 @@
+/* Preserve the quiet hierarchy while keeping functional copy readable. */
+:root { --muted: #646059; }
+.eyebrow { font-size: 11px; line-height: 1.6; }
+.site-footer .footer-column h3 { color: #666157; font-size: 11px; line-height: 1.5; }
+.site-footer .footer-column button { color: #57534c; font-size: 13px; line-height: 1.7; text-align: left; }
+.site-footer .footer-brand p { font-size: 13px; color: #625e56; }
+.site-footer .footer-bottom { color: #69645a; font-size: 11px; line-height: 1.7; flex-wrap: wrap; }
+.catalog-page .catalog-tabs button { font-size: 11px; }
+.catalog-page .catalog-count, .catalog-page .catalog-sort, .catalog-page .catalog-sort select { color: #59554e; font-size: 12px; }
+.catalog-page .product-brand { color: #655e53; font-size: 11px; }
+.catalog-page .product-subtitle { color: #655e53; font-size: 12px; line-height: 1.6; }
+.catalog-page .product-title-row { line-height: 1.5; }
+.featured-card-color-name, .featured-card-brand { color: #625d52; font-size: 11px; line-height: 1.5; }
+.pdp-page .pdp-breadcrumb, .pdp-page .pdp-category { color: #635e54; font-size: 11px; }
+.pdp-page .pdp-subtitle { color: #625e56; font-size: 14px; line-height: 1.7; }
+.pdp-page .pdp-facts > div { font-size: 12px; }
+.pdp-page .pdp-facts dt { color: #625e56; font-size: 11px; }
+.pdp-page .pdp-facts dd a { text-decoration: underline; text-underline-offset: 4px; }
+.pdp-page .pdp-trust strong { font-size: 11px; line-height: 1.5; }
+.pdp-page .pdp-trust small { color: #625e56; font-size: 11px; line-height: 1.5; }
+.service-card-index { color: #696359; font-size: 12px; }
+.service-card-copy > p { font-size: 13px; color: #625e56; }
+.service-card-action { font-size: 11px; }
+.newsletter-section .newsletter-privacy { color: #c6c2b9; font-size: 12px; line-height: 1.8; }
+.trade-modal .trade-fields label > span { color: #625e56; font-size: 12px; line-height: 1.6; }
+.trade-modal .trade-consent { color: #625e56; font-size: 12px; line-height: 1.8; }
+.trade-modal .trade-error { font-size: 12px; }
+.bag-note { font-size: 12px; line-height: 1.8; }
+.legal-overlay { padding-top: 88px; }
+.legal-close { min-height: 44px; top: 14px; padding: 8px 12px; background: var(--paper); font-size: 11px; }
+.society-dialog .society-eyebrow, .society-dialog .society-form label { font-size: 11px; }
+.society-dialog .society-demo, .society-dialog .society-later, .society-dialog .society-error { font-size: 12px; line-height: 1.7; }
+.society-dialog .society-demo, .society-dialog .society-later { color: #625e52; }
+.society-dialog .society-intro { color: #5d5c50; font-size: 14px; }
+.checkout-dialog .checkout-eyebrow { color: #5f6356; font-size: 11px; }
+.checkout-dialog .checkout-intro, .checkout-dialog .checkout-completion-body { font-size: 13px; color: #626557; }
+.checkout-dialog .checkout-demo, .checkout-dialog .checkout-amount > p,
+.checkout-dialog .checkout-delivery small, .checkout-dialog .checkout-delivery > p,
+.checkout-dialog .checkout-success-details > p, .checkout-dialog .checkout-replay { font-size: 11px; color: #626557; }
+.checkout-dialog .checkout-wallet > p { font-size: 11px; opacity: .85; color: #f5f2e5; }
+.checkout-dialog .checkout-card-demo { font-size: 9px; }
+.checkout-dialog .checkout-card-bottom > div > span { font-size: 10px; opacity: .85; }
+.checkout-dialog .checkout-selection-footer p { font-size: 11px; color: #626557; }
+.mobile-menu-links > a { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); font-family: var(--serif); font-size: clamp(38px, 12vw, 58px); text-decoration: none; }
+@media (max-width: 760px) {
+  .site-footer .footer-column { gap: 10px; }
+  .site-footer .footer-column a, .site-footer .footer-column button { padding-block: 5px; }
+  .catalog-page .catalog-tabs button { min-height: 42px; }
+  .pdp-page .pdp-trust { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .trade-modal .trade-fields input, .trade-modal .trade-fields textarea,
+  .society-dialog .society-form input, .newsletter-section input[type="email"], .catalog-page .catalog-search input { font-size: 16px; }
+  .newsletter-section .newsletter-privacy, .trade-modal .trade-consent { font-size: 13px; }
+  .service-card-copy > p { font-size: 14px; }
+  .legal-overlay { padding-top: 86px; }
+  .legal-close { left: 12px; }
+  .checkout-dialog .checkout-demo { font-size: 11px; }
+}

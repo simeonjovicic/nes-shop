@@ -16,6 +16,9 @@ import { BrandCards, BrandsPage, BrandDetailPage, AboutPage } from "./BrandExper
 import { KnitQuality } from "./KnitQuality.jsx";
 import { SocietyInvitation } from "./SocietyInvitation.jsx";
 import { CheckoutPreview } from "./CheckoutPreview.jsx";
+import { ServicePages, ServiceDocument, ServiceLink } from "./ServicePages.jsx";
+import { SERVICE_PAGES, SERVICE_EMAIL, getServicePage } from "./serviceContent";
+import "./readability.css";
 
 const GALLERY_IMAGES = [
   { src: "/shop/gallery/wai-ground.webp", brand: "WAI" },
@@ -102,11 +105,11 @@ const COPY = {
       savedEmpty: "Platz für Ihre Lieblingsstücke.",
       savedEmptyBody: "Tippen Sie auf das Herz an einem Produkt, um es hier zu speichern.",
     },
-    product: { view: "ansehen", chooseSize: "Größe wählen", guide: "Größenberatung", add: "In den Warenkorb", chooseFirst: "Bitte Größe wählen", back: "Zurück zur Kollektion", material: "Material", color: "Farbe", delivery: "Versand", deliveryValue: "Auf Anfrage", returns: "Rückgabe", returnsValue: "14 Tage", added: "Zum Warenkorb hinzugefügt" },
-    productPage: { home: "Startseite", collection: "Kollektion", previous: "Vorheriges Bild", next: "Nächstes Bild", view: "Ansicht", images: "Weitere Ansichten", details: "Im Detail", story: "Material und Form.", more: "Mehr entdecken.", trust: [["quality", "Ausgewählte Qualität", "Mit Blick für Material"], ["delivery", "Versand", "Persönlich bestätigt"], ["returns", "14 Tage Rückgabe", "Fragen? Wir helfen."]] },
+    product: { view: "ansehen", chooseSize: "Größe wählen", guide: "Größenberatung", add: "In den Warenkorb", chooseFirst: "Bitte Größe wählen", back: "Zurück zur Kollektion", material: "Material", color: "Farbe", delivery: "Versand", deliveryValue: "Auf Anfrage", returns: "Rückgabe", returnsValue: "Details im Service", added: "Zum Warenkorb hinzugefügt" },
+    productPage: { home: "Startseite", collection: "Kollektion", previous: "Vorheriges Bild", next: "Nächstes Bild", view: "Ansicht", images: "Weitere Ansichten", details: "Im Detail", story: "Material und Form.", more: "Mehr entdecken.", trust: [["quality", "Ausgewählte Qualität", "Mit Blick für Material"], ["delivery", "Versand", "Persönlich bestätigt"], ["returns", "Rückgabe & Widerruf", "Fragen? Wir helfen."]] },
     bag: { title: "Warenkorb", empty: "Ihr Warenkorb ist leer.", shop: "Zum Shop", size: "Größe", subtotal: "Zwischensumme", note: "Fragen Sie Ihre Auswahl unverbindlich an. Wir bestätigen Verfügbarkeit, Versand und Gesamtpreis persönlich.", checkout: "Auswahl anfragen", continue: "Weiter stöbern", remove: "Entfernen", increase: "Menge erhöhen", decrease: "Menge verringern" },
     newsletter: { label: "Notes from the house", title: "Neue Modelle, Materialien und Geschichten.", body: "Ein ruhiges Update, wenn es etwas Neues zu entdecken gibt.", placeholder: "Ihre E-Mail-Adresse", submit: "Eintragen", loading: "Wird eingetragen…", success: "Bitte prüfen Sie Ihr Postfach.", invalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein.", error: "Das hat leider nicht funktioniert. Bitte versuchen Sie es erneut.", privacy: "Mit Ihrer Anmeldung stimmen Sie dem Newsletter zu. Jederzeit widerrufbar.", privacyLink: "Datenschutz" },
-    services: [["01", "Kuratierte Auswahl", "Nur Marken, die zum NES Maßstab passen.", "Kollektion ansehen"], ["02", "14 Tage Rückgabe", "Fragen zu Rückgabe, Versand oder Bestellung? Wir helfen.", "Service anfragen"], ["03", "Persönliche Beratung", "Hilfe bei Modell, Material und Größe.", "Beratung starten"]],
+    services: [["01", "Kuratierte Auswahl", "Nur Marken, die zum NES Maßstab passen.", "Kollektion ansehen"], ["02", "Rückgabe & Widerruf", "Fragen zu Rückgabe, Versand oder Bestellung? Wir helfen.", "Rückgabe erklärt"], ["03", "Persönliche Beratung", "Hilfe bei Modell, Material und Größe.", "Größenberatung ansehen"]],
     serviceForms: {
       name: "Name",
       email: "E-Mail",
@@ -120,7 +123,7 @@ const COPY = {
       returns: { eyebrow: "NES / Service", title: "Rückgabe & Versand", body: "Sie möchten etwas zurückgeben oder haben eine Frage zu Versand oder Bestellung? Schreiben Sie uns kurz – idealerweise mit Ihrer Bestellnummer.", detail: "Bestellnummer (optional)", submit: "Service anfragen", successTitle: "Wir kümmern uns darum.", successBody: "Ihre Anfrage ist angekommen. Wir melden uns mit den nächsten Schritten zurück." },
     },
     tradeForm: { title: "Partner werden", body: "Erzählen Sie uns kurz, worum es geht. Wir melden uns persönlich zurück.", name: "Name", company: "Unternehmen", email: "E-Mail", message: "Nachricht", consent: "Ich stimme der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage zu.", submit: "Anfrage senden", sending: "Wird gesendet…", successTitle: "Vielen Dank.", successBody: "Ihre Anfrage ist angekommen. Wir melden uns in Kürze.", invalid: "Bitte füllen Sie Name, E-Mail und Zustimmung aus.", error: "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut." },
-    footer: { about: "Barfußgefühl und eigener Stil. Schuhe und Strick, ausgewählt von NES.", collections: "Kollektionen", service: "Service", advice: "Persönliche Beratung", returns: "Rückgabe & Versand", house: "Das Haus", contact: "Kontakt & Händler", privacy: "Datenschutz", imprint: "Impressum", country: "Deutschland / EUR" },
+    footer: { about: "Barfußgefühl und eigener Stil. Schuhe und Strick, ausgewählt von NES.", collections: "Kollektionen", service: "Service", advice: "Persönliche Beratung", returns: "Rückgabe & Versand", house: "Das Haus", contact: "Kontakt & Händler", privacy: "Datenschutz", imprint: "Impressum", country: "EUR · DE / EN" },
     legalBack: "Zurück",
   },
   en: {
@@ -177,11 +180,11 @@ const COPY = {
       savedEmpty: "A place for your favourites.",
       savedEmptyBody: "Tap the heart on a product to save it here.",
     },
-    product: { view: "view", chooseSize: "Choose size", guide: "Size guide", add: "Add to bag", chooseFirst: "Please choose a size", back: "Back to collection", material: "Material", color: "Colour", delivery: "Delivery", deliveryValue: "On enquiry", returns: "Returns", returnsValue: "14 days", added: "Added to your bag" },
-    productPage: { home: "Home", collection: "Collection", previous: "Previous image", next: "Next image", view: "View", images: "Further views", details: "In detail", story: "Material and form.", more: "Discover more.", trust: [["quality", "Selected quality", "Considered materials"], ["delivery", "Delivery", "Personally confirmed"], ["returns", "14-day returns", "Questions? We can help."]] },
+    product: { view: "view", chooseSize: "Choose size", guide: "Size guide", add: "Add to bag", chooseFirst: "Please choose a size", back: "Back to collection", material: "Material", color: "Colour", delivery: "Delivery", deliveryValue: "On enquiry", returns: "Returns", returnsValue: "See service details", added: "Added to your bag" },
+    productPage: { home: "Home", collection: "Collection", previous: "Previous image", next: "Next image", view: "View", images: "Further views", details: "In detail", story: "Material and form.", more: "Discover more.", trust: [["quality", "Selected quality", "Considered materials"], ["delivery", "Delivery", "Personally confirmed"], ["returns", "Returns & withdrawal", "Questions? We can help."]] },
     bag: { title: "Bag", empty: "Your bag is empty.", shop: "Go to shop", size: "Size", subtotal: "Subtotal", note: "Enquire about your selection with no obligation. We will personally confirm availability, delivery and the total price.", checkout: "Enquire about selection", continue: "Continue browsing", remove: "Remove", increase: "Increase quantity", decrease: "Decrease quantity" },
     newsletter: { label: "Notes from the house", title: "New models, materials and stories.", body: "A considered update whenever there is something new to discover.", placeholder: "Your email address", submit: "Join the list", loading: "Joining…", success: "Please check your inbox.", invalid: "Please enter a valid email address.", error: "Something went wrong. Please try again.", privacy: "By joining, you consent to the newsletter. Unsubscribe at any time.", privacyLink: "Privacy" },
-    services: [["01", "Curated selection", "Only brands that meet the NES standard.", "View collection"], ["02", "14-day returns", "Questions about returns, shipping or an order? We can help.", "Ask service"], ["03", "Personal advice", "Help with style, material and sizing.", "Start consultation"]],
+    services: [["01", "Curated selection", "Only brands that meet the NES standard.", "View collection"], ["02", "Returns & withdrawal", "Questions about returns, shipping or an order? We can help.", "Returns explained"], ["03", "Personal advice", "Help with style, material and sizing.", "View size advice"]],
     serviceForms: {
       name: "Name",
       email: "Email",
@@ -195,45 +198,8 @@ const COPY = {
       returns: { eyebrow: "NES / Service", title: "Returns & shipping", body: "Would you like to return an item or ask about shipping or an order? Send us a short note, ideally including your order number.", detail: "Order number (optional)", submit: "Ask service", successTitle: "We are on it.", successBody: "Your enquiry has arrived. We will reply with the next steps." },
     },
     tradeForm: { title: "Become a partner", body: "Tell us briefly what you are looking for. We will get back to you personally.", name: "Name", company: "Company", email: "Email", message: "Message", consent: "I consent to my details being processed to handle this enquiry.", submit: "Send enquiry", sending: "Sending…", successTitle: "Thank you.", successBody: "Your enquiry has arrived. We will be in touch shortly.", invalid: "Please complete your name, email and consent.", error: "The enquiry could not be sent. Please try again." },
-    footer: { about: "Barefoot feeling and personal style. Footwear and knitwear, selected by NES.", collections: "Collections", service: "Service", advice: "Personal advice", returns: "Returns & shipping", house: "The house", contact: "Contact & wholesale", privacy: "Privacy", imprint: "Legal notice", country: "Germany / EUR" },
+    footer: { about: "Barefoot feeling and personal style. Footwear and knitwear, selected by NES.", collections: "Collections", service: "Service", advice: "Personal advice", returns: "Returns & shipping", house: "The house", contact: "Contact & wholesale", privacy: "Privacy", imprint: "Legal notice", country: "EUR · DE / EN" },
     legalBack: "Back",
-  },
-};
-
-const LEGAL = {
-  de: {
-    privacy: {
-      title: "Datenschutzerklärung",
-      intro: "Wir behandeln personenbezogene Daten vertraulich und gemäß der DSGVO.",
-      blocks: [
-        ["Verantwortlicher", "[Firmenname] · [Anschrift] · [E-Mail-Adresse]"],
-        ["Hosting", "Diese Website wird bei Cloudflare Pages gehostet. Beim Aufruf werden technische Zugriffsdaten für den sicheren und stabilen Betrieb verarbeitet."],
-        ["Newsletter", "Für den Newsletter speichern wir E-Mail-Adresse, Zeitpunkt und Einwilligung. Der Versand erfolgt über Resend und kann jederzeit widerrufen werden."],
-        ["Anfragen", "Angaben aus dem Anfrageformular werden ausschließlich zur Bearbeitung der Anfrage verarbeitet und nach Abschluss im Rahmen der gesetzlichen Vorgaben gelöscht."],
-        ["Ihre Rechte", "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch sowie ein Beschwerderecht bei einer Aufsichtsbehörde."],
-      ],
-      note: "Vorlage — bitte vor Veröffentlichung mit den vollständigen Unternehmensdaten ergänzen und rechtlich prüfen lassen.",
-    },
-    imprint: {
-      title: "Impressum",
-      intro: "Angaben gemäß den geltenden Informationspflichten.",
-      blocks: [["Anbieter", "[Firmenname] · [Rechtsform] · [Anschrift]"], ["Kontakt", "E-Mail: [E-Mail-Adresse] · Telefon: [Telefonnummer]"], ["Vertretungsberechtigt", "[Name der vertretungsberechtigten Person]"], ["Register & Umsatzsteuer", "[Registergericht / Registernummer] · [USt-IdNr.]"]],
-      note: "Vorlage — bitte vor Veröffentlichung vollständig ergänzen und rechtlich prüfen lassen.",
-    },
-  },
-  en: {
-    privacy: {
-      title: "Privacy policy",
-      intro: "We handle personal data confidentially and in accordance with the GDPR.",
-      blocks: [["Controller", "[Company name] · [Address] · [Email address]"], ["Hosting", "This website is hosted on Cloudflare Pages. Technical access data is processed to provide a secure and stable service."], ["Newsletter", "For the newsletter we store your email address, time and consent. Delivery is handled by Resend and consent can be withdrawn at any time."], ["Enquiries", "Information submitted through the enquiry form is used exclusively to handle the enquiry and deleted in accordance with statutory requirements."], ["Your rights", "You have rights to access, rectification, erasure, restriction, portability and objection, as well as the right to lodge a complaint with a supervisory authority."]],
-      note: "Template — complete with the company details and obtain legal review before publication.",
-    },
-    imprint: {
-      title: "Legal notice",
-      intro: "Information in accordance with applicable disclosure obligations.",
-      blocks: [["Provider", "[Company name] · [Legal form] · [Address]"], ["Contact", "Email: [Email address] · Phone: [Phone number]"], ["Authorised representative", "[Name of authorised representative]"], ["Register & VAT", "[Register / registration number] · [VAT ID]"]],
-      note: "Template — complete all details and obtain legal review before publication.",
-    },
   },
 };
 
@@ -268,6 +234,7 @@ function productFromLocation(url) {
 }
 
 function routeFromLocation(url) {
+  if (/^\/(service|rechtliches)(\/|$)/.test(url.pathname)) return "service";
   if (url.pathname.startsWith("/products/") || url.searchParams.has("product")) return "product";
   if (url.pathname.startsWith("/shop")) return "shop";
   if (url.pathname.startsWith("/brands")) return "brands";
@@ -290,6 +257,8 @@ export default function App() {
   const [pageHref, navigate] = usePageNavigation();
   const pageUrl = new URL(pageHref);
   const route = routeFromLocation(pageUrl);
+  const activeServicePage = getServicePage(pageUrl.pathname);
+  const serviceHub = /^\/(service|rechtliches)\/?$/.test(pageUrl.pathname);
   const activeBrandId = brandIdFromPath(pageUrl.pathname);
   const filter = filterFromLocation(pageUrl);
   const search = pageUrl.searchParams.get("q") ?? "";
@@ -405,25 +374,24 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.lang = language;
-    writeStored("nes-language", language);
   }, [language]);
 
   useEffect(() => {
-    writeStored("nes-bag", bag);
+    if (bag.length) writeStored("nes-bag", bag);
+    else { try { window.localStorage.removeItem("nes-bag"); } catch { /* Storage is optional. */ } }
   }, [bag]);
 
   useEffect(() => {
-    writeStored("nes-wishlist", wishlist);
+    if (wishlist.length) writeStored("nes-wishlist", wishlist);
+    else { try { window.localStorage.removeItem("nes-wishlist"); } catch { /* Storage is optional. */ } }
   }, [wishlist]);
 
   useEffect(() => {
     if (societyOpen) {
       societySeen.current = true;
-      try { window.sessionStorage.setItem("nes-society-preview-seen", "1"); } catch { /* The in-memory flag still prevents repeat invitations. */ }
       return undefined;
     }
     if (route !== "home" || societySeen.current || bagOpen || checkoutOpen || mobileOpen || tradeOpen || serviceOpen || legalOpen) return undefined;
-    try { if (window.sessionStorage.getItem("nes-society-preview-seen")) return undefined; } catch { /* Storage is optional. */ }
     const timeout = window.setTimeout(() => {
       if (document.visibilityState !== "visible" || document.activeElement?.matches("input, textarea, select, [contenteditable]")) return;
       setSocietyOpen(true);
@@ -487,7 +455,10 @@ export default function App() {
 
   useEffect(() => {
     const description = document.querySelector('meta[name="description"]');
-    if (route === "product" && activeProduct) {
+    if (route === "service") {
+      document.title = `${activeServicePage?.label[language] || (serviceHub ? "Service" : language === "de" ? "Seite nicht gefunden" : "Page not found")} | NES`;
+      description?.setAttribute("content", activeServicePage?.intro[language] || (language === "de" ? "Kontakt, Versand, Rückgabe, Größenberatung und Pflege bei NES." : "Contact, shipping, returns, sizing and care at NES."));
+    } else if (route === "product" && activeProduct) {
       document.title = `${activeProduct.name} | ${activeProduct.brand} | NES`;
       description?.setAttribute("content", localize(activeProduct.description, language));
     } else if (route === "brands") {
@@ -507,9 +478,24 @@ export default function App() {
         ? "Kuratierte Schuhe und charakterstarker Strick von NES. Entdecken Sie ausgewählte Marken, Materialien und Design."
         : "Curated footwear and distinctive knitwear from NES. Discover selected brands, materials and design.");
     }
-  }, [route, activeProduct, activeBrand, language, copy]);
+  }, [route, activeProduct, activeBrand, activeServicePage, serviceHub, language, copy]);
   const bagCount = bag.reduce((sum, item) => sum + item.qty, 0);
   const bagTotal = getBagTotal(bag, PRODUCTS);
+
+  function navigateService(path) {
+    setMobileOpen(false);
+    navigate(path);
+  }
+
+  function navigateServiceTopic(type) {
+    navigateService(type === "returns" ? "/service/rueckgabe" : "/service/groessenberatung");
+  }
+
+  function changeLanguage() {
+    const nextLanguage = language === "de" ? "en" : "de";
+    writeStored("nes-language", nextLanguage);
+    setLanguage(nextLanguage);
+  }
 
   function navigateHome(section) {
     setMobileOpen(false);
@@ -603,13 +589,14 @@ export default function App() {
         scrolled={scrolled}
         mobileOpen={mobileOpen}
         onToggleMobile={() => setMobileOpen((value) => !value)}
-        onLanguage={() => setLanguage((value) => value === "de" ? "en" : "de")}
+        onLanguage={changeLanguage}
         onHome={navigateHome}
         onShop={navigateShop}
         onBrands={() => navigateBrands()}
         onAbout={navigateAbout}
         onSearch={focusSearch}
         onBag={() => setBagOpen(true)}
+        onServicePage={navigateService}
       />
 
       {route === "product" ? (
@@ -624,6 +611,7 @@ export default function App() {
             onHome={navigateHome}
             onShop={navigateShop}
             onAdvice={() => openService("advice", activeProduct)}
+            onServicePage={navigateService}
             onAdd={() => selectedSize && addToBag(activeProduct.id, selectedSize)}
             favorite={wishlist.includes(activeProduct.id)}
             onToggleFavorite={() => toggleFavorite(activeProduct.id)}
@@ -648,16 +636,18 @@ export default function App() {
           wishlist={wishlist}
           onToggleFavorite={toggleFavorite}
           onTrade={() => setTradeOpen(true)}
-          onService={openService}
+          onService={navigateServiceTopic}
           onPrivacy={() => setLegalOpen("privacy")}
         />
+      ) : route === "service" ? (
+        <ServicePages page={activeServicePage} isHub={serviceHub} language={language} onNavigate={navigateService} onService={openService} onTrade={() => setTradeOpen(true)} />
       ) : route === "brands" ? (
         activeBrandId ? <BrandDetailPage key={activeBrandId} brand={activeBrand} language={language} onBrand={navigateBrands} onBrands={navigateBrands} onShop={navigateShop} renderProduct={(product) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={openProduct} wishlist={wishlist} onToggleFavorite={toggleFavorite} />} />
           : <BrandsPage language={language} onBrand={navigateBrands} onAbout={navigateAbout} />
       ) : route === "about" ? (
         <AboutPage language={language} onBrand={navigateBrands} onShop={navigateShop} onAdvice={() => openService("advice")} />
       ) : route === "gallery" ? (
-        <GalleryPage copy={copy} onShop={navigateShop} onService={openService} />
+        <GalleryPage copy={copy} onShop={navigateShop} onService={navigateServiceTopic} />
       ) : (
         <ShopPage
           copy={copy}
@@ -674,7 +664,7 @@ export default function App() {
           onSort={(value) => updateCatalog("sort", value, "featured")}
           onOpen={openProduct}
           onShowAll={resetCatalog}
-          onService={openService}
+          onService={navigateServiceTopic}
         />
       )}
 
@@ -685,8 +675,7 @@ export default function App() {
         onBrand={navigateBrands}
         onHome={navigateHome}
         onTrade={() => setTradeOpen(true)}
-        onService={openService}
-        onLegal={setLegalOpen}
+        onNavigate={navigateService}
         onSociety={() => setSocietyOpen(true)}
       />
 
@@ -727,10 +716,8 @@ export default function App() {
           copy={copy}
           language={language}
           onClose={() => setTradeOpen(false)}
-          onPrivacy={() => {
-            setTradeOpen(false);
-            setLegalOpen("privacy");
-          }}
+          suspended={Boolean(legalOpen)}
+          onPrivacy={() => setLegalOpen("privacy")}
         />
       )}
 
@@ -763,7 +750,7 @@ export default function App() {
   );
 }
 
-function Header({ route, copy, language, bagCount, wishlistCount, onWishlist, scrolled, mobileOpen, onToggleMobile, onLanguage, onHome, onShop, onBrands, onAbout, onSearch, onBag }) {
+function Header({ route, copy, language, bagCount, wishlistCount, onWishlist, scrolled, mobileOpen, onToggleMobile, onLanguage, onHome, onShop, onBrands, onAbout, onSearch, onBag, onServicePage }) {
   return (
     <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="announcement-bar"><span>{copy.announcement}</span></div>
@@ -793,6 +780,7 @@ function Header({ route, copy, language, bagCount, wishlistCount, onWishlist, sc
             <button type="button" onClick={onWishlist}>{copy.nav.saved} ({wishlistCount})<HeartIcon /></button>
             <button type="button" onClick={onBrands}>{copy.nav.brands}<ArrowIcon /></button>
             <button type="button" onClick={onAbout}>{copy.nav.about}<ArrowIcon /></button>
+            <ServiceLink href="/service" onNavigate={onServicePage}>Service<ArrowIcon /></ServiceLink>
           </div>
           <div className="mobile-menu-meta">
             <button type="button" onClick={onSearch}><SearchIcon />{copy.nav.search}</button>
@@ -1348,7 +1336,7 @@ function ProductCard({ product: initialProduct, media, copy, language, onOpen, r
   );
 }
 
-function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHome, onShop, onAdvice, onAdd, favorite, onToggleFavorite, onVariant, onOpen, wishlist, onToggleRelatedFavorite, onBrand }) {
+function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHome, onShop, onAdvice, onAdd, favorite, onToggleFavorite, onVariant, onOpen, wishlist, onToggleRelatedFavorite, onBrand, onServicePage }) {
   const [imageIndex, setImageIndex] = useState(0);
   const touchStartX = useRef(null);
   const images = product.gallery ?? [
@@ -1419,7 +1407,7 @@ function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHo
             </div>
 
             <div className="pdp-size-picker">
-              <div><span>{copy.product.chooseSize}</span><button type="button" onClick={onAdvice}>{copy.product.guide}</button></div>
+              <div><span>{copy.product.chooseSize}</span><ServiceLink href="/service/groessenberatung" onNavigate={onServicePage}>{copy.product.guide}</ServiceLink></div>
               <div className={`pdp-size-grid ${product.familyId ? "is-paired" : ""}`} role="group" aria-label={copy.product.chooseSize}>
                 {sizeOptions.map((size) => <button className={selectedSize === size.label ? "is-active" : ""} aria-pressed={selectedSize === size.label} aria-label={`${copy.product.chooseSize}: ${size.label}`} type="button" key={size.label} disabled={!size.available} onClick={() => onSelectSize(size.label)}>{size.label}</button>)}
               </div>
@@ -1432,8 +1420,12 @@ function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHo
             <dl className="pdp-facts">
               <div><dt>{copy.product.material}</dt><dd>{localize(product.materialLabel || product.material, language)}</dd></div>
               <div><dt>{copy.product.color}</dt><dd>{localize(product.color, language)}</dd></div>
-              <div><dt>{copy.product.delivery}</dt><dd>{copy.product.deliveryValue}</dd></div>
+              <div><dt>{copy.product.delivery}</dt><dd><ServiceLink href="/service/versand-zahlung" onNavigate={onServicePage}>{copy.product.deliveryValue}</ServiceLink></dd></div>
             </dl>
+            <nav className="pdp-service-links" aria-label="Service">
+              <button type="button" onClick={onAdvice}>{language === "de" ? "Zum Produkt beraten lassen" : "Ask about this product"}</button>
+              {["care", "returns"].map((id) => { const page = SERVICE_PAGES.find((item) => item.id === id); return <ServiceLink key={id} href={page.path} onNavigate={onServicePage}>{page.label[language]}</ServiceLink>; })}
+            </nav>
           </div>
         </div>
       </section>
@@ -1542,7 +1534,8 @@ function Newsletter({ copy, language, onPrivacy }) {
   );
 }
 
-function TradeModal({ copy, language, onClose, onPrivacy }) {
+function TradeModal({ copy, language, onClose, onPrivacy, suspended }) {
+  const dialogRef = useDialogFocus(!suspended);
   const [form, setForm] = useState({ name: "", company: "", email: "", message: "", consent: false });
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
@@ -1563,8 +1556,8 @@ function TradeModal({ copy, language, onClose, onPrivacy }) {
   }
 
   return (
-    <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
-      <div className="trade-modal" role="dialog" aria-modal="true" aria-labelledby="trade-title" onMouseDown={(event) => event.stopPropagation()}>
+    <div className="modal-backdrop" role="presentation" onMouseDown={onClose} inert={suspended || undefined} aria-hidden={suspended || undefined}>
+      <div ref={dialogRef} tabIndex={-1} className="trade-modal" role="dialog" aria-modal="true" aria-labelledby="trade-title" onMouseDown={(event) => event.stopPropagation()}>
         <button className="overlay-close" type="button" onClick={onClose} aria-label={copy.nav.close}><CloseIcon /></button>
         {status === "success" ? <div className="trade-success"><p className="eyebrow">NES / B2B</p><h2 id="trade-title">{copy.tradeForm.successTitle}</h2><p>{copy.tradeForm.successBody}</p><button className="button button-forest" type="button" onClick={onClose}>{copy.nav.close}</button></div> : <form onSubmit={submit} noValidate><p className="eyebrow">NES / B2B</p><h2 id="trade-title">{copy.tradeForm.title}</h2><p className="trade-modal-intro">{copy.tradeForm.body}</p><input className="honeypot" type="text" name="company_website" tabIndex="-1" autoComplete="off" aria-hidden="true" /><div className="trade-fields"><label><span>{copy.tradeForm.name} *</span><input type="text" value={form.name} onChange={(event) => update("name", event.target.value)} autoComplete="name" /></label><label><span>{copy.tradeForm.company}</span><input type="text" value={form.company} onChange={(event) => update("company", event.target.value)} autoComplete="organization" /></label><label className="trade-field-wide"><span>{copy.tradeForm.email} *</span><input type="email" value={form.email} onChange={(event) => update("email", event.target.value)} autoComplete="email" /></label><label className="trade-field-wide"><span>{copy.tradeForm.message}</span><textarea rows="4" value={form.message} onChange={(event) => update("message", event.target.value)} /></label></div><label className="trade-consent"><input type="checkbox" checked={form.consent} onChange={(event) => update("consent", event.target.checked)} /><span>{copy.tradeForm.consent} <button type="button" onClick={onPrivacy}>{copy.newsletter.privacyLink}</button></span></label><p className="trade-error" role="status">{status === "error" ? error : ""}</p><button className="trade-submit" type="submit" disabled={status === "loading"}>{status === "loading" ? copy.tradeForm.sending : copy.tradeForm.submit}<ArrowIcon /></button></form>}
       </div>
@@ -1675,24 +1668,26 @@ function ServiceModal({ type, context, suspended, copy, language, onClose, onPri
 
 function LegalModal({ kind, language, copy, onClose }) {
   const dialogRef = useDialogFocus();
-  const documentCopy = LEGAL[language][kind];
+  const page = SERVICE_PAGES.find((item) => item.id === kind);
   return (
     <div ref={dialogRef} tabIndex={-1} className="legal-overlay" role="dialog" aria-modal="true" aria-labelledby="legal-title">
       <button className="legal-close" type="button" onClick={onClose}><span aria-hidden="true">←</span>{copy.legalBack}</button>
-      <div className="legal-document"><span className="legal-wordmark">NES</span><h1 id="legal-title">{documentCopy.title}</h1><p className="legal-intro">{documentCopy.intro}</p>{documentCopy.blocks.map(([title, body]) => <section key={title}><h2>{title}</h2><p>{body}</p></section>)}<p className="legal-note">{documentCopy.note}</p></div>
+      <a className="legal-permalink" href={page.path} target="_blank" rel="noreferrer">{language === "de" ? "Als Seite öffnen (neuer Tab)" : "Open as a page (new tab)"} ↗</a>
+      <ServiceDocument page={page} language={language} modal />
     </div>
   );
 }
 
-function Footer({ copy, language, onHome, onBrand, onAbout, onTrade, onService, onLegal, onSociety }) {
+function Footer({ copy, language, onHome, onBrand, onAbout, onTrade, onNavigate, onSociety }) {
   return (
     <footer className="site-footer">
       <div className="footer-main">
-        <div className="footer-brand"><button className="footer-wordmark" type="button" onClick={() => onHome()}>NES</button><p>{copy.footer.about}</p></div>
-        <div className="footer-column"><h3>{copy.footer.collections}</h3>{BRANDS.map(brand => <a className="footer-brand-link" key={brand.id} href={`/brands/${brand.id}`} onClick={(event) => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return; event.preventDefault(); onBrand(brand.id); }}>{brand.name}</a>)}</div>
-        <div className="footer-column"><h3>{copy.footer.service}</h3><button type="button" onClick={() => onService("advice")}>{copy.footer.advice}</button><button type="button" onClick={() => onService("returns")}>{copy.footer.returns}</button></div>
-        <div className="footer-column"><h3>{copy.footer.house}</h3><button type="button" onClick={onAbout}>{copy.nav.about}</button><button type="button" onClick={onSociety}>NES Society</button><button type="button" onClick={onTrade}>{copy.footer.contact}</button><button type="button" onClick={() => onLegal("privacy")}>{copy.footer.privacy}</button><button type="button" onClick={() => onLegal("imprint")}>{copy.footer.imprint}</button></div>
+        <div className="footer-brand"><button className="footer-wordmark" type="button" onClick={() => onHome()}>NES</button><p>{copy.footer.about}</p><a className="footer-email" href={`mailto:${SERVICE_EMAIL}`}>{SERVICE_EMAIL}</a></div>
+        <div className="footer-column"><h3>{copy.footer.collections}</h3>{BRANDS.map(brand => <ServiceLink key={brand.id} href={`/brands/${brand.id}`} onNavigate={() => onBrand(brand.id)}>{brand.name}</ServiceLink>)}</div>
+        <div className="footer-column"><h3>{copy.footer.service}</h3>{SERVICE_PAGES.filter((page) => page.group === "service").map((page) => <ServiceLink key={page.id} href={page.path} onNavigate={onNavigate}>{page.label[language]}</ServiceLink>)}</div>
+        <div className="footer-column"><h3>{copy.footer.house}</h3><ServiceLink href="/about" onNavigate={onAbout}>{copy.nav.about}</ServiceLink><button type="button" onClick={onSociety}>NES Society</button><button type="button" onClick={onTrade}>{language === "de" ? "Für Händler & Marken" : "For retailers & brands"}</button><ServiceLink href="/service" onNavigate={onNavigate}>{language === "de" ? "Serviceübersicht" : "Service overview"}</ServiceLink></div>
       </div>
+      <nav className="footer-legal" aria-label={language === "de" ? "Rechtliches" : "Legal"}>{SERVICE_PAGES.filter((page) => page.group === "legal").map((page) => <ServiceLink key={page.id} href={page.path} onNavigate={onNavigate}>{page.label[language]}</ServiceLink>)}</nav>
       <div className="footer-bottom"><span>© 2026 NES</span><span>{language === "de" ? "Barfußgefühl. Mit Charakter." : "Barefoot feeling. With character."}</span><span>{copy.footer.country}</span></div>
     </footer>
   );
