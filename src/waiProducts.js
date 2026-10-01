@@ -49,9 +49,16 @@ const englishMaterials = {
   "Bedrucktes Textil": "Printed textile", Baumwolle: "Cotton", "Schoeller-Textil": "Schoeller textile", Wolltextil: "Wool textile", Denim: "Denim",
 };
 
-export const WAI_PRODUCTS = variants.map(([id, sku, familyId, color, material, hex, stock, swatch]) => {
+// Use cases per line, as printed in the WAI FEELSHOES brochure.
+const USE_CASES = {
+  sport: { de: "Für Pilates, Fitness, Aqua-Training und den Strand.", en: "Made for pilates, fitness, aqua training and the beach." },
+  lifestyle: { de: "Für Zuhause und unterwegs, im Flugzeug, im Hotel oder auf dem Boot.", en: "For home and on the go: on the plane, in the hotel or on a boat." },
+};
+
+export const WAI_PRODUCTS =variants.map(([id, sku, familyId, color, material, hex, stock, swatch]) => {
   const family = WAI_FAMILIES.find((item) => item.id === familyId);
   const image = imageFor(sku);
+  const line = familyId.startsWith("wai-sport") ? "sport" : "lifestyle";
   return {
     id, sku, familyId, name: family.name, slug: `${familyId}-${sku.toLowerCase()}`,
     familyDefault: sku === family.defaultSku,
@@ -63,8 +70,8 @@ export const WAI_PRODUCTS = variants.map(([id, sku, familyId, color, material, h
     sizes: WAI_SIZE_LABELS.filter((_, index) => stock[index] > 0),
     sizeOptions: WAI_SIZE_LABELS.map((label, index) => ({ label, available: stock[index] > 0 })),
     description: {
-      de: `${family.subtitle.de} aus sehr dünnem, weichem Stoff mit einer flachen, flexiblen Sohle. Die reduzierte Konstruktion folgt dem Fuß und lässt das Material leicht wirken. Ausführung: ${color}.`,
-      en: `${family.subtitle.en} in very thin, soft fabric with a flat, flexible sole. The minimal construction follows the foot and keeps the textile light. Variation: ${color}.`,
+      de: `${family.subtitle.de} aus nahtlosem, elastischem Stoff. Die flexible Sohle aus recyceltem PU ist mit exklusiver CCT-Technologie direkt aufgespritzt. Leicht, faltbar und maschinenwaschbar, mit Care Bag. ${USE_CASES[line].de} Ausführung: ${color}.`,
+      en: `${family.subtitle.en} in seamless, elastic fabric. The flexible recycled-PU sole is over-injected directly onto it using exclusive CCT technology. Lightweight, foldable and machine washable, with a care bag. ${USE_CASES[line].en} Variation: ${color}.`,
     },
   };
 });

@@ -10,7 +10,7 @@ const TEXT = {
     hint: "Scrollen und entdecken", cta: "WAI Modelle entdecken",
     steps: [
       ["Dünner Stoff", "Weiches Denim legt sich als leichte Hülle um den Fuß."],
-      ["Flache Sohle", "Eine feine, flexible Sohle hält die Form besonders schlank."],
+      ["Aufgespritzte Sohle", "Die flexible CCT-Sohle aus recyceltem PU ist direkt mit dem Stoff verbunden, ganz ohne Nähte."],
       ["Verschiedene Stoffe", "Denim, Baumwolle und Wolltextil stehen in der Kollektion zur Auswahl."],
       ["Ihr WAI", "Mocassin, Slip-on oder High: Entdecken Sie die Formen und Stoffe."],
     ],
@@ -21,7 +21,7 @@ const TEXT = {
     hint: "Scroll to explore", cta: "Explore WAI styles",
     steps: [
       ["Thin fabric", "Soft denim forms a light covering around the foot."],
-      ["Flat sole", "A thin, flexible sole keeps the silhouette close to the ground."],
+      ["Over-injected sole", "The flexible recycled-PU CCT sole is bonded directly to the fabric, with no seams."],
       ["A choice of fabrics", "Explore denim, cotton and wool textile across the collection."],
       ["Your WAI", "Moccasin, slip-on or high: explore the shapes and fabrics."],
     ],

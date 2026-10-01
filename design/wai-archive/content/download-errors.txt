@@ -1,0 +1,128 @@
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2021/01/Lifestyle-blu-1.jpg&quot;,&quot;full_src_w&quot;:940,&quot;full_src_h&quot;:1280,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2021/01/Lifestyle-blu-1-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2021/01/Lifestyle-blu-1.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2021/01/Lifestyle-blu-1-600x817.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2021/01/Lifestyle-blu-1.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2023/08/SEA_BLUE.jpg&quot;,&quot;full_src_w&quot;:980,&quot;full_src_h&quot;:1280,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/08/SEA_BLUE-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/08/SEA_BLUE.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2023/08/SEA_BLUE.jpg&quot;,&quot;alt&quot;:&quot;SEA_BLUE&quot;,&quot;src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/08/SEA_BLUE-600x784.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/08/SEA_BLUE.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2023/08/woocommerce-placeholder.png
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0610-1.jpg&quot;,&quot;alt&quot;:&quot;AMG-0610-1&quot;,&quot;src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0610-1-600x784.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0610-1.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0610-1.jpg&quot;,&quot;full_src_w&quot;:980,&quot;full_src_h&quot;:1280,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0610-1-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0610-1.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0612-600x784.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0612.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0612.jpg&quot;,&quot;full_src_w&quot;:980,&quot;full_src_h&quot;:1280,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0612-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0612.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0616-600x784.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0616.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0616.jpg&quot;,&quot;full_src_w&quot;:980,&quot;full_src_h&quot;:1280,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0616-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0616.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0624-600x784.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0624.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0624.jpg&quot;,&quot;full_src_w&quot;:980,&quot;full_src_h&quot;:1280,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0624-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2023/10/AMG-0624.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/06/Loafer-STRIPES-RED.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/06/STRIPES-BLUE-mocassin-1.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/06/STRIPES-BLUE-mocassin-2.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9414-scaled.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9414.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9415-scaled.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/06/STRIPES-BLUE-mocassin-1.jpg&quot;,&quot;full_src_w&quot;:1280,&quot;full_src_h&quot;:980,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/06/STRIPES-BLUE-mocassin-1-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/06/STRIPES-BLUE-mocassin-1.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/06/STRIPES-BLUE-mocassin-1-600x459.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/06/STRIPES-BLUE-mocassin-1.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 41 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9420-scaled.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 30 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9420.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 31 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9422m3-scaled-e1747645496621.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 96 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9422m3.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9416-scaled.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 32 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9424m-1-scaled.jpg
+curl: (56) Recv failure: Connection reset by peer
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9417m-600x429.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/A_9417m.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9415.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9416.jpg
+curl: (56) Recv failure: Connection reset by peer
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9417m.jpg
+curl: (22) The requested URL returned error: 404
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9417m-scaled.jpg
+curl: (56) Recv failure: Connection reset by peer
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9417m-scaled.jpg&quot;,&quot;full_src_w&quot;:2560,&quot;full_src_h&quot;:1829,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/A_9417m-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/A_9417m.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 37 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Duke-mocassin-Velvet-Lobster-mocassin-600x429.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Duke-mocassin-Velvet-Lobster-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1033 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Duke-mocassin-Velvet-Lobster-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1032 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Duke-mocassin-Velvet-Lobster-mocassin.jpg&quot;,&quot;full_src_w&quot;:2560,&quot;full_src_h&quot;:1829,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Duke-mocassin-Velvet-Lobster-mocassin-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Duke-mocassin-Velvet-Lobster-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1036 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/LOA-MONTONE-REVERSED.png
+curl: (7) Failed to connect to www.waidesign.it port 443 after 4124 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9425m.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1032 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/LOA-WOOL-BLUE.jpeg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1034 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/M2-scaled.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1036 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/M2.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1047 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/MOC-MONTONE-BEIGE.jpeg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1033 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Leopard-mocassin-600x429.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Leopard-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 7038 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/LOA-WOOL-ANTHRA.jpeg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1037 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Leopard-mocassin.jpg&quot;,&quot;full_src_w&quot;:1280,&quot;full_src_h&quot;:915,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Leopard-mocassin-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Leopard-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 3036 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Leopard-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 2043 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Sea-Black-mocassin-600x429.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Sea-Black-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 2043 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Sea-Black-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 2037 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Sea-Black-mocassin.jpg&quot;,&quot;full_src_w&quot;:2560,&quot;full_src_h&quot;:1829,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Sea-Black-mocassin-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Sea-Black-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1039 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Zebra-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 3052 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Zebra-mocassin-600x428.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Zebra-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 19036 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9424m-1.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1046 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/pantofola-MONTONE-scaled.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1039 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/pantofola-MONTONE-scaled.jpg&quot;,&quot;full_src_w&quot;:2560,&quot;full_src_h&quot;:1856,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/pantofola-MONTONE-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/pantofola-MONTONE.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1031 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/pantofola-MONTONE.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 1099 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2025/07/wai.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 7036 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Zebra-mocassin.jpg&quot;,&quot;full_src_w&quot;:2560,&quot;full_src_h&quot;:1828,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Zebra-mocassin-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/Prince-loafer-Zebra-mocassin.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 7107 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/pantofola-MONTONE-600x435.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/pantofola-MONTONE.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 2074 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/woocommerce-placeholder.png
+curl: (7) Failed to connect to www.waidesign.it port 443 after 35036 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9424m-600x429.jpg&quot;,&quot;srcset&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/A_9424m.jpg
+curl: (7) Fcurl: (7) Failed to connect to www.waidesign.iailed to connect to www.waidest poign.it port 443rt 443 after 35038 ms: Coul after 35046 ms:d not connect to server
+ Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9424m-scaled.jpg
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9424m-scaled.jpg&quot;,&quot;full_src_w&quot;:2560,&quot;full_src_h&quot;:1829,&quot;gallery_thumbnail_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/A_9424m-100x100.jpg&quot;,&quot;gallery_thumbnail_src_w&quot;:100,&quot;gallery_thumbnail_src_h&quot;:100,&quot;thumb_src&quot;:&quot;https://www.waidesign.it/wp-content/uploads/2024/12/A_9424m.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 35040 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9424m.jpg
+curl: (7) Failed to connect to www.waidesign.it port 443 after 35054 ms: Could not connect to server
+FAIL https://www.waidesign.it/wp-content/uploads/2024/12/A_9425m-scaled.jpg

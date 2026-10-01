@@ -27,3 +27,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# WAI site archive media (~250 MB, kept locally)
+design/wai-archive/media/
