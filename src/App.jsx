@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ShaderBackground } from "./components/ui/shaders-hero-section";
 import { featuredProducts } from "./featuredProducts";
 import { PRODUCTS } from "./products";
@@ -20,6 +20,8 @@ import { ServicePages, ServiceDocument, ServiceLink } from "./ServicePages.jsx";
 import { SERVICE_PAGES, SERVICE_EMAIL, getServicePage } from "./serviceContent";
 import "./readability.css";
 
+const AnimatedCatalogGrid = lazy(() => import("./AnimatedCatalogGrid.jsx").then((module) => ({ default: module.AnimatedCatalogGrid })));
+
 const GALLERY_IMAGES = [
   { src: "/shop/gallery/wai-ground.webp", brand: "WAI" },
   { src: "/shop/gallery/montechiaro-statement.webp", brand: "Montechiaro" },
@@ -39,11 +41,11 @@ const GALLERY_IMAGES = [
   { src: "/shop/gallery/wai-stone-lounge.webp", brand: "WAI" },
 ];
 
-// Material, form and combinations from the existing shop image library.
+// Material and form studies, with a dedicated editorial for combinations.
 const PRINCIPLE_MEDIA = [
   { src: "/shop/gallery/wai-home-step.webp", position: "center" },
   { src: "/shop/gallery/montechiaro-detail.webp", position: "center top", texture: true },
-  { src: "/shop/editorial/nes-shoppable-look-v1.webp", position: "57% center" },
+  { src: "/shop/editorial/nes-zusammenspiel-still-life-v1.webp", position: "center" },
 ];
 
 const COPY = {
@@ -979,7 +981,12 @@ function ShopPage({ copy, language, products, filter, search, sort, savedOnly, w
     { id: "vehon-models", label: "Vehon · Loafer" },
     { id: "montechiaro", label: language === "de" ? "Montechiaro · Strick" : "Montechiaro · Knitwear" },
   ];
-  const renderCard = (product, index) => <ProductCard key={product.id} product={product} wishlist={wishlist} onToggleFavorite={onToggleFavorite} copy={copy} language={language} onOpen={onOpen} revealDelay={`${Math.min(index, 5) * 45}ms`} />;
+  const renderCard = (product) => <ProductCard product={product} wishlist={wishlist} onToggleFavorite={onToggleFavorite} copy={copy} language={language} onOpen={onOpen} reveal={false} />;
+  const emptyState = <div className="catalog-empty" role="status">
+    <h2>{savedOnly && wishlist.length === 0 ? copy.shop.savedEmpty : copy.shop.noResults}</h2>
+    <p>{savedOnly && wishlist.length === 0 ? copy.shop.savedEmptyBody : copy.shop.noResultsBody}</p>
+    <button className="button button-forest" type="button" onClick={onShowAll}>{copy.shop.showAll}<ArrowIcon /></button>
+  </div>;
 
   return (
     <main className="catalog-page">
@@ -1001,15 +1008,9 @@ function ShopPage({ copy, language, products, filter, search, sort, savedOnly, w
             <label className="catalog-sort"><span>{copy.shop.sortLabel}</span><select value={sort} onChange={(event) => onSort(event.target.value)}><option value="featured">{copy.shop.featured}</option><option value="price-asc">{copy.shop.priceAsc}</option><option value="price-desc">{copy.shop.priceDesc}</option><option value="name">{copy.shop.name}</option></select></label>
           </div>
         </div>
-        {products.length > 0 ? (
-          <div className="product-grid catalog-grid">{products.map(renderCard)}</div>
-        ) : (
-          <div className="catalog-empty">
-            <h2>{savedOnly && wishlist.length === 0 ? copy.shop.savedEmpty : copy.shop.noResults}</h2>
-            <p>{savedOnly && wishlist.length === 0 ? copy.shop.savedEmptyBody : copy.shop.noResultsBody}</p>
-            <button className="button button-forest" type="button" onClick={onShowAll}>{copy.shop.showAll}<ArrowIcon /></button>
-          </div>
-        )}
+        <Suspense fallback={products.length ? <div className="product-grid catalog-grid">{products.map((product) => <div className="catalog-motion-card" key={product.id}>{renderCard(product)}</div>)}</div> : emptyState}>
+          <AnimatedCatalogGrid products={products} renderProduct={renderCard} emptyState={emptyState} />
+        </Suspense>
       </section>
       <ServiceStrip copy={copy} onShop={onShowAll} onService={onService} />
     </main>
@@ -1298,7 +1299,7 @@ function FavoriteButton({ product, favorite, language, onToggle, className = "fe
   return <button type="button" className={`${className}${favorite ? " is-active" : ""}`} aria-label={label} aria-pressed={favorite} onClick={onToggle}><HeartIcon />{className === "detail-save" && <span>{language === "de" ? (favorite ? "Gemerkt" : "Merken") : (favorite ? "Saved" : "Save")}</span>}</button>;
 }
 
-function ProductCard({ product: initialProduct, media, copy, language, onOpen, revealDelay, wishlist, onToggleFavorite }) {
+function ProductCard({ product: initialProduct, media, copy, language, onOpen, reveal = true, revealDelay, wishlist, onToggleFavorite }) {
   const variants = initialProduct.familyId ? getProductVariants(initialProduct, PRODUCTS) : [initialProduct];
   const [variantId, setVariantId] = useState(initialProduct.id);
   const product = variants.find((item) => item.id === variantId) || initialProduct;
@@ -1314,7 +1315,7 @@ function ProductCard({ product: initialProduct, media, copy, language, onOpen, r
   const href = `/products/${getProductSlug(product)}`;
 
   return (
-    <article className={`product-card product-card-${product.brandId}`} data-reveal style={revealDelay ? { "--reveal-delay": revealDelay } : undefined}>
+    <article className={`product-card product-card-${product.brandId}`} data-reveal={reveal || undefined} style={revealDelay ? { "--reveal-delay": revealDelay } : undefined}>
       <div className="catalog-card-media">
         <a className={`product-media product-fit-${cardFit}${cardHoverImage ? " has-hover" : ""}`} href={href} onClick={open} aria-label={`${product.name} ${copy.product.view}`}>
           {product.tag && <span className="product-tag">{localize(product.tag, language)}</span>}

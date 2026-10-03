@@ -6,7 +6,7 @@ Images follow the existing subjects:
 
 1. **Gefühl:** `/shop/gallery/wai-home-step.webp`.
 2. **Form:** the existing red knit close-up, `/shop/gallery/montechiaro-detail.webp`. CSS frames the upper textile area, leaving the campaign photograph’s embedded lettering outside the visible crop. The source file is unchanged.
-3. **Zusammenspiel:** `/shop/editorial/nes-shoppable-look-v1.webp`.
+3. **Zusammenspiel:** `/shop/editorial/nes-zusammenspiel-still-life-v1.webp` — a dedicated still life with the gold/blue patterned sweater on a walnut stool and thin denim WAI shoes. Generated from catalogue product references on 2026-10-02; see [the generation record](nes-zusammenspiel-photo.md). The shoppable-look section keeps its own existing photograph.
 
 Clicking or keyboard-activating a point scrolls to its segment. Hover and focus alone do not override the scroll position. Reduced motion and short viewports use a static layout with all descriptions visible and manual image selection. The original heading and copy are retained.
 

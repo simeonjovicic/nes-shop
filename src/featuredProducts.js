@@ -30,7 +30,6 @@ export const featuredProducts = [
     images: [image("/shop/pully-red-front.webp", 1535, 2144), image("/shop/pully-red-side.webp", 1536, 2614)],
     colors: [
       { sourceProductId: 12, name: "Rosso", hex: "#743b40", image: "/shop/pully-red-front.webp" },
-      { sourceProductId: 13, name: "Orange", hex: "#bf8a34", image: "/shop/products/pully-orange/front.webp", width: 1122, height: 1402, hoverImage: "/shop/products/pully-orange/side.webp", hoverWidth: 1122, hoverHeight: 1402 },
     ],
     slug: "pully-rosso",
   },
@@ -70,7 +69,6 @@ export const featuredProducts = [
     images: [image("/shop/products/pully-orange/front.webp", 1122, 1402), image("/shop/products/pully-orange/side.webp", 1122, 1402)],
     colors: [
       { sourceProductId: 13, name: "Orange", hex: "#bf8a34", image: "/shop/products/pully-orange/front.webp" },
-      { sourceProductId: 12, name: "Rosso", hex: "#743b40", image: "/shop/pully-red-front.webp", width: 1535, height: 2144, hoverImage: "/shop/pully-red-side.webp", hoverWidth: 1536, hoverHeight: 2614 },
     ],
     slug: "pully-orange",
   },

@@ -81,6 +81,13 @@
   padding-top: 24px;
 }
 
+/* Keep departing cards local to the grid; retained cards glide into the gaps. */
+.catalog-results-frame { overflow: clip; overflow-clip-margin: 6px; }
+.catalog-grid-animated { position: relative; isolation: isolate; }
+.catalog-motion-card { position: relative; min-width: 0; transform-origin: 50% 35%; z-index: 1; }
+.catalog-motion-card[data-exiting] { z-index: 0; pointer-events: none; }
+.catalog-motion-card.is-empty { grid-column: 1 / -1; }
+
 .catalog-page .product-media { aspect-ratio: 1; background: var(--paper-deep); }
 .catalog-page .product-card-montechiaro .product-media { background: var(--paper-deep); }
 .catalog-page .product-fit-contain .product-image { padding: 8%; }

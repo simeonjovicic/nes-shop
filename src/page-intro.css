@@ -1,0 +1,42 @@
+.page-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 1600;
+  display: grid;
+  place-items: center;
+  background: #f5f3ef;
+  color: #1f1f1d;
+  pointer-events: none;
+  user-select: none;
+  animation: nes-intro-away 640ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.page-intro-wordmark {
+  padding-left: .26em;
+  font-family: "Cormorant Garamond", "Iowan Old Style", Baskerville, Georgia, serif;
+  font-size: clamp(64px, 9vw, 100px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .26em;
+  animation: nes-intro-wordmark 640ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes nes-intro-away {
+  0%, 38% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes nes-intro-wordmark {
+  0% { opacity: 0; filter: blur(6px); transform: translateY(6px); }
+  28%, 48% { opacity: 1; filter: blur(0); transform: translateY(0); }
+  100% { opacity: 0; filter: blur(0); transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-intro { display: none; animation: none; }
+  .page-intro-wordmark { animation: none; }
+}
+
+@media print {
+  .page-intro { display: none; }
+}
