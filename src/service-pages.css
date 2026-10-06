@@ -55,6 +55,17 @@
 .service-document-section ul { margin: 16px 0; padding-left: 22px; }
 .service-document-section li { padding-left: 6px; margin: 9px 0; }
 .service-document-section .service-text-link { margin-top: 10px; margin-right: 24px; }
+.service-document-section.is-question { padding: 0; }
+.service-document-section.is-question > summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 26px 0; cursor: pointer; list-style: none; }
+.service-document-section.is-question > summary::-webkit-details-marker { display: none; }
+.service-document-section.is-question > summary > h2, .service-document-section.is-question > summary > h3 { margin: 0; font-family: var(--serif); font-size: 27px; font-weight: 500; line-height: 1.25; letter-spacing: -.02em; }
+.service-document-section.is-question > summary > span { position: relative; flex: 0 0 14px; height: 14px; }
+.service-document-section.is-question > summary > span::before, .service-document-section.is-question > summary > span::after { position: absolute; top: 6.5px; left: 0; width: 14px; height: 1px; background: currentColor; content: ""; transition: transform .25s ease; }
+.service-document-section.is-question > summary > span::after { transform: rotate(90deg); }
+.service-document-section.is-question[open] > summary > span::after { transform: rotate(0deg); }
+.service-document-section.is-question > summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 4px; }
+.service-document-section.is-question[open] { padding-bottom: 30px; }
+.service-document-section.is-question > p:first-of-type { margin-top: 0; }
 .service-pending-label { display: inline-block; margin: 0 0 7px; padding: 5px 8px; background: #eae6dc; color: #655a43; font-size: 11px; line-height: 1.4; }
 .service-facts, .service-storage dl { margin: 18px 0 0; }
 .service-facts > div, .service-storage dl > div { display: grid; grid-template-columns: minmax(110px, .7fr) minmax(0, 1.3fr); gap: 22px; padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 13px; line-height: 1.8; }

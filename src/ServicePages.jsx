@@ -37,8 +37,9 @@ export function ServiceDocument({ page, language, onNavigate, onService, onTrade
     <div className="service-document-sections">
       {page.sections.map((section, index) => {
         const linked = SERVICE_PAGES.find((item) => item.id === section.link);
-        return <section className={`service-document-section${section.pending ? " has-pending-details" : ""}`} key={index}>
-          <SectionHeading>{section.title[language]}</SectionHeading>
+        const Section = page.faq ? "details" : "section";
+        return <Section className={`service-document-section${section.pending ? " has-pending-details" : ""}${page.faq ? " is-question" : ""}`} key={index}>
+          {page.faq ? <summary><SectionHeading>{section.title[language]}</SectionHeading><span aria-hidden="true" /></summary> : <SectionHeading>{section.title[language]}</SectionHeading>}
           {section.pending && <span className="service-pending-label">{de ? "Angaben folgen" : "Details to follow"}</span>}
           {section.paragraphs?.map((paragraph, i) => <p key={i}>{paragraph[language]}</p>)}
           {section.list && <ul>{section.list.map((item, i) => <li key={i}>{item[language]}</li>)}</ul>}
@@ -48,7 +49,7 @@ export function ServiceDocument({ page, language, onNavigate, onService, onTrade
           {linked && <ServiceLink className="service-text-link" href={linked.path} onNavigate={onNavigate}>{linked.label[language]}<span aria-hidden="true">→</span></ServiceLink>}
           {section.storage && <StorageDetails language={language} />}
           {section.sources?.map((source) => <a className="service-source" href={source.href} key={source.href} target="_blank" rel="noreferrer">{source.label[language]} <span aria-hidden="true">↗</span><span className="sr-only"> ({de ? "neuer Tab" : "new tab"})</span></a>)}
-        </section>;
+        </Section>;
       })}
     </div>
   </article>;
