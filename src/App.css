@@ -378,6 +378,14 @@ html.reveal-ready [data-reveal].is-revealed {
   transform-origin: left;
 }
 
+/* The labels are 10px tall and the icons 19px; widen the click target, not the type. */
+.nav-cluster > button::before,
+.nav-explore > button::before {
+  position: absolute;
+  inset: -16px -6px;
+  content: "";
+}
+
 .header-wordmark,
 .footer-wordmark,
 .legal-wordmark {
@@ -402,6 +410,7 @@ html.reveal-ready [data-reveal].is-revealed {
 
 .icon-button,
 .bag-button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;

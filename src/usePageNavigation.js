@@ -11,7 +11,13 @@ function captureScroll() {
 
 function saveScroll() {
   const scroll = captureScroll();
-  window.history.replaceState({ ...window.history.state, nesScroll: scroll }, "");
+  const state = window.history.state;
+  if (JSON.stringify(state?.nesScroll) === JSON.stringify(scroll)) return scroll;
+  // Safari and Firefox throw once history writes are rate-limited; a lost
+  // scroll snapshot must never cancel the navigation that follows it.
+  try {
+    window.history.replaceState({ ...state, nesScroll: scroll }, "");
+  } catch { /* The next save catches up. */ }
   return scroll;
 }
 
@@ -22,20 +28,22 @@ function readNavigation() {
 export function usePageNavigation() {
   const [navigation, setNavigation] = useState(readNavigation);
   const restoring = useRef(false);
+  const saveTimer = useRef();
 
   useLayoutEffect(() => {
     const previous = window.history.scrollRestoration;
     window.history.scrollRestoration = "manual";
-    let frame;
     const onScroll = () => {
       if (restoring.current) return;
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
+      window.clearTimeout(saveTimer.current);
+      // Browsers rate-limit history writes (Chrome: 200 per 10 s, after which
+      // navigations are silently dropped), so save once scrolling settles.
+      saveTimer.current = window.setTimeout(() => {
         if (!restoring.current) saveScroll();
-      });
+      }, 150);
     };
     const onPopState = () => {
-      window.cancelAnimationFrame(frame);
+      window.clearTimeout(saveTimer.current);
       restoring.current = true;
       setNavigation(readNavigation());
     };
@@ -43,7 +51,7 @@ export function usePageNavigation() {
     window.addEventListener("popstate", onPopState);
     window.addEventListener("pagehide", saveScroll);
     return () => {
-      window.cancelAnimationFrame(frame);
+      window.clearTimeout(saveTimer.current);
       window.history.scrollRestoration = previous;
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("popstate", onPopState);
@@ -102,7 +110,9 @@ export function usePageNavigation() {
   }, [navigation]);
 
   const navigate = useCallback((url, { replace = false, preserveScroll = false } = {}) => {
-    const scroll = saveScroll();
+    window.clearTimeout(saveTimer.current);
+    // A replaced entry is overwritten below, so only a pushed-from entry keeps its position.
+    const scroll = replace ? captureScroll() : saveScroll();
     restoring.current = true;
     const state = { nesScroll: preserveScroll ? scroll : undefined };
     window.history[replace ? "replaceState" : "pushState"](state, "", url);
