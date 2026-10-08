@@ -1,5 +1,10 @@
 /* Explore menu: brands, activities and fit help */
 
+.nav-explore {
+  display: flex;
+  align-items: center;
+}
+
 .nav-explore > button {
   position: relative;
   display: inline-flex;
@@ -10,6 +15,7 @@
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.17em;
+  line-height: 1;
   text-transform: uppercase;
 }
 
@@ -33,7 +39,9 @@
 }
 
 .chevron-icon {
+  flex: none;
   width: 8px;
+  height: 6px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.4;
