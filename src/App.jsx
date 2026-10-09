@@ -68,6 +68,7 @@ const COPY = {
       text: "Barfußschuhe können sich natürlich anfühlen und gut aussehen. Mit dieser Überzeugung führt NES leichte Feel Shoes, klare Loafer und charakterstarken Strick zusammen.",
     },
     featured: { label: "Neu im Haus", title: "Ausgewählt für jetzt.", knitTitle: ["Signature", "Pullys"], knitText: "Markante Muster. Hochwertiger Strick. Gemacht, um aufzufallen.", shoeTitle: ["Feel", "Shoes"], shoeText: "Leichte Formen. Natürliche Bewegung. Für jeden Tag.", shopNow: "Jetzt entdecken" },
+    activities: { label: "NES / Nach Aktivität", title: "Wofür tragen Sie sie?", body: "Jeder Feel Shoe hat einen klaren Einsatzbereich. Wählen Sie, wobei Sie ihn tragen möchten — wir zeigen Ihnen die passenden Modelle.", models: (count) => `${count} ${count === 1 ? "Modell" : "Modelle"}` },
     brands: { label: "Die Marken bei NES", title: "Drei Handschriften.", titleAccent: "Ein Haus.", body: "Jede Marke hat ihren eigenen Ausdruck. Gemeinsam entsteht eine Auswahl, die sich leicht kombinieren lässt." },
     look: {
       label: "NES / Die Auswahl zum Look",
@@ -143,6 +144,7 @@ const COPY = {
     },
     intro: { label: "The idea behind NES", title: "Good feeling. Good form.", text: "Barefoot shoes can feel natural and look good. With this belief, NES brings together light feel shoes, clean loafers and knitwear with character." },
     featured: { label: "New in the house", title: "Selected for now.", knitTitle: ["Signature", "Pullys"], knitText: "Bold patterns. Premium knitwear. Made to stand out.", shoeTitle: ["Feel", "Shoes"], shoeText: "Light forms. Natural movement. Made for every day.", shopNow: "Shop now" },
+    activities: { label: "NES / By activity", title: "What will you wear them for?", body: "Every feel shoe has a clear purpose. Choose what you want to wear it for and we will show you the right styles.", models: (count) => `${count} ${count === 1 ? "style" : "styles"}` },
     brands: { label: "The brands at NES", title: "Three signatures.", titleAccent: "One house.", body: "Each brand has its own expression. Together, they make a selection that feels natural to combine." },
     look: {
       label: "NES / A selection for the look",
@@ -644,6 +646,7 @@ export default function App() {
           onToggleFavorite={toggleFavorite}
           onTrade={() => setTradeOpen(true)}
           onService={navigateServiceTopic}
+          onNavigate={navigateService}
           onPrivacy={() => setLegalOpen("privacy")}
         />
       ) : route === "service" ? (
@@ -852,6 +855,32 @@ function Header({ route, audience, copy, language, bagCount, wishlistCount, onWi
   );
 }
 
+function ActivityIndex({ copy, language, onNavigate }) {
+  const visible = groupProductFamilies(PRODUCTS.filter((product) => !product.catalogHidden));
+  return (
+    <section className="activity-index section-pad" aria-labelledby="activity-index-title">
+      <div className="activity-index-heading" data-reveal>
+        <p className="eyebrow">{copy.activities.label}</p>
+        <h2 id="activity-index-title">{copy.activities.title}</h2>
+        <p>{copy.activities.body}</p>
+      </div>
+      <ul className="activity-index-list">
+        {ACTIVITIES.map((item, index) => {
+          const count = visible.filter((product) => matchesActivity(product, item.id)).length;
+          return <li key={item.id} data-reveal style={{ "--reveal-delay": `${index * 60}ms` }}>
+            <ServiceLink href={`/shop?activity=${item.id}`} onNavigate={onNavigate}>
+              <span className="activity-index-number">{String(index + 1).padStart(2, "0")}</span>
+              <strong>{item.label[language]}</strong>
+              <span className="activity-index-intro">{item.intro[language]}</span>
+              <span className="activity-index-count">{copy.activities.models(count)}<ArrowIcon /></span>
+            </ServiceLink>
+          </li>;
+        })}
+      </ul>
+    </section>
+  );
+}
+
 function ShoppableLook({ copy, language, onOpen }) {
   const hotspots = [
     { product: PRODUCTS.find((product) => product.id === 12), className: "shoppable-hotspot-pullover" },
@@ -898,7 +927,7 @@ function ShoppableLook({ copy, language, onOpen }) {
   );
 }
 
-function HomePage({ copy, language, onShop, onGallery, onHome, onOpen, onQuickAdd, onBrand, onAbout, wishlist, onToggleFavorite, onTrade, onService, onPrivacy }) {
+function HomePage({ copy, language, onShop, onGallery, onHome, onOpen, onQuickAdd, onBrand, onAbout, wishlist, onToggleFavorite, onTrade, onService, onNavigate, onPrivacy }) {
   const featuredGroups = [
     {
       id: "shoes-accessories",
@@ -965,6 +994,8 @@ function HomePage({ copy, language, onShop, onGallery, onHome, onOpen, onQuickAd
           ))}
         </div>
       </section>
+
+      <ActivityIndex copy={copy} language={language} onNavigate={onNavigate} />
 
       <section className="house-intro section-pad">
         <div className="house-intro-index" data-reveal>NES<br />CURATED<br />HOUSE</div>

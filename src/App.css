@@ -584,6 +584,118 @@ html.reveal-ready [data-reveal].is-revealed {
   line-height: 1.85;
 }
 
+/* Activity index — says plainly what each feel shoe is for before anyone opens a product. */
+.activity-index {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) 1.7fr;
+  align-items: start;
+  gap: clamp(40px, 8vw, 140px);
+  border-bottom: 1px solid var(--line);
+}
+
+.activity-index-heading h2 {
+  margin: 19px 0 0;
+  font-family: var(--serif);
+  font-size: clamp(40px, 4.6vw, 64px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.activity-index-heading > p:last-child {
+  max-width: 420px;
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.activity-index-list {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.activity-index-list li {
+  border-bottom: 1px solid var(--line);
+}
+
+.activity-index-list a {
+  display: grid;
+  grid-template-columns: 44px minmax(180px, 0.9fr) 1.3fr auto;
+  align-items: baseline;
+  gap: 24px;
+  padding: 26px 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.activity-index-number {
+  color: rgba(22, 22, 20, 0.42);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+}
+
+.activity-index-list strong {
+  font-family: var(--serif);
+  font-size: clamp(26px, 2.6vw, 36px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  transition: transform 0.35s ease;
+}
+
+.activity-index-intro {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.activity-index-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.activity-index-count svg {
+  width: 16px;
+  transition: transform 0.35s ease;
+}
+
+.activity-index-list a:hover strong,
+.activity-index-list a:focus-visible strong {
+  transform: translateX(6px);
+}
+
+.activity-index-list a:hover .activity-index-count svg,
+.activity-index-list a:focus-visible .activity-index-count svg {
+  transform: translateX(4px);
+}
+
+@media (max-width: 900px) {
+  .activity-index {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-index-list a {
+    grid-template-columns: 32px 1fr auto;
+    gap: 8px 16px;
+    padding: 22px 0;
+  }
+
+  .activity-index-intro {
+    grid-column: 2 / -1;
+    grid-row: 2;
+  }
+}
+
 /* Product construction — the shoe holds still while the page scrolls past it
    and takes itself apart. The section is a tall track; the stage inside it
    sticks for the length of that track. */
