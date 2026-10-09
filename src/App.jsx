@@ -12,7 +12,7 @@ import "./product-page.css";
 import "./featured-showcase.css";
 import "./catalog-page.css";
 import { BRANDS, getBrandForProduct, brandIdFromPath } from "./brands.js";
-import { BrandCards, BrandsPage, BrandDetailPage, AboutPage } from "./BrandExperience.jsx";
+import { BrandCards, BrandsPage, AboutPage } from "./BrandExperience.jsx";
 import { KnitQuality } from "./KnitQuality.jsx";
 import { SocietyInvitation } from "./SocietyInvitation.jsx";
 import { CheckoutPreview } from "./CheckoutPreview.jsx";
@@ -265,7 +265,7 @@ export default function App() {
   const route = routeFromLocation(pageUrl);
   const activeServicePage = getServicePage(pageUrl.pathname);
   const serviceHub = /^\/(service|rechtliches)\/?$/.test(pageUrl.pathname);
-  const activeBrandId = brandIdFromPath(pageUrl.pathname);
+  const legacyBrandId = brandIdFromPath(pageUrl.pathname);
   const filter = filterFromLocation(pageUrl);
   const audience = audienceFromLocation(pageUrl);
   const activity = activityFromLocation(pageUrl);
@@ -459,7 +459,13 @@ export default function App() {
   }, [filter, audience, activity, search, sort, language, savedOnly, wishlist]);
 
   const activeProduct = PRODUCTS.find((product) => product.id === activeProductId) || null;
-  const activeBrand = BRANDS.find(brand => brand.id === activeBrandId);
+
+  // Brand pages were merged into /brands; old links land on the brand's section.
+  useLayoutEffect(() => {
+    if (!legacyBrandId) return;
+    const known = BRANDS.some((brand) => brand.id === legacyBrandId);
+    navigate(known ? `/brands#${legacyBrandId}` : "/brands", { replace: true });
+  }, [legacyBrandId, navigate]);
 
   useEffect(() => {
     const description = document.querySelector('meta[name="description"]');
@@ -470,8 +476,8 @@ export default function App() {
       document.title = `${activeProduct.name} | ${activeProduct.brand} | NES`;
       description?.setAttribute("content", localize(activeProduct.description, language));
     } else if (route === "brands") {
-      document.title = activeBrand ? `${activeBrand.name} | NES` : `${language === "de" ? "Unsere Marken" : "Our brands"} | NES`;
-      description?.setAttribute("content", activeBrand ? activeBrand[language].intro : copy.brands.body);
+      document.title = `${language === "de" ? "Unsere Marken" : "Our brands"} | NES`;
+      description?.setAttribute("content", copy.brands.body);
     } else if (route === "about") {
       document.title = `${copy.nav.about} | NES`;
       description?.setAttribute("content", copy.intro.text);
@@ -487,7 +493,7 @@ export default function App() {
         ? "Kuratierte Schuhe und charakterstarker Strick von NES. Entdecken Sie ausgewählte Marken, Materialien und Design."
         : "Curated footwear and distinctive knitwear from NES. Discover selected brands, materials and design.");
     }
-  }, [route, activeProduct, activeBrand, activeServicePage, serviceHub, language, copy, audience, activity]);
+  }, [route, activeProduct, activeServicePage, serviceHub, language, copy, audience, activity]);
   const bagCount = bag.reduce((sum, item) => sum + item.qty, 0);
   const bagTotal = getBagTotal(bag, PRODUCTS);
 
@@ -521,7 +527,7 @@ export default function App() {
 
   function navigateBrands(brandId = null) {
     setMobileOpen(false);
-    navigate(brandId ? `/brands/${brandId}` : "/brands");
+    navigate(brandId ? `/brands#${brandId}` : "/brands");
   }
 
   function navigateAbout() {
@@ -652,8 +658,7 @@ export default function App() {
       ) : route === "service" ? (
         <ServicePages page={activeServicePage} isHub={serviceHub} language={language} onNavigate={navigateService} onService={openService} onTrade={() => setTradeOpen(true)} />
       ) : route === "brands" ? (
-        activeBrandId ? <BrandDetailPage key={activeBrandId} brand={activeBrand} language={language} onBrand={navigateBrands} onBrands={navigateBrands} onShop={navigateShop} renderProduct={(product) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={openProduct} wishlist={wishlist} onToggleFavorite={toggleFavorite} />} />
-          : <BrandsPage language={language} onBrand={navigateBrands} onAbout={navigateAbout} />
+        <BrandsPage language={language} onBrand={navigateBrands} onAbout={navigateAbout} onShop={navigateShop} renderProduct={(product) => <ProductCard key={product.id} product={product} copy={copy} language={language} onOpen={openProduct} wishlist={wishlist} onToggleFavorite={toggleFavorite} />} />
       ) : route === "about" ? (
         <AboutPage language={language} onBrand={navigateBrands} onShop={navigateShop} onAdvice={() => openService("advice")} />
       ) : route === "gallery" ? (
@@ -785,7 +790,7 @@ function Header({ route, audience, copy, language, bagCount, wishlistCount, onWi
     onServicePage(href);
   };
   const exploreGroups = [
-    { title: copy.nav.brands, links: [...BRANDS.map((brand) => ({ href: `/brands/${brand.id}`, label: brand.name, detail: brand[language].category })), { href: "/brands", label: copy.nav.allBrands }] },
+    { title: copy.nav.brands, links: [...BRANDS.map((brand) => ({ href: `/brands#${brand.id}`, label: brand.name, detail: brand[language].category })), { href: "/brands", label: copy.nav.allBrands }] },
     { title: copy.nav.byActivity, links: ACTIVITIES.map((item) => ({ href: `/shop?activity=${item.id}`, label: item.label[language] })) },
     { title: copy.nav.shop, links: [{ href: "/shop", label: copy.nav.allProducts }, { href: "/#featured", label: copy.nav.newIn }, { href: "/service/passform", label: copy.nav.fit }, { href: "/service/faq", label: copy.nav.faq }] },
   ];
@@ -1476,7 +1481,7 @@ function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHo
               <a href="/shop" onClick={(event) => followLink(event, () => onShop("all"))}>{copy.productPage.collection}</a><span aria-hidden="true">/</span>
               <span aria-current="page">{product.name}</span>
             </nav>
-            <p className="pdp-category">{brand ? <a className="pdp-brand-link" href={`/brands/${brand.id}`} onClick={(event) => followLink(event, () => onBrand(brand.id))}>{product.brand}<ArrowIcon /></a> : product.brand} / {localize(product.category, language)}</p>
+            <p className="pdp-category">{brand ? <a className="pdp-brand-link" href={`/brands#${brand.id}`} onClick={(event) => followLink(event, () => onBrand(brand.id))}>{product.brand}<ArrowIcon /></a> : product.brand} / {localize(product.category, language)}</p>
             <h1 id="product-detail-title">{product.name}</h1>
             <p className="pdp-subtitle">{localize(product.subtitle, language)}</p>
             <div className="pdp-price-row">
@@ -1525,7 +1530,7 @@ function ProductPage({ product, copy, language, selectedSize, onSelectSize, onHo
       <section className="pdp-editorial" aria-labelledby="pdp-story-title">
         <div className="pdp-editorial-heading"><span>NES / {copy.productPage.details}</span><h2 id="pdp-story-title">{copy.productPage.story}</h2><p>{brandNote || localize(product.description, language)}</p></div>
         <div className="pdp-material-note"><span>{copy.product.material}</span><p>{localize(product.materialLabel || product.material, language)}</p></div>
-        {brand && <a className="story-link pdp-brand-story-link" href={`/brands/${brand.id}`} onClick={(event) => followLink(event, () => onBrand(brand.id))}>{language === "de" ? `Mehr über ${brand.name}` : `More about ${brand.name}`}<ArrowIcon /></a>}
+        {brand && <a className="story-link pdp-brand-story-link" href={`/brands#${brand.id}`} onClick={(event) => followLink(event, () => onBrand(brand.id))}>{language === "de" ? `Mehr über ${brand.name}` : `More about ${brand.name}`}<ArrowIcon /></a>}
       </section>
 
       {related.length > 0 && <section className="pdp-related" aria-labelledby="pdp-related-title">
@@ -1772,7 +1777,7 @@ function Footer({ copy, language, onHome, onBrand, onAbout, onTrade, onNavigate,
     <footer className="site-footer">
       <div className="footer-main">
         <div className="footer-brand"><button className="footer-wordmark" type="button" onClick={() => onHome()}>NES</button><p>{copy.footer.about}</p><a className="footer-email" href={`mailto:${SERVICE_EMAIL}`}>{SERVICE_EMAIL}</a></div>
-        <div className="footer-column"><h3>{copy.footer.collections}</h3>{BRANDS.map(brand => <ServiceLink key={brand.id} href={`/brands/${brand.id}`} onNavigate={() => onBrand(brand.id)}>{brand.name}</ServiceLink>)}</div>
+        <div className="footer-column"><h3>{copy.footer.collections}</h3>{BRANDS.map(brand => <ServiceLink key={brand.id} href={`/brands#${brand.id}`} onNavigate={() => onBrand(brand.id)}>{brand.name}</ServiceLink>)}</div>
         <div className="footer-column"><h3>{copy.footer.service}</h3>{SERVICE_PAGES.filter((page) => page.group === "service").map((page) => <ServiceLink key={page.id} href={page.path} onNavigate={onNavigate}>{page.label[language]}</ServiceLink>)}</div>
         <div className="footer-column"><h3>{copy.footer.house}</h3><ServiceLink href="/about" onNavigate={onAbout}>{copy.nav.about}</ServiceLink><button type="button" onClick={onSociety}>NES Society</button><button type="button" onClick={onTrade}>{language === "de" ? "Für Händler & Marken" : "For retailers & brands"}</button><ServiceLink href="/service" onNavigate={onNavigate}>{language === "de" ? "Serviceübersicht" : "Service overview"}</ServiceLink></div>
       </div>

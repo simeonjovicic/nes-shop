@@ -19,7 +19,7 @@ function Arrow() {
 export function BrandCards({ language, onBrand }) {
   return <div className="house-brand-grid">{BRANDS.map(brand => {
     const text = brand[language];
-    return <StoryLink className={`house-brand-card house-brand-${brand.id}`} href={`/brands/${brand.id}`} onNavigate={() => onBrand(brand.id)} key={brand.id}>
+    return <StoryLink className={`house-brand-card house-brand-${brand.id}`} href={`/brands#${brand.id}`} onNavigate={() => onBrand(brand.id)} key={brand.id}>
       <div className="house-brand-image"><img src={brand.cardImage ?? brand.hero} alt={text.cardAlt ?? text.imageAlt} loading="lazy" decoding="async" style={{ objectPosition: brand.cardPosition ?? brand.position }} /><span className="house-brand-number">{brand.index} / NES</span></div>
       <div className="house-brand-label"><div><h3>{brand.name}</h3><span>{brand.signature}</span></div><Arrow /></div>
       <p>{text.title}</p>
@@ -27,42 +27,30 @@ export function BrandCards({ language, onBrand }) {
   })}</div>;
 }
 
-export function BrandsPage({ language, onBrand, onAbout }) {
+export function BrandsPage({ language, onBrand, onAbout, onShop, renderProduct }) {
   const de = language === "de";
   return <main className="brand-directory brand-page">
     <header className="brand-directory-intro brand-wrap">
       <p className="eyebrow">NES / {de ? "Die Marken" : "The brands"}</p>
       <div className="brand-directory-heading"><h1>{de ? <>Drei Handschriften.<br /><em>Eine Auswahl.</em></> : <>Three signatures.<br /><em>One selection.</em></>}</h1><p>{de ? "Textile Feel Shoes, klare Loafer und ausdrucksstarker Strick. Jede Marke bringt etwas Eigenes mit. NES führt sie zusammen." : "Textile feel shoes, clean loafers and expressive knitwear. Each brand brings something of its own. NES brings them together."}</p></div>
+      <nav className="brand-index" aria-label={de ? "Zu den Marken springen" : "Jump to a brand"}>{BRANDS.map(brand => <StoryLink href={`/brands#${brand.id}`} onNavigate={() => onBrand(brand.id)} key={brand.id}><span>{brand.index}</span>{brand.name}</StoryLink>)}</nav>
     </header>
-    <section className="brand-wrap brand-directory-cards" aria-label={de ? "Unsere drei Marken" : "Our three brands"}><BrandCards language={language} onBrand={onBrand} /></section>
+    {BRANDS.map((brand, index) => {
+      const text = brand[language];
+      const shopHref = `/shop?brand=${brand.filter}`;
+      return <section className={`brand-chapter brand-chapter-${brand.id}${index % 2 ? " brand-chapter-reverse" : ""} brand-wrap`} id={brand.id} aria-labelledby={`brand-${brand.id}-title`} key={brand.id}>
+        <div className="brand-chapter-lead">
+          <figure className="brand-chapter-image"><img src={brand.hero} alt={text.imageAlt} loading={index ? "lazy" : "eager"} decoding="async" style={{ objectPosition: brand.position }} /><figcaption>{brand.index} / {brand.signature}</figcaption></figure>
+          <div className="brand-chapter-copy">
+            <p className="eyebrow">{text.category}</p><h2 id={`brand-${brand.id}-title`}>{brand.name}</h2><p className="brand-chapter-tagline">{text.title}</p>
+            <p>{text.intro}</p><p>{text.story}</p>
+            <StoryLink className="button button-forest" href={shopHref} onNavigate={() => onShop(brand.filter)}>{text.selection}<Arrow /></StoryLink>
+          </div>
+        </div>
+        <div className="brand-product-grid">{brand.previewIds.map(id => PRODUCTS.find(product => product.id === id)).filter(Boolean).map(renderProduct)}</div>
+      </section>;
+    })}
     <section className="house-note brand-wrap"><span className="eyebrow">{de ? "Der Gedanke dahinter" : "The idea behind it"}</span><h2>{de ? "Natürliches Gefühl verdient eine gute Form." : "Natural feeling deserves good form."}</h2><StoryLink href="/about" onNavigate={onAbout}>{de ? "Über NES" : "About NES"}<Arrow /></StoryLink></section>
-  </main>;
-}
-
-export function BrandDetailPage({ brand, language, onBrand, onBrands, onShop, renderProduct }) {
-  const de = language === "de";
-  if (!brand) return <main className="pdp-not-found"><h1>{de ? "Marke nicht gefunden." : "Brand not found."}</h1><StoryLink href="/brands" onNavigate={() => onBrands()}>{de ? "Zu unseren Marken" : "Explore our brands"}<Arrow /></StoryLink></main>;
-  const text = brand[language];
-  const nextBrand = BRANDS[(BRANDS.indexOf(brand) + 1) % BRANDS.length];
-  const shopHref = `/shop?brand=${brand.filter}`;
-  return <main className={`brand-page brand-detail brand-detail-${brand.id}`}>
-    <section className="brand-hero">
-      <div className="brand-hero-image"><img src={brand.hero} alt={text.imageAlt} fetchPriority="high" decoding="async" style={{ objectPosition: brand.position }} /><span className="brand-image-caption">{brand.index} / {brand.signature}</span></div>
-      <div className="brand-hero-copy">
-        <nav className="brand-breadcrumb" aria-label={de ? "Seitenpfad" : "Breadcrumb"}><StoryLink href="/brands" onNavigate={() => onBrands()}>{de ? "Die Marken" : "The brands"}</StoryLink><span>/</span><span aria-current="page">{brand.name}</span></nav>
-        <p className="eyebrow">{text.category}</p><h1>{brand.name}</h1><p className="brand-hero-tagline">{text.title}</p><p className="brand-hero-intro">{text.intro}</p>
-        <StoryLink className="button button-forest" href={shopHref} onNavigate={() => onShop(brand.filter)}>{text.selection}<Arrow /></StoryLink>
-        <div className="brand-curated">{de ? "Ausgewählt von" : "Selected by"}<span>NES</span></div>
-      </div>
-    </section>
-    <section className="brand-material brand-wrap" aria-labelledby="brand-material-title">
-      <div className="brand-material-copy"><p className="eyebrow">01 / {de ? "Material & Ausdruck" : "Material & expression"}</p><h2 id="brand-material-title">{text.storyTitle}</h2><p>{text.story}</p></div>
-      <figure className="brand-material-image"><img src={brand.detail} alt={text.detailAlt} loading="lazy" decoding="async" style={{ objectPosition: brand.detailPosition }} /><figcaption>{brand.name} / {de ? "Im Detail" : "A closer look"}</figcaption></figure>
-      <dl className="brand-details">{text.features.map(([title, body], index) => <div key={title}><span aria-hidden="true">0{index + 1}</span><dt>{title}</dt><dd>{body}</dd></div>)}</dl>
-    </section>
-    <section className="brand-selection-note"><div className="brand-wrap"><p className="eyebrow">02 / {de ? "Warum bei NES" : "Why NES selected it"}</p><p className="brand-selection-quote">{text.reason}</p><span className="brand-selection-signature">NES / {de ? "Unsere Auswahl" : "Our selection"}</span></div></section>
-    <section className="brand-products brand-wrap" aria-labelledby="brand-products-title"><div className="brand-products-heading"><div><p className="eyebrow">03 / {de ? "Die Kollektion" : "The collection"}</p><h2 id="brand-products-title">{text.collection}</h2></div><StoryLink href={shopHref} onNavigate={() => onShop(brand.filter)}>{text.selection}<Arrow /></StoryLink></div><div className="brand-product-grid">{brand.previewIds.map(id => PRODUCTS.find(product => product.id === id)).filter(Boolean).map(renderProduct)}</div><p className="brand-collection-note">{text.note}</p></section>
-    <nav className="brand-next brand-wrap" aria-label={de ? "Weitere Marken" : "More brands"}><span className="eyebrow">{de ? "Die nächste Handschrift" : "The next signature"}</span><StoryLink href={`/brands/${nextBrand.id}`} onNavigate={() => onBrand(nextBrand.id)}>{nextBrand.name}<Arrow /></StoryLink></nav>
   </main>;
 }
 
@@ -82,7 +70,7 @@ export function MaterialStudy({ language, onOpen, onBrand }) {
     <div className="material-study-copy"><p className="eyebrow">WAI by Vehon / Feel Shoes</p><h2 id="material-study-title">{de ? <>So wenig Schuh.<br /><em>So viel Stoff.</em></> : <>So little shoe.<br /><em>So much texture.</em></>}</h2><p className="material-study-intro">{de ? "Sehr dünner Stoff. Eine flache, flexible Sohle. Wie sich WAI zeigt, entscheidet das Material." : "Very thin fabric. A flat, flexible sole. The material gives WAI its expression."}</p>
       <div className="material-study-options" role="group" aria-label={de ? "Material entdecken" : "Explore materials"}>{MATERIALS.map((item, index) => <button key={item.id} type="button" aria-pressed={index === active} onClick={() => setActive(index)}><span>0{index + 1}</span>{item.label[language]}</button>)}</div>
       <p className="material-study-description" aria-live="polite">{material.text[language]}</p>
-      <div className="material-study-actions"><StoryLink href={`/products/${getProductSlug(product)}`} onNavigate={() => onOpen(product.id)}>{de ? "Dieses Modell ansehen" : "View this style"}<Arrow /></StoryLink><StoryLink href="/brands/wai" onNavigate={() => onBrand("wai")}>{de ? "Die Welt von WAI" : "The world of WAI"}</StoryLink></div>
+      <div className="material-study-actions"><StoryLink href={`/products/${getProductSlug(product)}`} onNavigate={() => onOpen(product.id)}>{de ? "Dieses Modell ansehen" : "View this style"}<Arrow /></StoryLink><StoryLink href="/brands#wai" onNavigate={() => onBrand("wai")}>{de ? "Die Welt von WAI" : "The world of WAI"}</StoryLink></div>
     </div>
   </section>;
 }

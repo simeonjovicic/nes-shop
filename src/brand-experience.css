@@ -27,47 +27,23 @@
 .house-note { display: grid; grid-template-columns: 1fr 2fr; align-items: start; gap: 30px; margin-block: 100px; padding-top: 40px; border-top: 1px solid var(--line); }
 .house-note h2 { margin: 0; max-width: 19ch; font-size: clamp(38px, 4vw, 60px); line-height: 1.1; }
 .house-note > .story-link { grid-column: 2; }
-.brand-hero { display: grid; grid-template-columns: 1fr 1fr; min-height: min(760px, calc(100svh - var(--header-height))); }
-.brand-hero-image { position: relative; min-width: 0; min-height: 600px; overflow: hidden; background: var(--paper-deep); }
-.brand-hero-image > img { position: absolute; inset: 0; height: 100%; object-fit: cover; }
-.brand-image-caption { position: absolute; bottom: 24px; left: 30px; padding: 8px 12px; background: var(--paper); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
-.brand-hero-copy { padding: 34px clamp(35px, 5vw, 80px) 40px; display: flex; align-items: flex-start; flex-direction: column; justify-content: center; }
-.brand-breadcrumb { display: flex; align-items: center; gap: 14px; margin-bottom: auto; padding-bottom: 55px; font-size: 10px; color: var(--brand-soft); }
-.brand-breadcrumb .story-link { font-size: 10px; padding: 0; }
-.brand-hero-copy > .eyebrow { margin-top: 0; }
-.brand-hero-copy h1 { margin: 16px 0 18px; font-size: clamp(66px, 7.4vw, 112px); line-height: .95; }
-.brand-detail-montechiaro .brand-hero-copy h1 { font-size: clamp(54px, 5.8vw, 88px); }
-.brand-hero-tagline { margin: 0; font-family: var(--serif); font-size: clamp(29px, 2.7vw, 40px); font-style: italic; line-height: 1.12; }
-.brand-hero-intro { margin: 28px 0 32px; max-width: 44ch; color: var(--brand-soft); font-size: 14px; line-height: 1.9; }
-.brand-curated { display: flex; align-items: center; gap: 15px; margin-top: auto; padding-top: 65px; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--brand-soft); }
-.brand-curated span { font-family: var(--serif); font-size: 23px; letter-spacing: .18em; color: var(--ink); }
-.brand-detail-montechiaro .brand-hero-copy { background: #eee7df; }
-.brand-detail-wai .brand-hero-copy { background: #edece4; }
-.brand-detail-vehon .brand-hero-copy { background: #e9e6e1; }
-.brand-material { padding-block: clamp(70px, 8vw, 120px); display: grid; grid-template-columns: 1fr 1.1fr; gap: 60px 9vw; align-items: center; }
-.brand-material-copy h2 { margin: 22px 0 26px; font-size: clamp(42px, 4.4vw, 66px); line-height: 1.05; max-width: 13ch; }
-.brand-material-copy > p:last-child { max-width: 44ch; font-size: 14px; line-height: 1.9; color: var(--brand-soft); }
-.brand-material-image { margin: 0; }
-.brand-material-image img { aspect-ratio: 5 / 4; object-fit: cover; background: var(--paper-deep); }
-.brand-material-image figcaption { margin-top: 12px; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; }
-.brand-detail-vehon .brand-material-image img { object-fit: contain; }
-.brand-details { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin: 0; }
-.brand-details > div { padding-top: 24px; border-top: 1px solid var(--line); }
-.brand-details span { font-size: 10px; color: var(--muted); }
-.brand-details dt { font-family: var(--serif); font-size: 30px; margin-top: 18px; }
-.brand-details dd { font-size: 13px; line-height: 1.8; color: var(--brand-soft); margin: 12px 0 0; max-width: 34ch; }
-.brand-selection-note { padding-block: clamp(58px, 7vw, 100px); background: var(--brand); color: var(--paper); }
-.brand-selection-note .eyebrow { color: #c6c2b8; }
-.brand-selection-quote { max-width: 950px; font-family: var(--serif); font-size: clamp(32px, 3.6vw, 54px); line-height: 1.2; letter-spacing: -.02em; margin: 30px 0; }
-.brand-selection-signature { font-size: 10px; color: #c6c2b8; letter-spacing: .08em; }
-.brand-products { padding-block: clamp(65px, 7.5vw, 110px); }
-.brand-products-heading { display: flex; justify-content: space-between; gap: 30px; align-items: end; margin-bottom: 45px; }
-.brand-products-heading h2 { font-size: clamp(40px, 4vw, 60px); line-height: 1.05; margin: 20px 0 0; }
+.brand-index { display: flex; flex-wrap: wrap; gap: 6px 38px; margin-top: 46px; padding-top: 20px; border-top: 1px solid var(--line); }
+.brand-index .story-link { gap: 10px; font-family: var(--serif); font-size: clamp(22px, 2vw, 30px); letter-spacing: -.02em; text-decoration: none; }
+.brand-index .story-link span { font-family: var(--sans); font-size: 9px; letter-spacing: .1em; color: var(--brand-soft); }
+.brand-chapter { padding-block: clamp(55px, 6.5vw, 95px); border-top: 1px solid var(--line); }
+.brand-chapter-lead { display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; gap: 40px 7vw; margin-bottom: clamp(45px, 5vw, 70px); }
+.brand-chapter-reverse .brand-chapter-image { order: 2; }
+.brand-chapter-image { position: relative; margin: 0; aspect-ratio: 5 / 4; overflow: hidden; background: var(--paper-deep); }
+.brand-chapter-image img { position: absolute; inset: 0; height: 100%; width: 100%; object-fit: cover; }
+.brand-chapter-image figcaption { position: absolute; bottom: 20px; left: 22px; padding: 8px 12px; background: var(--paper); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+.brand-chapter-copy { display: flex; flex-direction: column; align-items: flex-start; }
+.brand-chapter-copy h2 { margin: 16px 0 14px; font-size: clamp(58px, 6.2vw, 96px); line-height: .95; }
+.brand-chapter-montechiaro .brand-chapter-copy h2 { font-size: clamp(46px, 4.9vw, 76px); }
+.brand-chapter-copy .brand-chapter-tagline { margin: 0 0 24px; font-family: var(--serif); font-size: clamp(26px, 2.4vw, 36px); font-style: italic; line-height: 1.12; color: var(--ink); }
+.brand-chapter-copy > p:not(.eyebrow) { max-width: 46ch; margin: 0 0 14px; font-size: 14px; line-height: 1.9; color: var(--brand-soft); }
+.brand-chapter-copy .button { margin-top: 18px; }
 .brand-product-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; }
 .brand-product-grid .product-title-row { flex-wrap: wrap; gap: 8px 16px; }
-.brand-collection-note { margin: 30px 0 0; font-size: 12px; color: var(--brand-soft); line-height: 1.7; }
-.brand-next { display: flex; justify-content: space-between; align-items: center; padding-block: 30px 65px; border-top: 1px solid var(--line); }
-.brand-next > a { font-family: var(--serif); font-size: clamp(35px, 4vw, 58px); letter-spacing: -.02em; text-decoration: none; gap: 35px; }
 .material-study { display: grid; grid-template-columns: 1fr 1fr; scroll-margin-top: var(--header-height); background: #eae8df; }
 .material-study-stage { position: relative; background: #e1dfd6; padding: 48px 8% 45px; min-width: 0; }
 .material-study-index { position: absolute; top: 30px; left: 30px; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
@@ -126,10 +102,6 @@
 .catalog-brand-story { margin-top: 16px; font-size: 11px; }
 
 @media (max-width: 1050px) {
-  .brand-hero-copy { padding-inline: 32px; }
-  .brand-hero-image { min-height: 560px; }
-  .brand-hero-copy h1 { font-size: 80px; }
-  .brand-detail-montechiaro .brand-hero-copy h1 { font-size: 57px; }
   .material-study-copy { padding: 45px 30px; }
   .material-study-options { gap: 14px; }
   .material-study-options button { font-size: 11px; }
@@ -157,24 +129,14 @@
   .house-brand-card > p { margin-top: 10px; }
   .house-note { grid-template-columns: 1fr; gap: 22px; margin-block: 65px; }
   .house-note > .story-link { grid-column: auto; }
-  .brand-hero { grid-template-columns: 1fr; }
-  .brand-hero-image { min-height: 0; height: 64vw; max-height: 550px; }
-  .brand-detail-montechiaro .brand-hero-image { height: 95vw; }
-  .brand-hero-copy { padding: 27px 24px 36px; }
-  .brand-breadcrumb { padding-bottom: 34px; }
-  .brand-hero-copy h1 { font-size: 85px; }
-  .brand-detail-montechiaro .brand-hero-copy h1 { font-size: clamp(50px, 11vw, 80px); }
-  .brand-hero-intro { margin: 22px 0 27px; }
-  .brand-curated { padding-top: 35px; }
-  .brand-material { grid-template-columns: 1fr; gap: 35px; }
-  .brand-material-copy h2 { max-width: 18ch; }
-  .brand-details { gap: 24px; }
-  .brand-details dt { font-size: 24px; }
-  .brand-details dd { font-size: 12px; }
-  .brand-products-heading { align-items: start; flex-direction: column; gap: 18px; margin-bottom: 30px; }
+  .brand-index { gap: 4px 26px; margin-top: 32px; }
+  .brand-chapter-lead { grid-template-columns: 1fr; gap: 28px; margin-bottom: 38px; }
+  .brand-chapter-reverse .brand-chapter-image { order: 0; }
+  .brand-chapter-montechiaro .brand-chapter-image { aspect-ratio: 4 / 5; }
+  .brand-chapter-copy h2 { font-size: clamp(56px, 15vw, 80px); }
+  .brand-chapter-montechiaro .brand-chapter-copy h2 { font-size: clamp(44px, 11vw, 70px); }
   .brand-product-grid { grid-template-columns: 1fr 1fr; gap: 30px 16px; }
   .brand-product-grid .product-title-row strong { font-size: 24px; }
-  .brand-next { align-items: start; flex-direction: column; gap: 20px; }
   .material-study { grid-template-columns: 1fr; }
   .material-study-stage { padding-block: 50px; }
   .material-study-stage > img { height: 95vw; max-height: 540px; }
@@ -202,11 +164,6 @@
   .home-brand-intro > p { max-width: 44ch; }
 }
 @media (max-width: 430px) {
-  .brand-details { grid-template-columns: 1fr; gap: 25px; }
-  .brand-details > div { display: grid; grid-template-columns: 25px 1fr; column-gap: 12px; }
-  .brand-details span { padding-top: 8px; }
-  .brand-details dt { margin-top: 0; }
-  .brand-details dd { grid-column: 2; max-width: none; }
   .brand-product-grid { grid-template-columns: 1fr; gap: 38px; }
   .material-study-options { justify-content: space-between; gap: 12px; }
   .material-study-options button { min-height: 48px; }
